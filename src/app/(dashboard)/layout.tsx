@@ -76,13 +76,6 @@ const Sidebar = () => {
                     open={open}
                 />
                 <Option
-                    Icon={Users}
-                    title="Kullanıcılar"
-                    href="/admin/users"
-                    selected={pathname === "/admin/users"}
-                    open={open}
-                />
-                <Option
                     Icon={Search}
                     title="Scout Jobs"
                     href="/scout"
