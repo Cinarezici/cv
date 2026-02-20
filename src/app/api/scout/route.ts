@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
             // curious_coder/linkedin-jobs-scraper
             const run = await apify.actor('curious_coder/linkedin-jobs-scraper').call({
                 urls: [{ url: `https://www.linkedin.com/jobs/search/?keywords=${encodeURIComponent(query)}&location=Worldwide` }],
-                count: 100,
+                count: 150,
             });
             const { items } = await apify.dataset(run.defaultDatasetId).listItems();
             results = items;

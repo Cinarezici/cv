@@ -23,14 +23,26 @@ export default async function PublicResumePage({ params }: { params: Promise<{ s
         .eq('user_id', resume.user_id)
         .single();
 
-    const now = new Date();
-    const isExpired =
-        !subscription ||
-        subscription.status === 'expired' ||
-        subscription.status === 'canceled' ||
-        (subscription.status === 'trialing' && subscription.trial_end && new Date(subscription.trial_end) < now);
+    // 2.1 Hesabın ne zaman açıldığını tahmini olarak profile ya da resume üzerinden bulalım
+    const { data: profile } = await supabase
+        .from('profiles')
+        .select('created_at')
+        .eq('user_id', resume.user_id)
+        .order('created_at', { ascending: true })
+        .limit(1)
+        .single();
 
-    if (isExpired) redirect('/upgrade');
+    const accountCreationDate = profile ? new Date(profile.created_at) : new Date(resume.created_at);
+    const trialEndDate = new Date(accountCreationDate.getTime() + 14 * 24 * 60 * 60 * 1000); // +14 Days
+    const now = new Date();
+
+    const hasActiveSub = subscription?.status === 'active';
+    const trialTimeRemaining = now < trialEndDate;
+
+    // Eğer aktif aboneliği yoksa ve 14 günü geçmişse linki kapat ve ana sayfaya yönlendir
+    if (!hasActiveSub && !trialTimeRemaining) {
+        redirect('/');
+    }
 
     // 3. Resume'yu göster
     const data = resume.optimized_json;

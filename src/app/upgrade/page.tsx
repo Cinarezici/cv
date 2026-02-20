@@ -45,7 +45,7 @@ export default function UpgradePage() {
                 <Card className="border-primary/20 shadow-xl shadow-primary/5">
                     <CardHeader>
                         <CardTitle className="text-2xl flex justify-between">
-                            Pro Plan <span className="text-primary">$49/yr</span>
+                            Pro Plan <span className="text-primary">$99/yr</span>
                         </CardTitle>
                         <CardDescription>Everything you need to nail the interview.</CardDescription>
                     </CardHeader>
