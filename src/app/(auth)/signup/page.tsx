@@ -60,12 +60,12 @@ export default function SignupPage() {
         }
     };
 
-    const handleOAuth = async (provider: 'github' | 'google') => {
+    const handleOAuth = async (provider: 'google') => {
         const supabase = createClient();
         await supabase.auth.signInWithOAuth({
             provider,
             options: {
-                redirectTo: `${window.location.origin}/dashboard`,
+                redirectTo: `${window.location.origin}/auth/callback`,
             },
         });
     };
@@ -279,22 +279,14 @@ export default function SignupPage() {
                             </span>
                         </div>
 
-                        <div className="grid grid-cols-2 gap-3">
-                            <Button
-                                variant="outline"
-                                onClick={() => handleOAuth('github')}
-                                className="h-10 rounded-lg border-zinc-800 bg-zinc-950 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-50 transition-colors"
-                            >
-                                <Github className="h-4 w-4 mr-2" />
-                                GitHub
-                            </Button>
+                        <div className="grid grid-cols-1 gap-3">
                             <Button
                                 variant="outline"
                                 onClick={() => handleOAuth('google')}
-                                className="h-10 rounded-lg border-zinc-800 bg-zinc-950 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-50 transition-colors"
+                                className="h-10 rounded-lg border-zinc-800 bg-zinc-950 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-50 transition-colors w-full"
                             >
                                 <Chrome className="h-4 w-4 mr-2" />
-                                Google
+                                Google ile Kayıt Ol
                             </Button>
                         </div>
                     </CardContent>
