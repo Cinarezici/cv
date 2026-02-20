@@ -71,9 +71,8 @@ export async function POST(request: NextRequest) {
         const usernameMatch = linkedinUrl.match(/linkedin\.com\/in\/([^\/]+)/i);
         const profileUsername = usernameMatch ? usernameMatch[1] : '';
 
-        const run = await apify.actor('apimaestro/linkedin-profile-detail').call({
-          urls: [linkedinUrl],
-          username: profileUsername
+        const run = await apify.actor('dev_fusion/linkedin-profile-scraper').call({
+          profileUrls: [linkedinUrl]
         });
 
         const { items } = await apify.dataset(run.defaultDatasetId).listItems();

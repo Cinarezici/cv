@@ -23,23 +23,24 @@ export async function POST(request: NextRequest) {
         let results = [];
 
         if (type === 'jobs') {
-            // Using a generic Apify job scraper actor proxy
-            // Note: apimaestro/linkedin-jobs-scraper is a common one, but can be updated or configured.
-            const run = await apify.actor('dan.scraper/linkedin-jobs-scraper').call({
-                searchKeywords: [query],
-                limit: 5,
+            // curious_coder/linkedin-jobs-scraper
+            const run = await apify.actor('curious_coder/linkedin-jobs-scraper').call({
+                urls: [{ url: `https://www.linkedin.com/jobs/search/?keywords=${encodeURIComponent(query)}&location=Worldwide` }],
+                count: 15,
             });
             const { items } = await apify.dataset(run.defaultDatasetId).listItems();
             results = items;
         } else if (type === 'people') {
-            // Scrape similar people
-            const run = await apify.actor('apimaestro/linkedin-search').call({
-                searchQuery: query,
-                searchType: 'people',
-                limit: 5,
+            // dev_fusion/linkedin-profile-scraper for extracting similar profiles
+            // The user must provide a profile URL for this query
+            const run = await apify.actor('dev_fusion/linkedin-profile-scraper').call({
+                profileUrls: [query],
             });
             const { items } = await apify.dataset(run.defaultDatasetId).listItems();
-            results = items;
+            if (items && items.length > 0) {
+                // Return people Also Viewed or similar profiles available in the structure
+                results = (items[0].peopleAlsoViewed || items[0].relatedProfiles || items[0].similarProfiles || []) as any[];
+            }
         } else {
             return NextResponse.json({ error: 'Invalid search type' }, { status: 400 });
         }

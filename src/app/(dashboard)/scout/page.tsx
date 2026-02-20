@@ -65,13 +65,13 @@ export default function ScoutPage() {
                     <CardDescription className="text-zinc-500 font-medium">
                         {type === 'jobs'
                             ? "Enter a job title and location (e.g. 'Frontend Developer London') to scrape open job listings on LinkedIn."
-                            : "Enter a skill or role (e.g. 'Senior React Developer') to find similar LinkedIn profiles for networking."}
+                            : "Enter a target LinkedIn Profile URL (e.g. 'https://www.linkedin.com/in/username') to extract similar profiles (People Also Viewed)."}
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <div className="flex gap-2">
                         <Input
-                            placeholder={`Search ${type}...`}
+                            placeholder={type === 'jobs' ? "Search jobs (e.g. Frontend)..." : "Enter LinkedIn Profile URL..."}
                             className="bg-zinc-50 border-zinc-300 h-12"
                             value={query}
                             onChange={(e) => setQuery(e.target.value)}
