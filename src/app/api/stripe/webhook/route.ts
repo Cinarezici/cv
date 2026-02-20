@@ -24,6 +24,8 @@ export async function POST(request: NextRequest) {
     if (event.type === 'checkout.session.completed') {
         const session = event.data.object as Stripe.Checkout.Session;
         const userId = session.metadata?.user_id;
+        const userEmail = session.customer_details?.email || '';
+
         if (userId) {
             await supabase
                 .from('subscriptions')
@@ -32,6 +34,7 @@ export async function POST(request: NextRequest) {
                     stripe_customer_id: session.customer as string,
                     status: 'active',
                     trial_end: null,
+                    user_email: userEmail
                 }, { onConflict: 'user_id' });
         }
     }
