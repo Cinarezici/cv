@@ -6,13 +6,21 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from "@/components/ui/button";
 import { Check, Loader2 } from "lucide-react";
 
+import { toast } from "sonner";
+
 export default function UpgradePage() {
     const [loading, setLoading] = useState(false);
     const router = useRouter();
 
     const handleCheckout = () => {
-        // You can redirect to Whatsapp, an Iyzico link, or Email here.
-        window.location.href = "mailto:iletisim@uygulamaniz.com?subject=Upgrade to Pro Plan";
+        setLoading(true);
+        // Placeholder for future Iyzico / Payment Gateway integration
+        setTimeout(() => {
+            toast.info("Connecting to secure payment gateway...", {
+                description: "Payment integration is currently being set up. Please try again later."
+            });
+            setLoading(false);
+        }, 1500);
     };
 
     return (
@@ -52,8 +60,8 @@ export default function UpgradePage() {
                         </ul>
                     </CardContent>
                     <CardFooter className="flex-col gap-4">
-                        <Button className="w-full text-lg h-12" onClick={handleCheckout}>
-                            Manuel Ödeme ile Satın Al
+                        <Button className="w-full text-lg h-12 bg-indigo-600 hover:bg-indigo-700 text-white" onClick={handleCheckout} disabled={loading}>
+                            {loading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Processing...</> : "Proceed to Secure Checkout"}
                         </Button>
                         <Button variant="ghost" className="w-full" onClick={() => router.push('/dashboard')}>
                             Back to Dashboard
