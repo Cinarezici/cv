@@ -10,24 +10,9 @@ export default function UpgradePage() {
     const [loading, setLoading] = useState(false);
     const router = useRouter();
 
-    const handleCheckout = async () => {
-        setLoading(true);
-        try {
-            const res = await fetch("/api/stripe/checkout", {
-                method: "POST",
-            });
-            const data = await res.json();
-
-            if (data.url) {
-                window.location.href = data.url;
-            } else {
-                throw new Error(data.error || "Failed to initiate checkout");
-            }
-        } catch (err) {
-            console.error(err);
-            alert("Checkout failed. Are Stripe keys configured visually?");
-            setLoading(false);
-        }
+    const handleCheckout = () => {
+        // You can redirect to Whatsapp, an Iyzico link, or Email here.
+        window.location.href = "mailto:iletisim@uygulamaniz.com?subject=Upgrade to Pro Plan";
     };
 
     return (
@@ -67,8 +52,8 @@ export default function UpgradePage() {
                         </ul>
                     </CardContent>
                     <CardFooter className="flex-col gap-4">
-                        <Button className="w-full text-lg h-12" onClick={handleCheckout} disabled={loading}>
-                            {loading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Processing...</> : "Subscribe Now"}
+                        <Button className="w-full text-lg h-12" onClick={handleCheckout}>
+                            Manuel Ödeme ile Satın Al
                         </Button>
                         <Button variant="ghost" className="w-full" onClick={() => router.push('/dashboard')}>
                             Back to Dashboard
