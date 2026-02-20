@@ -151,6 +151,7 @@ export default function ImportPage() {
                                     className="bg-white border-zinc-300 h-12"
                                     value={url}
                                     onChange={(e) => setUrl(e.target.value)}
+                                    onKeyDown={(e) => e.key === 'Enter' && handleImportUrl()}
                                 />
                             </div>
                             {error && (
@@ -169,38 +170,48 @@ export default function ImportPage() {
                 </TabsContent>
 
                 <TabsContent value="pdf">
-                    <Card className="border shadow-sm rounded-xl">
+                    <Card className="border shadow-sm rounded-xl flex flex-col">
                         <CardHeader>
                             <CardTitle className="text-xl font-bold">Upload existing CV (PDF)</CardTitle>
                             <CardDescription className="text-zinc-500 font-medium">
                                 Mevcut özgeçmişinizi yükleyerek profili okutun. Dünyanın en iyi AI modeli tüm yapıyı anında algılayacaktır.
                             </CardDescription>
                         </CardHeader>
-                        <CardContent className="space-y-6">
-                            <div className="border-2 border-dashed border-zinc-300 rounded-lg p-8 flex flex-col items-center justify-center text-center hover:bg-zinc-100 transition-colors">
-                                <FileUp className="h-10 w-10 text-zinc-400 mb-4" />
-                                <h3 className="font-semibold text-zinc-700 mb-1">Choose a PDF file to upload</h3>
-                                <p className="text-sm text-zinc-500 mb-4">Maximum file size: 5MB</p>
+                        <CardContent className="flex-1">
+                            <div className={`border-2 border-dashed ${file ? 'border-indigo-500 bg-indigo-50/50' : 'border-zinc-300 hover:bg-zinc-100'} rounded-lg p-8 flex flex-col items-center justify-center text-center transition-colors`}>
+                                <FileUp className={`h-10 w-10 mb-4 ${file ? 'text-indigo-500' : 'text-zinc-400'}`} />
+                                <h3 className="font-semibold text-zinc-700 mb-1">
+                                    {file ? 'File Selected' : 'Choose a PDF file to upload'}
+                                </h3>
+                                <p className="text-sm text-zinc-500 mb-6">
+                                    {file ? file.name : 'Maximum file size: 5MB'}
+                                </p>
                                 <Input
                                     type="file"
                                     accept="application/pdf"
-                                    className="cursor-pointer"
+                                    className="cursor-pointer max-w-sm mx-auto"
                                     onChange={(e) => setFile(e.target.files?.[0] || null)}
                                 />
                             </div>
 
                             {error && (
-                                <div className="flex items-center gap-2 text-rose-600 bg-rose-50 p-4 rounded-lg border border-rose-200">
+                                <div className="flex items-center gap-2 text-rose-600 bg-rose-50 p-4 rounded-lg border border-rose-200 mt-6">
                                     <AlertCircle className="h-5 w-5 shrink-0" />
                                     <p className="text-sm font-medium">{error}</p>
                                 </div>
                             )}
-                            <Button onClick={handleImportPdf} disabled={loading || !file} className="w-full bg-indigo-600 hover:bg-indigo-700 text-white h-12 font-semibold">
-                                {loading ? (
-                                    <><Loader2 className="mr-2 h-5 w-5 animate-spin" /> Parsing PDF and Extracting AI...</>
-                                ) : "Upload and Parse Resume"}
-                            </Button>
                         </CardContent>
+                        <div className="p-6 pt-0 mt-auto">
+                            <Button
+                                onClick={handleImportPdf}
+                                disabled={loading || !file}
+                                className={`w-full h-14 font-bold text-lg shadow-sm ${file ? 'bg-indigo-600 hover:bg-indigo-700 text-white' : 'bg-zinc-200 text-zinc-500'}`}
+                            >
+                                {loading ? (
+                                    <><Loader2 className="mr-2 h-6 w-6 animate-spin" /> Yükleniyor ve Analiz Ediliyor...</>
+                                ) : "Yükle ve Özgeçmişe Çevir"}
+                            </Button>
+                        </div>
                     </Card>
                 </TabsContent>
             </Tabs>
