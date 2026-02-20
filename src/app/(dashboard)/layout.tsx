@@ -13,7 +13,8 @@ import {
     Moon,
     Sun,
     LayoutDashboard,
-    Users
+    Users,
+    Search
 } from "lucide-react";
 
 export default function DashboardLayout({
@@ -25,11 +26,11 @@ export default function DashboardLayout({
 
     useEffect(() => {
         // Force dark mode by default for that premium feel
-        document.documentElement.classList.add('dark');
+        document.documentElement.classList.remove("dark");
     }, [isDark]);
 
     return (
-        <div className="flex min-h-screen w-full bg-zinc-950 text-zinc-100 dark">
+        <div className="flex min-h-screen w-full bg-white text-zinc-900">
             <Sidebar />
             <div className="flex-1 overflow-auto">
                 <TopNav isDark={isDark} setIsDark={setIsDark} />
@@ -79,6 +80,13 @@ const Sidebar = () => {
                     title="Kullanıcılar"
                     href="/admin/users"
                     selected={pathname === "/admin/users"}
+                    open={open}
+                />
+                <Option
+                    Icon={Search}
+                    title="Scout Jobs"
+                    href="/scout"
+                    selected={pathname === "/scout"}
                     open={open}
                 />
             </div>
