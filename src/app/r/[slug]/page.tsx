@@ -107,7 +107,7 @@ export default async function PublicResumePage({ params }: { params: Promise<{ s
                 </div>
             </section>
 
-            <PrintButton />
+            <PrintButton data={data} />
         </div>
     );
 }

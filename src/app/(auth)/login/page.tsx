@@ -57,6 +57,16 @@ export default function LoginPage() {
         }
     };
 
+    const handleOAuth = async (provider: 'github' | 'google') => {
+        const supabase = createClient();
+        await supabase.auth.signInWithOAuth({
+            provider,
+            options: {
+                redirectTo: `${window.location.origin}/dashboard`,
+            },
+        });
+    };
+
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -283,6 +293,7 @@ export default function LoginPage() {
                         <div className="grid grid-cols-2 gap-3">
                             <Button
                                 variant="outline"
+                                onClick={() => handleOAuth('github')}
                                 className="h-10 rounded-lg border-zinc-800 bg-zinc-950 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-50 transition-colors"
                             >
                                 <Github className="h-4 w-4 mr-2" />
@@ -290,6 +301,7 @@ export default function LoginPage() {
                             </Button>
                             <Button
                                 variant="outline"
+                                onClick={() => handleOAuth('google')}
                                 className="h-10 rounded-lg border-zinc-800 bg-zinc-950 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-50 transition-colors"
                             >
                                 <Chrome className="h-4 w-4 mr-2" />

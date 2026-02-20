@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
 import { ShareResumeDialog } from '@/components/ShareResumeDialog';
+import { DeleteButton } from '@/components/DeleteButton';
 
 export default async function DashboardPage() {
     const supabase = await createClient();
@@ -47,9 +48,12 @@ export default async function DashboardPage() {
                                     <CardDescription className="truncate">{profile.headline}</CardDescription>
                                 </CardHeader>
                                 <CardContent>
-                                    <Link href={`/resumes/new?profileId=${profile.id}`}>
-                                        <Button variant="outline" className="w-full">Create Tailored Resume</Button>
-                                    </Link>
+                                    <div className="flex gap-2">
+                                        <Link href={`/resumes/new?profileId=${profile.id}`} className="flex-1">
+                                            <Button variant="outline" className="w-full">Create Tailored CV</Button>
+                                        </Link>
+                                        <DeleteButton id={profile.id} type="profiles" />
+                                    </div>
                                 </CardContent>
                             </Card>
                         ))}
@@ -82,6 +86,7 @@ export default async function DashboardPage() {
                                             <Button variant="secondary" className="w-full">View Public Page</Button>
                                         </Link>
                                         <ShareResumeDialog slug={resume.public_link_slug} />
+                                        <DeleteButton id={resume.id} type="resumes" />
                                     </div>
                                 </CardContent>
                             </Card>
