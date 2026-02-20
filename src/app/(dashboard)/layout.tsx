@@ -49,7 +49,7 @@ const Sidebar = () => {
     return (
         <nav
             className={`sticky top-0 h-screen shrink-0 border-r transition-all duration-300 ease-in-out ${open ? 'w-64' : 'w-16'
-                } border-zinc-800 bg-zinc-900/50 p-2 shadow-sm backdrop-blur-xl`}
+                } border-zinc-200 bg-white p-2 shadow-sm`}
         >
             <TitleSection open={open} />
 
@@ -101,8 +101,8 @@ const Option = ({ Icon, title, href, selected, open }: any) => {
         <Link
             href={href}
             className={`relative flex h-11 w-full items-center rounded-md transition-all duration-200 ${selected
-                ? "bg-blue-900/20 text-blue-400 shadow-sm border-l-2 border-blue-500"
-                : "text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200"
+                ? "bg-indigo-50 text-indigo-600 shadow-sm border-l-2 border-indigo-600 font-semibold"
+                : "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900"
                 }`}
         >
             <div className="grid h-full w-12 place-content-center">
@@ -123,16 +123,16 @@ const Option = ({ Icon, title, href, selected, open }: any) => {
 
 const TitleSection = ({ open }: { open: boolean }) => {
     return (
-        <div className="mb-6 border-b border-zinc-800 pb-4">
-            <div className="flex cursor-pointer items-center justify-between rounded-md p-2 transition-colors hover:bg-zinc-800">
+        <div className="mb-6 border-b border-zinc-200 pb-4">
+            <div className="flex cursor-pointer items-center justify-between rounded-md p-2 transition-colors hover:bg-zinc-100">
                 <div className="flex items-center gap-3">
                     <Logo />
                     {open && (
                         <div className={`transition-opacity duration-200 ${open ? 'opacity-100' : 'opacity-0'}`}>
-                            <span className="block text-sm font-bold text-zinc-100 tracking-wider uppercase text-nowrap">
+                            <span className="block text-sm font-bold text-zinc-900 tracking-wider uppercase text-nowrap">
                                 Interview
                             </span>
-                            <span className="block text-xs text-blue-400 font-medium">
+                            <span className="block text-xs text-indigo-600 font-medium">
                                 READY CV
                             </span>
                         </div>
@@ -145,7 +145,7 @@ const TitleSection = ({ open }: { open: boolean }) => {
 
 const Logo = () => {
     return (
-        <div className="grid size-10 shrink-0 place-content-center rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 shadow-sm">
+        <div className="grid size-10 shrink-0 place-content-center rounded-lg bg-gradient-to-br from-indigo-500 to-indigo-600 shadow-sm">
             <FileText className="text-white h-5 w-5" />
         </div>
     );
@@ -161,10 +161,10 @@ const ToggleClose = ({ open, setOpen }: any) => {
     };
 
     return (
-        <div className="absolute bottom-0 left-0 right-0 border-t border-zinc-800 bg-zinc-900/50">
+        <div className="absolute bottom-0 left-0 right-0 border-t border-zinc-200 bg-zinc-50/80 backdrop-blur-sm">
             <button
                 onClick={handleLogout}
-                className="w-full flex items-center p-3 hover:bg-zinc-800 text-red-400 transition-colors"
+                className="w-full flex items-center p-3 hover:bg-zinc-100 text-red-600 transition-colors"
             >
                 <div className="grid size-10 place-content-center shrink-0">
                     <LogOut className="h-4 w-4" />
@@ -178,7 +178,7 @@ const ToggleClose = ({ open, setOpen }: any) => {
 
             <button
                 onClick={() => setOpen(!open)}
-                className="w-full flex items-center p-3 hover:bg-zinc-800 text-zinc-400 transition-colors"
+                className="w-full flex items-center p-3 hover:bg-zinc-100 text-zinc-600 transition-colors"
             >
                 <div className="grid size-10 place-content-center shrink-0">
                     <ChevronsRight
@@ -197,7 +197,7 @@ const ToggleClose = ({ open, setOpen }: any) => {
 
 const TopNav = ({ isDark, setIsDark }: any) => {
     return (
-        <header className="sticky top-0 z-30 flex items-center justify-between px-6 py-4 border-b border-zinc-800 bg-zinc-900/50 backdrop-blur-md">
+        <header className="sticky top-0 z-30 flex items-center justify-between px-6 py-4 border-b border-zinc-200 bg-white/80 backdrop-blur-md text-zinc-900">
             <div></div>
             <div className="flex items-center gap-4">
                 {/* Placeholder for top right actions */}

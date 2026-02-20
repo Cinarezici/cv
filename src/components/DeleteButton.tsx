@@ -42,8 +42,9 @@ export function DeleteButton({ id, type }: DeleteButtonProps) {
 
     return (
         <Button
-            variant="destructive"
+            variant="outline"
             size="icon"
+            className="text-red-600 hover:text-red-700 hover:bg-red-50"
             onClick={handleDelete}
             disabled={loading}
             title="Delete"

@@ -55,17 +55,17 @@ export function ShareResumeDialog({ slug }: { slug: string }) {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button variant="outline" size="icon" className="shrink-0" title="Mail Olarak Paylaş">
-                    <Mail className="h-4 w-4 text-blue-400" />
+                <Button variant="outline" size="icon" className="shrink-0 bg-white hover:bg-zinc-100" title="Mail Olarak Paylaş">
+                    <Mail className="h-4 w-4 text-indigo-600" />
                 </Button>
             </DialogTrigger>
-            <DialogContent className="border-zinc-800 bg-zinc-950 sm:max-w-md">
+            <DialogContent className="border-zinc-200 bg-white sm:max-w-md">
                 <DialogHeader>
-                    <DialogTitle className="flex items-center gap-2">
-                        <Send className="h-5 w-5 text-blue-500" />
+                    <DialogTitle className="flex items-center gap-2 text-zinc-900">
+                        <Send className="h-5 w-5 text-indigo-600" />
                         CV'yi E-posta ile Paylaş
                     </DialogTitle>
-                    <DialogDescription className="text-zinc-400">
+                    <DialogDescription className="text-zinc-500">
                         Bu CV'nin herkese açık bağlantısını dilediğiniz e-posta adresine anında (Resend API) iletebilirsiniz.
                     </DialogDescription>
                 </DialogHeader>
@@ -73,14 +73,14 @@ export function ShareResumeDialog({ slug }: { slug: string }) {
                     <input
                         type="email"
                         placeholder="alici@sirket.com"
-                        className="w-full bg-zinc-900 border border-zinc-800 rounded-md p-3 text-white focus:outline-none focus:ring-1 focus:ring-blue-500"
+                        className="w-full bg-zinc-50 border border-zinc-200 rounded-md p-3 text-zinc-900 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                     />
                     <Button
                         onClick={handleShare}
                         disabled={sending || !email}
-                        className="bg-blue-600 hover:bg-blue-700 w-full"
+                        className="bg-indigo-600 hover:bg-indigo-700 w-full text-white"
                     >
                         {sending ? <Loader2 className="w-5 h-5 animate-spin mx-auto" /> : "Gönder"}
                     </Button>

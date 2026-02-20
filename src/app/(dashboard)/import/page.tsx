@@ -6,13 +6,14 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Loader2, Linkedin, FileUp, AlertCircle } from 'lucide-react';
+import { Loader2, Linkedin, FileUp, AlertCircle, CheckCircle2, ChevronRight } from 'lucide-react';
 
 export default function ImportPage() {
     const [url, setUrl] = useState('');
     const [file, setFile] = useState<File | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [successProfileId, setSuccessProfileId] = useState<string | null>(null);
     const router = useRouter();
 
     const handleImportUrl = async () => {
@@ -31,12 +32,12 @@ export default function ImportPage() {
                 body: JSON.stringify({ linkedinUrl: url }),
             });
 
+            const data = await res.json();
             if (!res.ok) {
-                const data = await res.json();
                 throw new Error(data.error || 'LinkedIn profili alınırken hata oluştu.');
             }
 
-            router.push('/dashboard');
+            setSuccessProfileId(data.profile?.id || 'new');
         } catch (err: any) {
             setError(err.message || 'Something went wrong');
         } finally {
@@ -67,18 +68,55 @@ export default function ImportPage() {
                 body: formData,
             });
 
+            const data = await res.json();
             if (!res.ok) {
-                const data = await res.json();
                 throw new Error(data.error || 'PDF alınırken hata oluştu.');
             }
 
-            router.push('/dashboard');
+            setSuccessProfileId(data.profile?.id || 'new');
         } catch (err: any) {
             setError(err.message || 'Something went wrong');
         } finally {
             setLoading(false);
         }
     };
+
+    if (successProfileId) {
+        return (
+            <div className="max-w-4xl mx-auto py-12 px-4 space-y-8 bg-zinc-50 min-h-[calc(100vh-100px)] text-zinc-900">
+                <Card className="border shadow-sm rounded-xl overflow-hidden text-center p-8 bg-white border-zinc-200">
+                    <div className="flex justify-center mb-6">
+                        <CheckCircle2 className="w-16 h-16 text-emerald-500" />
+                    </div>
+                    <CardTitle className="text-2xl font-bold mb-2">Profile Imported Successfully!</CardTitle>
+                    <CardDescription className="text-zinc-500 font-medium mb-8 text-base">
+                        AI has structured your data. Now, what would you like to do?
+                    </CardDescription>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl mx-auto">
+                        <Button
+                            onClick={() => router.push(successProfileId === 'new' ? '/resumes/base' : `/resumes/base`)}
+                            className="bg-indigo-600 hover:bg-indigo-700 text-white h-14 font-semibold text-lg"
+                        >
+                            Convert to Base CV
+                        </Button>
+                        <Button
+                            onClick={() => router.push(successProfileId === 'new' ? '/resumes/new' : `/resumes/new?profileId=${successProfileId}`)}
+                            variant="outline"
+                            className="h-14 font-semibold text-lg border-zinc-300 hover:bg-zinc-50"
+                        >
+                            Tailor for Job
+                        </Button>
+                    </div>
+                    <div className="mt-8">
+                        <Button variant="ghost" className="text-zinc-500" onClick={() => router.push('/dashboard')}>
+                            Return to Dashboard
+                        </Button>
+                    </div>
+                </Card>
+            </div>
+        );
+    }
 
     return (
         <div className="max-w-4xl mx-auto py-12 px-4 space-y-8 bg-zinc-50 min-h-[calc(100vh-100px)] text-zinc-900">
