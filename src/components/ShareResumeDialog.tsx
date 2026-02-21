@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Mail, Loader2, Send } from "lucide-react";
 import { toast } from "sonner";
@@ -17,6 +17,11 @@ export function ShareResumeDialog({ slug }: { slug: string }) {
     const [email, setEmail] = useState("");
     const [sending, setSending] = useState(false);
     const [open, setOpen] = useState(false);
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     const handleShare = async () => {
         if (!email) {
@@ -51,6 +56,14 @@ export function ShareResumeDialog({ slug }: { slug: string }) {
             setSending(false);
         }
     };
+
+    if (!mounted) {
+        return (
+            <Button variant="outline" size="icon" className="shrink-0 bg-white opacity-50 pointer-events-none" title="Mail Olarak Paylaş">
+                <Mail className="h-4 w-4 text-indigo-600" />
+            </Button>
+        );
+    }
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>

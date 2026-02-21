@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Loader2, Linkedin, FileUp, AlertCircle, CheckCircle2, ChevronRight } from 'lucide-react';
+import { Loader2, Linkedin, FileUp, AlertCircle, CheckCircle2, ChevronRight, Keyboard } from 'lucide-react';
 
 export default function ImportPage() {
     const [url, setUrl] = useState('');
@@ -124,7 +124,7 @@ export default function ImportPage() {
             <p className="text-zinc-500 font-medium">Create your base profile quickly using one of the methods below.</p>
 
             <Tabs defaultValue="url" className="w-full">
-                <TabsList className="grid w-full grid-cols-2 mb-8 bg-zinc-200 text-zinc-600 rounded-lg p-1">
+                <TabsList className="grid w-full grid-cols-3 mb-8 bg-zinc-200 text-zinc-600 rounded-lg p-1">
                     <TabsTrigger value="url" className="data-[state=active]:bg-white data-[state=active]:text-zinc-900 data-[state=active]:shadow-sm rounded-md font-semibold">
                         <Linkedin className="w-4 h-4 mr-2" />
                         LinkedIn URL
@@ -132,6 +132,10 @@ export default function ImportPage() {
                     <TabsTrigger value="pdf" className="data-[state=active]:bg-white data-[state=active]:text-zinc-900 data-[state=active]:shadow-sm rounded-md font-semibold">
                         <FileUp className="w-4 h-4 mr-2" />
                         PDF Upload
+                    </TabsTrigger>
+                    <TabsTrigger value="manual" className="data-[state=active]:bg-white data-[state=active]:text-zinc-900 data-[state=active]:shadow-sm rounded-md font-semibold">
+                        <Keyboard className="w-4 h-4 mr-2" />
+                        Manual Entry
                     </TabsTrigger>
                 </TabsList>
 
@@ -212,6 +216,26 @@ export default function ImportPage() {
                                 ) : "Yükle ve Özgeçmişe Çevir"}
                             </Button>
                         </div>
+                    </Card>
+                </TabsContent>
+
+                <TabsContent value="manual">
+                    <Card className="border shadow-sm rounded-xl">
+                        <CardHeader>
+                            <CardTitle className="text-xl font-bold">Manual Entry</CardTitle>
+                            <CardDescription className="text-zinc-500 font-medium">
+                                Don't have a LinkedIn profile or a PDF? You can manually type your experience, education, and skills.
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-6 pb-8 text-center pt-4">
+                            <Button
+                                onClick={() => router.push('/resumes/manual')}
+                                className="w-full sm:w-auto bg-zinc-900 hover:bg-zinc-800 text-white h-14 px-8 font-semibold text-lg"
+                            >
+                                <Keyboard className="mr-2 h-5 w-5" />
+                                Go to Manual Form
+                            </Button>
+                        </CardContent>
                     </Card>
                 </TabsContent>
             </Tabs>

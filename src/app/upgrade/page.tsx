@@ -2,10 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Check, Loader2 } from "lucide-react";
-
+import Link from "next/link";
 import { toast } from "sonner";
 
 export default function UpgradePage() {
@@ -14,7 +12,7 @@ export default function UpgradePage() {
 
     const handleCheckout = () => {
         setLoading(true);
-        // Placeholder for future Iyzico / Payment Gateway integration
+        // Placeholder for future integration
         setTimeout(() => {
             toast.info("Connecting to secure payment gateway...", {
                 description: "Payment integration is currently being set up. Please try again later."
@@ -24,50 +22,69 @@ export default function UpgradePage() {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
-            <div className="max-w-md w-full">
-                <div className="text-center mb-10">
-                    <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl">
+        <div className="min-h-screen bg-[#fafafa] flex flex-col items-center justify-center p-4 text-zinc-900 font-sans">
+            <div className="max-w-md w-full flex flex-col items-center">
+
+                {/* Header Section */}
+                <div className="text-center mb-10 space-y-3">
+                    <h1 className="text-4xl font-extrabold tracking-tight">
                         Upgrade to Pro
                     </h1>
-                    <p className="mt-4 text-lg text-gray-600">
-                        Your trial has expired. Subscribe to keep active resumes and continue optimizing your applications.
+                    <p className="text-[17px] text-zinc-500 max-w-sm mx-auto">
+                        Unlock unlimited job optimizations and keep your CV links active forever.
                     </p>
                 </div>
 
-                <Card className="border-primary/20 shadow-xl shadow-primary/5">
-                    <CardHeader>
-                        <CardTitle className="text-2xl flex justify-between">
-                            Pro Plan <span className="text-primary">$99/yr</span>
-                        </CardTitle>
-                        <CardDescription>Everything you need to nail the interview.</CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                        <ul className="space-y-3">
-                            {[
-                                "Unlimited Resume Generation",
-                                "Advanced AI Customization",
-                                "Active Public Link Sharing",
-                                "PDF Export Feature"
-                            ].map((feature, i) => (
-                                <li key={i} className="flex items-center gap-3">
-                                    <div className="bg-primary/10 p-1 rounded-full">
-                                        <Check className="h-4 w-4 text-primary" />
-                                    </div>
-                                    <span className="text-gray-700">{feature}</span>
-                                </li>
-                            ))}
-                        </ul>
-                    </CardContent>
-                    <CardFooter className="flex-col gap-4">
-                        <Button className="w-full text-lg h-12 bg-indigo-600 hover:bg-indigo-700 text-white" onClick={handleCheckout} disabled={loading}>
-                            {loading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Processing...</> : "Proceed to Secure Checkout"}
-                        </Button>
-                        <Button variant="ghost" className="w-full" onClick={() => router.push('/dashboard')}>
-                            Back to Dashboard
-                        </Button>
-                    </CardFooter>
-                </Card>
+                {/* Pricing Card */}
+                <div className="relative w-full bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-zinc-200 p-8 pb-10 overflow-hidden">
+
+                    {/* Popular Badge */}
+                    <div className="absolute top-0 right-0 bg-[#1a1a1a] text-white text-[11px] font-bold tracking-wider px-4 py-1.5 rounded-bl-xl">
+                        POPULAR
+                    </div>
+
+                    {/* Card Content */}
+                    <div className="mt-2">
+                        <h2 className="text-2xl font-bold">Annual Pro</h2>
+                        <p className="text-sm text-zinc-500 mt-1.5 font-medium">Everything you need to land your dream job</p>
+                    </div>
+
+                    <div className="mt-6 flex items-baseline gap-1">
+                        <span className="text-5xl font-extrabold tracking-tight">$99</span>
+                        <span className="text-zinc-500 font-medium text-lg">/year</span>
+                    </div>
+
+                    <div className="mt-8 space-y-4">
+                        {[
+                            "Unlimited CV Generations",
+                            "Unlimited Job Optimizations",
+                            "Permanent Active Public Links",
+                            "Priority AI Processing",
+                            "Premium Templates (Coming Soon)",
+                            "Email Support"
+                        ].map((feature, i) => (
+                            <div key={i} className="flex items-center gap-3">
+                                <Check className="h-5 w-5 text-emerald-500 shrink-0" strokeWidth={2.5} />
+                                <span className="text-zinc-700 font-medium text-[15px]">{feature}</span>
+                            </div>
+                        ))}
+                    </div>
+
+                    <button
+                        onClick={handleCheckout}
+                        disabled={loading}
+                        className="mt-10 w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold h-12 rounded-xl flex items-center justify-center transition-colors shadow-sm disabled:opacity-70 disabled:cursor-not-allowed"
+                    >
+                        {loading ? <><Loader2 className="mr-2 h-5 w-5 animate-spin" /> Processing...</> : "Upgrade Now"}
+                    </button>
+                </div>
+
+                {/* Footer Link */}
+                <div className="mt-10">
+                    <Link href="/dashboard" className="text-[15px] font-semibold text-zinc-600 hover:text-zinc-900 transition-colors">
+                        Return to Dashboard
+                    </Link>
+                </div>
             </div>
         </div>
     );

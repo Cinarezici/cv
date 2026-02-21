@@ -14,7 +14,8 @@ import {
     Sun,
     LayoutDashboard,
     Users,
-    Search
+    Search,
+    Settings
 } from "lucide-react";
 
 export default function DashboardLayout({
@@ -80,6 +81,13 @@ const Sidebar = () => {
                     title="Scout Jobs"
                     href="/scout"
                     selected={pathname === "/scout"}
+                    open={open}
+                />
+                <Option
+                    Icon={Settings}
+                    title="Settings"
+                    href="/settings"
+                    selected={pathname === "/settings"}
                     open={open}
                 />
             </div>

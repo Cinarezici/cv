@@ -5,15 +5,18 @@ import { generateSlug } from '@/lib/utils';
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-const OPTIMIZE_PROMPT = `You are an expert resume writer. Your task is to rewrite the experience bullet points to better match the job description.
+const OPTIMIZE_PROMPT = `You are a world-class executive resume writer and career coach. Your task is to rewrite the experience bullet points and professional summary to perfectly tailor the candidate to the provided Job Description.
 
 STRICT RULES:
-1. NEVER invent new experiences or skills not in the original
-2. ONLY rephrase existing bullet points to emphasize relevant keywords
-3. Use strong action verbs
-4. Include keywords from the JD naturally
-5. Keep each bullet under 120 characters
-6. Return ONLY valid JSON with the same structure as input`;
+1. NEVER invent new jobs, dates, or skills that are entirely fabricated.
+2. ONLY rephrase existing bullet points to emphasize relevant keywords from the JD.
+3. Write with high-impact action verbs (e.g., Spearheaded, Orchestrated, Engineered).
+4. Quantify achievements where context allows.
+5. Keep each bullet concise and punchy.
+6. The output MUST be a perfectly formatted, raw JSON object representing the entire resume.
+7. Return ONLY JSON. Do not include markdown formatting or conversational text like "Here is the JSON...".
+
+The JSON MUST follow the exact structure of the input ORIGIN RESUME JSON.`;
 
 export async function POST(request: NextRequest) {
     try {
@@ -38,14 +41,15 @@ export async function POST(request: NextRequest) {
                 { role: 'system', content: OPTIMIZE_PROMPT },
                 {
                     role: 'user',
-                    content: `JOB DESCRIPTION:\n${jobDescription}\n\nORIGINAL RESUME JSON:\n${JSON.stringify(profile.raw_json)}\n\nReturn the complete resume JSON with only the bullet points rewritten to match the JD.`
+                    content: `JOB DESCRIPTION:\n${jobDescription}\n\nORIGINAL RESUME JSON:\n${JSON.stringify(profile.raw_json)}\n\nReturn the complete, rewritten resume JSON.`
                 }
             ],
             response_format: { type: 'json_object' },
-            temperature: 0.3,
+            temperature: 0.2,
         });
 
-        const optimizedData = JSON.parse(completion.choices[0].message?.content || '{}');
+        const rawContent = completion.choices[0].message?.content || '{}';
+        const optimizedData = JSON.parse(rawContent);
         const slug = generateSlug();
 
         // Extract job title from JD (first line or AI extracted)

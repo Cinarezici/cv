@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: 'Apify API Token is missing' }, { status: 500 });
         }
 
-        const { query, type } = await request.json();
+        const { query, type, location } = await request.json();
 
         if (!query) {
             return NextResponse.json({ error: 'Search query is required' }, { status: 400 });
@@ -23,9 +23,10 @@ export async function POST(request: NextRequest) {
         let results = [];
 
         if (type === 'jobs') {
+            const searchLocation = location || 'Worldwide';
             // curious_coder/linkedin-jobs-scraper
             const run = await apify.actor('curious_coder/linkedin-jobs-scraper').call({
-                urls: [{ url: `https://www.linkedin.com/jobs/search/?keywords=${encodeURIComponent(query)}&location=Worldwide` }],
+                urls: [{ url: `https://www.linkedin.com/jobs/search/?keywords=${encodeURIComponent(query)}&location=${encodeURIComponent(searchLocation)}` }],
                 count: 150,
             });
             const { items } = await apify.dataset(run.defaultDatasetId).listItems();
@@ -41,6 +42,14 @@ export async function POST(request: NextRequest) {
                 // Return people Also Viewed or similar profiles available in the structure
                 results = (items[0].peopleAlsoViewed || items[0].relatedProfiles || items[0].similarProfiles || []) as any[];
             }
+        } else if (type === 'job-details') {
+            // Specifically scrape a single job URL to extract details
+            const run = await apify.actor('curious_coder/linkedin-jobs-scraper').call({
+                urls: [{ url: query }],
+                count: 1,
+            });
+            const { items } = await apify.dataset(run.defaultDatasetId).listItems();
+            results = items;
         } else {
             return NextResponse.json({ error: 'Invalid search type' }, { status: 400 });
         }

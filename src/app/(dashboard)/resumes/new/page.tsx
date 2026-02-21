@@ -16,6 +16,10 @@ function NewResumeForm() {
     const [jd, setJd] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [jobTitle, setJobTitle] = useState('');
+    const [company, setCompany] = useState('');
+    const [jobUrl, setJobUrl] = useState('');
+    const [isScraping, setIsScraping] = useState(false);
     const router = useRouter();
 
     useEffect(() => {
@@ -74,6 +78,37 @@ function NewResumeForm() {
         );
     }
 
+    const handleScrapeJobUrl = async () => {
+        if (!jobUrl || !jobUrl.includes('linkedin.com')) {
+            setError("Lütfen geçerli bir LinkedIn iş ilanı linki girin.");
+            return;
+        }
+        setIsScraping(true);
+        setError(null);
+        try {
+            const res = await fetch('/api/scout', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ query: jobUrl, type: 'job-details' }),
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error || 'İlan detayları çekilemedi');
+
+            if (data.results && data.results.length > 0) {
+                const job = data.results[0];
+                if (job.title) setJobTitle(job.title);
+                if (job.companyName) setCompany(job.companyName);
+                if (job.description) setJd(job.description);
+            } else {
+                setError("İlan metni bulunamadı. Lütfen URL'yi kontrol edin veya manuel yapıştırın.");
+            }
+        } catch (err: any) {
+            setError(err.message);
+        } finally {
+            setIsScraping(false);
+        }
+    };
+
     const handleOptimize = async () => {
         if (!jd.trim()) {
             setError("Lütfen bir iş ilanı metni (Job Description) girin.");
@@ -84,17 +119,27 @@ function NewResumeForm() {
         setError(null);
 
         try {
+            // Append Job Title and Company to JD so AI has context if provided manually
+            const fullContextJd = `Job Title: ${jobTitle}\nCompany: ${company}\n\n${jd}`;
+
             const res = await fetch('/api/ai/optimize-resume', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ profileId, jobDescription: jd }),
+                body: JSON.stringify({ profileId, jobDescription: fullContextJd }),
             });
 
+            const data = await res.json();
+
             if (!res.ok) {
-                throw new Error('Özgeçmiş optimize edilemedi.');
+                throw new Error(data.error || 'Özgeçmiş optimize edilemedi.');
             }
 
-            router.push('/dashboard');
+            // Redirect directly to the generated public link
+            if (data.resume?.public_link_slug) {
+                router.push(`/r/${data.resume.public_link_slug}`);
+            } else {
+                router.push('/dashboard');
+            }
         } catch (err: any) {
             setError(err.message || 'Bilinmeyen bir hata oluştu');
         } finally {
@@ -105,41 +150,98 @@ function NewResumeForm() {
     const selectedProfile = profiles.find(p => p.id === profileId);
 
     return (
-        <Card className="border shadow-sm rounded-xl overflow-hidden bg-white">
-            <CardHeader className="bg-indigo-50/50 border-b border-indigo-100/50">
-                <div className="flex items-center gap-2 mb-2">
-                    <Sparkles className="h-5 w-5 text-indigo-600" />
-                    <CardTitle className="text-2xl font-bold text-zinc-900">Tailor your Resume</CardTitle>
+        <div className="space-y-6">
+            <div className="flex items-center justify-between">
+                <div>
+                    <h2 className="text-2xl font-bold flex items-center gap-2">
+                        <Sparkles className="w-6 h-6 text-zinc-800" />
+                        Job Optimization
+                    </h2>
+                    <p className="text-zinc-500 mt-1">
+                        Paste a job description to tailor your CV specifically for that role based on <span className="font-semibold text-indigo-700">{selectedProfile?.full_name}</span>.
+                    </p>
                 </div>
-                <CardDescription className="text-zinc-600 font-medium text-base">
-                    You selected <span className="font-bold text-indigo-700">{selectedProfile?.full_name || 'Profile'}</span>. Paste the Job Description for the role you're applying for.
-                    Our AI will optimize your experience bullets to match the employer's needs.
-                </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4 pt-6">
-                <Textarea
-                    placeholder="Paste the Job Description here (Requirements, Responsibilities, etc.)..."
-                    className="min-h-[400px] resize-y bg-zinc-50 border-zinc-200 text-zinc-900 focus-visible:ring-indigo-500"
-                    value={jd}
-                    onChange={(e) => setJd(e.target.value)}
-                />
-                {error && <p className="text-rose-600 bg-rose-50 p-3 rounded-lg border border-rose-200 text-sm font-medium">{error}</p>}
+                <Button onClick={() => setProfileId(null)} variant="outline" className="h-10 border-zinc-200 text-zinc-600 hover:bg-zinc-100 font-semibold" disabled={loading}>
+                    Change Profile
+                </Button>
+            </div>
 
-                <div className="flex flex-col sm:flex-row gap-3 pt-2">
-                    <Button onClick={handleOptimize} disabled={loading} className="w-full sm:flex-1 h-14 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-lg">
-                        {loading ? (
-                            <>
-                                <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                                AI is tailoring your resume...
-                            </>
-                        ) : "Optimize Resume using AI"}
-                    </Button>
-                    <Button onClick={() => setProfileId(null)} variant="outline" className="w-full sm:w-auto h-14 border-zinc-200 text-zinc-600 hover:bg-zinc-100 font-semibold" disabled={loading}>
-                        Change Profile
-                    </Button>
-                </div>
-            </CardContent>
-        </Card>
+            {error && <p className="text-rose-600 bg-rose-50 p-3 rounded-lg border border-rose-200 text-sm font-medium">{error}</p>}
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+
+                {/* Left Column: Job Details */}
+                <Card className="border shadow-sm rounded-xl overflow-hidden bg-white">
+                    <CardHeader className="pb-4">
+                        <CardTitle className="text-lg font-bold">Job Details</CardTitle>
+                        <CardDescription className="text-zinc-500 font-medium">Tell us about the role you are applying for.</CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                        <div className="space-y-1.5">
+                            <label className="text-sm font-semibold text-zinc-700">Job Title</label>
+                            <input
+                                placeholder="e.g. Senior Frontend Engineer"
+                                className="flex h-11 w-full rounded-md border border-zinc-300 bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-zinc-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-zinc-950 disabled:cursor-not-allowed disabled:opacity-50"
+                                value={jobTitle}
+                                onChange={(e) => setJobTitle(e.target.value)}
+                            />
+                        </div>
+                        <div className="space-y-1.5">
+                            <label className="text-sm font-semibold text-zinc-700">Company</label>
+                            <input
+                                placeholder="e.g. Google"
+                                className="flex h-11 w-full rounded-md border border-zinc-300 bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-zinc-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-zinc-950 disabled:cursor-not-allowed disabled:opacity-50"
+                                value={company}
+                                onChange={(e) => setCompany(e.target.value)}
+                            />
+                        </div>
+                        <div className="space-y-1.5">
+                            <label className="text-sm font-semibold text-zinc-700 flex justify-between items-center">
+                                Job URL (Optional)
+                                <button onClick={handleScrapeJobUrl} disabled={isScraping || !jobUrl} className="text-xs text-indigo-600 font-bold hover:underline disabled:opacity-50 flex items-center gap-1">
+                                    {isScraping ? <Loader2 className="w-3 h-3 animate-spin" /> : null}
+                                    Fetch URL
+                                </button>
+                            </label>
+                            <input
+                                placeholder="https://linkedin.com/jobs/..."
+                                className="flex h-11 w-full rounded-md border border-zinc-300 bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-zinc-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-zinc-950 disabled:cursor-not-allowed disabled:opacity-50"
+                                value={jobUrl}
+                                onChange={(e) => setJobUrl(e.target.value)}
+                                onKeyDown={(e) => e.key === 'Enter' && handleScrapeJobUrl()}
+                            />
+                            <p className="text-xs text-zinc-400 mt-1">LinkedIn URL'sini girip "Fetch" diyerek ilanı otomatik doldurabilirsiniz.</p>
+                        </div>
+                    </CardContent>
+                </Card>
+
+                {/* Right Column: Job Description */}
+                <Card className="border shadow-sm rounded-xl overflow-hidden bg-white h-[420px] flex flex-col">
+                    <CardHeader className="pb-4 shrink-0">
+                        <CardTitle className="text-lg font-bold">Job Description</CardTitle>
+                        <CardDescription className="text-zinc-500 font-medium">Paste the full job description here.</CardDescription>
+                    </CardHeader>
+                    <CardContent className="pt-2 flex-1 pb-6">
+                        <Textarea
+                            placeholder="We are looking for a highly skilled..."
+                            className="h-full w-full resize-none border-zinc-300 text-sm focus-visible:ring-zinc-950"
+                            value={jd}
+                            onChange={(e) => setJd(e.target.value)}
+                        />
+                    </CardContent>
+                </Card>
+            </div>
+
+            <div className="flex justify-end pt-4">
+                <Button onClick={handleOptimize} disabled={loading} className="w-full md:w-auto px-8 h-12 bg-zinc-500 hover:bg-zinc-600 text-white font-semibold text-base transition-colors shrink-0">
+                    {loading ? (
+                        <><Loader2 className="mr-2 h-5 w-5 animate-spin" /> Optimizing...</>
+                    ) : (
+                        <><Sparkles className="mr-2 h-5 w-5" /> Optimize My CV</>
+                    )}
+                </Button>
+            </div>
+        </div>
     );
 }
 
@@ -153,9 +255,8 @@ function ChevronRightIcon(props: any) {
 
 export default function NewResumePage() {
     return (
-        <div className="max-w-4xl mx-auto py-12 px-4 space-y-6 bg-zinc-50 min-h-[calc(100vh-100px)] text-zinc-900">
-            <h1 className="text-3xl font-extrabold tracking-tight">AI Optimization Engine</h1>
-            <p className="text-zinc-500 font-medium">Create a heavily customized JSON resume tailored specifically to bypass Applicant Tracking Systems (ATS).</p>
+        <div className="max-w-6xl mx-auto py-12 px-8 bg-[#fbfbfb] min-h-[calc(100vh-100px)] text-zinc-900">
+            <h1 className="text-3xl font-extrabold tracking-tight mb-8 hidden">CV Optimizer</h1>
             <Suspense fallback={<div className="p-12 flex justify-center"><Loader2 className="animate-spin text-zinc-500 w-8 h-8" /></div>}>
                 <NewResumeForm />
             </Suspense>

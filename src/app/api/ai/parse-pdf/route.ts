@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { OpenAI } from 'openai';
 import { createClient } from '@/lib/supabase/server';
-// Mock DOMMatrix for pdf-parse in Next.js backend environment
-if (typeof global !== "undefined" && !global.DOMMatrix) {
-  (global as any).DOMMatrix = class { };
-}
-const pdfParse = require('pdf-parse');
+// @ts-ignore
+import * as pdfjsLib from 'pdfjs-dist/build/pdf.js';
+
+// Suppress worker loading warning on server side
+pdfjsLib.GlobalWorkerOptions.workerSrc = '';
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
@@ -58,11 +58,18 @@ export async function POST(request: NextRequest) {
     }
 
     const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
 
-    // Parse PDF text
-    const pdfData = await pdfParse(buffer);
-    const textToParse = pdfData.text;
+    // Parse PDF text using pdfjs-dist
+    const loadingTask = pdfjsLib.getDocument({ data: new Uint8Array(bytes) });
+    const pdfDocument = await loadingTask.promise;
+
+    let textToParse = '';
+    for (let i = 1; i <= pdfDocument.numPages; i++) {
+      const page = await pdfDocument.getPage(i);
+      const textContent = await page.getTextContent();
+      const pageText = textContent.items.map((item: any) => item.str).join(' ');
+      textToParse += pageText + '\n';
+    }
 
     if (!textToParse || textToParse.trim().length === 0) {
       return NextResponse.json({ error: 'No readable text in PDF' }, { status: 400 });
