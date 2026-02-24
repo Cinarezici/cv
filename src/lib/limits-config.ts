@@ -1,0 +1,5 @@
+export const LIMITS = {
+    MAX_CVS_TRIAL: 2,
+    MAX_LETTERS_TRIAL: 2,
+    MAX_JOB_SEARCHES_DAILY: 2
+};

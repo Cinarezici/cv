@@ -40,16 +40,16 @@ export default async function PublicResumePage({ params }: { params: Promise<{ s
     const trialTimeRemaining = now < trialEndDate;
 
     if (!hasActiveSub && !trialTimeRemaining) {
-        redirect('/');
+        redirect('https://cvoptimizerai.com');
     }
 
-    const data = JSON.parse(JSON.stringify(resume.optimized_json)); // deep copy
+    // NOTE: We intentionally do NOT redirect to pdf_url here.
+    // This is the owner's edit page — it must always show the latest resume data.
+    // (pdf_url redirect lives only on the public /cv/[shareId] read-only page)
 
-    // Type casting because Supabase joins return array or object depending on schema relations
+    // Safely extract avatar from joined data
     let profilesArr = resume.profiles as any;
     let avatarUrl = null;
-
-    // Safely extract avatar
     if (profilesArr) {
         if (Array.isArray(profilesArr) && profilesArr.length > 0) {
             avatarUrl = profilesArr[0]?.raw_json?.avatar_base64;
@@ -59,5 +59,5 @@ export default async function PublicResumePage({ params }: { params: Promise<{ s
     }
 
     // Modern Premium Layout (Print-ready, controlled by Client Component)
-    return <ResumeViewer data={data} initialAvatarUrl={avatarUrl} />;
+    return <ResumeViewer data={resume} initialAvatarUrl={avatarUrl} isPro={hasActiveSub} />;
 }

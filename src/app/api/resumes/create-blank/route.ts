@@ -1,0 +1,96 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { createClient } from '@/lib/supabase/server';
+import crypto from 'crypto';
+import { checkUsageLimits } from '@/lib/limits';
+
+export const dynamic = 'force-dynamic';
+
+const DEFAULT_CV_JSON = {
+    header: {
+        full_name: 'Your Name',
+        email: '',
+        phone: '',
+        location: '',
+        linkedin: '',
+        github: '',
+        website: '',
+    },
+    summary: '',
+    experience: [],
+    education: [],
+    skills: {
+        core: [],
+        tools: [],
+    },
+};
+
+export async function POST(request: NextRequest) {
+    try {
+        const supabase = await createClient();
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
+        // --- CHECK LIMITS BEFORE CREATING CV ---
+        const { allowed, reason } = await checkUsageLimits(user.id, 'create_cv');
+        if (!allowed) {
+            return NextResponse.json({ error: reason, code: 'LIMIT_REACHED' }, { status: 403 });
+        }
+
+        // Fetch basic info from profile if available
+        const { data: profile } = await supabase
+            .from('profiles')
+            .select('id, raw_json')
+            .eq('user_id', user.id)
+            .order('created_at', { ascending: false })
+            .limit(1)
+            .maybeSingle();
+
+        const raw = profile?.raw_json as any;
+        const initialJson = {
+            ...DEFAULT_CV_JSON,
+            header: {
+                full_name: raw?.full_name || raw?.name || 'Your Name',
+                email: raw?.email || '',
+                phone: raw?.phone || '',
+                location: raw?.location || raw?.country || '',
+                linkedin: raw?.linkedin_url || raw?.linkedin || '',
+                github: raw?.github || '',
+                website: raw?.website || '',
+            },
+            summary: raw?.summary || '',
+            experience: raw?.experience || raw?.experiences || [],
+            education: raw?.education || [],
+            skills: {
+                core: raw?.skills || raw?.skills_list || [],
+                tools: [],
+            },
+        };
+
+        // Create a fresh resume record
+        const { data: resume, error } = await supabase
+            .from('resumes')
+            .insert({
+                user_id: user.id,
+                profile_id: profile?.id || null, // Can be null if creating from absolute scratch
+                job_title: 'New CV',
+                public_link_slug: crypto.randomUUID(),
+                optimized_json: initialJson,
+                theme_id: 'clean-ats',
+                theme_category: 'standard',
+                color_palette_id: 'default',
+                section_order: ['summary', 'experience', 'education', 'skills'],
+                hidden_sections: [],
+                is_active: true,
+                updated_at: new Date().toISOString()
+            })
+            .select('id')
+            .single();
+
+        if (error) throw error;
+
+        return NextResponse.json({ id: resume.id });
+    } catch (error: any) {
+        console.error('Failed to create blank CV:', error);
+        return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+}

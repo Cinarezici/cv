@@ -5,18 +5,25 @@ import { generateSlug } from '@/lib/utils';
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-const OPTIMIZE_PROMPT = `You are a world-class executive resume writer and career coach. Your task is to rewrite the experience bullet points and professional summary to perfectly tailor the candidate to the provided Job Description.
+const OPTIMIZE_PROMPT = `You are a world-class executive resume writer and career coach. Rewrite the candidate's experience bullet points and professional summary to perfectly match the provided Job Description.
 
-STRICT RULES:
-1. NEVER invent new jobs, dates, or skills that are entirely fabricated.
-2. ONLY rephrase existing bullet points to emphasize relevant keywords from the JD.
-3. Write with high-impact action verbs (e.g., Spearheaded, Orchestrated, Engineered).
-4. Quantify achievements where context allows.
-5. Keep each bullet concise and punchy.
-6. The output MUST be a perfectly formatted, raw JSON object representing the entire resume.
-7. Return ONLY JSON. Do not include markdown formatting or conversational text like "Here is the JSON...".
+## STRICT RULES
+1. NEVER invent jobs, dates, companies, or skills entirely fabricated — only rephrase existing ones.
+2. DO rephrase bullet points to emphasize relevant keywords from the JD.
+3. Use high-impact action verbs: Spearheaded, Orchestrated, Engineered, Drove, Scaled, etc.
+4. Quantify achievements where context reasonably allows (add metrics if inferable, not invented).
+5. Keep each bullet concise: 1 strong sentence per bullet.
+6. Return ONLY a valid raw JSON object. No markdown, no code fences, no explanation text.
 
-The JSON MUST follow the exact structure of the input ORIGIN RESUME JSON.`;
+## CRITICAL JSON STRUCTURE RULES
+- The "experience" array items MUST have a "bullets" field that is an ARRAY OF STRINGS (e.g., ["Led team...", "Delivered..."]).
+- Do NOT join bullets into a single string.
+- Do NOT use HTML in bullet strings.
+- The output JSON MUST follow the exact same field structure as the input ORIGIN RESUME JSON.
+- If a field is not in the input, do not add it.
+
+Return ONLY the complete JSON object representing the full rewritten resume.`;
+
 
 export async function POST(request: NextRequest) {
     try {
@@ -24,16 +31,53 @@ export async function POST(request: NextRequest) {
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-        const { profileId, jobDescription } = await request.json();
-
-        const { data: profile } = await supabase
-            .from('profiles')
+        // Subscription check
+        const { data: sub } = await supabase
+            .from('subscriptions')
             .select('*')
-            .eq('id', profileId)
             .eq('user_id', user.id)
-            .single();
+            .maybeSingle();
 
-        if (!profile) return NextResponse.json({ error: 'Profile not found' }, { status: 404 });
+        const isPro = sub?.status === 'active';
+        if (!isPro) {
+            return NextResponse.json({
+                error: 'AI Optimization is a Pro feature. Please upgrade to use this tool.',
+                code: 'PRO_REQUIRED'
+            }, { status: 403 });
+        }
+
+        const { documentId, documentType, jobDescription, profileId: legacyProfileId } = await request.json();
+
+        // Support legacy calls
+        const actualDocId = documentId || legacyProfileId;
+        const actualDocType = documentType || 'profile';
+
+        let sourceJson = {};
+        let originProfileId = null;
+
+        if (actualDocType === 'profile') {
+            const { data: profile } = await supabase
+                .from('profiles')
+                .select('*')
+                .eq('id', actualDocId)
+                .eq('user_id', user.id)
+                .single();
+
+            if (!profile) return NextResponse.json({ error: 'Profile not found' }, { status: 404 });
+            sourceJson = profile.raw_json;
+            originProfileId = profile.id;
+        } else {
+            const { data: existingResume } = await supabase
+                .from('resumes')
+                .select('*')
+                .eq('id', actualDocId)
+                .eq('user_id', user.id)
+                .single();
+
+            if (!existingResume) return NextResponse.json({ error: 'Resume not found' }, { status: 404 });
+            sourceJson = existingResume.optimized_json;
+            originProfileId = existingResume.profile_id;
+        }
 
         const completion = await openai.chat.completions.create({
             model: 'gpt-4o',
@@ -41,7 +85,7 @@ export async function POST(request: NextRequest) {
                 { role: 'system', content: OPTIMIZE_PROMPT },
                 {
                     role: 'user',
-                    content: `JOB DESCRIPTION:\n${jobDescription}\n\nORIGINAL RESUME JSON:\n${JSON.stringify(profile.raw_json)}\n\nReturn the complete, rewritten resume JSON.`
+                    content: `JOB DESCRIPTION:\n${jobDescription}\n\nORIGINAL RESUME JSON:\n${JSON.stringify(sourceJson)}\n\nReturn the complete, rewritten resume JSON.`
                 }
             ],
             response_format: { type: 'json_object' },
@@ -60,7 +104,7 @@ export async function POST(request: NextRequest) {
             .from('resumes')
             .insert({
                 user_id: user.id,
-                profile_id: profileId,
+                profile_id: originProfileId,
                 optimized_json: optimizedData,
                 public_link_slug: slug,
                 job_title: jobTitle,

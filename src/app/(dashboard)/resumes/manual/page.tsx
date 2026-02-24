@@ -8,6 +8,9 @@ import { Textarea } from '@/components/ui/textarea';
 import { Loader2 } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import { toast } from 'sonner';
+import { usePro } from '@/hooks/usePro';
+import { Sparkles, ArrowLeft } from 'lucide-react';
+import Link from 'next/link';
 
 export default function ManualResumePage() {
     const router = useRouter();
@@ -17,6 +20,75 @@ export default function ManualResumePage() {
     const [experience, setExperience] = useState('');
     const [education, setEducation] = useState('');
     const [skills, setSkills] = useState('');
+
+    const { isPro, isLoading: proLoading } = usePro();
+
+    if (proLoading) {
+        return <div className="p-12 flex justify-center"><Loader2 className="animate-spin text-zinc-400 w-7 h-7" /></div>;
+    }
+
+    if (!isPro) {
+        return (
+            <div className="max-w-4xl mx-auto py-12 px-6">
+                <Link href="/import" className="inline-flex items-center gap-2 text-zinc-500 hover:text-zinc-800 transition-colors mb-8 font-medium">
+                    <ArrowLeft className="w-4 h-4" />
+                    Back to Import
+                </Link>
+
+                <Card className="border-0 shadow-2xl max-w-2xl mx-auto bg-white rounded-3xl overflow-hidden">
+                    <div className="bg-indigo-600 p-8 text-center text-white relative">
+                        <div className="absolute top-0 right-0 p-4 opacity-10">
+                            <Sparkles className="w-24 h-24" />
+                        </div>
+                        <div className="w-20 h-20 bg-white/20 backdrop-blur-md text-white rounded-3xl flex items-center justify-center mx-auto mb-6 transform rotate-3 shadow-xl">
+                            <Sparkles className="w-10 h-10" />
+                        </div>
+                        <h2 className="text-3xl font-bold mb-2">Pro Feature</h2>
+                        <p className="text-indigo-100 text-lg">Detailed Manual Entry is a Premium feature.</p>
+                    </div>
+                    <CardContent className="p-10 text-center space-y-8">
+                        <div className="space-y-4">
+                            <h3 className="text-xl font-bold text-zinc-900">Why go Pro?</h3>
+                            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left max-w-md mx-auto">
+                                <li className="flex items-center gap-3 text-sm font-semibold text-zinc-700">
+                                    <div className="w-6 h-6 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600">✓</div>
+                                    Full Manual Editor
+                                </li>
+                                <li className="flex items-center gap-3 text-sm font-semibold text-zinc-700">
+                                    <div className="w-6 h-6 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600">✓</div>
+                                    AI-powered suggestions
+                                </li>
+                                <li className="flex items-center gap-3 text-sm font-semibold text-zinc-700">
+                                    <div className="w-6 h-6 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600">✓</div>
+                                    LinkedIn Import
+                                </li>
+                                <li className="flex items-center gap-3 text-sm font-semibold text-zinc-700">
+                                    <div className="w-6 h-6 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600">✓</div>
+                                    Unlimited CVs
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div className="pt-4 flex flex-col gap-3">
+                            <Button
+                                onClick={() => router.push('/upgrade')}
+                                className="w-full bg-indigo-600 hover:bg-indigo-700 text-white h-14 font-bold text-xl rounded-2xl shadow-lg shadow-indigo-100 transition-all hover:scale-[1.02] active:scale-[0.98]"
+                            >
+                                Upgrade to Pro
+                            </Button>
+                            <Button
+                                variant="ghost"
+                                onClick={() => router.push('/import')}
+                                className="text-zinc-500 font-bold h-12"
+                            >
+                                Use Free Import Options
+                            </Button>
+                        </div>
+                    </CardContent>
+                </Card>
+            </div>
+        );
+    }
 
     const handleGenerate = async () => {
         if (!summary.trim()) {
@@ -71,7 +143,8 @@ export default function ManualResumePage() {
                 user_id: user.id,
                 full_name: profileName,
                 headline: 'Manual CV',
-                raw_json: rawJson
+                raw_json: rawJson,
+                updated_at: new Date().toISOString()
             }).select().single();
 
             if (error) throw error;

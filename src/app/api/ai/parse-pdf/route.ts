@@ -95,6 +95,7 @@ export async function POST(request: NextRequest) {
         full_name: resumeData.name || 'Unknown',
         headline: resumeData.headline || '',
         raw_json: resumeData,
+        updated_at: new Date().toISOString(),
       })
       .select()
       .single();

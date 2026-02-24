@@ -49,6 +49,23 @@ export async function POST(request: NextRequest) {
 
     const { linkedinUrl, linkedinText } = await request.json();
 
+    // Pro-only check for URL imports
+    if (linkedinUrl) {
+      const { data: sub } = await supabase
+        .from('subscriptions')
+        .select('*')
+        .eq('user_id', user.id)
+        .maybeSingle();
+
+      const isPro = sub?.status === 'active';
+      if (!isPro) {
+        return NextResponse.json({
+          error: 'LinkedIn URL import is a Pro feature. Please use the Manual Text option or upgrade to Pro.',
+          code: 'PRO_REQUIRED'
+        }, { status: 403 });
+      }
+    }
+
     if (!linkedinUrl && !linkedinText) {
       return NextResponse.json({ error: 'No URL or Text provided' }, { status: 400 });
     }
@@ -110,6 +127,7 @@ export async function POST(request: NextRequest) {
         full_name: resumeData.name || 'Unknown',
         headline: resumeData.headline || '',
         raw_json: resumeData,
+        updated_at: new Date().toISOString(),
       })
       .select()
       .single();

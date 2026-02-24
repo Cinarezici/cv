@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { ApifyClient } from 'apify-client';
+import { checkUsageLimits, logJobSearch } from '@/lib/limits';
 
 const apify = new ApifyClient({ token: process.env.APIFY_API_TOKEN });
 
@@ -22,12 +23,19 @@ export async function POST(request: NextRequest) {
 
         let results = [];
 
+        // Check search limits
+        const { allowed, reason } = await checkUsageLimits(user.id, 'search_jobs');
+        if (!allowed) {
+            return NextResponse.json({ error: 'limit_reached', message: reason }, { status: 403 });
+        }
+
         if (type === 'jobs') {
+            await logJobSearch(user.id, query);
             const searchLocation = location || 'Worldwide';
             // curious_coder/linkedin-jobs-scraper
             const run = await apify.actor('curious_coder/linkedin-jobs-scraper').call({
                 urls: [{ url: `https://www.linkedin.com/jobs/search/?keywords=${encodeURIComponent(query)}&location=${encodeURIComponent(searchLocation)}` }],
-                count: 150,
+                maxJobs: 50,
             });
             const { items } = await apify.dataset(run.defaultDatasetId).listItems();
             results = items;

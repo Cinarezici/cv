@@ -19,7 +19,6 @@ import { Separator } from "@/components/ui/separator";
 import {
     Eye,
     EyeOff,
-    Github,
     Lock,
     Mail,
     ArrowRight,
