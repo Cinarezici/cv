@@ -7,8 +7,6 @@ import * as pdfjsLib from 'pdfjs-dist/build/pdf.js';
 // Suppress worker loading warning on server side
 pdfjsLib.GlobalWorkerOptions.workerSrc = '';
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-
 const PARSE_PROMPT = `You are a resume parser. Extract information from the structured LinkedIn profile data or raw text below and return ONLY a valid JSON object with this exact structure:
 {
   "name": "Full Name",
@@ -46,6 +44,7 @@ STRICT RULES:
 
 export async function POST(request: NextRequest) {
   try {
+    const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

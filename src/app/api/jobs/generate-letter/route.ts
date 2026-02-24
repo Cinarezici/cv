@@ -3,7 +3,6 @@ import { OpenAI } from 'openai';
 import { createClient } from '@/lib/supabase/server';
 import { mapToResumeJSON } from '@/lib/resume-mapper';
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 const LETTER_PROMPT = `You are an expert career consultant and persuasive writer. Your goal is to write a highly professional, compelling, and tailored cover letter (motivation letter) for a candidate.
 
@@ -17,6 +16,7 @@ STRICT RULES:
 
 export async function POST(request: NextRequest) {
     try {
+        const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
         const supabase = await createClient();
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

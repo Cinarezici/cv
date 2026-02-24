@@ -3,7 +3,6 @@ import { OpenAI } from 'openai';
 import { createClient } from '@/lib/supabase/server';
 import { generateSlug } from '@/lib/utils';
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 const OPTIMIZE_PROMPT = `You are a world-class executive resume writer and career coach. Rewrite the candidate's experience bullet points and professional summary to perfectly match the provided Job Description.
 
@@ -27,6 +26,7 @@ Return ONLY the complete JSON object representing the full rewritten resume.`;
 
 export async function POST(request: NextRequest) {
     try {
+        const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
         const supabase = await createClient();
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
