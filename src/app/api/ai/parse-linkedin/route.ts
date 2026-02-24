@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { OpenAI } from 'openai';
+import { getOpenAI } from '@/lib/openai-client';
 import { createClient } from '@/lib/supabase/server';
 import { ApifyClient } from 'apify-client';
 
@@ -43,7 +43,7 @@ STRICT RULES:
 export async function POST(request: NextRequest) {
   try {
     const apify = new ApifyClient({ token: process.env.APIFY_API_TOKEN });
-    const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+    const openai = getOpenAI();
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -84,7 +84,6 @@ export async function POST(request: NextRequest) {
 
       console.log(`Starting Apify Scraper for URL: ${linkedinUrl}`);
       try {
-        const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
         // We use apimaestro/linkedin-profile-detail as it allows API execution and is reliable
         // Apimaestro requires the 'username' param otherwise it defaults to a placeholder
         const usernameMatch = linkedinUrl.match(/linkedin\.com\/in\/([^\/]+)/i);

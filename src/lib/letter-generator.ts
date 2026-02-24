@@ -1,4 +1,4 @@
-import { OpenAI } from 'openai';
+import { getOpenAI } from './openai-client';
 import { CompanyProfile, ToneType } from '@/types/motivation-letter';
 
 
@@ -369,7 +369,7 @@ export async function generateMotivationLetter(
     language: 'en' | 'tr' = 'en',
     jobDescription?: string
 ): Promise<{ letterText: string; letterHtml: string }> {
-    const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+    const openai = getOpenAI();
 
     const systemPrompt = buildPresentationPrompt(
         companyProfile, resumeJSON, targetRole, tone, language, jobDescription

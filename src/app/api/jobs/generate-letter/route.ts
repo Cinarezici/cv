@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { OpenAI } from 'openai';
+import { getOpenAI } from '@/lib/openai-client';
 
 export const dynamic = 'force-dynamic';
 import { createClient } from '@/lib/supabase/server';
@@ -18,7 +18,7 @@ STRICT RULES:
 
 export async function POST(request: NextRequest) {
     try {
-        const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+        const openai = getOpenAI();
         const supabase = await createClient();
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

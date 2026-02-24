@@ -1,4 +1,4 @@
-import { OpenAI } from 'openai';
+import { getOpenAI } from './openai-client';
 import { CompanyProfile, ApifyWebCrawlerItem } from '@/types/motivation-letter';
 import { scrapeCompanyWebsite } from './apify-company-scraper';
 import { createClient } from './supabase/server'; // Server component only
@@ -82,7 +82,7 @@ If information is not available, use null or empty array [].
 dataQualityScore should reflect how much useful information was found (0-100).
 `;
 
-    const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+    const openai = getOpenAI();
 
     try {
         const completion = await openai.chat.completions.create({
