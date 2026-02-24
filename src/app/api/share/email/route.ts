@@ -2,10 +2,11 @@ import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import { createClient } from '@/lib/supabase/server';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+export const dynamic = 'force-dynamic';
 
 export async function POST(request: NextRequest) {
     try {
+        const resend = new Resend(process.env.RESEND_API_KEY);
         const supabase = await createClient();
         const { data: { user } } = await supabase.auth.getUser();
 
