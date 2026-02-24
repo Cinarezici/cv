@@ -3,7 +3,7 @@ import { OpenAI } from 'openai';
 import { createClient } from '@/lib/supabase/server';
 import { ApifyClient } from 'apify-client';
 
-const apify = new ApifyClient({ token: process.env.APIFY_API_TOKEN });
+export const dynamic = 'force-dynamic';
 
 const PARSE_PROMPT = `You are a resume parser. Extract information from the structured LinkedIn profile data or raw text below and return ONLY a valid JSON object with this exact structure:
 {
@@ -42,6 +42,7 @@ STRICT RULES:
 
 export async function POST(request: NextRequest) {
   try {
+    const apify = new ApifyClient({ token: process.env.APIFY_API_TOKEN });
     const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();

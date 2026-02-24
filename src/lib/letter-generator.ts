@@ -1,7 +1,7 @@
 import { OpenAI } from 'openai';
 import { CompanyProfile, ToneType } from '@/types/motivation-letter';
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+
 
 // ──────────────────────────────────────────────
 // Deep Tone Profiles
@@ -369,6 +369,7 @@ export async function generateMotivationLetter(
     language: 'en' | 'tr' = 'en',
     jobDescription?: string
 ): Promise<{ letterText: string; letterHtml: string }> {
+    const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
     const systemPrompt = buildPresentationPrompt(
         companyProfile, resumeJSON, targetRole, tone, language, jobDescription

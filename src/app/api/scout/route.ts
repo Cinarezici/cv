@@ -3,10 +3,11 @@ import { createClient } from '@/lib/supabase/server';
 import { ApifyClient } from 'apify-client';
 import { checkUsageLimits, logJobSearch } from '@/lib/limits';
 
-const apify = new ApifyClient({ token: process.env.APIFY_API_TOKEN });
+export const dynamic = 'force-dynamic';
 
 export async function POST(request: NextRequest) {
     try {
+        const apify = new ApifyClient({ token: process.env.APIFY_API_TOKEN });
         const supabase = await createClient();
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

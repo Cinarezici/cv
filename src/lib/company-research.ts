@@ -3,7 +3,7 @@ import { CompanyProfile, ApifyWebCrawlerItem } from '@/types/motivation-letter';
 import { scrapeCompanyWebsite } from './apify-company-scraper';
 import { createClient } from './supabase/server'; // Server component only
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+
 
 // Helpers
 function extractDomain(url: string): string {
@@ -82,6 +82,8 @@ If information is not available, use null or empty array [].
 dataQualityScore should reflect how much useful information was found (0-100).
 `;
 
+    const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+
     try {
         const completion = await openai.chat.completions.create({
             model: "gpt-4o",
@@ -93,7 +95,7 @@ dataQualityScore should reflect how much useful information was found (0-100).
         });
 
         const jsonText = completion.choices[0].message?.content || '{}';
-        const profile = JSON.parse(jsonText.replace(/```json|```/g, '').trim());
+        const profile = JSON.parse(jsonText.replace(/```json | ```/g, '').trim());
 
         return {
             ...profile,
@@ -144,7 +146,7 @@ export async function getOrCreateCompanyProfile(
     }
 
     // Direct URLs only
-    const targetUrls = [companyUrl, `${companyUrl}/about`, `${companyUrl}/careers`];
+    const targetUrls = [companyUrl, `${companyUrl} /about`, `${companyUrl}/careers`];
 
     let rawItems: ApifyWebCrawlerItem[] = [];
     let scrapeError = null;

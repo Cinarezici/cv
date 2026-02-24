@@ -5,11 +5,10 @@ import { ApifyWebCrawlerItem } from '@/types/motivation-letter';
 const APIFY_TOKEN = process.env.APIFY_API_TOKEN || '';
 const WEBSITE_CRAWLER_ACTOR = 'apify~website-content-crawler';
 
-const apify = new ApifyClient({ token: APIFY_TOKEN });
-
 export async function scrapeCompanyWebsite(
     urls: string[]
 ): Promise<ApifyWebCrawlerItem[]> {
+    const apify = new ApifyClient({ token: APIFY_TOKEN });
 
     if (!APIFY_TOKEN) {
         throw new Error("Apify API token is not configured.");
