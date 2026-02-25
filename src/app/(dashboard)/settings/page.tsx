@@ -101,7 +101,7 @@ export default function SettingsPage() {
         <div className="max-w-4xl mx-auto py-12 px-4 bg-[#fafafa] min-h-[calc(100vh-100px)] text-zinc-900 font-sans">
             <div className="mb-8">
                 <h1 className="text-3xl font-bold tracking-tight mb-2">Settings</h1>
-                <p className="text-zinc-500 text-[15px]">Manage your account and subscription preferences.</p>
+                <p className="text-zinc-500 text-[15px]">Manage your account and billing preferences.</p>
             </div>
 
             {error && <div className="mb-6 text-sm font-medium text-rose-600 bg-rose-50 p-4 rounded-lg border border-rose-200">{error}</div>}
@@ -134,7 +134,7 @@ export default function SettingsPage() {
                             <CreditCard className="h-[18px] w-[18px] text-zinc-800" />
                             <h2 className="text-[17px] font-semibold text-zinc-900 tracking-tight">Plan & Limits</h2>
                         </div>
-                        <p className="text-[14px] text-zinc-500 mb-6 font-medium">Manage your subscription and view usage limits.</p>
+                        <p className="text-[14px] text-zinc-500 mb-6 font-medium">Manage your plan and view usage limits.</p>
 
                         <div className="border border-zinc-200 rounded-xl p-5 mb-4 bg-[#fcfcfc]">
                             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -148,7 +148,7 @@ export default function SettingsPage() {
                                         </span>
                                     </div>
                                     <p className="text-[14px] text-zinc-500 font-medium mb-3">
-                                        {isPro ? 'Enjoy unlimited access to all features.' : 'Your limits reset every 14 days.'}
+                                        {isPro ? 'Enjoy unlimited access to all features.' : 'Your free limits reset every 14 days.'}
                                     </p>
 
                                     {!isPro && (
@@ -158,17 +158,17 @@ export default function SettingsPage() {
                                             </span>
                                         </div>
                                     )}
-                                    {isPro && subscription?.current_period_end && (
+                                    {isPro && (
                                         <div className="inline-flex items-center bg-indigo-50 px-3 py-1.5 rounded-md border border-indigo-100">
                                             <span className="text-[13px] font-semibold text-indigo-600">
-                                                Renews on: {format(new Date(subscription.current_period_end), 'M/d/yyyy')}
+                                                Status: Lifetime Access
                                             </span>
                                         </div>
                                     )}
                                 </div>
                                 {!isPro && (
                                     <Button
-                                        onClick={() => window.location.href = '/upgrade'}
+                                        onClick={() => window.location.href = process.env.NEXT_PUBLIC_POLAR_CHECKOUT_URL!}
                                         className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-semibold px-6 h-10 rounded-lg shadow-sm w-full sm:w-auto"
                                     >
                                         Upgrade to Pro
@@ -181,14 +181,14 @@ export default function SettingsPage() {
                             <UsageWidget
                                 title="CV PROJECTS"
                                 current={cvCount}
-                                max={LIMITS.MAX_CVS_TRIAL}
+                                max={LIMITS.MAX_CVS_FREE}
                                 barColor="bg-[#2563eb]" // Blue
                                 isPro={isPro}
                             />
                             <UsageWidget
                                 title="COVER LETTERS"
                                 current={letterCount}
-                                max={LIMITS.MAX_LETTERS_TRIAL}
+                                max={LIMITS.MAX_LETTERS_FREE}
                                 barColor="bg-[#9333ea]" // Purple
                                 isPro={isPro}
                             />

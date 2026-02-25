@@ -1,5 +1,5 @@
 export const LIMITS = {
-    MAX_CVS_TRIAL: 2,
-    MAX_LETTERS_TRIAL: 2,
+    MAX_CVS_FREE: 2,
+    MAX_LETTERS_FREE: 2,
     MAX_JOB_SEARCHES_DAILY: 2
 };

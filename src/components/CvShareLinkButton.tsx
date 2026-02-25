@@ -127,9 +127,9 @@ export function CvShareLinkButton({
                         <p className="text-sm text-zinc-500 leading-relaxed">
                             Bu link ile CV'nizi herkesle paylaşabilirsiniz.{" "}
                             <span className="font-semibold text-zinc-700">
-                                Aboneliğiniz aktif olduğu sürece link çalışır.
+                                Planınız aktif olduğu sürece link çalışır.
                             </span>{" "}
-                            Trial veya Pro planı sona ererse ziyaretçiler otomatik yönlendirilir.
+                            Planınız sona ererse ziyaretçiler otomatik yönlendirilir.
                         </p>
 
                         {loading ? (

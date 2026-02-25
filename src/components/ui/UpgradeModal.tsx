@@ -54,11 +54,11 @@ export function UpgradeModal() {
                     <button
                         className="w-full py-3.5 bg-emerald-600 text-white rounded-xl font-bold text-sm shadow-lg shadow-emerald-200 hover:bg-emerald-700 hover:shadow-xl hover:-translate-y-0.5 transition-all"
                         onClick={() => {
-                            // Redirect to stripe checkout
-                            window.location.href = '/upgrade';
+                            // Redirect to polar checkout
+                            window.location.href = process.env.NEXT_PUBLIC_POLAR_CHECKOUT_URL!;
                         }}
                     >
-                        Upgrade Now - $9.99/mo
+                        Buy Now - $99 one-time
                     </button>
                 </div>
             </div>

@@ -73,7 +73,7 @@ export default function UpgradePage() {
                     </Link>
                 </div>
 
-                {/* ── Pro Plan (Yearly) ───────────────────────────────── */}
+                {/* ── Pro Plan (One-time) ───────────────────────────────── */}
                 <div className="flex-1 relative bg-white rounded-[20px] shadow-[0_8px_30px_-4px_rgba(37,99,235,0.15)] border-2 border-[#2563eb] p-8 flex flex-col min-w-[320px]">
                     {/* Best Value badge */}
                     <div className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 md:translate-x-0 md:-translate-y-0 md:top-4 md:right-4 bg-[#2563eb] text-white text-[11px] font-bold tracking-wide px-3 py-1.5 rounded-full uppercase">
@@ -81,12 +81,12 @@ export default function UpgradePage() {
                     </div>
 
                     <div className="mb-4 mt-2">
-                        <h2 className="text-[26px] font-semibold text-black leading-tight">Pro Plan (Yearly)</h2>
-                        <p className="text-zinc-500 text-[15px] mt-1">Upgrade to unlock all features.</p>
+                        <h2 className="text-[26px] font-semibold text-black leading-tight">Pro Plan (Lifetime)</h2>
+                        <p className="text-zinc-500 text-[15px] mt-1">Single payment for unlimited access.</p>
                     </div>
                     <div className="flex items-baseline gap-1.5 mb-6">
                         <span className="text-[40px] font-bold tracking-tight text-black leading-none">$99</span>
-                        <span className="text-zinc-600 text-[15px] font-medium">/year</span>
+                        <span className="text-zinc-600 text-[15px] font-medium">one-time</span>
                     </div>
 
                     <ul className="space-y-[14px] flex-1">
@@ -112,7 +112,7 @@ export default function UpgradePage() {
                         disabled={loading}
                         className="mt-8 w-full flex items-center justify-center py-3.5 rounded-[12px] bg-[#1a1a1a] hover:bg-black text-white font-semibold text-[15px] transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
                     >
-                        {loading ? <><Loader2 className="mr-2 h-5 w-5 animate-spin" />Processing...</> : "Subscribe Now"}
+                        {loading ? <><Loader2 className="mr-2 h-5 w-5 animate-spin" />Processing...</> : "Buy Now"}
                     </button>
                 </div>
             </div>

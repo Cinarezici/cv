@@ -42,7 +42,7 @@ export async function checkUsageLimits(userId: string, action: 'create_cv' | 'cr
     }
 
     if (!trialActive) {
-        return { allowed: false, reason: 'Your free trial has expired. Please upgrade to Pro to continue.' };
+        return { allowed: false, reason: 'Your free access period has expired. Please upgrade to Pro to continue.' };
     }
 
     // Trial is active, check specific limits
@@ -52,8 +52,8 @@ export async function checkUsageLimits(userId: string, action: 'create_cv' | 'cr
             .select('*', { count: 'exact', head: true })
             .eq('user_id', userId);
 
-        if ((count || 0) >= LIMITS.MAX_CVS_TRIAL) {
-            return { allowed: false, reason: `You have reached the limit of ${LIMITS.MAX_CVS_TRIAL} CVs in the Free Trial. Upgrade to Pro for unlimited CVs.` };
+        if ((count || 0) >= LIMITS.MAX_CVS_FREE) {
+            return { allowed: false, reason: `You have reached the limit of ${LIMITS.MAX_CVS_FREE} CVs in the Free Plan. Upgrade to Pro for unlimited CVs.` };
         }
     } else if (action === 'create_letter') {
         const { count } = await supabase
@@ -61,8 +61,8 @@ export async function checkUsageLimits(userId: string, action: 'create_cv' | 'cr
             .select('*', { count: 'exact', head: true })
             .eq('user_id', userId);
 
-        if ((count || 0) >= LIMITS.MAX_LETTERS_TRIAL) {
-            return { allowed: false, reason: `You have reached the limit of ${LIMITS.MAX_LETTERS_TRIAL} Cover Letters in the Free Trial. Upgrade to Pro for unlimited letters.` };
+        if ((count || 0) >= LIMITS.MAX_LETTERS_FREE) {
+            return { allowed: false, reason: `You have reached the limit of ${LIMITS.MAX_LETTERS_FREE} Cover Letters in the Free Plan. Upgrade to Pro for unlimited letters.` };
         }
     } else if (action === 'search_jobs') {
         // Daily limit check
