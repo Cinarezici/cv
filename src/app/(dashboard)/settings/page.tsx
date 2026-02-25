@@ -32,7 +32,10 @@ export default function SettingsPage() {
             try {
                 const supabase = createClient();
                 const { data: { user }, error: authErr } = await supabase.auth.getUser();
-                if (authErr || !user) throw new Error("Could not fetch user data");
+                if (authErr || !user) {
+                    router.push('/login');
+                    return;
+                }
 
                 setEmail(user.email || 'No email associated');
 
