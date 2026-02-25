@@ -126,7 +126,7 @@ function NewResumeForm() {
 
                         <div className="pt-4 flex flex-col gap-3">
                             <Button
-                                onClick={() => router.push('/upgrade')}
+                                onClick={() => window.location.href = process.env.NEXT_PUBLIC_POLAR_CHECKOUT_URL!}
                                 className="w-full bg-orange-500 hover:bg-orange-600 text-white h-14 font-bold text-xl rounded-2xl shadow-lg shadow-orange-100 transition-all hover:scale-[1.02] active:scale-[0.98]"
                             >
                                 <Sparkles className="mr-2 h-5 w-5" />

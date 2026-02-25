@@ -71,7 +71,7 @@ export default function ManualResumePage() {
 
                         <div className="pt-4 flex flex-col gap-3">
                             <Button
-                                onClick={() => router.push('/upgrade')}
+                                onClick={() => window.location.href = process.env.NEXT_PUBLIC_POLAR_CHECKOUT_URL!}
                                 className="w-full bg-indigo-600 hover:bg-indigo-700 text-white h-14 font-bold text-xl rounded-2xl shadow-lg shadow-indigo-100 transition-all hover:scale-[1.02] active:scale-[0.98]"
                             >
                                 Upgrade to Pro
