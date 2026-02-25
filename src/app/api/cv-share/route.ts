@@ -51,7 +51,24 @@ export async function POST(req: NextRequest) {
 
     try {
         const { shareId, shareUrl } = await createShareLink(resumeId, user.id);
-        return NextResponse.json({ shareId, shareUrl }, { status: 201 });
+
+        // Fetch subscription to check isPro
+        const { data: sub } = await supabase
+            .from('subscriptions')
+            .select('*')
+            .eq('user_id', user.id)
+            .maybeSingle();
+
+        const isPro = sub?.is_pro === true || sub?.status === 'active' || sub?.plan === 'lifetime';
+
+        // We assume a newly created link is enabled and its createdAt is roughly now
+        return NextResponse.json({
+            shareId,
+            shareUrl,
+            isPro,
+            isEnabled: true,
+            createdAt: new Date().toISOString()
+        }, { status: 201 });
     } catch (err: any) {
         console.error('[cv-share POST]', err);
         return NextResponse.json({ error: err.message ?? 'Internal error' }, { status: 500 });
@@ -110,9 +127,18 @@ export async function GET(req: NextRequest) {
         .eq('owner_user_id', user.id)
         .maybeSingle();
 
-    if (!link || !link.is_enabled) {
+    if (!link) {
         return NextResponse.json({ shareLink: null });
     }
+
+    // Fetch subscription to check isPro
+    const { data: sub } = await supabase
+        .from('subscriptions')
+        .select('*')
+        .eq('user_id', user.id)
+        .maybeSingle();
+
+    const isPro = sub?.is_pro === true || sub?.status === 'active' || sub?.plan === 'lifetime';
 
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://cvoptimizerai.com';
     return NextResponse.json({
@@ -120,6 +146,8 @@ export async function GET(req: NextRequest) {
             shareId: link.id,
             shareUrl: `${baseUrl}/cv/${link.id}`,
             createdAt: link.created_at,
+            isEnabled: link.is_enabled,
+            isPro,
         },
     });
 }
