@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
         const data = event.data;
 
         // ── 1. Optimization Guard: Return 200 immediately for unhandled types ────────────────
-        const handledEvents = ["order.created", "order.refunded", "checkout.updated", "checkout.succeeded"];
+        const handledEvents = ["order.created", "order.refunded", "order.revoked", "checkout.updated", "checkout.succeeded"];
         if (!handledEvents.includes(type)) {
             return NextResponse.json({ received: true, ignored: true }, { status: 200 });
         }
@@ -85,8 +85,8 @@ export async function POST(req: NextRequest) {
             console.log(`[Polar Webhook] Successfully upgraded user ${customerEmail} to lifetime Pro.`);
         }
 
-        // ── 3. Handle Refund (Revoke Pro) ────────────────────────────────────────────────
-        if (type === "order.refunded") {
+        // ── 3. Handle Refund & Chargeback (Revoke Pro) ───────────────────────────────────
+        if (type === "order.refunded" || type === "order.revoked") {
             const customerEmail = data.customer_email || (data.customer && data.customer.email);
 
             if (customerEmail) {
@@ -98,16 +98,16 @@ export async function POST(req: NextRequest) {
                 const { error: revokeError } = await supabaseAdmin
                     .from('subscriptions')
                     .update({
-                        status: 'expired',
+                        status: 'revoked',
                         is_pro: false,
-                        plan: 'trialing' // Reset to default or custom 'refunded' status
+                        plan: 'free'
                     })
                     .eq('user_email', customerEmail);
 
                 if (revokeError) {
                     console.error(`Failed to revoke Pro for user ${customerEmail}:`, revokeError);
                 } else {
-                    console.log(`[Polar Webhook] Successfully revoked Pro for user ${customerEmail} due to refund.`);
+                    console.log(`[Polar Webhook] Successfully revoked Pro for user ${customerEmail} due to ${type}.`);
                 }
             }
         }
