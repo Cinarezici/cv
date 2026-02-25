@@ -60,28 +60,29 @@ export async function POST(req: NextRequest) {
                     return NextResponse.json({ error: "Database Lookup Error" }, { status: 500 });
                 }
 
+                const payload: any = {
+                    user_email: customerEmail,
+                    status: 'active',
+                    is_pro: true,
+                    plan: 'lifetime',
+                    pro_activated_at: new Date().toISOString(),
+                    stripe_customer_id: data.customer_id || 'polar_' + data.id,
+                };
+
                 if (userId) {
-                    // Update user's subscriptions table with new lifetime/pro fields
-                    const { error: upsertError } = await supabaseAdmin
-                        .from('subscriptions')
-                        .upsert({
-                            user_id: userId,
-                            status: 'active',
-                            is_pro: true,
-                            plan: 'lifetime',
-                            pro_activated_at: new Date().toISOString(),
-                            stripe_customer_id: data.customer_id || 'polar_' + data.id,
-                        }, { onConflict: 'user_id' });
-
-                    if (upsertError) {
-                        console.error(`Failed to upscale user ${customerEmail} to lifetime Pro:`, upsertError);
-                        return NextResponse.json({ error: "Failed to update subscription data" }, { status: 500 });
-                    }
-
-                    console.log(`[Polar Webhook] Successfully upgraded user ${customerEmail} (${userId}) to lifetime Pro.`);
-                } else {
-                    console.warn(`[Polar Webhook] User with email ${customerEmail} not found in database.`);
+                    payload.user_id = userId;
                 }
+
+                const { error: upsertError } = await supabaseAdmin
+                    .from('subscriptions')
+                    .upsert(payload, { onConflict: userId ? 'user_id' : 'user_email' });
+
+                if (upsertError) {
+                    console.error(`Failed to upscale user ${customerEmail} to lifetime Pro:`, upsertError);
+                    return NextResponse.json({ error: "Failed to update subscription data" }, { status: 500 });
+                }
+
+                console.log(`[Polar Webhook] Successfully upgraded user ${customerEmail} (userId: ${userId || 'N/A'}) to lifetime Pro.`);
             } else {
                 console.warn(`[Polar Webhook] No customer email found in webhook payload for event ${type}.`);
             }

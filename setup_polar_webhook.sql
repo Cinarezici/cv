@@ -14,7 +14,10 @@ $$;
 ALTER TABLE subscriptions
   ADD COLUMN IF NOT EXISTS is_pro BOOLEAN DEFAULT FALSE,
   ADD COLUMN IF NOT EXISTS plan TEXT DEFAULT 'trialing',
-  ADD COLUMN IF NOT EXISTS pro_activated_at TIMESTAMPTZ;
+  ADD COLUMN IF NOT EXISTS pro_activated_at TIMESTAMPTZ,
+  ADD COLUMN IF NOT EXISTS user_email TEXT;
+
+ALTER TABLE subscriptions ADD CONSTRAINT subscriptions_user_email_key UNIQUE (user_email);
 
 -- 3. In case any future query looks for 'active' status specifically, we keep using `status` alongside `is_pro`
 -- This ensures backward compatibility with `limits.ts` which checks `isPro = sub?.status === 'active'`
