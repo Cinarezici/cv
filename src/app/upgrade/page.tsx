@@ -8,14 +8,19 @@ import { toast } from "sonner";
 export default function UpgradePage() {
     const [loading, setLoading] = useState(false);
 
-    const handleCheckout = () => {
+    const handleCheckout = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
         setLoading(true);
-        setTimeout(() => {
-            toast.info("Connecting to secure payment gateway...", {
-                description: "Payment integration is currently being set up."
-            });
+
+        const url = process.env.NEXT_PUBLIC_POLAR_CHECKOUT_URL;
+        if (!url) {
+            console.error("Missing NEXT_PUBLIC_POLAR_CHECKOUT_URL");
+            toast.error("Payment link is not configured. Please contact support.");
             setLoading(false);
-        }, 1500);
+            return;
+        }
+
+        window.location.assign(url);
     };
 
     return (
@@ -102,6 +107,7 @@ export default function UpgradePage() {
                     </ul>
 
                     <button
+                        type="button"
                         onClick={handleCheckout}
                         disabled={loading}
                         className="mt-8 w-full flex items-center justify-center py-3.5 rounded-[12px] bg-[#1a1a1a] hover:bg-black text-white font-semibold text-[15px] transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
