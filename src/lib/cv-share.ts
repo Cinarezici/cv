@@ -14,6 +14,8 @@
 
 import { createServiceRoleClient } from './supabase/service';
 
+export const SHARE_LINK_TRIAL_DAYS = 14;
+
 /* ---------- Public return types ---------- */
 
 export interface ShareResolvedOk {
@@ -24,7 +26,7 @@ export interface ShareResolvedOk {
 
 export interface ShareResolvedDenied {
     allowed: false;
-    reason: 'not_found' | 'disabled' | 'subscription_expired' | 'no_subscription';
+    reason: 'not_found' | 'disabled' | 'expired';
 }
 
 export type ShareResolved = ShareResolvedOk | ShareResolvedDenied;
@@ -39,17 +41,12 @@ export async function resolveShareAccess(shareId: string): Promise<ShareResolved
         // ── 1. Fetch the share link ──────────────────────────────────────────────
         const { data: link, error: linkErr } = await supabase
             .from('cv_share_links')
-            .select('id, resume_id, owner_user_id, is_enabled')
+            .select('id, resume_id, owner_user_id, is_enabled, created_at')
             .eq('id', shareId)
             .maybeSingle(); // Use maybeSingle to avoid error when not found
 
-        if (linkErr) {
-            console.error('[resolveShareAccess] cv_share_links query error:', linkErr);
-            return { allowed: false, reason: 'not_found' };
-        }
-
-        if (!link) {
-            console.log('[resolveShareAccess] link not found for shareId:', shareId);
+        if (linkErr || !link) {
+            console.log('[resolveShareAccess] link not found or query err for shareId:', shareId);
             return { allowed: false, reason: 'not_found' };
         }
 
@@ -58,7 +55,7 @@ export async function resolveShareAccess(shareId: string): Promise<ShareResolved
             return { allowed: false, reason: 'disabled' };
         }
 
-        const { owner_user_id, resume_id } = link;
+        const { owner_user_id, resume_id, created_at } = link;
 
         // ── 2. Fetch subscription row ────────────────────────────────────────────
         const { data: sub, error: subErr } = await supabase
@@ -71,53 +68,39 @@ export async function resolveShareAccess(shareId: string): Promise<ShareResolved
             console.error('[resolveShareAccess] subscriptions query error:', subErr.message ?? subErr.code ?? subErr);
         }
 
-        // ── 3. Fetch profile creation date (trial fallback) ──────────────────────
-        const { data: profile, error: profileErr } = await supabase
-            .from('profiles')
-            .select('created_at')
-            .eq('user_id', owner_user_id)
-            .order('created_at', { ascending: true })
-            .limit(1)
-            .maybeSingle();
-
-        if (profileErr) {
-            console.error('[resolveShareAccess] profiles query error:', profileErr);
-        }
-
-        // ── 4. Compute access ────────────────────────────────────────────────────
-        const trialActive = computeTrialActive(sub, profile?.created_at, now);
-        const proActive = computeProActive(sub, now);
+        // ── 3. Compute access ────────────────────────────────────────────────────
+        const isPro = sub?.is_pro === true || sub?.status === 'active' || sub?.plan === 'lifetime';
 
         console.log('[resolveShareAccess] auth check:', {
-            shareId, owner_user_id, trialActive, proActive,
-            subStatus: sub?.status, profileCreatedAt: profile?.created_at,
+            shareId, ownerUserId: owner_user_id, isPro,
+            subStatus: sub?.status, subIsPro: sub?.is_pro, subPlan: sub?.plan
         });
 
-        if (!trialActive && !proActive) {
-            return {
-                allowed: false,
-                reason: sub ? 'subscription_expired' : 'no_subscription',
-            };
+        // If not Pro, enforce 14-day limit
+        if (!isPro) {
+            const linkCreatedAt = new Date(created_at);
+            const expiryDate = new Date(linkCreatedAt);
+            expiryDate.setDate(expiryDate.getDate() + SHARE_LINK_TRIAL_DAYS);
+
+            if (now > expiryDate) {
+                console.log(`[resolveShareAccess] link expired. Created: ${linkCreatedAt}, Expiry: ${expiryDate}, Now: ${now}`);
+                return { allowed: false, reason: 'expired' };
+            }
         }
 
-        // ── 5. Fetch full resume row ─────────────────────────────────────────────
+        // ── 4. Fetch full resume row ─────────────────────────────────────────────
         const { data: resume, error: resumeErr } = await supabase
             .from('resumes')
             .select('*')
             .eq('id', resume_id)
             .maybeSingle();
 
-        if (resumeErr) {
-            console.error('[resolveShareAccess] resumes query error:', resumeErr);
+        if (resumeErr || !resume) {
+            console.error('[resolveShareAccess] resumes query error or not found:', resumeErr);
             return { allowed: false, reason: 'not_found' };
         }
 
-        if (!resume) {
-            console.log('[resolveShareAccess] resume not found:', resume_id);
-            return { allowed: false, reason: 'not_found' };
-        }
-
-        return { allowed: true, resume, isPro: proActive };
+        return { allowed: true, resume, isPro };
 
     } catch (err) {
         console.error('[resolveShareAccess] unexpected error:', err);
@@ -176,7 +159,7 @@ export async function resolveLetterAccess(token: string): Promise<ShareResolved>
         if (!trialActive && !proActive) {
             return {
                 allowed: false,
-                reason: sub ? 'subscription_expired' : 'no_subscription',
+                reason: 'expired',
             };
         }
 
