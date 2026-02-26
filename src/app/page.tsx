@@ -5,9 +5,48 @@ import Image from 'next/image';
 import { Button } from "@/components/ui/button";
 import { ArrowRight, CheckCircle2, FileText, Download, Share2, Zap, Globe, MessageSquare, ShieldCheck, X } from "lucide-react";
 import { ContainerScroll } from "@/components/ui/container-scroll-animation";
-import { TestimonialsSection } from "@/components/ui/testimonial-v2";
+import { TestimonialsSection } from "@/components/ui/testimonials-with-marquee";
 import { InteractiveGlobe } from "@/components/ui/interactive-globe";
 import { RepeatType, Easing } from 'framer-motion';
+
+const testimonials = [
+  {
+    author: {
+      name: "Emma Thompson",
+      handle: "@emma_career",
+      avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop&crop=face"
+    },
+    text: "CV Optimizer transformed my job search. The AI-tailored suggestions for my professional summary were spot on, and I landed an interview at a top tech firm within a week!",
+    href: "#"
+  },
+  {
+    author: {
+      name: "David Park",
+      handle: "@dpark_tech",
+      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face"
+    },
+    text: "The precision and speed are incredible. Integrating my LinkedIn profile was seamless, and the resulting CV looked more professional than anything I could have designed myself.",
+    href: "#"
+  },
+  {
+    author: {
+      name: "Sofia Rodriguez",
+      handle: "@sofia_leads",
+      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop&crop=face"
+    },
+    text: "Finally, a tool that understands the nuances of different industries. The executive template helped me highlight my leadership experience effectively. Highly recommended!",
+    href: "#"
+  },
+  {
+    author: {
+      name: "James Wilson",
+      handle: "@jwilson_eng",
+      avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face"
+    },
+    text: "I was skeptical about AI writers, but the quality of the bullet points generated for my roles was top-tier. It's like having a career coach in your pocket.",
+    href: "#"
+  }
+];
 
 export default function Home() {
   return (
@@ -57,10 +96,10 @@ export default function Home() {
                   </Button>
                 </Link>
                 <div className="flex items-center gap-3 px-2">
-                  <div className="flex -space-x-2">
-                    {[1, 2, 3, 4].map(i => (
-                      <div key={i} className="w-8 h-8 rounded-full border-2 border-white bg-zinc-100 overflow-hidden">
-                        <Image src={`https://i.pravatar.cc/100?u=${i}`} alt="User avatar" width={32} height={32} />
+                  <div className="flex -space-x-3">
+                    {testimonials.map((t, i) => (
+                      <div key={i} className="w-10 h-10 rounded-full border-2 border-white bg-zinc-100 overflow-hidden shadow-sm">
+                        <Image src={t.author.avatar} alt={t.author.name} width={40} height={40} className="object-cover" />
                       </div>
                     ))}
                   </div>
@@ -107,35 +146,11 @@ export default function Home() {
           </div>
         </section>
 
-        {/* --- Success Stories (cvmakerly style) --- */}
-        <section className="w-full py-32 bg-white overflow-hidden">
-          <div className="container px-6 mx-auto text-center mb-20">
-            <h2 className="text-4xl font-black text-zinc-900 mb-4">Don't just take our word for it.</h2>
-            <p className="text-zinc-500 text-lg">See how professionals are transforming their careers.</p>
-          </div>
-          {/* Using a simplified version of the testimonials */}
-          <div className="flex overflow-x-auto pb-12 hide-scrollbar px-6 gap-8 snap-x">
-            {[
-              { name: "Sarah J.", role: "Product Manager", quote: "I applied to 50 jobs with no response. After using optimized templates, I got 3 interviews in one week!" },
-              { name: "Michael C.", role: "Software Engineer", quote: "The presentation is a game changer. It made me stand out from other candidates immediately. Highly recommended." },
-              { name: "Emily R.", role: "Marketing Director", quote: "Simple, fast, and effective. The AI suggestions helped me rewrite my weak bullet points into achievements." },
-              { name: "David K.", role: "UX Designer", quote: "I loved the templates! They are so clean and professional compared to other builders I've used." }
-            ].map((testimonial, i) => (
-              <div key={i} className="min-w-[350px] bg-zinc-50 p-10 rounded-[40px] border border-zinc-100 snap-center">
-                <p className="text-zinc-900 font-bold text-lg mb-8 leading-relaxed italic">"{testimonial.quote}"</p>
-                <div className="flex items-center gap-4">
-                  <div className="size-12 rounded-full bg-blue-100 flex items-center justify-center font-bold text-blue-600">
-                    {testimonial.name[0]}
-                  </div>
-                  <div className="text-left">
-                    <p className="font-black text-zinc-900">{testimonial.name}</p>
-                    <p className="text-sm text-zinc-500 font-medium">{testimonial.role}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
+        <TestimonialsSection
+          title="Trusted by professionals worldwide"
+          description="Join thousands of professionals who are already landing interviews at top companies with CV Optimizer."
+          testimonials={testimonials}
+        />
 
         {/* --- Editor Showcase (Subtle Light Mode) --- */}
         <section className="w-full bg-zinc-50 py-32 border-t border-zinc-100">
