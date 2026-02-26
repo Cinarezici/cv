@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getOpenAI } from '@/lib/openai-client';
 
 export const dynamic = 'force-dynamic';
+export const maxDuration = 60; // Allow 1 minute on Vercel
 import { createClient } from '@/lib/supabase/server';
 import { generateSlug } from '@/lib/utils';
 
@@ -95,7 +96,15 @@ export async function POST(request: NextRequest) {
         });
 
         const rawContent = completion.choices[0].message?.content || '{}';
-        const optimizedData = JSON.parse(rawContent);
+
+        let optimizedData;
+        try {
+            optimizedData = JSON.parse(rawContent);
+        } catch (parseError) {
+            console.error('Failed to parse AI output:', rawContent);
+            return NextResponse.json({ error: 'AI returned an invalid response. Please try again.' }, { status: 500 });
+        }
+
         const slug = generateSlug();
 
         // Extract job title from JD (first line or AI extracted)

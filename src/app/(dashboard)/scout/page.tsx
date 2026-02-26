@@ -117,13 +117,8 @@ export default function ScoutPage() {
     };
 
     const handleOptimize = (job: Job) => {
-        const params = new URLSearchParams({
-            jobTitle: job.title,
-            company: job.companyName,
-            jd: job.descriptionText,
-            link: job.link
-        });
-        router.push(`/resumes/new?${params.toString()}`);
+        setSelectedJob(job);
+        setIsWizardOpen(true);
     };
 
     const handleToggleSelect = (job: Job) => {
@@ -140,12 +135,15 @@ export default function ScoutPage() {
             .map(j => `## ${j.title} @ ${j.companyName}\n${j.descriptionText}`)
             .join('\n\n---\n\n');
 
-        const params = new URLSearchParams({
-            jobTitle: `${selectedJobs.length} Seçili İlan`,
-            company: "Selected Companies",
-            jd: mergedDescription,
-        });
-        router.push(`/resumes/new?${params.toString()}`);
+        const bulkJob: Job = {
+            ...selectedJobs[0],
+            title: selectedJobs.length === 1
+                ? selectedJobs[0].title
+                : `${selectedJobs.length} Seçili İlan`,
+            descriptionText: mergedDescription,
+        };
+        setSelectedJob(bulkJob);
+        setIsBulkWizardOpen(true);
     };
 
     const handleToggleSave = async (job: Job) => {

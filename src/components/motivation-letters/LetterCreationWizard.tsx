@@ -193,27 +193,11 @@ export default function LetterCreationWizard({
         const fetchCVs = async () => {
             setLoadingCvs(true);
             try {
-                const supabase = createClient();
-                const [{ data: resumes }, { data: profiles }] = await Promise.all([
-                    supabase.from('resumes').select('id, job_title').eq('user_id', userId),
-                    supabase.from('profiles').select('id, full_name, headline').eq('user_id', userId)
-                ]);
+                const res = await fetch('/api/my-cvs');
+                if (!res.ok) throw new Error('Failed to fetch CVs');
+                const data = await res.json();
+                const allCvs: CvOption[] = data.cvs || [];
 
-                const allCvs: CvOption[] = [];
-                if (profiles && profiles.length > 0) {
-                    allCvs.push(...profiles.map(p => ({
-                        id: p.id,
-                        title: p.full_name ? `${p.full_name} — My CV` : "My CV",
-                        type: 'profile' as const
-                    })));
-                }
-                if (resumes && resumes.length > 0) {
-                    allCvs.push(...resumes.map(r => ({
-                        id: r.id,
-                        title: r.job_title || 'Untitled CV',
-                        type: 'resume' as const
-                    })));
-                }
                 setCvs(allCvs);
 
                 // Pre-select logic:
