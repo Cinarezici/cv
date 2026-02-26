@@ -5,6 +5,7 @@ import { generateLetterPDF } from '@/lib/pdf-generator';
 import { getOrCreateCompanyProfile } from '@/lib/company-research';
 import crypto from 'crypto';
 import { ToneType } from '@/types/motivation-letter';
+import { mapToResumeJSON } from '@/lib/resume-mapper';
 
 // POST /api/motivation-letters/[id]/retry
 // Re-runs the full generation pipeline for a failed letter
@@ -44,12 +45,8 @@ export async function POST(
             const { data: profiles } = await supabase
                 .from('profiles').select('*').eq('user_id', user.id).order('created_at', { ascending: false }).limit(1);
             if (profiles && profiles[0]) {
-                const p = profiles[0];
-                resumeJSON = {
-                    name: p.full_name, headline: p.headline, summary: p.summary || p.about,
-                    skills: p.skills || [], experience: p.experiences || p.work_experience || [],
-                    email: p.email, phone: p.phone, location: p.location,
-                };
+                // Use raw_json + mapper — same contract used everywhere else in this codebase
+                resumeJSON = mapToResumeJSON(profiles[0].raw_json);
             }
         }
         if (!resumeJSON) {

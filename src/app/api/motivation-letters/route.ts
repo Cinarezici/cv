@@ -7,6 +7,7 @@ import crypto from 'crypto';
 import * as cheerio from 'cheerio';
 import { ToneType } from '@/types/motivation-letter';
 import { generateShortSlug } from '@/lib/short-id';
+import { mapToResumeJSON } from '@/lib/resume-mapper';
 
 interface JobConfig {
     targetRole: string;
@@ -78,16 +79,9 @@ export async function POST(request: NextRequest) {
         } else {
             const { data: profile } = await supabase.from('profiles').select('*').eq('id', cvId).eq('user_id', user.id).single();
             if (profile) {
-                resumeJSON = {
-                    name: profile.full_name,
-                    headline: profile.headline,
-                    summary: profile.summary || profile.about,
-                    skills: profile.skills || [],
-                    experience: profile.experiences || profile.work_experience || [],
-                    email: profile.email,
-                    phone: profile.phone,
-                    location: profile.location,
-                };
+                // Use the raw_json + mapper which is the contract used everywhere else in this codebase
+                resumeJSON = mapToResumeJSON(profile.raw_json);
+                console.log('->', 'Profile found, mapped to resumeJSON from raw_json');
             }
         }
         if (!resumeJSON) {

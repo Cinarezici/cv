@@ -100,7 +100,7 @@ export default function SavedJobsClient({ initialJobs, isPro, userId }: Props) {
                     userId={userId}
                     initialJobData={selectedJob}
                     onClose={() => setIsWizardOpen(false)}
-                    onSuccess={() => {
+                    onSuccess={(_newLetters) => {
                         setIsWizardOpen(false);
                         router.push('/motivation-letters');
                     }}
