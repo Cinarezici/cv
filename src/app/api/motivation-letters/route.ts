@@ -6,6 +6,7 @@ import { generateLetterPDF } from '@/lib/pdf-generator';
 import crypto from 'crypto';
 import * as cheerio from 'cheerio';
 import { ToneType } from '@/types/motivation-letter';
+import { generateShortSlug } from '@/lib/short-id';
 
 interface JobConfig {
     targetRole: string;
@@ -268,7 +269,20 @@ async function processLetterGeneration(
             generation_error: null,
         }).eq('id', letterId);
 
-        console.log(`Letter ${letterId} generated successfully.`);
+        // Generate and store Short Share Link
+        const slug = generateShortSlug(8);
+        const { error: shortLinkErr } = await supabase.from('letter_share_links').insert({
+            slug,
+            letter_id: letterId,
+            owner_user_id: userId,
+            expires_at: shareExpiry
+        });
+
+        if (shortLinkErr) {
+            console.error(`Failed to generate short link for letter ${letterId}:`, shortLinkErr);
+        }
+
+        console.log(`Letter ${letterId} generated successfully. Slug: ${slug}`);
 
     } catch (err: any) {
         console.error(`Letter generation failed for ${letterId}:`, err);

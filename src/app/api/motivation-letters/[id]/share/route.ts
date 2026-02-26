@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import crypto from 'crypto';
+import { generateShortSlug } from '@/lib/short-id';
 
 export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     try {
@@ -30,8 +31,27 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
         const isPro = sub?.status === 'active';
         const shareExpiry = !isPro ? new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString() : null;
 
-        const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-        const shareUrl = `${appUrl}/m/${shareToken}`;
+        const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://cvoptimizerai.com';
+
+        // Find or create short slug
+        const { data: existingLink } = await supabase
+            .from('letter_share_links')
+            .select('slug')
+            .eq('letter_id', id)
+            .maybeSingle();
+
+        let slug = existingLink?.slug;
+        if (!slug) {
+            slug = generateShortSlug(8);
+            await supabase.from('letter_share_links').insert({
+                slug,
+                letter_id: id,
+                owner_user_id: user.id,
+                expires_at: shareExpiry
+            });
+        }
+
+        const shareUrl = `${appUrl}/l/${slug}`;
 
         const { data: updated, error } = await supabase
             .from('motivation_letters')

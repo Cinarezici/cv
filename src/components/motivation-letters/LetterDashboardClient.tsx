@@ -160,11 +160,11 @@ export default function LetterDashboardClient({ initialLetters, isPro, userId }:
     };
 
     const handleShare = async (letter: MotivationLetter) => {
-        // Priority: pdf_url > share_token URL > generate via API
+        // Priority: Short share_url > fallback token > generate
         let shareUrl: string | null = null;
 
-        if (letter.pdf_url) {
-            shareUrl = letter.pdf_url;
+        if (letter.share_url) {
+            shareUrl = letter.share_url;
         } else if (letter.share_token) {
             shareUrl = `${window.location.origin}/ml/share/${letter.share_token}`;
         } else {
