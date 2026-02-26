@@ -1,103 +1,133 @@
 import { Button } from "@/components/ui/button";
-import { CheckCircle2, Crown, Zap } from "lucide-react";
+import { CheckCircle2, Crown, Zap, ShieldCheck, Heart, Star } from "lucide-react";
 import Link from 'next/link';
 
 export default function PricingPage() {
     return (
-        <div className="min-h-screen bg-zinc-50 pt-32 pb-24 px-6 relative">
-            <header className="fixed top-0 left-0 right-0 h-14 flex items-center border-b bg-white z-50 px-6">
-                <Link className="flex items-center justify-center font-bold text-xl" href="/">
-                    <Zap className="h-6 w-6 text-indigo-600 mr-2" />
-                    Interview-Ready CV
+        <div className="min-h-screen bg-[#020617] text-white pt-32 pb-24 px-6 relative selection:bg-blue-500/30">
+            {/* Header consistent with Landing Page */}
+            <header className="fixed top-0 left-0 right-0 z-50 flex items-center h-20 px-6 border-b border-white/5 bg-[#020617]/80 backdrop-blur-md">
+                <Link className="flex items-center gap-2 group" href="/">
+                    <div className="flex items-center justify-center w-9 h-9 rounded-xl bg-blue-600 transition-transform group-hover:scale-110 shadow-lg shadow-blue-600/20">
+                        <Zap className="h-5 w-5 text-white fill-white" />
+                    </div>
+                    <span className="text-xl font-bold tracking-tight">Interview-Ready CV</span>
                 </Link>
-                <nav className="ml-auto flex gap-6 items-center">
-                    <Link className="text-sm font-medium hover:underline underline-offset-4" href="/templates">Templates</Link>
-                    <Link className="text-sm font-medium hover:underline underline-offset-4" href="/pricing">Pricing</Link>
-                    <Link className="text-sm font-medium hover:underline underline-offset-4" href="/login">Login</Link>
+                <nav className="ml-auto hidden md:flex gap-8 items-center text-sm font-medium text-white/60">
+                    <Link className="hover:text-white transition-colors" href="/templates">Templates</Link>
+                    <Link className="text-white bg-white/5 px-4 py-1.5 rounded-lg" href="/pricing">Pricing</Link>
+                    <Link className="hover:text-white transition-colors" href="/login">Login</Link>
+                    <Link href="/signup">
+                        <Button className="bg-white text-[#020617] hover:bg-white/90 font-bold rounded-xl px-6">
+                            Get Started
+                        </Button>
+                    </Link>
                 </nav>
             </header>
 
-            <div className="max-w-7xl mx-auto text-center mb-16">
-                <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-6 text-zinc-900">
-                    Plans to <span className="text-indigo-600">Upgrade Your Career</span>
+            <div className="max-w-7xl mx-auto text-center mb-24 relative z-10">
+                <div className="absolute top-0 left-1/4 w-[400px] h-[400px] bg-indigo-500/10 rounded-full blur-[100px] pointer-events-none" />
+
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-bold mb-6">
+                    <Heart className="h-3 w-3 fill-indigo-400" /> Investment in Your Future
+                </div>
+                <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight mb-8">
+                    Simple, <span className="text-blue-400">Transparent</span> Pricing
                 </h1>
-                <p className="text-lg md:text-xl text-zinc-500 max-w-2xl mx-auto">
-                    Choose the plan that's right for you. Start for free and upgrade as you grow.
+                <p className="text-xl text-white/50 max-w-2xl mx-auto leading-relaxed">
+                    Choose the plan that fits your career stage. No hidden fees, no subscriptions, just results.
                 </p>
             </div>
 
-            <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-8 md:px-12">
+            <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-10 md:px-12 relative z-10">
                 {/* Free Plan */}
-                <div className="bg-white rounded-3xl p-8 relative flex flex-col h-full border border-zinc-200 shadow-sm">
-                    <div className="mb-8">
-                        <h2 className="text-2xl font-bold mb-2 flex items-center gap-2">
-                            <Zap className="text-zinc-400 w-6 h-6" /> Starter
-                        </h2>
-                        <p className="text-zinc-500 text-sm mb-6">Basic tools to get you started.</p>
-                        <div className="text-5xl font-extrabold text-zinc-900">Free</div>
+                <div className="bg-white/5 rounded-[40px] p-12 relative flex flex-col h-full border border-white/10 shadow-2xl transition-transform hover:scale-[1.01]">
+                    <div className="mb-10">
+                        <div className="flex items-center gap-3 mb-4">
+                            <div className="p-3 bg-white/5 rounded-2xl">
+                                <Zap className="text-white/40 w-6 h-6" />
+                            </div>
+                            <h2 className="text-2xl font-bold">Free Plan</h2>
+                        </div>
+                        <p className="text-white/40 text-sm mb-8">Perfect for testing the platform features.</p>
+                        <div className="text-6xl font-black text-white">$0</div>
+                        <p className="text-xs text-white/20 mt-2 uppercase tracking-widest font-bold">Forever Free</p>
                     </div>
 
-                    <div className="space-y-4 mb-8 flex-1">
-                        {['1 Resume', 'Basic Templates', 'Standard PDF Download', 'Public Share Link'].map((feat, i) => (
-                            <div key={i} className="flex items-center gap-3">
-                                <CheckCircle2 className="w-5 h-5 text-zinc-300" />
-                                <span className="text-zinc-600 font-medium">{feat}</span>
+                    <div className="space-y-5 mb-12 flex-1">
+                        {[
+                            '2 CVs (Resets every 14 days)',
+                            '2 Cover Letters (14d reset)',
+                            '2 Daily Job Searches',
+                            'Basic Templates',
+                            'Watermarked PDF Export'
+                        ].map((feat, i) => (
+                            <div key={i} className="flex items-start gap-3">
+                                <CheckCircle2 className="w-5 h-5 text-blue-500/50 mt-1 shrink-0" />
+                                <span className="text-white/60 font-medium">{feat}</span>
                             </div>
                         ))}
                     </div>
 
-                    <Link href="/signup" className="w-full mt-auto">
-                        <Button variant="outline" className="w-full rounded-2xl h-12 text-base font-bold border-zinc-200 hover:bg-zinc-50">
+                    <Link href="/signup" className="w-full">
+                        <Button variant="outline" className="w-full rounded-[20px] h-16 text-lg font-bold border-white/10 hover:bg-white/5 transition-all">
                             Get Started
                         </Button>
                     </Link>
                 </div>
 
                 {/* Pro Plan */}
-                <div className="bg-white rounded-3xl p-8 relative flex flex-col h-full border-2 border-indigo-600 shadow-xl transform md:-translate-y-4">
-                    <div className="absolute top-0 right-1/2 translate-x-1/2 -translate-y-1/2 bg-indigo-600 text-white text-xs font-bold px-4 py-1.5 rounded-full inline-flex items-center gap-1 shadow-md">
-                        <Crown className="w-3 h-3" /> MOST POPULAR
+                <div className="bg-blue-600/10 rounded-[40px] p-12 relative flex flex-col h-full border-2 border-blue-500 shadow-[0_0_50px_-12px_rgba(59,130,246,0.3)] transform md:-translate-y-8 transition-transform hover:scale-[1.02]">
+                    <div className="absolute top-8 right-8 bg-blue-500 text-white text-[10px] font-black px-4 py-1.5 rounded-full inline-flex items-center gap-1 shadow-lg tracking-widest uppercase">
+                        <Crown className="w-3 h-3" /> BEST VALUE
                     </div>
 
-                    <div className="mb-8 mt-2">
-                        <h2 className="text-2xl font-bold mb-2 flex items-center gap-2 text-indigo-600">
-                            Pro <span className="bg-indigo-50 text-indigo-600 text-xs px-2 py-1 rounded">Unlimited</span>
-                        </h2>
-                        <p className="text-zinc-500 text-sm mb-6">For professionals who want to stand out.</p>
-                        <div className="text-5xl font-extrabold flex items-baseline gap-2 text-zinc-900">
-                            $9 <span className="text-lg text-zinc-400 font-medium">/mo</span>
+                    <div className="mb-10">
+                        <div className="flex items-center gap-3 mb-4">
+                            <div className="p-3 bg-blue-500 rounded-2xl">
+                                <Star className="text-white w-6 h-6 fill-white" />
+                            </div>
+                            <h2 className="text-2xl font-bold">Lifetime Access</h2>
                         </div>
-                        <p className="text-xs text-zinc-400 mt-2">Billed monthly. Cancel anytime.</p>
+                        <p className="text-white/40 text-sm mb-8">One payment, unlimited possibilities.</p>
+                        <div className="flex flex-col">
+                            <div className="text-6xl font-black text-white">$99</div>
+                            <p className="text-[11px] text-blue-400 font-bold mt-2 uppercase tracking-widest px-1">
+                                Approx. $8.25/mo for one year
+                            </p>
+                        </div>
                     </div>
 
-                    <div className="space-y-4 mb-8 flex-1">
+                    <div className="space-y-5 mb-12 flex-1">
                         {[
-                            'Unlimited Resumes',
-                            'All Premium Templates',
+                            'Unlimited CVs & Cover Letters',
+                            'Unlimited Job Searches',
+                            'Access to All Premium Templates',
                             'High-Res PDF (No Watermark)',
-                            'Priority AI Support',
-                            'Custom Bio Generation',
-                            'Job Matching Insights',
-                            'Cover Letter Builder'
+                            'Advanced AI Optimization',
+                            'LinkedIn Analysis & Integration',
+                            'Priority Export (PDF & Word)'
                         ].map((feat, i) => (
-                            <div key={i} className="flex items-center gap-3">
-                                <CheckCircle2 className="w-5 h-5 text-indigo-600" />
-                                <span className="text-zinc-800 font-medium">{feat}</span>
+                            <div key={i} className="flex items-start gap-4">
+                                <CheckCircle2 className="w-6 h-6 text-blue-400 mt-0.5 shrink-0" />
+                                <span className="text-white font-semibold text-lg">{feat}</span>
                             </div>
                         ))}
                     </div>
 
-                    <Link href="/signup" className="w-full mt-auto">
-                        <Button className="w-full rounded-2xl h-12 text-base font-bold bg-indigo-600 hover:bg-indigo-700 shadow-lg shadow-indigo-200">
-                            Upgrade to Pro
+                    <Link href="/signup" className="w-full">
+                        <Button className="w-full rounded-[20px] h-16 text-xl font-black bg-blue-600 hover:bg-blue-700 shadow-2xl shadow-blue-600/40 transition-all">
+                            Unlock Lifetime Access
                         </Button>
                     </Link>
                 </div>
             </div>
 
-            <div className="text-center mt-12 text-xs text-zinc-400 space-y-2 max-w-lg mx-auto">
-                <p>Secure payments processed via Stripe. All data is encrypted.</p>
-                <p>Cancel your subscription at any time from your account settings.</p>
+            <div className="text-center mt-24 text-white/30 space-y-4 max-w-lg mx-auto relative z-10">
+                <div className="flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-widest mb-4">
+                    <ShieldCheck className="h-4 w-4 text-blue-500" /> Bank-Level Security
+                </div>
+                <p className="text-sm">Secure payments processed via Polar. All data is industry-standard encrypted. One-time payment, no recurring charges ever.</p>
             </div>
         </div>
     );

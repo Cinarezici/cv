@@ -63,34 +63,42 @@ export default function Home() {
       </header>
 
       <main className="flex-1 pt-16">
-        {/* --- Hero Section with Pulse Beams --- */}
-        <section className="relative w-full overflow-hidden">
-          <PulseBeams
-            beams={BEAMS}
-            className="pb-20 pt-32 lg:pb-32 lg:pt-48"
-            gradientColors={{ start: "#6366f1", middle: "#a855f7", end: "#ec4899" }}
-          >
-            <div className="container px-4 mx-auto text-center relative z-20">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-bold mb-8 animate-fade-in">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
-                </span>
-                AI-Powered CV Optimization
+        {/* --- Hero Section with Interactive Globe --- */}
+        <section className="relative w-full overflow-hidden bg-[#020617] min-h-[90vh] flex items-center">
+          {/* Background Glows */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-indigo-500/10 rounded-full blur-[120px] pointer-events-none" />
+          <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-blue-600/10 rounded-full blur-[100px] pointer-events-none" />
+
+          <div className="container px-4 mx-auto relative z-20 flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+            <div className="flex-1 text-center lg:text-left space-y-8 max-w-2xl lg:max-w-none">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-bold mb-4 animate-fade-in">
+                <ShieldCheck className="h-4 w-4" /> Trusted by 120k+ Professionals Worldwide
               </div>
-              <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-8 leading-[1.1]">
-                Build Your Career with a <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">
-                  Perfect Resume
+              <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight leading-[1.05]">
+                The Global Standard for <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-cyan-400">
+                  ATS Compliance
                 </span>
               </h1>
-              <p className="mx-auto max-w-[700px] text-white/50 text-lg md:text-xl mb-12 leading-relaxed">
-                Create ATS-friendly resumes in minutes. Choose from professional templates and stand out to recruiters with our AI-powered suggestions.
+              <p className="text-xl text-white/50 leading-relaxed max-w-xl mx-auto lg:mx-0">
+                Our templates are rigorously tested against software like Taleo, Workday, and Greenhouse. Land more interviews with a resume that's built for global success.
               </p>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+
+              <div className="grid grid-cols-2 gap-8 items-center pt-4 max-w-md mx-auto lg:mx-0">
+                <div className="space-y-1">
+                  <p className="text-4xl font-bold text-blue-400">120k+</p>
+                  <p className="text-xs text-white/40 font-bold uppercase tracking-wider">Accepted Resumes</p>
+                </div>
+                <div className="space-y-1">
+                  <p className="text-4xl font-bold text-blue-400">99.8%</p>
+                  <p className="text-xs text-white/40 font-bold uppercase tracking-wider">Format Success Rate</p>
+                </div>
+              </div>
+
+              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
                 <Link href="/signup">
-                  <Button size="lg" className="h-14 px-10 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-lg shadow-xl shadow-indigo-600/20 transition-all hover:scale-105 active:scale-95">
-                    Create My Resume <ArrowRight className="ml-2 h-5 w-5" />
+                  <Button size="lg" className="h-14 px-10 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-lg shadow-xl shadow-blue-600/20 transition-all hover:scale-105 active:scale-95">
+                    Start Building Now <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
                 </Link>
                 <Link href="/templates">
@@ -100,110 +108,127 @@ export default function Home() {
                 </Link>
               </div>
             </div>
-          </PulseBeams>
-        </section>
 
-        {/* --- Content Showcase with Container Scroll --- */}
-        <section className="w-full">
-          <ContainerScroll
-            titleComponent={
-              <div className="max-w-4xl mx-auto mb-12">
-                <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight mb-4">
-                  The Most Powerful <span className="text-indigo-400">CV Editor</span>
-                </h2>
-                <p className="text-white/40 text-lg">
-                  Designed for speed, clarity, and results. Watch your CV come to life as you type.
-                </p>
-              </div>
-            }
-          >
-            <div className="relative w-full h-full bg-[#0f172a] rounded-2xl overflow-hidden border border-white/5 shadow-2xl shadow-indigo-500/10">
-              <Image
-                src="https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&q=80&w=2000"
-                alt="CV Builder interface preview"
-                fill
-                className="object-cover opacity-80"
-                draggable={false}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0f172a] via-transparent to-transparent" />
-              <div className="absolute bottom-8 left-8 right-8 p-8 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 flex items-center justify-between">
-                <div className="flex gap-4">
-                  <div className="size-12 rounded-xl bg-indigo-600 flex items-center justify-center">
-                    <Zap className="h-6 w-6 text-white" />
-                  </div>
-                  <div>
-                    <p className="font-bold text-lg">Real-time Preview</p>
-                    <p className="text-sm text-white/50">Changes update instantly on a pixel-perfect A4 canvas.</p>
-                  </div>
-                </div>
-                <div className="hidden md:block">
-                  <Button className="bg-white text-black font-bold">Try Now</Button>
-                </div>
-              </div>
-            </div>
-          </ContainerScroll>
-        </section>
-
-        {/* --- Global Impact Section with Globe --- */}
-        <section className="w-full py-24 relative overflow-hidden h-[900px] flex items-center">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-indigo-500/10 rounded-full blur-[120px] pointer-events-none" />
-          <div className="container px-4 mx-auto relative z-10 flex flex-col md:flex-row items-center gap-20">
-            <div className="flex-1 space-y-8">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold">
-                <ShieldCheck className="h-4 w-4" /> Trusted Worldwide
-              </div>
-              <h2 className="text-4xl md:text-6xl font-extrabold tracking-tight leading-tight transition-all">
-                The Standard for <br />
-                <span className="text-emerald-400">ATS Compliance</span>
-              </h2>
-              <p className="text-lg text-white/50 leading-relaxed max-w-lg transition-all">
-                Our templates are tested against major ATS software like Taleo, Workday, and Greenhouse. No matter where you apply, we ensure you pass the first scan.
-              </p>
-              <div className="grid grid-cols-2 gap-8 items-center pt-8">
-                <div className="space-y-1">
-                  <p className="text-3xl font-bold">120k+</p>
-                  <p className="text-xs text-white/40 font-bold uppercase tracking-wider">Accepted Resumes</p>
-                </div>
-                <div className="space-y-1">
-                  <p className="text-3xl font-bold">99.8%</p>
-                  <p className="text-xs text-white/40 font-bold uppercase tracking-wider">Format Success Rate</p>
-                </div>
-              </div>
-              <Button size="lg" className="rounded-2xl h-14 px-8 bg-emerald-600 hover:bg-emerald-700 font-bold text-lg shadow-xl shadow-emerald-600/20">
-                Join our Global Community
-              </Button>
-            </div>
-            <div className="flex-1 flex items-center justify-center">
+            <div className="flex-1 flex items-center justify-center relative">
+              {/* Pulsing effect behind globe */}
+              <div className="absolute inset-0 bg-blue-500/5 rounded-full blur-[80px] animate-pulse pointer-events-none" />
               <InteractiveGlobe
                 size={700}
-                dotColor="rgba(52, 211, 153, ALPHA)"
-                arcColor="rgba(52, 211, 153, 0.4)"
-                markerColor="rgba(52, 211, 153, 1)"
-                className="opacity-90"
+                dotColor="rgba(56, 189, 248, ALPHA)"
+                arcColor="rgba(56, 189, 248, 0.4)"
+                markerColor="rgba(56, 189, 248, 1)"
+                className="opacity-100 scale-110 lg:scale-125 transition-transform duration-700 hover:scale-115 lg:hover:scale-130"
               />
             </div>
           </div>
         </section>
 
+        {/* --- Content Showcase with Container Scroll & Real Mockup --- */}
+        <section className="w-full bg-gradient-to-b from-[#020617] to-[#0a0f1e] py-10">
+          <ContainerScroll
+            titleComponent={
+              <div className="max-w-4xl mx-auto mb-12">
+                <h2 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-4">
+                  Experience the <span className="text-blue-400">Power of AI</span>
+                </h2>
+                <p className="text-white/40 text-lg md:text-xl">
+                  Watch your career transform with our pixel-perfect editor. Real-time feedback, infinite customization.
+                </p>
+              </div>
+            }
+          >
+            <div className="relative w-full h-full bg-[#0f172a] rounded-2xl overflow-hidden border border-white/10 shadow-2xl shadow-blue-500/10">
+              <Image
+                src="/brain/4caa0719-c41e-493e-b1e9-b0c20d032070/cv_editor_preview_mockup_v2_1772087254285.png"
+                alt="AI CV Editor Mockup"
+                fill
+                className="object-cover"
+                draggable={false}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0f172a]/80 via-transparent to-transparent" />
+              <div className="absolute bottom-6 left-6 right-6 p-6 rounded-2xl bg-black/60 backdrop-blur-xl border border-white/10 flex items-center justify-between">
+                <div className="flex gap-4">
+                  <div className="size-12 rounded-xl bg-blue-600 flex items-center justify-center">
+                    <Zap className="h-6 w-6 text-white" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-lg">Smart AI Suggestions</p>
+                    <p className="text-sm text-white/50">Industry-specific advice that makes recruiters notice you.</p>
+                  </div>
+                </div>
+                <Link href="/signup" className="hidden md:block">
+                  <Button className="bg-white text-black font-bold h-11 px-6 rounded-xl hover:scale-105 transition-transform">Get Your Copy</Button>
+                </Link>
+              </div>
+            </div>
+          </ContainerScroll>
+        </section>
+
+        {/* --- Pulse Beams (Transition Section) --- */}
+        <section className="w-full py-10 bg-[#0a0f1e]">
+          <PulseBeams
+            beams={BEAMS}
+            className="py-10"
+            gradientColors={{ start: "#3b82f6", middle: "#8b5cf6", end: "#06b6d4" }}
+          >
+            <div className="text-center">
+              <h3 className="text-2xl font-bold text-white/40 uppercase tracking-[0.2em]">Synchronized Connectivity</h3>
+            </div>
+          </PulseBeams>
+        </section>
+
         {/* --- Testimonials --- */}
         <TestimonialsSection />
 
-        {/* --- CTA Section --- */}
-        <section className="w-full py-32 border-t border-white/5 relative overflow-hidden bg-gradient-to-b from-[#020617] to-[#0f172a]">
-          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent" />
+        {/* --- Final CTA Section with Real Pricing --- */}
+        <section className="w-full py-32 relative overflow-hidden bg-gradient-to-b from-[#020617] to-[#0f172a]">
+          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-500/50 to-transparent" />
           <div className="container px-4 mx-auto text-center relative z-10">
-            <h2 className="text-3xl md:text-6xl font-extrabold tracking-tight mb-8">
-              Ready to land your <br className="md:hidden" />
-              <span className="text-indigo-400">dream job?</span>
+            <h2 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-16">
+              Start building for <span className="text-blue-400">free today</span>
             </h2>
-            <p className="text-white/40 text-lg md:text-xl mb-12 max-w-2xl mx-auto">
-              Don't leave your career to chance. Use the AI tool that top professionals trust.
+
+            <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-16">
+              {/* Free Plan */}
+              <div className="p-10 rounded-[32px] bg-white/5 border border-white/10 flex flex-col items-center">
+                <h3 className="text-2xl font-bold mb-2">Free Plan</h3>
+                <p className="text-white/40 mb-8">Test the platform features</p>
+                <p className="text-5xl font-extrabold mb-8">$0</p>
+                <div className="w-full space-y-4 mb-10 text-left">
+                  <div className="flex items-center gap-2 text-white/60"><CheckCircle2 className="h-5 w-5 text-blue-500" /> 2 CVs & Cover Letters</div>
+                  <div className="flex items-center gap-2 text-white/60"><CheckCircle2 className="h-5 w-5 text-blue-500" /> Daily Job Searches</div>
+                  <div className="flex items-center gap-2 text-white/40 italic"><ShieldCheck className="h-5 w-5 opacity-40" /> Watermarked Exports</div>
+                </div>
+                <Link href="/signup" className="w-full">
+                  <Button variant="outline" className="w-full h-14 rounded-2xl border-white/10 hover:bg-white/5 font-bold">Get Started</Button>
+                </Link>
+              </div>
+
+              {/* Pro Plan */}
+              <div className="p-10 rounded-[32px] bg-blue-600/10 border-2 border-blue-500 flex flex-col items-center relative overflow-hidden">
+                <div className="absolute top-6 right-6 bg-blue-500 text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest">Best Value</div>
+                <h3 className="text-2xl font-bold mb-2">Lifetime Access</h3>
+                <p className="text-white/40 mb-8">Single payment, forever yours</p>
+                <div className="flex flex-col items-center mb-8">
+                  <p className="text-5xl font-extrabold">$99</p>
+                  <p className="text-[10px] text-blue-400/60 font-medium mt-1 uppercase tracking-tighter">
+                    Approx. $8.25/mo for one year
+                  </p>
+                </div>
+                <div className="w-full space-y-4 mb-10 text-left">
+                  <div className="flex items-center gap-2 text-white/80"><CheckCircle2 className="h-5 w-5 text-blue-400" /> Unlimited Everything</div>
+                  <div className="flex items-center gap-2 text-white/80"><CheckCircle2 className="h-5 w-5 text-blue-400" /> Advanced AI Optimization</div>
+                  <div className="flex items-center gap-2 text-white/80"><CheckCircle2 className="h-5 w-5 text-blue-400" /> Premium Templates</div>
+                </div>
+                <Link href="/signup" className="w-full">
+                  <Button className="w-full h-14 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-bold shadow-xl shadow-blue-600/40 transition-transform hover:scale-[1.02]">Upgrade Now</Button>
+                </Link>
+              </div>
+            </div>
+
+            <p className="text-white/30 text-sm mb-12 max-w-2xl mx-auto italic">
+              "Don't leave your career to chance. Join 120,000+ professionals using the tool recruiters trust."
             </p>
-            <Link href="/signup">
-              <Button size="lg" className="h-16 px-12 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xl shadow-2xl shadow-indigo-600/30 transition-all hover:scale-105 active:scale-95">
-                Start Building for Free
-              </Button>
-            </Link>
           </div>
         </section>
       </main>
