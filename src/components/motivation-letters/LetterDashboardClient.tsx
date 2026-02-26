@@ -1,7 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -86,32 +85,6 @@ export default function LetterDashboardClient({ initialLetters, isPro, userId }:
     const [search, setSearch] = useState('');
     const [isWizardOpen, setIsWizardOpen] = useState(false);
     const [previewLetter, setPreviewLetter] = useState<MotivationLetter | null>(null);
-    const searchParams = useSearchParams();
-    const [autoTriggered, setAutoTriggered] = useState(false);
-
-    const [triggerJobData, setTriggerJobData] = useState<any>(null);
-
-    useEffect(() => {
-        const trigger = searchParams.get('trigger');
-        if (trigger === 'true' && !autoTriggered) {
-            const resumeId = searchParams.get('resumeId');
-            const jobTitle = searchParams.get('jobTitle');
-            const company = searchParams.get('company');
-            const jd = searchParams.get('jd');
-
-            if (resumeId) {
-                setTriggerJobData({
-                    id: 'temp-' + Date.now(),
-                    title: jobTitle || 'Optimized Role',
-                    companyName: company || 'Company',
-                    descriptionText: jd || '',
-                    resumeId: resumeId // This will need to be handled by the wizard to pre-select the CV
-                });
-                setIsWizardOpen(true);
-                setAutoTriggered(true);
-            }
-        }
-    }, [searchParams, autoTriggered]);
 
     // Group letters by batch_id
     const groupedLetters: MotivationLetter[][] = [];
@@ -269,15 +242,11 @@ export default function LetterDashboardClient({ initialLetters, isPro, userId }:
                 <LetterCreationWizard
                     isPro={isPro}
                     userId={userId}
-                    initialJobData={triggerJobData}
-                    onClose={() => {
-                        setIsWizardOpen(false);
-                        setTriggerJobData(null);
-                    }}
+                    onClose={() => setIsWizardOpen(false)}
                     onSuccess={(newLetters) => {
                         setIsWizardOpen(false);
-                        setTriggerJobData(null);
                         if (newLetters && newLetters.length > 0) {
+                            // Prepend new letters (with pending status) — this immediately triggers polling
                             setLetters(prev => [...newLetters, ...prev]);
                         }
                     }}
