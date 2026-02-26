@@ -244,6 +244,108 @@ export function CVRenderer({ avatarUrl, showPhoto, isPro = true }: CVRendererPro
                 </section>
             );
         },
+        projects: () => {
+            if (!resumeJson?.projects?.length) return null;
+            return (
+                <section className={isSingleColumn ? 'mb-8' : 'mb-10'} key="projects">
+                    {isSingleColumn ? (
+                        <h2 className="text-[12px] font-black text-zinc-900 uppercase tracking-widest mb-4 border-b border-zinc-200 pb-2">Projects</h2>
+                    ) : (
+                        <div className="flex items-center gap-2 mb-6">
+                            {showIcons && <div className="p-1.5 bg-zinc-100 rounded-sm"><Briefcase className="w-4 h-4 text-zinc-600" /></div>}
+                            <h2 className={`text-lg font-bold text-zinc-900 uppercase tracking-widest ${!showIcons ? 'border-b border-zinc-200 pb-1 flex-1' : ''}`}
+                                style={!showIcons ? { color: accentColor } : {}}>
+                                Projects
+                            </h2>
+                        </div>
+                    )}
+                    <div className={isSingleColumn ? 'space-y-5' : 'space-y-6'}>
+                        {resumeJson.projects.map((proj: any, i: number) => (
+                            <div key={i} className={!isSingleColumn ? 'relative pl-4 border-l-2 border-zinc-200' : ''}>
+                                {!isSingleColumn && (
+                                    <div className="absolute w-3 h-3 rounded-full -left-[7px] top-1.5 ring-4 ring-white" style={{ backgroundColor: accentColor }} />
+                                )}
+                                <div className={isSingleColumn ? 'flex justify-between items-start mb-0.5' : 'flex flex-col sm:flex-row justify-between items-start mb-2'}>
+                                    <div>
+                                        <h3 className={isSingleColumn ? "font-bold text-[13px] text-zinc-900 leading-snug" : "font-bold text-[16px] text-zinc-900"}>{proj.name}</h3>
+                                        {proj.link && <a href={proj.link} target="_blank" rel="noreferrer" className="text-[11px] text-blue-600 font-medium block mt-0.5">{proj.link.replace(/^https?:\/\/(www\.)?/, '')}</a>}
+                                    </div>
+                                    <span className={isSingleColumn ? 'text-[11px] font-semibold text-zinc-500 tracking-wider uppercase whitespace-nowrap' : 'text-[12px] font-bold px-2 py-1 rounded mt-1 sm:mt-0 whitespace-nowrap'}
+                                        style={!isSingleColumn ? { backgroundColor: `${accentColor}1A`, color: accentColor } : {}}>
+                                        {proj.start_date || ''} {proj.start_date && proj.end_date ? '–' : ''} {proj.end_date || ''}
+                                    </span>
+                                </div>
+                                <ul className={isSingleColumn ? 'list-none space-y-2 mt-2' : 'mt-3 space-y-2'}>
+                                    {proj.bullets?.map((bullet: string, j: number) => (
+                                        <li key={j} className={isSingleColumn
+                                            ? 'text-[12px] text-zinc-700 leading-[1.7] pl-3 relative before:content-["•"] before:absolute before:left-0 before:text-zinc-400'
+                                            : 'text-[13px] text-zinc-600 leading-relaxed pl-4 relative before:content-["■"] before:absolute before:left-0 before:top-[4px] before:text-[8px] before:text-zinc-300'
+                                        }>{bullet}</li>
+                                    ))}
+                                </ul>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+            );
+        },
+        certifications: () => {
+            if (!resumeJson?.certifications?.length) return null;
+            return (
+                <section className={isSingleColumn ? 'mb-8' : 'mb-10'} key="certifications">
+                    {isSingleColumn ? (
+                        <h2 className="text-[12px] font-black text-zinc-900 uppercase tracking-widest mb-4 border-b border-zinc-200 pb-2">Certifications</h2>
+                    ) : (
+                        <h2 className="text-sm font-bold tracking-widest uppercase text-zinc-100 border-b border-zinc-700 pb-2 mb-4">Certifications</h2>
+                    )}
+                    <div className={isSingleColumn ? 'space-y-3' : 'space-y-4'}>
+                        {resumeJson.certifications.map((cert: any, i: number) => (
+                            <div key={i} className={isSingleColumn ? 'flex justify-between items-start' : ''}>
+                                <div>
+                                    <h3 className={isSingleColumn ? "font-bold text-[13px] text-zinc-900" : "text-[13px] font-bold text-zinc-100"}>{cert.name}</h3>
+                                    <p className={isSingleColumn ? "text-[12px] text-zinc-600 mt-0.5" : "text-[12px] text-zinc-400 mt-1"}>{cert.issuer}</p>
+                                </div>
+                                {isSingleColumn && cert.date && (
+                                    <span className="text-[11px] font-semibold text-zinc-500 tracking-wider uppercase">{cert.date}</span>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                </section>
+            );
+        },
+        languages: () => {
+            if (!resumeJson?.languages?.length) return null;
+            return (
+                <section className={isSingleColumn ? 'mb-8' : 'mb-10'} key="languages">
+                    {isSingleColumn ? (
+                        <h2 className="text-[12px] font-black text-zinc-900 uppercase tracking-widest mb-3 border-b border-zinc-200 pb-2">Languages</h2>
+                    ) : (
+                        <h2 className="text-sm font-bold tracking-widest uppercase text-zinc-100 border-b border-zinc-700 pb-2 mb-4">Languages</h2>
+                    )}
+                    <div className={isSingleColumn ? 'flex flex-wrap gap-x-6 gap-y-2 text-[12px] text-zinc-700' : 'space-y-3'}>
+                        {resumeJson.languages.map((lang: any, i: number) => (
+                            <div key={i} className={isSingleColumn ? 'flex items-center gap-2' : ''}>
+                                {isSingleColumn ? (
+                                    <>
+                                        <span className="font-bold text-zinc-900 text-[13px]">{lang.language}</span>
+                                        <span className="text-zinc-500 block">•</span>
+                                        <span className="text-[12px] text-zinc-600">{lang.level}</span>
+                                    </>
+                                ) : (
+                                    <>
+                                        <div className="flex justify-between items-center mb-1">
+                                            <span className="text-[13px] font-bold text-zinc-100">{lang.language}</span>
+                                            <span className="text-[11px] text-zinc-400">{lang.level}</span>
+                                        </div>
+                                    </>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                </section>
+            );
+        },
     };
 
     // ─────────────────────────────────────────────────────────────────────────
@@ -568,7 +670,12 @@ export function CVRenderer({ avatarUrl, showPhoto, isPro = true }: CVRendererPro
                 style={{ minHeight: '297mm', WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact', fontFamily } as any}
             >
                 {!isPro && <div className="hidden print:block absolute bottom-0 left-0 right-0 py-4 text-center text-[11px] font-bold text-zinc-400 tracking-widest z-50 uppercase">Created with CV Optimizer AI</div>}
-                {mainSections.map(s => RENDERERS[s]?.())}
+
+                {/* ALWAYS force header to render first, even if user's sectionOrder lacks it */}
+                {RENDERERS['header']?.()}
+
+                {/* Render the rest of the sections, minus header if it exists */}
+                {mainSections.filter(s => s !== 'header').map(s => RENDERERS[s]?.())}
             </div>
         );
     }
