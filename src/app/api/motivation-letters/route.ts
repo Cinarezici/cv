@@ -259,6 +259,8 @@ async function processLetterGeneration(
             pdf_generated_at: new Date().toISOString(),
             share_token: shareToken,
             share_expires_at: shareExpiry,
+            // Auto-publish so the share_token resolves without a manual "Share" click
+            is_public: true,
             generation_status: 'completed',
             generation_error: null,
         }).eq('id', letterId);

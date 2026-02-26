@@ -246,16 +246,16 @@ export default function LetterCreationWizard({
             const data = await res.json();
             if (!res.ok) {
                 if (data.error === 'upgrade_required') toast.error(data.message || 'Upgrade to Pro.');
+                else if (data.error === 'limit_reached') toast.error(data.message || 'Limit reached. Please upgrade.');
                 else throw new Error(data.error || 'Failed to create cover letter.');
             } else {
-                toast.success('✨ Cover letter creation started!');
+                toast.success('✨ Cover letter creation started! Redirecting...');
                 const newLetters: MotivationLetter[] = Array.isArray(data.letters) ? data.letters : (data.letter ? [data.letter] : []);
-
-                // Force a hard redirect from INSIDE the component before it can unmount
-                window.location.href = '/motivation-letters';
-
-                // Still call onSuccess just in case the parent needs state cleanup before the page unloads
                 onSuccess(newLetters);
+                // Small delay to let toast render, then hard redirect
+                setTimeout(() => {
+                    window.location.href = '/motivation-letters';
+                }, 400);
             }
         } catch (err: any) {
             toast.error(err.message || 'An error occurred.');

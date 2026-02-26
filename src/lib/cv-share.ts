@@ -116,12 +116,11 @@ export async function resolveLetterAccess(token: string): Promise<ShareResolved>
     try {
         const supabase = createServiceRoleClient();
 
-        // 1. Fetch Letter
+        // 1. Fetch Letter — access is controlled by share_token + expiry, not is_public flag
         const { data: letter, error: lError } = await supabase
             .from('motivation_letters')
             .select('*')
             .eq('share_token', token)
-            .eq('is_public', true)
             .single();
 
         if (lError || !letter) {
