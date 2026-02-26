@@ -200,9 +200,9 @@ export default function LoginPage() {
             <div className="min-h-screen w-full grid place-items-center px-4 pt-20 pb-10 z-10 relative">
                 <Card className="card-animate w-full max-w-sm border-zinc-800 bg-zinc-900/70 backdrop-blur-xl supports-[backdrop-filter]:bg-zinc-900/60 shadow-2xl">
                     <CardHeader className="space-y-1 text-zinc-100">
-                        <CardTitle className="text-2xl font-semibold">Welcome back</CardTitle>
+                        <CardTitle className="text-2xl font-semibold">Tekrar hoş geldin</CardTitle>
                         <CardDescription className="text-zinc-400">
-                            Sign in to manage and optimize your resumes
+                            CV'lerini yönetmek ve paylaşmak için giriş yap
                         </CardDescription>
                     </CardHeader>
 
@@ -278,7 +278,7 @@ export default function LoginPage() {
                                 disabled={loading}
                                 className="w-full h-10 rounded-lg bg-zinc-50 text-zinc-900 hover:bg-zinc-200 font-medium transition-colors"
                             >
-                                {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : "Sign In"}
+                                {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : "Giriş Yap"}
                             </Button>
                         </form>
 
@@ -302,9 +302,9 @@ export default function LoginPage() {
                     </CardContent>
 
                     <CardFooter className="flex items-center justify-center text-sm text-zinc-500 pb-8">
-                        Don’t have an account?
-                        <Link className="ml-1 text-zinc-300 hover:text-zinc-50 hover:underline transition-all" href="/signup">
-                            Create one
+                        Hesabın yok mu?
+                        <Link className="ml-1 text-primary hover:text-primary/80 hover:underline transition-all" href="/signup">
+                            Oluştur
                         </Link>
                     </CardFooter>
                 </Card>

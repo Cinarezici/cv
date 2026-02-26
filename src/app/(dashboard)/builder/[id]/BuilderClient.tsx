@@ -41,31 +41,31 @@ import type { SectionKey } from "@/types";
 type TabId = "template" | "header" | "summary" | "experience" | "education" | "skills" | "order";
 
 const TABS: { id: TabId; Icon: React.FC<any>; label: string }[] = [
-    { id: "template", Icon: LayoutTemplate, label: "Template" },
-    { id: "header", Icon: User, label: "Personal" },
-    { id: "summary", Icon: AlignLeft, label: "Summary" },
-    { id: "experience", Icon: Briefcase, label: "Experience" },
-    { id: "education", Icon: GraduationCap, label: "Education" },
-    { id: "skills", Icon: Wrench, label: "Skills" },
-    { id: "order", Icon: List, label: "Order" },
+    { id: "template", Icon: LayoutTemplate, label: "Şablon" },
+    { id: "header", Icon: User, label: "Kişisel" },
+    { id: "summary", Icon: AlignLeft, label: "Özet" },
+    { id: "experience", Icon: Briefcase, label: "Deneyim" },
+    { id: "education", Icon: GraduationCap, label: "Eğitim" },
+    { id: "skills", Icon: Wrench, label: "Yetenekler" },
+    { id: "order", Icon: List, label: "Sıralama" },
 ];
 
 const SECTION_LABELS: Record<string, string> = {
-    header: "Personal Information",
-    summary: "Professional Summary",
-    experience: "Work Experience",
-    education: "Education",
-    skills: "Skills",
+    header: "Kişisel Bilgiler",
+    summary: "Profesyonel Özet",
+    experience: "İş Deneyimi",
+    education: "Eğitim Geçmişi",
+    skills: "Yetenekler & Araçlar",
 };
 
 const PANEL_META: Record<TabId, { title: string; subtitle: string }> = {
-    template: { title: "Template", subtitle: "Choose a template that fits your style." },
-    header: { title: "Personal", subtitle: "Fill in your contact information." },
-    summary: { title: "Summary", subtitle: "Write a short professional summary." },
-    experience: { title: "Experience", subtitle: "Add your work history." },
-    education: { title: "Education", subtitle: "Add your education background." },
-    skills: { title: "Skills", subtitle: "List your key skills and tools." },
-    order: { title: "Section Order", subtitle: "Drag sections to reorder your CV." },
+    template: { title: "Şablon", subtitle: "Tarzına en uygun CV şablonunu seç." },
+    header: { title: "Kişisel Bilgiler", subtitle: "İletişim bilgilerinizi ve unvanınızı girin." },
+    summary: { title: "Özet", subtitle: "Kısa ve etkili bir profesyonel özet yazın." },
+    experience: { title: "Deneyim", subtitle: "İş geçmişinizi ve başarılarınızı ekleyin." },
+    education: { title: "Eğitim", subtitle: "Eğitim bilgilerinizi sıralayın." },
+    skills: { title: "Yetenekler", subtitle: "Kullandığınız dil, araç ve teknolojileri ekleyin." },
+    order: { title: "Bölüm Sıralaması", subtitle: "CV'nizdeki bölümlerin sırasını değiştirmek için sürükleyin." },
 };
 
 // Sortable row for "Order" panel
@@ -139,7 +139,7 @@ export default function BuilderClient({ data, avatarUrl, isPro }: { data: any; a
             setHasUnsaved(false);
             setSavedOk(true);
             setTimeout(() => setSavedOk(false), 3000);
-            toast.success("CV saved!");
+            toast.success("CV Kaydedildi!");
         } catch (err: any) {
             toast.error(err.message);
         } finally {
@@ -172,7 +172,7 @@ export default function BuilderClient({ data, avatarUrl, isPro }: { data: any; a
             case "order":
                 return (
                     <div className="space-y-3 p-4">
-                        <p className="text-xs text-gray-400">Drag to reorder sections in your CV.</p>
+                        <p className="text-xs text-gray-400">CV'nizdeki bölümleri yeniden sıralamak için sürükleyip bırakın.</p>
                         <DndContext id="builder-order-dnd" sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
                             <SortableContext items={sectionOrder.filter(k => k in SECTION_LABELS)} strategy={verticalListSortingStrategy}>
                                 <div className="flex flex-col gap-2">
@@ -198,14 +198,14 @@ export default function BuilderClient({ data, avatarUrl, isPro }: { data: any; a
             <header className="h-12 shrink-0 bg-white border-b border-gray-200 flex items-center px-4 gap-3 z-10">
                 <button
                     onClick={() => router.push("/dashboard")}
-                    className="flex items-center gap-1.5 text-sm font-semibold text-gray-500 hover:text-gray-900 transition-colors"
+                    className="flex items-center gap-1.5 text-sm font-semibold text-foreground/60 hover:text-foreground transition-colors"
                 >
                     <ArrowLeft className="w-4 h-4" />
-                    Back to Dashboard
+                    Panele Dön
                 </button>
 
                 <div className="flex-1 flex items-center justify-center gap-2">
-                    <span className="font-bold text-gray-900 text-sm">CV Builder</span>
+                    <span className="font-bold text-foreground text-sm">CV Editor</span>
                     <span className={`text-[11px] font-bold px-2 py-0.5 rounded-full border ${isPro
                         ? 'bg-amber-50 text-amber-600 border-amber-200'
                         : 'bg-blue-50 text-blue-600 border-blue-100'
@@ -225,10 +225,10 @@ export default function BuilderClient({ data, avatarUrl, isPro }: { data: any; a
                         }`}
                 >
                     {saving
-                        ? <><Loader2 className="w-4 h-4 animate-spin" /> Saving...</>
+                        ? <><Loader2 className="w-4 h-4 animate-spin" /> Kaydediliyor...</>
                         : savedOk
-                            ? <><Check className="w-4 h-4" /> Saved!</>
-                            : <><Save className="w-4 h-4" /> Save CV</>
+                            ? <><Check className="w-4 h-4" /> Kaydedildi!</>
+                            : <><Save className="w-4 h-4" /> Kaydet</>
                     }
                 </button>
 
@@ -288,46 +288,50 @@ export default function BuilderClient({ data, avatarUrl, isPro }: { data: any; a
                                 }`}
                         >
                             {saving
-                                ? <><Loader2 className="w-4 h-4 animate-spin" /> Saving...</>
+                                ? <><Loader2 className="w-4 h-4 animate-spin" /> Kaydediliyor...</>
                                 : savedOk
-                                    ? <><Check className="w-4 h-4" /> Saved!</>
-                                    : <><Save className="w-4 h-4" /> Save CV</>
+                                    ? <><Check className="w-4 h-4" /> Kaydedildi!</>
+                                    : <><Save className="w-4 h-4" /> Değişiklikleri Kaydet</>
                             }
                         </button>
                     </div>
                 </aside>
 
                 {/* ── Live Preview — dark bg, A4 scaled to fit ─────────── */}
-                <main className="flex-1 flex flex-col overflow-hidden bg-[#0d1117]">
-                    <div className="flex items-center justify-between px-6 py-2.5 border-b border-white/10 shrink-0">
-                        <span className="text-white/60 text-xs font-semibold tracking-wide">Live Preview</span>
+                <main className="flex-1 flex flex-col overflow-hidden bg-zinc-950/5 dark:bg-zinc-950 relative">
+                    <div className="absolute inset-0 pointer-events-none [background:radial-gradient(80%_80%_at_50%_10%,rgba(0,0,0,0.02),transparent)] dark:[background:radial-gradient(80%_80%_at_50%_10%,rgba(255,255,255,0.02),transparent)]"></div>
+                    <div className="flex items-center justify-between px-6 py-2.5 border-b border-border/20 shrink-0 glass relative z-10 shadow-sm">
+                        <span className="text-foreground/80 text-xs font-semibold tracking-wide flex items-center gap-2">
+                            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                            Canlı Önizleme
+                        </span>
                         <div className="flex items-center gap-2">
                             {hasUnsaved && (
-                                <span className="flex items-center gap-1.5 text-amber-400 text-[11px] font-semibold">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
-                                    Unsaved changes
+                                <span className="flex items-center gap-1.5 text-amber-500 text-[11px] font-semibold bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
+                                    Kaydedilmemiş değişiklikler
                                 </span>
                             )}
                             {/* Zoom Controls */}
                             <div className="flex items-center gap-1 ml-4">
                                 <button
                                     onClick={handleZoomOut}
-                                    title="Zoom Out"
-                                    className="w-7 h-7 flex items-center justify-center rounded-md text-white/60 hover:text-white hover:bg-white/10 transition-colors text-base font-bold"
+                                    title="Uzaklaştır"
+                                    className="w-7 h-7 flex items-center justify-center rounded-md text-foreground/60 hover:text-foreground hover:bg-foreground/10 transition-colors text-base font-bold"
                                 >
                                     −
                                 </button>
                                 <button
                                     onClick={handleZoomReset}
-                                    title="Reset Zoom"
-                                    className="px-2 h-7 rounded-md text-white/50 hover:text-white hover:bg-white/10 transition-colors text-[11px] font-bold tabular-nums"
+                                    title="Sıfırla"
+                                    className="px-2 h-7 rounded-md text-foreground/50 hover:text-foreground hover:bg-foreground/10 transition-colors text-[11px] font-bold tabular-nums"
                                 >
                                     {Math.round(zoom * 100)}%
                                 </button>
                                 <button
                                     onClick={handleZoomIn}
-                                    title="Zoom In"
-                                    className="w-7 h-7 flex items-center justify-center rounded-md text-white/60 hover:text-white hover:bg-white/10 transition-colors text-base font-bold"
+                                    title="Yakınlaştır"
+                                    className="w-7 h-7 flex items-center justify-center rounded-md text-foreground/60 hover:text-foreground hover:bg-foreground/10 transition-colors text-base font-bold"
                                 >
                                     +
                                 </button>
