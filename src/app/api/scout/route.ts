@@ -7,12 +7,13 @@ export const dynamic = 'force-dynamic';
 
 export async function POST(request: NextRequest) {
     try {
-        const apify = new ApifyClient({ token: process.env.APIFY_API_TOKEN });
+        const token = process.env.APIFY_API_TOKEN || process.env.NEXT_PUBLIC_APIFY_API_TOKEN;
+        const apify = new ApifyClient({ token: token || 'dummy' });
         const supabase = await createClient();
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-        if (!process.env.APIFY_API_TOKEN) {
+        if (!token) {
             return NextResponse.json({ error: 'Apify API Token is missing' }, { status: 500 });
         }
 

@@ -5,13 +5,13 @@ import { checkUsageLimits, logJobSearch } from '@/lib/limits';
 
 export const dynamic = 'force-dynamic';
 
-const APIFY_API_TOKEN = process.env.APIFY_API_TOKEN;
 const ACTOR_ID = 'curious_coder/linkedin-jobs-scraper';
 
 // POST: Start the job search run
 export async function POST(request: NextRequest) {
     try {
-        const apify = new ApifyClient({ token: APIFY_API_TOKEN });
+        const APIFY_API_TOKEN = process.env.APIFY_API_TOKEN || process.env.NEXT_PUBLIC_APIFY_API_TOKEN;
+        const apify = new ApifyClient({ token: APIFY_API_TOKEN || 'dummy' });
         const supabase = await createClient();
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -71,7 +71,8 @@ async function performLogging(userId: string, keywords: string, location: string
 // GET: Check status and get results
 export async function GET(request: NextRequest) {
     try {
-        const apify = new ApifyClient({ token: APIFY_API_TOKEN });
+        const APIFY_API_TOKEN = process.env.APIFY_API_TOKEN || process.env.NEXT_PUBLIC_APIFY_API_TOKEN;
+        const apify = new ApifyClient({ token: APIFY_API_TOKEN || 'dummy' });
         const { searchParams } = new URL(request.url);
         const runId = searchParams.get('runId');
         const datasetId = searchParams.get('datasetId');

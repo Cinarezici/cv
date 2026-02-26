@@ -71,6 +71,24 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'No URL or Text provided' }, { status: 400 });
     }
 
+    // --- enforces maximum 4 profile limit ---
+    const { count: profileCount, error: countError } = await supabase
+      .from('profiles')
+      .select('*', { count: 'exact', head: true })
+      .eq('user_id', user.id);
+
+    if (countError) {
+      console.error('Error fetching profile count:', countError);
+      return NextResponse.json({ error: 'Failed to verify profile limits.' }, { status: 500 });
+    }
+
+    if (profileCount && profileCount >= 4) {
+      return NextResponse.json({
+        error: 'Profile limit reached. You can have a maximum of 4 profiles. Please delete an older profile from the Create Base CV screen to add a new one.'
+      }, { status: 403 });
+    }
+    // -----------------------------------------
+
     let contentToParse = '';
 
     if (linkedinText) {

@@ -46,6 +46,24 @@ export async function POST(request: NextRequest) {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
+    // --- enforces maximum 4 profile limit ---
+    const { count: profileCount, error: countError } = await supabase
+      .from('profiles')
+      .select('*', { count: 'exact', head: true })
+      .eq('user_id', user.id);
+
+    if (countError) {
+      console.error('Error fetching profile count:', countError);
+      return NextResponse.json({ error: 'Failed to verify profile limits.' }, { status: 500 });
+    }
+
+    if (profileCount && profileCount >= 4) {
+      return NextResponse.json({
+        error: 'Profile limit reached. You can have a maximum of 4 profiles. Please delete an older profile from the Create Base CV screen to add a new one.'
+      }, { status: 403 });
+    }
+    // -----------------------------------------
+
     const formData = await request.formData();
     const file = formData.get('file') as File | null;
 
@@ -55,10 +73,16 @@ export async function POST(request: NextRequest) {
 
     const bytes = await file.arrayBuffer();
 
-    // Use pdf-parse for reliable server-side extraction
-    const pdf = require('pdf-parse');
-    const pdfData = await pdf(Buffer.from(bytes));
-    let textToParse = pdfData.text;
+    // Use pdf2json for reliable server-side extraction without DOM dependencies
+    const PDFParser = (await import('pdf2json')).default;
+
+    let textToParse = await new Promise<string>((resolve, reject) => {
+      // @ts-ignore
+      const pdfParser = new PDFParser(null, 1);
+      pdfParser.on("pdfParser_dataError", (errData: any) => reject(errData.parserError));
+      pdfParser.on("pdfParser_dataReady", () => resolve(pdfParser.getRawTextContent()));
+      pdfParser.parseBuffer(Buffer.from(bytes));
+    });
 
     if (!textToParse || textToParse.trim().length === 0) {
       return NextResponse.json({ error: 'No readable text in PDF' }, { status: 400 });
