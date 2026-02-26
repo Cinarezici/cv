@@ -75,22 +75,31 @@ export async function POST(request: NextRequest) {
         };
 
         // Create a fresh resume record
+        // NOTE: profile_id is intentionally omitted when null so we don't
+        // violate a NOT NULL constraint in the resumes table. If the column
+        // is nullable, it will be stored as NULL; if it is NOT NULL in the DB,
+        // we must NOT pass null — we simply leave it up to the DB default.
+        const insertPayload: Record<string, any> = {
+            user_id: user.id,
+            job_title: 'New CV',
+            public_link_slug: crypto.randomUUID(),
+            optimized_json: initialJson,
+            theme_id: 'clean-ats',
+            theme_category: 'standard',
+            color_palette_id: 'default',
+            section_order: ['summary', 'experience', 'education', 'skills'],
+            hidden_sections: [],
+            is_active: true,
+            updated_at: new Date().toISOString(),
+        };
+
+        if (profile?.id) {
+            insertPayload.profile_id = profile.id;
+        }
+
         const { data: resume, error } = await supabase
             .from('resumes')
-            .insert({
-                user_id: user.id,
-                profile_id: profile?.id || null, // Can be null if creating from absolute scratch
-                job_title: 'New CV',
-                public_link_slug: crypto.randomUUID(),
-                optimized_json: initialJson,
-                theme_id: 'clean-ats',
-                theme_category: 'standard',
-                color_palette_id: 'default',
-                section_order: ['summary', 'experience', 'education', 'skills'],
-                hidden_sections: [],
-                is_active: true,
-                updated_at: new Date().toISOString()
-            })
+            .insert(insertPayload)
             .select('id')
             .single();
 
