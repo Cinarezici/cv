@@ -168,7 +168,7 @@ export default function Home() {
           >
             <div className="relative w-full h-full bg-white rounded-3xl overflow-hidden border border-zinc-200 shadow-2xl">
               <Image
-                src="/brain/4caa0719-c41e-493e-b1e9-b0c20d032070/cv_editor_preview_mockup_v2_1772087254285.png"
+                src="/cv_mockup.png"
                 alt="AI CV Editor Mockup"
                 fill
                 className="object-cover"
