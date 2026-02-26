@@ -39,6 +39,7 @@ export function CVRenderer({ avatarUrl, showPhoto, isPro = true }: CVRendererPro
 
     const isSingleColumn = currentThemeConfig.layout === 'single_column';
     const isCreative = themeId === 'creative-visual';
+    const isExecutive = themeId === 'executive-ats';
     const showIcons = currentThemeConfig.allowsIcons;
     const showPhotoConfig = currentThemeConfig.allowsPhoto && currentShowPhoto;
 
@@ -160,19 +161,26 @@ export function CVRenderer({ avatarUrl, showPhoto, isPro = true }: CVRendererPro
                     )}
                     <div className={isSingleColumn ? 'space-y-4' : 'grid grid-cols-1 gap-4'}>
                         {resumeJson.education.map((edu: any, i: number) => (
-                            <div key={i} className={isSingleColumn ? 'flex justify-between items-start' : 'bg-zinc-50 p-4 rounded-lg border border-zinc-100'}>
-                                <div>
-                                    <h3 className={isSingleColumn ? 'font-bold text-[15px] text-zinc-900' : 'font-bold text-zinc-900 text-[14px]'}>
-                                        {edu.degree}{edu.field ? ` in ${edu.field}` : ''}
-                                    </h3>
-                                    <p className={isSingleColumn ? 'text-[14px] text-zinc-700 mt-0.5' : 'text-[13px] text-zinc-500 mt-1'}>{edu.school}</p>
+                            <div key={i} className={isSingleColumn ? 'flex flex-col mb-1.5' : 'bg-zinc-50 p-4 rounded-lg border border-zinc-100 flex flex-col'}>
+                                <div className={isSingleColumn ? 'flex justify-between items-start' : 'flex justify-between items-start w-full'}>
+                                    <div>
+                                        <h3 className={isSingleColumn ? 'font-bold text-[15px] text-zinc-900' : 'font-bold text-zinc-900 text-[14px]'}>
+                                            {edu.degree}{edu.field ? ` in ${edu.field}` : ''}
+                                        </h3>
+                                        <p className={isSingleColumn ? 'text-[14px] text-zinc-700 mt-0.5' : 'text-[13px] text-zinc-500 mt-1'}>{edu.school}</p>
+                                    </div>
+                                    <div className={isSingleColumn ? 'text-right' : 'text-[12px] font-semibold text-zinc-400 flex flex-col items-end'}>
+                                        <span className={isSingleColumn ? 'text-[13px] font-semibold text-zinc-600 block' : ''}>
+                                            {edu.start_date}{edu.start_date && edu.end_date ? ' - ' : ''}{edu.is_current ? 'Present' : edu.end_date}
+                                        </span>
+                                        {edu.gpa && <span className="text-[12px] text-zinc-500 mt-0.5">GPA: {edu.gpa}</span>}
+                                    </div>
                                 </div>
-                                <div className={isSingleColumn ? 'text-right' : 'text-[12px] font-semibold text-zinc-400 flex flex-col items-end'}>
-                                    <span className={isSingleColumn ? 'text-[13px] font-semibold text-zinc-600 block' : ''}>
-                                        {edu.start_date}{edu.start_date && edu.end_date ? ' - ' : ''}{edu.is_current ? 'Present' : edu.end_date}
-                                    </span>
-                                    {edu.gpa && <span className="text-[12px] text-zinc-500 mt-0.5">GPA: {edu.gpa}</span>}
-                                </div>
+                                {edu.honors && (
+                                    <div className={isSingleColumn ? 'mt-1.5 text-[13px] text-zinc-600 leading-relaxed' : 'mt-3 text-[12px] text-zinc-500 leading-relaxed'}>
+                                        <span className="font-semibold text-zinc-700">Honors & Activities:</span> {edu.honors}
+                                    </div>
+                                )}
                             </div>
                         ))}
                     </div>
@@ -322,9 +330,13 @@ export function CVRenderer({ avatarUrl, showPhoto, isPro = true }: CVRendererPro
                                         <div key={i} className="bg-white p-4 rounded-xl border border-zinc-100 shadow-sm">
                                             <p className="text-[13px] font-black text-zinc-900 leading-snug">{edu.degree}{edu.field ? ` in ${edu.field}` : ''}</p>
                                             <p className="text-[12px] text-zinc-500 font-bold mt-1 uppercase tracking-wide">{edu.school}</p>
-                                            <p className="text-[11px] text-zinc-400 font-bold mt-2">
-                                                {edu.start_date} - {edu.is_current ? 'Present' : edu.end_date}
-                                            </p>
+                                            <div className="flex justify-between items-end mt-2">
+                                                <p className="text-[11px] text-zinc-400 font-bold">
+                                                    {edu.start_date} - {edu.is_current ? 'Present' : edu.end_date}
+                                                </p>
+                                                {edu.gpa && <p className="text-[10px] font-bold text-zinc-400">GPA: {edu.gpa}</p>}
+                                            </div>
+                                            {edu.honors && <p className="text-[11px] text-zinc-500 mt-2 leading-relaxed"><span className="font-bold text-zinc-700">Honors:</span> {edu.honors}</p>}
                                         </div>
                                     ))}
                                 </div>
@@ -364,6 +376,131 @@ export function CVRenderer({ avatarUrl, showPhoto, isPro = true }: CVRendererPro
                 {/* Footer */}
                 <div className="text-center py-4 text-[10px] text-zinc-300 border-t border-zinc-100 mt-4">
                     Created with CV Optimizer
+                </div>
+            </div>
+        );
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // EXECUTIVE TEMPLATE — Distinct Premium Two-Column Layout
+    // ─────────────────────────────────────────────────────────────────────────
+    if (isExecutive) {
+        return (
+            <div
+                className="max-w-[210mm] w-full bg-white shadow-2xl print:shadow-none shrink-0 relative flex flex-col"
+                style={{ minHeight: '297mm', fontFamily, WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact' } as any}
+            >
+                {!isPro && <div className="hidden print:block absolute bottom-0 left-0 right-0 py-4 text-center text-[11px] font-bold text-zinc-400 tracking-widest z-50 uppercase">Created with CV Optimizer AI</div>}
+
+                {/* Header Profile Block */}
+                <div className="p-10 border-b-[8px]" style={{ borderColor: accentColor }}>
+                    <div className="flex justify-between items-end">
+                        <div className="flex-1">
+                            <h1 className="text-5xl font-black text-zinc-900 tracking-tighter uppercase leading-none">{name}</h1>
+                            {headline && (
+                                <p className="text-xl font-medium mt-3" style={{ color: accentColor }}>{headline}</p>
+                            )}
+                        </div>
+                        <div className="flex flex-col items-end text-[12px] font-semibold text-zinc-600 space-y-1.5 text-right w-1/3">
+                            {email && <span>{email}</span>}
+                            {phone && <span>{phone}</span>}
+                            {location && <span>{location}</span>}
+                            {linkedin && <span>{linkedin.replace(/^https?:\/\/(www\.)?/, '')}</span>}
+                        </div>
+                    </div>
+                </div>
+
+                <div className="flex flex-1">
+                    {/* Left Column (Skills & Ed) */}
+                    <div className="w-[30%] bg-zinc-50 p-8 border-r border-zinc-200">
+                        {/* Skills */}
+                        {(resumeJson?.skills?.core?.length ?? 0) > 0 && (
+                            <section className="mb-10">
+                                <h2 className="text-sm font-black uppercase tracking-widest text-zinc-900 mb-5 border-b-2 pb-2" style={{ borderColor: accentColor }}>
+                                    Core Competencies
+                                </h2>
+                                <div className="space-y-3 text-[13px] text-zinc-700 font-medium">
+                                    {resumeJson.skills.core?.map((skill: string, i: number) => (
+                                        <div key={i} className="flex items-center gap-2">
+                                            <div className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: accentColor }} />
+                                            <span className="leading-snug">{skill}</span>
+                                        </div>
+                                    ))}
+                                    {resumeJson.skills.tools?.map((tool: string, i: number) => (
+                                        <div key={`t${i}`} className="flex items-center gap-2 text-zinc-500">
+                                            <div className="w-1 h-1 rounded-full shrink-0 bg-zinc-300" />
+                                            <span className="leading-snug">{tool}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </section>
+                        )}
+
+                        {/* Education */}
+                        {resumeJson?.education?.length > 0 && (
+                            <section>
+                                <h2 className="text-sm font-black uppercase tracking-widest text-zinc-900 mb-5 border-b-2 pb-2" style={{ borderColor: accentColor }}>
+                                    Education
+                                </h2>
+                                <div className="space-y-6">
+                                    {resumeJson.education.map((edu: any, i: number) => (
+                                        <div key={i}>
+                                            <h3 className="font-bold text-[14px] text-zinc-900 leading-snug">{edu.degree}{edu.field ? ` in ${edu.field}` : ''}</h3>
+                                            <p className="text-[12px] font-medium text-zinc-600 mt-1">{edu.school}</p>
+                                            <p className="text-[11px] font-bold text-zinc-400 uppercase tracking-widest mt-1.5">
+                                                {edu.start_date} - {edu.is_current ? 'Present' : edu.end_date}
+                                            </p>
+                                            {edu.gpa && <p className="text-[11px] font-bold text-zinc-500 mt-0.5">GPA: {edu.gpa}</p>}
+                                            {edu.honors && <p className="text-[11px] text-zinc-600 mt-1 leading-snug"><span className="font-bold text-zinc-800">Honors:</span> {edu.honors}</p>}
+                                        </div>
+                                    ))}
+                                </div>
+                            </section>
+                        )}
+                    </div>
+
+                    {/* Right Column (Summary & Exp) */}
+                    <div className="flex-1 p-8 pl-10">
+                        {resumeJson?.summary && (
+                            <section className="mb-10">
+                                <h2 className="text-sm font-black uppercase tracking-widest text-zinc-900 mb-4 flex items-center gap-3">
+                                    <span className="w-6 h-0.5" style={{ backgroundColor: accentColor }}></span>
+                                    Executive Summary
+                                </h2>
+                                <p className="text-[14px] leading-relaxed text-zinc-700 text-justify">{resumeJson.summary}</p>
+                            </section>
+                        )}
+
+                        {resumeJson?.experience?.length > 0 && (
+                            <section>
+                                <h2 className="text-sm font-black uppercase tracking-widest text-zinc-900 mb-6 flex items-center gap-3">
+                                    <span className="w-6 h-0.5" style={{ backgroundColor: accentColor }}></span>
+                                    Professional Experience
+                                </h2>
+                                <div className="space-y-8">
+                                    {resumeJson.experience.map((exp: any, i: number) => (
+                                        <div key={i} className="relative">
+                                            <div className="flex justify-between items-start mb-1">
+                                                <h3 className="text-[16px] font-black text-zinc-900 leading-tight">{exp.role}</h3>
+                                                <span className="text-[12px] font-bold text-zinc-500 uppercase tracking-wider shrink-0 ml-4">
+                                                    {exp.start_date} - {exp.is_current ? 'Present' : exp.end_date}
+                                                </span>
+                                            </div>
+                                            <p className="text-[14px] font-bold mt-1 mb-3" style={{ color: accentColor }}>{exp.company}{exp.location && ` | ${exp.location}`}</p>
+
+                                            <ul className="space-y-2 mt-2">
+                                                {exp.bullets?.map((bullet: string, j: number) => (
+                                                    <li key={j} className="text-[13px] text-zinc-700 leading-relaxed pl-5 relative before:absolute before:left-0 before:top-[7px] before:w-1.5 before:h-1.5 before:border before:border-zinc-400 before:rotate-45">
+                                                        {bullet}
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    ))}
+                                </div>
+                            </section>
+                        )}
+                    </div>
                 </div>
             </div>
         );

@@ -40,9 +40,7 @@ export default function ImportPage() {
         }
 
         if (!isPro) {
-            setError(isLinkedInUrl ? "LinkedIn URL import" : "Manual Text import" + " is a Pro feature. Please use PDF Upload or upgrade.");
-            const event = new CustomEvent('open-upgrade-modal');
-            window.dispatchEvent(event);
+            router.push('/upgrade');
             return;
         }
 
@@ -288,6 +286,12 @@ export default function ImportPage() {
                                 placeholder="Paste your resume text here..."
                                 className="w-full h-48 bg-white border border-zinc-300 rounded-xl p-4 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all"
                             />
+                            {error && (
+                                <div className="flex items-center gap-2 text-rose-600 bg-rose-50 p-4 rounded-lg border border-rose-200">
+                                    <AlertCircle className="h-5 w-5 shrink-0" />
+                                    <p className="text-sm font-medium">{error}</p>
+                                </div>
+                            )}
                             {proLoading ? (
                                 <div className="h-12 w-full bg-zinc-100 animate-pulse rounded-lg flex items-center justify-center">
                                     <Loader2 className="w-4 h-4 animate-spin text-zinc-400" />

@@ -67,6 +67,8 @@ export async function POST(request: NextRequest) {
             jobConfigs: JobConfig[]
         };
 
+        console.log("-> Parsed request payload:", { companies: companies.length, cvId });
+
         // 1. Fetch CV Data
         let resumeJSON: any = null;
         const { data: cv } = await supabase.from('resumes').select('*').eq('id', cvId).eq('user_id', user.id).single();
@@ -92,15 +94,19 @@ export async function POST(request: NextRequest) {
         }
 
         // 2. Check Plan & Limits
+        console.log("-> Fetching subscription for user", user.id);
         const { data: sub } = await supabase.from('subscriptions').select('*').eq('user_id', user.id).single();
         const isPro = sub?.status === 'active';
+        console.log("-> isPro?", isPro);
 
         if (!isPro && companies.length > 1) {
             return NextResponse.json({ error: 'upgrade_required', message: 'Toplu mektup oluşturma sadece Pro planda geçerlidir.' }, { status: 403 });
         }
 
+        console.log("-> Checking usage limits...");
         const { checkUsageLimits } = await import('@/lib/limits');
         const { allowed, reason } = await checkUsageLimits(user.id, 'create_letter');
+        console.log("-> Usage limit result:", { allowed, reason });
         if (!allowed) {
             return NextResponse.json({ error: 'limit_reached', message: reason }, { status: 403 });
         }
@@ -131,11 +137,12 @@ export async function POST(request: NextRequest) {
             }).select().single();
 
             if (insertError) {
-                console.error("DB insert failed:", insertError.message);
+                console.error("-> DB insert failed:", insertError.message);
                 return NextResponse.json({ error: 'DB insert failed: ' + insertError.message }, { status: 500 });
             }
 
             if (letter) {
+                console.log("-> Inserted letter mapping", letter.id);
                 createdLetters.push(letter);
 
                 // Fire and forget, but inside this handler's scope
@@ -158,6 +165,7 @@ export async function POST(request: NextRequest) {
 
     } catch (error: any) {
         console.error("Create letter API error:", error);
+        try { require('fs').appendFileSync('/tmp/letter-api-error.log', new Date().toISOString() + ' ERROR: ' + error.message + '\n' + error.stack + '\n'); } catch (e) { }
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }

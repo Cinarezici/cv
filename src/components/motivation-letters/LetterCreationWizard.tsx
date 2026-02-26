@@ -249,8 +249,12 @@ export default function LetterCreationWizard({
                 else throw new Error(data.error || 'Failed to create cover letter.');
             } else {
                 toast.success('✨ Cover letter creation started!');
-                // Pass new letters back so the dashboard can start polling immediately
                 const newLetters: MotivationLetter[] = Array.isArray(data.letters) ? data.letters : (data.letter ? [data.letter] : []);
+
+                // Force a hard redirect from INSIDE the component before it can unmount
+                window.location.href = '/motivation-letters';
+
+                // Still call onSuccess just in case the parent needs state cleanup before the page unloads
                 onSuccess(newLetters);
             }
         } catch (err: any) {

@@ -3,11 +3,6 @@ import { getOpenAI } from '@/lib/openai-client';
 
 export const dynamic = 'force-dynamic';
 import { createClient } from '@/lib/supabase/server';
-// @ts-ignore
-import * as pdfjsLib from 'pdfjs-dist/build/pdf.js';
-
-// Suppress worker loading warning on server side
-pdfjsLib.GlobalWorkerOptions.workerSrc = '';
 
 const PARSE_PROMPT = `You are a resume parser. Extract information from the structured LinkedIn profile data or raw text below and return ONLY a valid JSON object with this exact structure:
 {
@@ -60,17 +55,10 @@ export async function POST(request: NextRequest) {
 
     const bytes = await file.arrayBuffer();
 
-    // Parse PDF text using pdfjs-dist
-    const loadingTask = pdfjsLib.getDocument({ data: new Uint8Array(bytes) });
-    const pdfDocument = await loadingTask.promise;
-
-    let textToParse = '';
-    for (let i = 1; i <= pdfDocument.numPages; i++) {
-      const page = await pdfDocument.getPage(i);
-      const textContent = await page.getTextContent();
-      const pageText = textContent.items.map((item: any) => item.str).join(' ');
-      textToParse += pageText + '\n';
-    }
+    // Use pdf-parse for reliable server-side extraction
+    const pdf = require('pdf-parse');
+    const pdfData = await pdf(Buffer.from(bytes));
+    let textToParse = pdfData.text;
 
     if (!textToParse || textToParse.trim().length === 0) {
       return NextResponse.json({ error: 'No readable text in PDF' }, { status: 400 });
