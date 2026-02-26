@@ -41,31 +41,31 @@ import type { SectionKey } from "@/types";
 type TabId = "template" | "header" | "summary" | "experience" | "education" | "skills" | "order";
 
 const TABS: { id: TabId; Icon: React.FC<any>; label: string }[] = [
-    { id: "template", Icon: LayoutTemplate, label: "Şablon" },
-    { id: "header", Icon: User, label: "Kişisel" },
-    { id: "summary", Icon: AlignLeft, label: "Özet" },
-    { id: "experience", Icon: Briefcase, label: "Deneyim" },
-    { id: "education", Icon: GraduationCap, label: "Eğitim" },
-    { id: "skills", Icon: Wrench, label: "Yetenekler" },
-    { id: "order", Icon: List, label: "Sıralama" },
+    { id: "template", Icon: LayoutTemplate, label: "Template" },
+    { id: "header", Icon: User, label: "Personal" },
+    { id: "summary", Icon: AlignLeft, label: "Summary" },
+    { id: "experience", Icon: Briefcase, label: "Experience" },
+    { id: "education", Icon: GraduationCap, label: "Education" },
+    { id: "skills", Icon: Wrench, label: "Skills" },
+    { id: "order", Icon: List, label: "Order" },
 ];
 
 const SECTION_LABELS: Record<string, string> = {
-    header: "Kişisel Bilgiler",
-    summary: "Profesyonel Özet",
-    experience: "İş Deneyimi",
-    education: "Eğitim Geçmişi",
-    skills: "Yetenekler & Araçlar",
+    header: "Personal Information",
+    summary: "Professional Summary",
+    experience: "Work Experience",
+    education: "Education History",
+    skills: "Skills & Tools",
 };
 
 const PANEL_META: Record<TabId, { title: string; subtitle: string }> = {
-    template: { title: "Şablon", subtitle: "Tarzına en uygun CV şablonunu seç." },
-    header: { title: "Kişisel Bilgiler", subtitle: "İletişim bilgilerinizi ve unvanınızı girin." },
-    summary: { title: "Özet", subtitle: "Kısa ve etkili bir profesyonel özet yazın." },
-    experience: { title: "Deneyim", subtitle: "İş geçmişinizi ve başarılarınızı ekleyin." },
-    education: { title: "Eğitim", subtitle: "Eğitim bilgilerinizi sıralayın." },
-    skills: { title: "Yetenekler", subtitle: "Kullandığınız dil, araç ve teknolojileri ekleyin." },
-    order: { title: "Bölüm Sıralaması", subtitle: "CV'nizdeki bölümlerin sırasını değiştirmek için sürükleyin." },
+    template: { title: "Template", subtitle: "Choose the best CV template for your style." },
+    header: { title: "Personal Information", subtitle: "Enter your contact details and title." },
+    summary: { title: "Summary", subtitle: "Write a brief and effective professional summary." },
+    experience: { title: "Experience", subtitle: "Add your work history and achievements." },
+    education: { title: "Education", subtitle: "List your education details." },
+    skills: { title: "Skills", subtitle: "Add the languages, tools, and technologies you use." },
+    order: { title: "Section Ordering", subtitle: "Drag and drop to reorder sections in your CV." },
 };
 
 // Sortable row for "Order" panel
@@ -139,7 +139,7 @@ export default function BuilderClient({ data, avatarUrl, isPro }: { data: any; a
             setHasUnsaved(false);
             setSavedOk(true);
             setTimeout(() => setSavedOk(false), 3000);
-            toast.success("CV Kaydedildi!");
+            toast.success("CV Saved!");
         } catch (err: any) {
             toast.error(err.message);
         } finally {
@@ -172,7 +172,7 @@ export default function BuilderClient({ data, avatarUrl, isPro }: { data: any; a
             case "order":
                 return (
                     <div className="space-y-3 p-4">
-                        <p className="text-xs text-gray-400">CV'nizdeki bölümleri yeniden sıralamak için sürükleyip bırakın.</p>
+                        <p className="text-xs text-gray-400">Drag and drop to reorder sections in your CV.</p>
                         <DndContext id="builder-order-dnd" sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
                             <SortableContext items={sectionOrder.filter(k => k in SECTION_LABELS)} strategy={verticalListSortingStrategy}>
                                 <div className="flex flex-col gap-2">
@@ -201,7 +201,7 @@ export default function BuilderClient({ data, avatarUrl, isPro }: { data: any; a
                     className="flex items-center gap-1.5 text-sm font-semibold text-foreground/60 hover:text-foreground transition-colors"
                 >
                     <ArrowLeft className="w-4 h-4" />
-                    Panele Dön
+                    Back to Dashboard
                 </button>
 
                 <div className="flex-1 flex items-center justify-center gap-2">
@@ -225,10 +225,10 @@ export default function BuilderClient({ data, avatarUrl, isPro }: { data: any; a
                         }`}
                 >
                     {saving
-                        ? <><Loader2 className="w-4 h-4 animate-spin" /> Kaydediliyor...</>
+                        ? <><Loader2 className="w-4 h-4 animate-spin" /> Saving...</>
                         : savedOk
-                            ? <><Check className="w-4 h-4" /> Kaydedildi!</>
-                            : <><Save className="w-4 h-4" /> Kaydet</>
+                            ? <><Check className="w-4 h-4" /> Saved!</>
+                            : <><Save className="w-4 h-4" /> Save</>
                     }
                 </button>
 
@@ -288,10 +288,10 @@ export default function BuilderClient({ data, avatarUrl, isPro }: { data: any; a
                                 }`}
                         >
                             {saving
-                                ? <><Loader2 className="w-4 h-4 animate-spin" /> Kaydediliyor...</>
+                                ? <><Loader2 className="w-4 h-4 animate-spin" /> Saving...</>
                                 : savedOk
-                                    ? <><Check className="w-4 h-4" /> Kaydedildi!</>
-                                    : <><Save className="w-4 h-4" /> Değişiklikleri Kaydet</>
+                                    ? <><Check className="w-4 h-4" /> Saved!</>
+                                    : <><Save className="w-4 h-4" /> Save Changes</>
                             }
                         </button>
                     </div>
@@ -303,34 +303,34 @@ export default function BuilderClient({ data, avatarUrl, isPro }: { data: any; a
                     <div className="flex items-center justify-between px-6 py-2.5 border-b border-border/20 shrink-0 glass relative z-10 shadow-sm">
                         <span className="text-foreground/80 text-xs font-semibold tracking-wide flex items-center gap-2">
                             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                            Canlı Önizleme
+                            Live Preview
                         </span>
                         <div className="flex items-center gap-2">
                             {hasUnsaved && (
                                 <span className="flex items-center gap-1.5 text-amber-500 text-[11px] font-semibold bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
                                     <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
-                                    Kaydedilmemiş değişiklikler
+                                    Unsaved changes
                                 </span>
                             )}
                             {/* Zoom Controls */}
                             <div className="flex items-center gap-1 ml-4">
                                 <button
                                     onClick={handleZoomOut}
-                                    title="Uzaklaştır"
+                                    title="Zoom Out"
                                     className="w-7 h-7 flex items-center justify-center rounded-md text-foreground/60 hover:text-foreground hover:bg-foreground/10 transition-colors text-base font-bold"
                                 >
                                     −
                                 </button>
                                 <button
                                     onClick={handleZoomReset}
-                                    title="Sıfırla"
+                                    title="Reset"
                                     className="px-2 h-7 rounded-md text-foreground/50 hover:text-foreground hover:bg-foreground/10 transition-colors text-[11px] font-bold tabular-nums"
                                 >
                                     {Math.round(zoom * 100)}%
                                 </button>
                                 <button
                                     onClick={handleZoomIn}
-                                    title="Yakınlaştır"
+                                    title="Zoom In"
                                     className="w-7 h-7 flex items-center justify-center rounded-md text-foreground/60 hover:text-foreground hover:bg-foreground/10 transition-colors text-base font-bold"
                                 >
                                     +

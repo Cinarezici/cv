@@ -74,43 +74,38 @@ export default async function DashboardPage() {
     const recentLetters = letters?.slice(0, 3) || [];
 
     return (
-        <div className="max-w-6xl mx-auto py-8 px-6 space-y-10 min-h-[calc(100vh-4rem)]">
-            {/* Background elements */}
-            <div className="fixed inset-0 pointer-events-none bg-background -z-10 selection:bg-primary/20"></div>
-            <div className="fixed top-0 right-0 w-[500px] h-[500px] bg-primary/5 blur-[120px] rounded-full -z-10 pointer-events-none"></div>
+        <div className="max-w-5xl mx-auto py-8 space-y-8">
 
             {/* ─── Header ────────────────────────────────────────────── */}
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative">
+            <div className="flex items-start justify-between">
                 <div>
-                    <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-foreground">
-                        Yönetim <span className="text-gradient">Paneli</span>
-                    </h1>
-                    <p className="text-foreground/60 mt-2 text-sm md:text-base">CV'lerini yönet, profesyonel belgelerini tek bir yerden kontrol et.</p>
+                    <h1 className="text-3xl font-extrabold tracking-tight text-zinc-900">Dashboard</h1>
+                    <p className="text-zinc-500 mt-1 text-sm">Manage your CVs and cover letters.</p>
                 </div>
-                <div className="flex items-center gap-4">
+                <div className="flex flex-col items-end gap-2">
                     <Link
                         href="/upgrade"
-                        className="inline-flex items-center gap-2 glass border-primary/20 hover:border-primary/50 text-foreground font-semibold px-5 py-2.5 rounded-xl shadow-sm hover:shadow-primary/20 transition-all text-sm"
+                        className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-5 py-2.5 rounded-xl shadow-sm transition-colors text-sm"
                     >
-                        <Zap className="w-4 h-4 text-primary" />
-                        Pro'ya Yükselt
+                        <Zap className="w-4 h-4" />
+                        Upgrade Pro
                     </Link>
                     <Link
                         href={isCVLimitReached ? "/upgrade" : "/builder/new"}
-                        className={`inline-flex items-center gap-2 font-bold px-6 py-2.5 rounded-xl shadow-lg transition-all text-sm ${isCVLimitReached
-                                ? "bg-muted text-muted-foreground border border-border cursor-not-allowed"
-                                : "bg-primary text-primary-foreground hover:scale-105 shadow-primary/30"
+                        className={`inline-flex items-center gap-2 font-bold px-5 py-2.5 rounded-xl shadow-sm transition-colors text-sm ${isCVLimitReached
+                            ? "bg-zinc-100 text-zinc-400 border border-zinc-200 hover:bg-zinc-200"
+                            : "bg-orange-500 hover:bg-orange-600 text-white"
                             }`}
                     >
                         {isCVLimitReached ? (
                             <>
                                 <AlertCircle className="w-4 h-4" />
-                                Limit Doldu
+                                Limit Reached
                             </>
                         ) : (
                             <>
                                 <Plus className="w-4 h-4" />
-                                Yeni CV Oluştur
+                                CV Builder
                             </>
                         )}
                     </Link>
@@ -118,93 +113,87 @@ export default async function DashboardPage() {
             </div>
 
             {/* ─── Stat Cards ────────────────────────────────────────── */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                 <StatCard
-                    icon={<LayoutTemplate className="w-6 h-6 text-blue-500 dark:text-blue-400" />}
-                    iconBg="bg-blue-50 dark:bg-blue-500/10 border border-blue-100 dark:border-blue-500/20"
+                    icon={<LayoutTemplate className="w-5 h-5 text-indigo-500" />}
+                    iconBg="bg-indigo-50"
                     value={totalDocs}
-                    label="TOPLAM BELGE"
+                    label="TOTAL DOCUMENTS"
                 />
                 <StatCard
-                    icon={<FileText className="w-6 h-6 text-primary" />}
-                    iconBg="bg-primary/10 border border-primary/20"
+                    icon={<FileText className="w-5 h-5 text-emerald-500" />}
+                    iconBg="bg-emerald-50"
                     value={cvsCreated}
-                    label="OLUŞTURULAN CV"
+                    label="CVS CREATED"
                 />
                 <StatCard
-                    icon={<Mail className="w-6 h-6 text-violet-500 dark:text-violet-400" />}
-                    iconBg="bg-violet-50 dark:bg-violet-500/10 border border-violet-100 dark:border-violet-500/20"
+                    icon={<Mail className="w-5 h-5 text-violet-500" />}
+                    iconBg="bg-violet-50"
                     value={coverLetters}
-                    label="ÖN YAZILAR"
+                    label="COVER LETTERS"
                 />
             </div>
 
             {/* ─── Recent CVs ────────────────────────────────────────── */}
-            <section className="glass-card rounded-3xl overflow-hidden">
-                <div className="flex items-center justify-between px-8 py-6 border-b border-border/50">
-                    <h2 className="text-lg font-bold text-foreground">Son CV'ler</h2>
-                    <div className="flex items-center gap-4">
-                        <span className="hidden sm:inline-block text-xs text-foreground/40 font-medium">Son güncellenmeye göre sıralı</span>
-                        <Link href="/my-cvs" className="text-sm font-semibold text-primary hover:text-primary/80 transition-colors">
-                            Tümünü Gör
+            <section className="bg-white border border-zinc-200 rounded-2xl shadow-sm overflow-hidden">
+                <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-100">
+                    <h2 className="text-base font-bold text-zinc-900">Recent CVs</h2>
+                    <div className="flex items-center gap-3">
+                        <span className="text-xs text-zinc-400 font-medium">Sorted by last updated</span>
+                        <Link href="/my-cvs" className="text-xs font-bold text-indigo-600 hover:text-indigo-800 transition-colors">
+                            View All
                         </Link>
                     </div>
                 </div>
 
                 {recentCVs.length === 0 ? (
-                    <div className="flex flex-col items-center justify-center py-16 text-center">
-                        <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-                            <FileText className="w-8 h-8 text-primary/60" />
-                        </div>
-                        <p className="text-foreground/60 font-medium mb-6">Henüz CV oluşturmadın. Kariyerine şimdi yatırım yap!</p>
+                    <div className="flex flex-col items-center justify-center py-12 text-center">
+                        <FileText className="w-8 h-8 text-zinc-200 mb-3" />
+                        <p className="text-sm text-zinc-400 font-medium">No CVs yet. Create your first CV!</p>
                         <Link
-                            href="/builder/new"
-                            className="inline-flex items-center gap-2 text-sm font-bold bg-primary text-primary-foreground px-6 py-2.5 rounded-full hover:scale-105 transition-transform shadow-lg shadow-primary/20"
+                            href="/my-cvs"
+                            className="mt-4 inline-flex items-center gap-1.5 text-sm font-bold text-indigo-600 hover:text-indigo-800"
                         >
-                            <Plus className="w-4 h-4" /> İlk CV'ni Oluştur
+                            <Plus className="w-4 h-4" /> Create CV
                         </Link>
                     </div>
                 ) : (
-                    <div className="divide-y divide-border/50">
+                    <div className="divide-y divide-zinc-100">
                         {recentCVs.map((doc) => {
                             const isProfile = doc.type === 'profile';
                             const editHref = isProfile ? `/builder/new?profileId=${doc.id}` : `/builder/${doc.id}`;
 
                             return (
-                                <div key={`${doc.type}-${doc.id}`} className="group flex flex-col sm:flex-row sm:items-center justify-between gap-4 px-8 py-5 hover:bg-foreground/[0.02] transition-colors">
-                                    <div className="flex items-center gap-5 min-w-0">
-                                        <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 border shadow-sm ${isProfile ? 'bg-blue-50/50 border-blue-200/50 dark:bg-blue-900/20 dark:border-blue-900/50' : 'bg-primary/10 border-primary/20'}`}>
-                                            {isProfile ? <LinkIcon className="w-5 h-5 text-blue-600 dark:text-blue-400" /> : <FileText className="w-5 h-5 text-primary" />}
-                                        </div>
-                                        <div className="min-w-0">
-                                            <p className="font-bold text-foreground truncate text-base">{doc.title}</p>
-                                            <div className="flex items-center gap-2 mt-1">
-                                                {isProfile ? <LinkIcon className="w-3.5 h-3.5 text-foreground/40" /> : <LayoutTemplate className="w-3.5 h-3.5 text-foreground/40" />}
-                                                <span className="text-xs text-foreground/50 truncate max-w-[200px]">{doc.subtitle}</span>
-                                                <span className="text-border text-xs">•</span>
-                                                <Clock className="w-3.5 h-3.5 text-foreground/40" />
-                                                <span className="text-xs text-foreground/50">
-                                                    {doc.updatedAt ? formatDistanceToNow(new Date(doc.updatedAt), { addSuffix: true }) : 'Yakın zamanda'}
-                                                </span>
-                                            </div>
+                                <div key={`${doc.type}-${doc.id}`} className="flex items-center gap-4 px-6 py-4 hover:bg-zinc-50 transition-colors group">
+                                    <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${isProfile ? 'bg-blue-50' : 'bg-indigo-50'}`}>
+                                        {isProfile ? <LinkIcon className="w-4 h-4 text-blue-500" /> : <FileText className="w-4 h-4 text-indigo-500" />}
+                                    </div>
+                                    <div className="flex-1 min-w-0">
+                                        <p className="font-bold text-zinc-900 text-sm leading-tight">{doc.title}</p>
+                                        <div className="flex items-center gap-1.5 mt-0.5">
+                                            {isProfile ? <LinkIcon className="w-3 h-3 text-zinc-400" /> : <LayoutTemplate className="w-3 h-3 text-zinc-400" />}
+                                            <span className="text-xs text-zinc-500 truncate max-w-[150px]">{doc.subtitle}</span>
+                                            <span className="text-zinc-300 text-xs">•</span>
+                                            <Clock className="w-3 h-3 text-zinc-400" />
+                                            <span className="text-xs text-zinc-500">
+                                                {doc.updatedAt ? `Updated ${formatDistanceToNow(new Date(doc.updatedAt), { addSuffix: true })}` : 'Recently'}
+                                            </span>
                                         </div>
                                     </div>
-                                    <div className="flex items-center gap-2 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity ml-17 sm:ml-0">
+                                    <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                                         <Link
                                             href={editHref}
-                                            className={`inline-flex items-center gap-1.5 text-xs font-bold px-3 py-2 rounded-lg transition-colors border shadow-sm ${isProfile
-                                                    ? 'text-blue-700 bg-blue-50 border-blue-200 hover:bg-blue-100 dark:text-blue-300 dark:bg-blue-900/40 dark:border-blue-800/60 dark:hover:bg-blue-900/60'
-                                                    : 'text-primary bg-primary/10 border-primary/20 hover:bg-primary/20'
+                                            className={`inline-flex items-center gap-1.5 text-xs font-bold px-2.5 py-1.5 rounded-lg transition-colors border shadow-sm ${isProfile
+                                                ? 'text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 border-blue-200'
+                                                : 'text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 border-indigo-100'
                                                 }`}
                                         >
-                                            <Pencil className="w-3.5 h-3.5" /> {isProfile ? "Dönüştür" : 'Düzenle'}
+                                            <Pencil className="w-3.5 h-3.5" /> {isProfile ? "Convert" : 'Edit'}
                                         </Link>
                                         {!isProfile && (
                                             <CvShareLinkButton resumeId={doc.id} size="sm" variant="outline" />
                                         )}
-                                        <div className="ml-1">
-                                            <DeleteButton id={doc.id} type={isProfile ? 'profiles' : 'resumes'} />
-                                        </div>
+                                        <DeleteButton id={doc.id} type={isProfile ? 'profiles' : 'resumes'} />
                                     </div>
                                 </div>
                             );
@@ -214,54 +203,47 @@ export default async function DashboardPage() {
             </section>
 
             {/* ─── Recent Cover Letters ──────────────────────────────── */}
-            <section className="glass-card rounded-3xl overflow-hidden">
-                <div className="flex items-center justify-between px-8 py-6 border-b border-border/50">
-                    <h2 className="text-lg font-bold text-foreground">Son Ön Yazılar</h2>
-                    <Link href="/motivation-letters" className="text-sm font-semibold text-primary hover:text-primary/80 transition-colors">
-                        Tümünü Gör
+            <section className="bg-white border border-zinc-200 rounded-2xl shadow-sm overflow-hidden">
+                <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-100">
+                    <h2 className="text-base font-bold text-zinc-900">Recent Cover Letters</h2>
+                    <Link href="/motivation-letters" className="text-xs font-bold text-indigo-600 hover:text-indigo-800 transition-colors">
+                        View All
                     </Link>
                 </div>
 
                 {recentLetters.length === 0 ? (
-                    <div className="flex items-center justify-between px-8 py-8 border-t border-border/10">
-                        <div className="flex items-center gap-4 text-foreground/60">
-                            <Mail className="w-5 h-5 opacity-50" />
-                            <span className="text-sm">Henüz bir ön yazı oluşturmadın.</span>
-                        </div>
+                    <div className="flex flex-col items-center justify-center py-12 text-center">
+                        <Mail className="w-8 h-8 text-zinc-200 mb-3" />
+                        <p className="text-sm text-zinc-400 font-medium">No cover letters yet.</p>
                         <Link
                             href="/motivation-letters"
-                            className="inline-flex items-center gap-2 text-sm font-semibold text-primary/80 border border-primary/20 bg-primary/5 px-4 py-2 rounded-xl hover:bg-primary/10 transition-colors"
+                            className="mt-4 inline-flex items-center gap-1.5 text-sm font-bold text-indigo-600 hover:text-indigo-800"
                         >
-                            <Plus className="w-4 h-4" /> Oluştur
+                            <Plus className="w-4 h-4" /> Create Letter
                         </Link>
                     </div>
                 ) : (
-                    <div className="divide-y divide-border/50">
+                    <div className="divide-y divide-zinc-100">
                         {recentLetters.map((letter: any) => (
-                            <div key={letter.id} className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 px-8 py-5 hover:bg-foreground/[0.02] transition-colors group">
-                                <div className="flex items-center gap-5">
-                                    <div className="w-12 h-12 rounded-xl border border-violet-200/50 bg-violet-50/50 dark:border-violet-900/50 dark:bg-violet-900/20 flex items-center justify-center shrink-0 shadow-sm">
-                                        <Mail className="w-5 h-5 text-violet-600 dark:text-violet-400" />
-                                    </div>
-                                    <div className="min-w-0">
-                                        <p className="font-bold text-foreground text-base truncate">
-                                            {letter.job_title || 'İsimsiz Pozisyon'}
-                                            {letter.company_name ? ` @ ${letter.company_name}` : ''}
-                                        </p>
-                                        <div className="flex items-center gap-2 mt-1">
-                                            <Clock className="w-3.5 h-3.5 text-foreground/40" />
-                                            <span className="text-xs text-foreground/50">
-                                                {formatDistanceToNow(new Date(letter.created_at), { addSuffix: true })}
-                                            </span>
-                                        </div>
-                                    </div>
+                            <div key={letter.id} className="flex items-center gap-4 px-6 py-4 hover:bg-zinc-50 transition-colors group">
+                                <div className="w-9 h-9 rounded-xl bg-violet-50 flex items-center justify-center shrink-0">
+                                    <Mail className="w-4 h-4 text-violet-500" />
                                 </div>
-                                <div className="sm:opacity-0 sm:group-hover:opacity-100 transition-opacity flex justify-end">
+                                <div className="flex-1 min-w-0">
+                                    <p className="font-bold text-zinc-900 text-sm leading-tight line-clamp-1">
+                                        {letter.job_title || 'Untitled Position'}
+                                        {letter.company_name ? `, ${letter.company_name}` : ''}
+                                    </p>
+                                    <p className="text-xs text-zinc-500 mt-0.5">
+                                        {letter.company_name || 'No company'} • {formatDistanceToNow(new Date(letter.created_at), { addSuffix: true })}
+                                    </p>
+                                </div>
+                                <div className="opacity-0 group-hover:opacity-100 transition-opacity">
                                     <Link
                                         href={`/motivation-letters/${letter.id}`}
-                                        className="inline-flex items-center gap-1.5 text-xs font-bold px-3 py-2 rounded-lg transition-colors border shadow-sm text-foreground/70 bg-background hover:bg-foreground/5 border-border"
+                                        className="inline-flex items-center gap-1.5 text-xs font-bold px-2.5 py-1.5 rounded-lg border border-zinc-200 bg-white text-zinc-600 hover:bg-zinc-50"
                                     >
-                                        <Pencil className="w-3.5 h-3.5" /> Görüntüle
+                                        <Pencil className="w-3 h-3" /> View
                                     </Link>
                                 </div>
                             </div>
@@ -275,16 +257,13 @@ export default async function DashboardPage() {
 
 function StatCard({ icon, iconBg, value, label }: { icon: React.ReactNode; iconBg: string; value: number; label: string }) {
     return (
-        <div className="glass-card rounded-2xl p-6 flex flex-col justify-between gap-4 relative overflow-hidden group">
-            {/* Background aesthetic */}
-            <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-transparent to-black/5 dark:to-white/5 rounded-full -translate-y-1/2 translate-x-1/3 group-hover:scale-110 transition-transform duration-500"></div>
-
-            <div className={`w-12 h-12 rounded-xl ${iconBg} flex items-center justify-center shadow-sm`}>
+        <div className="bg-white border border-zinc-200 rounded-2xl shadow-sm p-6 flex items-center gap-5">
+            <div className={`w-12 h-12 rounded-xl ${iconBg} flex items-center justify-center shrink-0`}>
                 {icon}
             </div>
             <div>
-                <div className="text-4xl font-extrabold text-foreground tracking-tight mb-1">{value}</div>
-                <div className="text-[11px] font-bold text-foreground/50 uppercase tracking-[0.15em]">{label}</div>
+                <div className="text-3xl font-extrabold text-zinc-900">{value}</div>
+                <div className="text-xs font-bold text-zinc-400 uppercase tracking-wider mt-0.5">{label}</div>
             </div>
         </div>
     );

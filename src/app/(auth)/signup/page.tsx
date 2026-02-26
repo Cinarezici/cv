@@ -21,6 +21,7 @@ import {
     EyeOff,
     Lock,
     Mail,
+    FileText,
     ArrowRight,
     Chrome,
     Loader2
@@ -129,171 +130,94 @@ export default function SignupPage() {
     }, []);
 
     return (
-        <section className="fixed inset-0 bg-zinc-950 text-zinc-50 overflow-y-auto">
-            <style>{`
-        .accent-lines{position:absolute;inset:0;pointer-events:none;opacity:.7}
-        .hline,.vline{position:absolute;background:#27272a;will-change:transform,opacity}
-        .hline{left:0;right:0;height:1px;transform:scaleX(0);transform-origin:50% 50%;animation:drawX .8s cubic-bezier(.22,.61,.36,1) forwards}
-        .vline{top:0;bottom:0;width:1px;transform:scaleY(0);transform-origin:50% 0%;animation:drawY .9s cubic-bezier(.22,.61,.36,1) forwards}
-        .hline:nth-child(1){top:18%;animation-delay:.12s}
-        .hline:nth-child(2){top:50%;animation-delay:.22s}
-        .hline:nth-child(3){top:82%;animation-delay:.32s}
-        .vline:nth-child(4){left:22%;animation-delay:.42s}
-        .vline:nth-child(5){left:50%;animation-delay:.54s}
-        .vline:nth-child(6){left:78%;animation-delay:.66s}
-        .hline::after,.vline::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(250,250,250,.24),transparent);opacity:0;animation:shimmer .9s ease-out forwards}
-        .hline:nth-child(1)::after{animation-delay:.12s}
-        .hline:nth-child(2)::after{animation-delay:.22s}
-        .hline:nth-child(3)::after{animation-delay:.32s}
-        .vline:nth-child(4)::after{animation-delay:.42s}
-        .vline:nth-child(5)::after{animation-delay:.54s}
-        .vline:nth-child(6)::after{animation-delay:.66s}
-        @keyframes drawX{0%{transform:scaleX(0);opacity:0}60%{opacity:.95}100%{transform:scaleX(1);opacity:.7}}
-        @keyframes drawY{0%{transform:scaleY(0);opacity:0}60%{opacity:.95}100%{transform:scaleY(1);opacity:.7}}
-        @keyframes shimmer{0%{opacity:0}35%{opacity:.25}100%{opacity:0}}
-
-        .card-animate {
-          opacity: 0;
-          transform: translateY(20px);
-          animation: fadeUp 0.8s cubic-bezier(.22,.61,.36,1) 0.4s forwards;
-        }
-        @keyframes fadeUp {
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-      `}</style>
-
-            {/* Subtle vignette */}
-            <div className="absolute inset-0 pointer-events-none [background:radial-gradient(80%_60%_at_50%_30%,rgba(255,255,255,0.06),transparent_60%)]" />
-
-            {/* Animated accent lines */}
-            <div className="accent-lines hidden md:block">
-                <div className="hline" />
-                <div className="hline" />
-                <div className="hline" />
-                <div className="vline" />
-                <div className="vline" />
-                <div className="vline" />
-            </div>
-
-            {/* Particles */}
-            <canvas
-                ref={canvasRef}
-                className="absolute inset-0 w-full h-full opacity-50 mix-blend-screen pointer-events-none"
-            />
-
-            {/* Header */}
-            <header className="absolute left-0 right-0 top-0 flex items-center justify-between px-6 py-4 border-b border-zinc-800/80 z-10 bg-zinc-950/50 backdrop-blur-sm">
-                <span className="text-xs tracking-[0.14em] uppercase text-zinc-400 font-bold">
-                    Interview-Ready CV
-                </span>
-                <Button
-                    variant="outline"
-                    className="h-9 rounded-lg border-zinc-800 bg-zinc-900 text-zinc-50 hover:bg-zinc-900/80"
-                    onClick={() => router.push('/login')}
-                >
-                    <span className="mr-2">Login Instead</span>
-                    <ArrowRight className="h-4 w-4" />
-                </Button>
+        <section className="min-h-screen bg-zinc-50 flex flex-col">
+            <header className="px-4 lg:px-6 h-14 flex items-center border-b bg-white">
+                <Link className="flex items-center justify-center" href="/">
+                    <FileText className="h-6 w-6 text-indigo-600" />
+                    <span className="ml-2 text-xl font-bold">Interview-Ready CV</span>
+                </Link>
             </header>
 
-            {/* Centered Login Card */}
-            <div className="min-h-screen w-full grid place-items-center px-4 pt-20 pb-10 z-10 relative">
-                <Card className="card-animate w-full max-w-sm border-zinc-800 bg-zinc-900/70 backdrop-blur-xl supports-[backdrop-filter]:bg-zinc-900/60 shadow-2xl">
-                    <CardHeader className="space-y-1 text-zinc-100">
-                        <CardTitle className="text-2xl font-semibold">Hesabını oluştur</CardTitle>
-                        <CardDescription className="text-zinc-400">
-                            CV'ni kaydetmek ve link ile paylaşmak için kayıt ol
+            <div className="flex-1 flex items-center justify-center p-4">
+                <Card className="w-full max-w-md shadow-lg border-zinc-200">
+                    <CardHeader className="space-y-1">
+                        <CardTitle className="text-2xl font-bold">Create an account</CardTitle>
+                        <CardDescription>
+                            Enter your email to create a new account
                         </CardDescription>
                     </CardHeader>
-
-                    <CardContent className="grid gap-5">
-                        <form onSubmit={handleSignup} className="grid gap-5">
+                    <CardContent className="grid gap-4">
+                        <form onSubmit={handleSignup} className="grid gap-4">
                             <div className="grid gap-2">
-                                <Label htmlFor="email" className="text-zinc-300">
-                                    Email
-                                </Label>
-                                <div className="relative">
-                                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500" />
-                                    <Input
-                                        id="email"
-                                        type="email"
-                                        placeholder="you@example.com"
-                                        value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
-                                        required
-                                        className="pl-10 bg-zinc-950/50 border-zinc-800 text-zinc-50 placeholder:text-zinc-600 focus-visible:ring-zinc-700"
-                                    />
-                                </div>
+                                <Label htmlFor="email">Email</Label>
+                                <Input
+                                    id="email"
+                                    type="email"
+                                    placeholder="name@example.com"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    required
+                                />
                             </div>
-
                             <div className="grid gap-2">
-                                <Label htmlFor="password" className="text-zinc-300">
-                                    Password
-                                </Label>
+                                <Label htmlFor="password">Password</Label>
                                 <div className="relative">
-                                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500" />
                                     <Input
                                         id="password"
                                         type={showPassword ? "text" : "password"}
-                                        placeholder="••••••••"
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
                                         required
-                                        className="pl-10 pr-10 bg-zinc-950/50 border-zinc-800 text-zinc-50 placeholder:text-zinc-600 focus-visible:ring-zinc-700"
                                     />
                                     <button
                                         type="button"
-                                        aria-label={showPassword ? "Hide password" : "Show password"}
-                                        className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-md text-zinc-400 hover:text-zinc-200 transition-colors"
-                                        onClick={() => setShowPassword((v) => !v)}
+                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-700"
+                                        onClick={() => setShowPassword(!showPassword)}
                                     >
-                                        {showPassword ? (
-                                            <EyeOff className="h-4 w-4" />
-                                        ) : (
-                                            <Eye className="h-4 w-4" />
-                                        )}
+                                        {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                                     </button>
                                 </div>
                             </div>
-
-                            {error && <p className="text-sm text-red-500">{error}</p>}
-                            {success && <p className="text-sm text-green-400">Account created successfully! Redirecting to login...</p>}
-
-                            <Button
-                                type="submit"
-                                disabled={loading || success}
-                                className="w-full h-10 rounded-lg bg-zinc-50 text-zinc-900 hover:bg-zinc-200 font-medium transition-colors"
-                            >
-                                {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : "Kayıt Ol"}
+                            {error && (
+                                <p className="text-sm text-red-600 font-medium">
+                                    {error}
+                                </p>
+                            )}
+                            {success && (
+                                <p className="text-sm text-green-600 font-medium">
+                                    Account created successfully! Redirecting to login...
+                                </p>
+                            )}
+                            <Button type="submit" className="w-full font-bold" disabled={loading || success}>
+                                {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                                Sign Up
                             </Button>
                         </form>
-
                         <div className="relative">
-                            <Separator className="bg-zinc-800" />
-                            <span className="absolute left-1/2 -translate-x-1/2 -top-3 bg-zinc-900 px-2 text-[11px] uppercase tracking-widest text-zinc-500">
-                                or
-                            </span>
+                            <div className="absolute inset-0 flex items-center">
+                                <span className="w-full border-t border-zinc-200" />
+                            </div>
+                            <div className="relative flex justify-center text-xs uppercase">
+                                <span className="bg-white px-2 text-zinc-500">Or continue with</span>
+                            </div>
                         </div>
-
-                        <div className="grid grid-cols-1 gap-3">
-                            <Button
-                                variant="outline"
-                                onClick={() => handleOAuth('google')}
-                                className="h-10 rounded-lg border-zinc-800 bg-zinc-950 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-50 transition-colors w-full"
-                            >
-                                <Chrome className="h-4 w-4 mr-2" />
-                                Google ile Kayıt Ol
-                            </Button>
-                        </div>
+                        <Button
+                            variant="outline"
+                            type="button"
+                            className="w-full font-bold"
+                            onClick={() => handleOAuth('google')}
+                        >
+                            <Chrome className="mr-2 h-4 w-4" />
+                            Google
+                        </Button>
                     </CardContent>
-
-                    <CardFooter className="flex items-center justify-center text-sm text-zinc-500 pb-8">
-                        Zaten hesabın var mı?
-                        <Link className="ml-1 text-primary hover:text-primary/80 hover:underline transition-all" href="/login">
-                            Giriş yap
+                    <CardFooter className="flex flex-wrap items-center justify-center gap-1 text-sm text-zinc-500">
+                        Already have an account?{" "}
+                        <Link
+                            href="/login"
+                            className="font-bold text-indigo-600 hover:text-indigo-500"
+                        >
+                            Sign In
                         </Link>
                     </CardFooter>
                 </Card>
