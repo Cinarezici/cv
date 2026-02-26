@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
             jobConfigs: JobConfig[]
         };
 
-        // 1. Fetch CV Data — try resumes first, then profiles (LinkedIn imports)
+        // 1. Fetch CV Data
         let resumeJSON: any = null;
         const { data: cv } = await supabase.from('resumes').select('*').eq('id', cvId).eq('user_id', user.id).single();
         if (cv) {
@@ -75,7 +75,6 @@ export async function POST(request: NextRequest) {
         } else {
             const { data: profile } = await supabase.from('profiles').select('*').eq('id', cvId).eq('user_id', user.id).single();
             if (profile) {
-                // Normalize profile fields to match resumeJSON shape
                 resumeJSON = {
                     name: profile.full_name,
                     headline: profile.headline,
@@ -94,7 +93,6 @@ export async function POST(request: NextRequest) {
 
         // 2. Check Plan & Limits
         const { data: sub } = await supabase.from('subscriptions').select('*').eq('user_id', user.id).single();
-        // A simple check for Pro plan to allow batching
         const isPro = sub?.status === 'active';
 
         if (!isPro && companies.length > 1) {
@@ -103,23 +101,26 @@ export async function POST(request: NextRequest) {
 
         const { checkUsageLimits } = await import('@/lib/limits');
         const { allowed, reason } = await checkUsageLimits(user.id, 'create_letter');
-
-        // If not allowed and they are trying to insert, reject.
-        // Wait, if companies length + current letters > limit, we should ideally block before reaching the limit, but this checks if currently AT limit.
         if (!allowed) {
             return NextResponse.json({ error: 'limit_reached', message: reason }, { status: 403 });
         }
 
         const batchId = crypto.randomUUID();
         const createdLetters: any[] = [];
+        const openai_key = process.env.OPENAI_API_KEY;
+
+        if (!openai_key) {
+            console.error("CRITICAL: OPENAI_API_KEY is missing during POST handler");
+            return NextResponse.json({ error: 'OpenAI API key configuration error' }, { status: 500 });
+        }
 
         for (let i = 0; i < companies.length; i++) {
             const company = companies[i];
             const config = jobConfigs[i];
 
-            const insertResult = await supabase.from('motivation_letters').insert({
+            const { data: letter, error: insertError } = await supabase.from('motivation_letters').insert({
                 user_id: user.id,
-                cv_id: null,               // FK references 'cvs' table — keep null, resumeJSON passed directly
+                cv_id: null,
                 company_name: company.name || 'Unknown',
                 job_title: config.targetRole || '',
                 tone: config.tone || 'corporate',
@@ -129,23 +130,27 @@ export async function POST(request: NextRequest) {
                 batch_id: batchId,
             }).select().single();
 
-            if (insertResult.error) {
-                console.error("Failed to insert motivation letter:", JSON.stringify(insertResult.error));
-                return NextResponse.json({ error: 'DB insert failed: ' + insertResult.error.message }, { status: 500 });
+            if (insertError) {
+                console.error("DB insert failed:", insertError.message);
+                return NextResponse.json({ error: 'DB insert failed: ' + insertError.message }, { status: 500 });
             }
 
-            const letter = insertResult.data;
             if (letter) {
                 createdLetters.push(letter);
-                // Pass company_url, language, jobDescription separately — not stored in DB yet
+
+                // Fire and forget, but inside this handler's scope
+                // PASSING keys explicitly to avoid environment loss in background
                 processLetterGeneration(
                     letter.id,
                     { ...company, url: company.url || '' },
                     { ...config, language: config.language || 'en' },
                     resumeJSON,
                     user.id,
-                    isPro
-                );
+                    isPro,
+                    openai_key
+                ).catch(err => {
+                    console.error(`Unhandled error in background generation for letter ${letter.id}:`, err);
+                });
             }
         }
 
@@ -163,8 +168,14 @@ async function processLetterGeneration(
     config: JobConfig,
     resumeJSON: any,
     userId: string,
-    isPro: boolean
+    isPro: boolean,
+    apiKey: string
 ) {
+    // Explicitly set the key for this process flow if needed by other libs
+    if (!process.env.OPENAI_API_KEY) {
+        process.env.OPENAI_API_KEY = apiKey;
+    }
+
     const supabase = await createClient();
 
     async function updateStatus(status: string, message?: string) {
@@ -177,10 +188,9 @@ async function processLetterGeneration(
     try {
         await updateStatus('researching', 'Web sitesi araştırılıyor...');
 
-        // Ensure a valid URL before calling Apify
         let safeUrl = company.url;
         if (!safeUrl || safeUrl.trim() === '') {
-            const slug = company.name.toLowerCase().replace(/[^a-z0-9]/g, '');
+            const slug = (company.name || 'company').toLowerCase().replace(/[^a-z0-9]/g, '');
             safeUrl = `https://www.${slug}.com`;
         }
 
@@ -193,7 +203,8 @@ async function processLetterGeneration(
             if (companyProfileId) {
                 await supabase.from('motivation_letters').update({ company_profile_id: companyProfileId }).eq('id', letterId);
             }
-        } catch {
+        } catch (researchErr: any) {
+            console.warn(`Research failed for letter ${letterId}, using fallback profile:`, researchErr.message);
             companyProfile = {
                 name: company.name, website: safeUrl, industry: 'Unknown',
                 values: [], products: [], recentNews: [], cultureIndicators: [],
@@ -249,8 +260,10 @@ async function processLetterGeneration(
             generation_error: null,
         }).eq('id', letterId);
 
+        console.log(`Letter ${letterId} generated successfully.`);
+
     } catch (err: any) {
         console.error(`Letter generation failed for ${letterId}:`, err);
-        await updateStatus('failed', err.message);
+        await updateStatus('failed', err.message || 'Unknown generation error');
     }
 }

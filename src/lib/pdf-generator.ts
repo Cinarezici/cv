@@ -19,28 +19,24 @@ import { parsePresentationSections, buildPreviewHtml } from './letter-generator'
 // ─────────────────────────────
 import path from 'path';
 
-const FONT_DIR_LIBERATION = path.join(
-  process.cwd(),
-  'node_modules/pdfjs-dist/standard_fonts'
-);
-const FONT_NOTO_REGULAR = path.join(
-  process.cwd(),
-  'node_modules/next/dist/compiled/@vercel/og/noto-sans-v27-latin-regular.ttf'
-);
+const FONT_NOTO_REGULAR = path.join(process.cwd(), 'public/fonts/noto-sans-v27-latin-regular.ttf');
+const FONT_LIBERATION_BOLD = path.join(process.cwd(), 'public/fonts/LiberationSans-Bold.ttf');
+const FONT_LIBERATION_ITALIC = path.join(process.cwd(), 'public/fonts/LiberationSans-Italic.ttf');
+const FONT_LIBERATION_BOLD_ITALIC = path.join(process.cwd(), 'public/fonts/LiberationSans-BoldItalic.ttf');
 
-Font.register({
-  family: 'UnicodeFont',
-  fonts: [
-    // Regular — Noto Sans covers Latin Extended (Turkish ğ ş ı ö ü etc.)
-    { src: FONT_NOTO_REGULAR, fontWeight: 400 },
-    // Bold — Liberation Sans Bold (full Latin Extended support)
-    { src: path.join(FONT_DIR_LIBERATION, 'LiberationSans-Bold.ttf'), fontWeight: 700 },
-    // Italic — Liberation Sans Italic
-    { src: path.join(FONT_DIR_LIBERATION, 'LiberationSans-Italic.ttf'), fontWeight: 400, fontStyle: 'italic' },
-    // Bold Italic
-    { src: path.join(FONT_DIR_LIBERATION, 'LiberationSans-BoldItalic.ttf'), fontWeight: 700, fontStyle: 'italic' },
-  ],
-});
+try {
+  Font.register({
+    family: 'UnicodeFont',
+    fonts: [
+      { src: FONT_NOTO_REGULAR, fontWeight: 400 },
+      { src: FONT_LIBERATION_BOLD, fontWeight: 700 },
+      { src: FONT_LIBERATION_ITALIC, fontWeight: 400, fontStyle: 'italic' },
+      { src: FONT_LIBERATION_BOLD_ITALIC, fontWeight: 700, fontStyle: 'italic' },
+    ],
+  });
+} catch (e) {
+  console.error('Font registration failed:', e);
+}
 
 // Don't break on special chars
 Font.registerHyphenationCallback(word => [word]);
