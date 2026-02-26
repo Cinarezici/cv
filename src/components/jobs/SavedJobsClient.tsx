@@ -102,7 +102,7 @@ export default function SavedJobsClient({ initialJobs, isPro, userId }: Props) {
                     onClose={() => setIsWizardOpen(false)}
                     onSuccess={() => {
                         setIsWizardOpen(false);
-                        window.location.href = '/motivation-letters';
+                        router.push('/motivation-letters');
                     }}
                 />
             )}

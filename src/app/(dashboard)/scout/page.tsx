@@ -310,7 +310,7 @@ export default function ScoutPage() {
                     onClose={() => setIsWizardOpen(false)}
                     onSuccess={() => {
                         setIsWizardOpen(false);
-                        window.location.href = '/motivation-letters';
+                        router.push('/motivation-letters');
                     }}
                 />
             )}
@@ -324,7 +324,7 @@ export default function ScoutPage() {
                     onSuccess={() => {
                         setIsBulkWizardOpen(false);
                         setSelectedJobs([]);
-                        window.location.href = '/motivation-letters';
+                        router.push('/motivation-letters');
                     }}
                 />
             )}
