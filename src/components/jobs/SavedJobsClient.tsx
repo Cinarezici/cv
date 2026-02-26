@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { JobCard, Job } from '@/components/jobs/JobCard';
+import { useRouter } from 'next/navigation';
 import LetterCreationWizard from '@/components/motivation-letters/LetterCreationWizard';
 import { Star, Briefcase } from 'lucide-react';
 import { toast } from 'sonner';
@@ -16,10 +17,16 @@ export default function SavedJobsClient({ initialJobs, isPro, userId }: Props) {
     const [jobs, setJobs] = useState<Job[]>(initialJobs);
     const [selectedJob, setSelectedJob] = useState<Job | null>(null);
     const [isWizardOpen, setIsWizardOpen] = useState(false);
+    const router = useRouter();
 
     const handleOptimize = (job: Job) => {
-        setSelectedJob(job);
-        setIsWizardOpen(true);
+        const params = new URLSearchParams({
+            jobTitle: job.title,
+            company: job.companyName,
+            jd: job.descriptionText,
+            link: job.link
+        });
+        router.push(`/resumes/new?${params.toString()}`);
     };
 
     const handleToggleSave = async (job: Job) => {

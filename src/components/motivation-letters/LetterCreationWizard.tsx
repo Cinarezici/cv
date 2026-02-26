@@ -215,7 +215,18 @@ export default function LetterCreationWizard({
                     })));
                 }
                 setCvs(allCvs);
-                if (allCvs.length > 0) setSelectedCvId(allCvs[0].id);
+
+                // Pre-select logic:
+                // 1. If we have a resumeId from trigger flow, select it
+                // 2. Otherwise select the first available CV
+                const triggerId = (initialJobData as any)?.resumeId;
+                if (triggerId && allCvs.some(c => c.id === triggerId)) {
+                    setSelectedCvId(triggerId);
+                    // Also if we have job context, move to step 2 automatically if fields are filled
+                    // (Optional UX improvement: If we have all job info, maybe stay in step 1 to let user double check)
+                } else if (allCvs.length > 0) {
+                    setSelectedCvId(allCvs[0].id);
+                }
             } finally {
                 setLoadingCvs(false);
             }

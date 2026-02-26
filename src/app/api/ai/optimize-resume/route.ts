@@ -102,20 +102,28 @@ export async function POST(request: NextRequest) {
         const jobTitle = jobDescription.split('\n')[0].slice(0, 100);
 
         // Core Resumes Table Update
+        const insertPayload: any = {
+            user_id: user.id,
+            optimized_json: optimizedData,
+            public_link_slug: slug,
+            job_title: jobTitle,
+            is_active: true,
+        };
+
+        if (originProfileId) {
+            insertPayload.profile_id = originProfileId;
+        }
+
         const { data: resume, error } = await supabase
             .from('resumes')
-            .insert({
-                user_id: user.id,
-                profile_id: originProfileId,
-                optimized_json: optimizedData,
-                public_link_slug: slug,
-                job_title: jobTitle,
-                is_active: true,
-            })
+            .insert(insertPayload)
             .select()
             .single();
 
-        if (error) throw error;
+        if (error) {
+            console.error('Core insertion failed:', error.message);
+            throw error;
+        }
 
         // ---------- NEW ADVANCED ARCHITECTURE FLOW ---------- //
         // 1. Insert into job_posts

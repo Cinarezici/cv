@@ -220,13 +220,19 @@ function NewResumeForm() {
             });
             const data = await res.json();
             if (!res.ok) throw new Error(data.error || 'Failed to optimize CV.');
-            if (data.resume?.public_link_slug) {
-                toast.success('CV Optimized Successfully', { description: 'Your tailored CV is ready!' });
-                router.push(`/r/${data.resume.public_link_slug}`);
-            } else {
-                toast.success('CV Optimized Successfully');
-                router.push('/dashboard');
-            }
+
+            toast.success('CV Optimized Successfully', { description: 'Your tailored CV is ready!' });
+
+            // Redirect to motivation letters with parameters to trigger the wizard
+            const params = new URLSearchParams({
+                trigger: 'true',
+                resumeId: data.resume?.id || '',
+                jobTitle: jobTitle || data.resume?.job_title || '',
+                company: company || '',
+                jd: jd
+            });
+
+            router.push(`/motivation-letters?${params.toString()}`);
         } catch (err: unknown) {
             setError(err instanceof Error ? err.message : 'An unknown error occurred.');
         } finally {
