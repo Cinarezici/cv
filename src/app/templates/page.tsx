@@ -66,69 +66,62 @@ export default function TemplatesPage() {
             </header>
 
             <div className="max-w-7xl mx-auto flex-1 w-full relative">
-                <div className="text-center mb-20 relative z-10">
-                    <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-blue-600 text-[13px] font-semibold mb-6">
-                        <Star className="h-4 w-4" /> Premium Builder Layouts
-                    </div>
-                    <h1 className="text-5xl md:text-6xl font-black tracking-tight mb-8">
+                <div className="text-center mb-16 relative z-10">
+                    <h1 className="text-4xl md:text-5xl font-black tracking-tight mb-6">
                         The Only <span className="text-blue-600">Templates</span> You'll Need
                     </h1>
-                    <p className="text-xl text-zinc-500 max-w-3xl mx-auto leading-relaxed">
-                        Industry-tested layouts designed by recruitment experts. Guaranteed to be 100% ATS-compliant and recruiter-friendly.
+                    <p className="text-lg text-zinc-500 max-w-2xl mx-auto leading-relaxed font-medium">
+                        Industry-tested layouts designed by experts, guaranteed to be 100% ATS-compliant.
                     </p>
                 </div>
 
-                {/* Templates Grid */}
-                <div className="grid md:grid-cols-2 gap-10 relative z-10">
+                {/* Templates Grid - Compact 3-column */}
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10">
                     {templates.map((tpl) => (
-                        <div key={tpl.id} className="group relative bg-zinc-50 rounded-[40px] overflow-hidden border border-zinc-200 flex flex-col hover:border-blue-300 hover:bg-zinc-100/50 transition-all duration-500 shadow-sm hover:shadow-xl">
+                        <div key={tpl.id} className="group relative bg-white rounded-3xl overflow-hidden border border-zinc-200 flex flex-col hover:border-blue-400 hover:shadow-2xl transition-all duration-500">
 
-                            {/* Preview image Simulation */}
-                            <div className={`aspect-[16/10] ${tpl.color} w-full relative p-12 flex items-center justify-center overflow-hidden border-b border-zinc-100`}>
+                            {/* Smaller Preview area */}
+                            <div className={`aspect-[4/3] ${tpl.color} w-full relative p-8 flex items-center justify-center overflow-hidden border-b border-zinc-100`}>
                                 <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
 
-                                {/* Fake Document Shape */}
-                                <div className="w-[80%] aspect-[1/1.414] bg-white shadow-2xl rounded-sm flex flex-col p-6 gap-3 transition-transform duration-700 group-hover:scale-105 group-hover:-rotate-1">
-                                    <div className="h-4 w-1/2 bg-zinc-100 rounded"></div>
-                                    <div className="h-2 w-1/3 bg-zinc-50 rounded mb-4"></div>
-                                    <div className="space-y-2">
-                                        <div className="h-1 w-full bg-zinc-50 rounded"></div>
-                                        <div className="h-1 w-[90%] bg-zinc-50 rounded"></div>
+                                {/* Refined Fake Document Shape */}
+                                <div className="w-[75%] aspect-[1/1.414] bg-white shadow-xl rounded-[2px] flex flex-col p-4 gap-2 transition-transform duration-700 group-hover:scale-105 group-hover:-rotate-1">
+                                    <div className="h-2.5 w-1/2 bg-zinc-100/80 rounded"></div>
+                                    <div className="h-1.5 w-1/3 bg-zinc-50 rounded mb-2"></div>
+                                    <div className="space-y-1.5">
+                                        <div className="h-0.5 w-full bg-zinc-50 rounded"></div>
+                                        <div className="h-0.5 w-[90%] bg-zinc-50 rounded"></div>
                                     </div>
-                                    <div className="mt-4 pt-4 border-t border-zinc-50 flex gap-4">
-                                        <div className="h-20 w-1/3 bg-zinc-50 rounded"></div>
-                                        <div className="h-20 flex-1 bg-zinc-50 rounded"></div>
+                                    <div className="mt-2 pt-2 border-t border-zinc-50 flex gap-2">
+                                        <div className="h-12 w-1/3 bg-zinc-50/50 rounded"></div>
+                                        <div className="h-12 flex-1 bg-zinc-50/50 rounded"></div>
                                     </div>
                                 </div>
 
                                 {/* Hover Overlay */}
-                                <div className="absolute inset-0 bg-white/40 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
+                                <div className="absolute inset-0 bg-white/60 backdrop-blur-[1px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
                                     <Link href="/signup">
-                                        <Button size="lg" className="h-14 px-10 rounded-2xl bg-blue-600 text-white hover:bg-blue-700 font-extrabold shadow-2xl transform translate-y-8 group-hover:translate-y-0 transition-all duration-500">
+                                        <Button size="lg" className="h-12 px-8 rounded-xl bg-black text-white hover:bg-zinc-800 font-bold shadow-xl transform translate-y-4 group-hover:translate-y-0 transition-all duration-500">
                                             Use {tpl.name}
                                         </Button>
                                     </Link>
                                 </div>
                             </div>
 
-                            <div className="p-10 flex flex-col flex-1">
-                                <div className="flex justify-between items-start mb-6">
-                                    <div>
-                                        <div className="flex items-center gap-3 mb-2">
-                                            <span className="text-3xl">{tpl.emoji}</span>
-                                            <h3 className="text-3xl font-black text-zinc-900">{tpl.name}</h3>
-                                        </div>
-                                        <p className="text-blue-600 font-black text-xs uppercase tracking-widest">{tpl.category}</p>
-                                    </div>
-                                    <Badge className="bg-white text-zinc-900 border-zinc-200">Standard</Badge>
+                            <div className="p-6 flex flex-col flex-1">
+                                <div className="flex justify-between items-center mb-4">
+                                    <h3 className="text-xl font-bold text-zinc-900">{tpl.name}</h3>
+                                    <Badge variant="outline" className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 border-zinc-200">
+                                        {tpl.category}
+                                    </Badge>
                                 </div>
 
-                                <p className="text-zinc-500 mb-8 text-lg leading-relaxed">{tpl.description}</p>
+                                <p className="text-zinc-500 mb-6 text-sm font-medium leading-relaxed">{tpl.description}</p>
 
-                                <div className="mt-auto pt-6 flex flex-wrap gap-2 border-t border-zinc-100">
-                                    {tpl.tags.map(tag => (
-                                        <span key={tag} className="flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-lg bg-zinc-100 text-zinc-500">
-                                            <Check className="h-3 w-3 text-blue-500" /> {tag}
+                                <div className="mt-auto flex flex-wrap gap-1.5">
+                                    {tpl.tags.slice(0, 2).map(tag => (
+                                        <span key={tag} className="text-[10px] font-bold px-2.5 py-1 rounded-full bg-zinc-100 text-zinc-500">
+                                            {tag}
                                         </span>
                                     ))}
                                 </div>
@@ -137,13 +130,10 @@ export default function TemplatesPage() {
                     ))}
                 </div>
 
-                {/* Trust Footer */}
-                <div className="mt-32 text-center py-16 border-t border-zinc-100">
-                    <div className="flex flex-col items-center gap-4">
-                        <div className="flex items-center gap-2 text-zinc-400 font-bold uppercase tracking-widest text-xs">
-                            <ShieldCheck className="h-4 w-4 text-blue-500" /> 100% Guaranteed Outcome
-                        </div>
-                        <p className="text-zinc-400 text-sm max-w-sm">Handcrafted with precision to pass modern Applicant Tracking Systems with ease.</p>
+                {/* Simplified Footer */}
+                <div className="mt-24 text-center py-12">
+                    <div className="inline-flex items-center gap-2 text-zinc-400 font-bold uppercase tracking-widest text-[10px] bg-zinc-50 px-4 py-2 rounded-full border border-zinc-200">
+                        <ShieldCheck className="h-3.5 w-3.5 text-blue-500" /> 100% Recruiter Approved
                     </div>
                 </div>
             </div>
