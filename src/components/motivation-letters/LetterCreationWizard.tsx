@@ -192,20 +192,15 @@ export default function LetterCreationWizard({
     useEffect(() => {
         const fetchCVs = async () => {
             setLoadingCvs(true);
-            console.log('Fetching CVs for user:', userId);
             try {
                 const supabase = createClient();
-                const [{ data: resumes, error: resError }, { data: profiles, error: profError }] = await Promise.all([
+                const [{ data: resumes }, { data: profiles }] = await Promise.all([
                     supabase.from('resumes').select('id, job_title').eq('user_id', userId),
                     supabase.from('profiles').select('id, full_name, headline').eq('user_id', userId)
                 ]);
 
-                if (resError) console.error('Resumes fetch error:', resError);
-                if (profError) console.error('Profiles fetch error:', profError);
-
                 const allCvs: CvOption[] = [];
                 if (profiles && profiles.length > 0) {
-                    console.log('Found profiles:', profiles.length);
                     allCvs.push(...profiles.map(p => ({
                         id: p.id,
                         title: p.full_name ? `${p.full_name} — My CV` : "My CV",
@@ -213,25 +208,30 @@ export default function LetterCreationWizard({
                     })));
                 }
                 if (resumes && resumes.length > 0) {
-                    console.log('Found resumes:', resumes.length);
                     allCvs.push(...resumes.map(r => ({
                         id: r.id,
                         title: r.job_title || 'Untitled CV',
                         type: 'resume' as const
                     })));
                 }
-
-                console.log('Total CVs options:', allCvs.length);
                 setCvs(allCvs);
-                if (allCvs.length > 0) setSelectedCvId(allCvs[0].id);
-            } catch (err) {
-                console.error('Unified fetch error in LetterCreationWizard:', err);
+
+                // Pre-select logic:
+                // 1. If we have a resumeId from trigger flow, select it
+                // 2. Otherwise select the first available CV
+                const triggerId = (initialJobData as any)?.resumeId;
+                if (triggerId && allCvs.some(c => c.id === triggerId)) {
+                    setSelectedCvId(triggerId);
+                    // Also if we have job context, move to step 2 automatically if fields are filled
+                    // (Optional UX improvement: If we have all job info, maybe stay in step 1 to let user double check)
+                } else if (allCvs.length > 0) {
+                    setSelectedCvId(allCvs[0].id);
+                }
             } finally {
                 setLoadingCvs(false);
             }
         };
-        if (userId) fetchCVs();
-        else console.warn('fetchCVs skipped: userId is empty');
+        fetchCVs();
     }, [userId]);
 
     const handleNextStep = () => {

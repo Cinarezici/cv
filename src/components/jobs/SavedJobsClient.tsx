@@ -20,8 +20,13 @@ export default function SavedJobsClient({ initialJobs, isPro, userId }: Props) {
     const router = useRouter();
 
     const handleOptimize = (job: Job) => {
-        setSelectedJob(job);
-        setIsWizardOpen(true);
+        const params = new URLSearchParams({
+            jobTitle: job.title,
+            company: job.companyName,
+            jd: job.descriptionText,
+            link: job.link
+        });
+        router.push(`/resumes/new?${params.toString()}`);
     };
 
     const handleToggleSave = async (job: Job) => {

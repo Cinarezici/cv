@@ -28,44 +28,39 @@ function NewResumeForm() {
 
     useEffect(() => {
         const fetchDocs = async () => {
-            try {
-                const supabase = createClient();
-                const { data: { user } } = await supabase.auth.getUser();
-                if (user) {
-                    const [{ data: profs }, { data: res }] = await Promise.all([
-                        supabase.from('profiles').select('*').eq('user_id', user.id).order('created_at', { ascending: false }),
-                        supabase.from('resumes').select('*').eq('user_id', user.id).order('updated_at', { ascending: false })
-                    ]);
+            const supabase = createClient();
+            const { data: { user } } = await supabase.auth.getUser();
+            if (user) {
+                const [{ data: profs }, { data: res }] = await Promise.all([
+                    supabase.from('profiles').select('*').eq('user_id', user.id).order('created_at', { ascending: false }),
+                    supabase.from('resumes').select('*').eq('user_id', user.id).order('updated_at', { ascending: false })
+                ]);
 
-                    const docs = [];
-                    if (profs) {
-                        docs.push(...profs.map(p => ({
-                            id: p.id,
-                            type: 'profile',
-                            title: p.full_name ? `${p.full_name} — CV'im` : 'LinkedIn Profile',
-                            subtitle: p.headline || 'Imported Profile',
-                            updatedAt: p.updated_at || p.created_at,
-                            _raw: p
-                        })));
-                    }
-                    if (res) {
-                        docs.push(...res.map(r => ({
-                            id: r.id,
-                            type: 'resume',
-                            title: r.job_title || 'Untitled CV',
-                            subtitle: r.theme_category ? `Theme: ${r.theme_category}` : 'Standard',
-                            updatedAt: r.updated_at,
-                            _raw: r
-                        })));
-                    }
-                    docs.sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
-                    setDocuments(docs);
+                const docs = [];
+                if (profs) {
+                    docs.push(...profs.map(p => ({
+                        id: p.id,
+                        type: 'profile',
+                        title: p.full_name ? `${p.full_name} — CV'im` : 'LinkedIn Profile',
+                        subtitle: p.headline || 'Imported Profile',
+                        updatedAt: p.updated_at || p.created_at,
+                        _raw: p
+                    })));
                 }
-            } catch (err) {
-                console.error('Error fetching docs:', err);
-            } finally {
-                setFetchingDocs(false);
+                if (res) {
+                    docs.push(...res.map(r => ({
+                        id: r.id,
+                        type: 'resume',
+                        title: r.job_title || 'Untitled CV',
+                        subtitle: r.theme_category ? `Theme: ${r.theme_category}` : 'Standard',
+                        updatedAt: r.updated_at,
+                        _raw: r
+                    })));
+                }
+                docs.sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
+                setDocuments(docs);
             }
+            setFetchingDocs(false);
         };
         fetchDocs();
     }, []);
@@ -226,13 +221,18 @@ function NewResumeForm() {
             const data = await res.json();
             if (!res.ok) throw new Error(data.error || 'Failed to optimize CV.');
 
-            if (data.resume?.public_link_slug) {
-                toast.success('CV Optimized Successfully', { description: 'Your tailored CV is ready!' });
-                router.push(`/r/${data.resume.public_link_slug}`);
-            } else {
-                toast.success('CV Optimized Successfully');
-                router.push('/dashboard');
-            }
+            toast.success('CV Optimized Successfully', { description: 'Your tailored CV is ready!' });
+
+            // Redirect to motivation letters with parameters to trigger the wizard
+            const params = new URLSearchParams({
+                trigger: 'true',
+                resumeId: data.resume?.id || '',
+                jobTitle: jobTitle || data.resume?.job_title || '',
+                company: company || '',
+                jd: jd
+            });
+
+            router.push(`/motivation-letters?${params.toString()}`);
         } catch (err: unknown) {
             setError(err instanceof Error ? err.message : 'An unknown error occurred.');
         } finally {
