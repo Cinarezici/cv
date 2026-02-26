@@ -3,8 +3,9 @@ import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { CvShareLinkButton } from '@/components/CvShareLinkButton';
 import { DeleteButton } from '@/components/DeleteButton';
-import { FileText, Plus, Pencil, Clock, LayoutTemplate, Link as LinkIcon } from 'lucide-react';
+import { FileText, Plus, Pencil, Clock, LayoutTemplate, Link as LinkIcon, AlertCircle } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
+import { checkUsageLimits } from '@/lib/limits';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -21,6 +22,9 @@ export default async function MyCVsPage() {
     const supabase = await createClient();
     const { data: { user }, error } = await supabase.auth.getUser();
     if (error || !user) redirect('/login');
+
+    const limitCheck = await checkUsageLimits(user.id, 'create_cv');
+    const isCVLimitReached = !limitCheck.allowed;
 
     const [{ data: resumes }, { data: profiles }] = await Promise.all([
         supabase
@@ -73,11 +77,23 @@ export default async function MyCVsPage() {
                     <p className="text-zinc-500 mt-1 text-sm">All your created CVs. Edit, share, or delete them.</p>
                 </div>
                 <Link
-                    href="/builder/new"
-                    className="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-bold px-5 py-2.5 rounded-xl shadow-sm transition-colors text-sm"
+                    href={isCVLimitReached ? "/upgrade" : "/builder/new"}
+                    className={`inline-flex items-center gap-2 font-bold px-5 py-2.5 rounded-xl shadow-sm transition-colors text-sm ${isCVLimitReached
+                            ? "bg-zinc-100 text-zinc-400 border border-zinc-200 hover:bg-zinc-200"
+                            : "bg-orange-500 hover:bg-orange-600 text-white"
+                        }`}
                 >
-                    <Plus className="w-4 h-4" />
-                    New CV
+                    {isCVLimitReached ? (
+                        <>
+                            <AlertCircle className="w-4 h-4" />
+                            Limit Reached
+                        </>
+                    ) : (
+                        <>
+                            <Plus className="w-4 h-4" />
+                            New CV
+                        </>
+                    )}
                 </Link>
             </div>
 
@@ -90,11 +106,23 @@ export default async function MyCVsPage() {
                     <h3 className="text-xl font-bold text-zinc-700">No CVs yet</h3>
                     <p className="text-zinc-400 text-sm mt-2 mb-6">Create your first CV using the CV Builder.</p>
                     <Link
-                        href="/builder/new"
-                        className="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-bold px-6 py-2.5 rounded-xl text-sm transition-colors"
+                        href={isCVLimitReached ? "/upgrade" : "/builder/new"}
+                        className={`inline-flex items-center gap-2 font-bold px-6 py-2.5 rounded-xl text-sm transition-colors ${isCVLimitReached
+                                ? "bg-zinc-100 text-zinc-400 border border-zinc-200 hover:bg-zinc-200"
+                                : "bg-orange-500 hover:bg-orange-600 text-white"
+                            }`}
                     >
-                        <Plus className="w-4 h-4" />
-                        Create a CV
+                        {isCVLimitReached ? (
+                            <>
+                                <AlertCircle className="w-4 h-4" />
+                                Limit Reached
+                            </>
+                        ) : (
+                            <>
+                                <Plus className="w-4 h-4" />
+                                Create a CV
+                            </>
+                        )}
                     </Link>
                 </div>
             ) : (

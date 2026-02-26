@@ -4,8 +4,9 @@ import Link from 'next/link';
 import { Resume } from '@/types';
 import { DeleteButton } from '@/components/DeleteButton';
 import { CvShareLinkButton } from '@/components/CvShareLinkButton';
-import { FileText, Mail, Plus, Pencil, Clock, LayoutTemplate, Zap, Link as LinkIcon } from 'lucide-react';
+import { FileText, Mail, Plus, Pencil, Clock, LayoutTemplate, Zap, Link as LinkIcon, AlertCircle } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
+import { checkUsageLimits } from '@/lib/limits';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -14,6 +15,9 @@ export default async function DashboardPage() {
     const supabase = await createClient();
     const { data: { user }, error: userError } = await supabase.auth.getUser();
     if (userError || !user) redirect('/login');
+
+    const limitCheck = await checkUsageLimits(user.id, 'create_cv');
+    const isCVLimitReached = !limitCheck.allowed;
 
     const [{ data: resumes }, { data: profiles }, { data: letters }] = await Promise.all([
         supabase
@@ -87,11 +91,23 @@ export default async function DashboardPage() {
                         Upgrade Pro
                     </Link>
                     <Link
-                        href="/builder/new"
-                        className="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-bold px-5 py-2.5 rounded-xl shadow-sm transition-colors text-sm"
+                        href={isCVLimitReached ? "/upgrade" : "/builder/new"}
+                        className={`inline-flex items-center gap-2 font-bold px-5 py-2.5 rounded-xl shadow-sm transition-colors text-sm ${isCVLimitReached
+                            ? "bg-zinc-100 text-zinc-400 border border-zinc-200 hover:bg-zinc-200"
+                            : "bg-orange-500 hover:bg-orange-600 text-white"
+                            }`}
                     >
-                        <Plus className="w-4 h-4" />
-                        + CV Builder
+                        {isCVLimitReached ? (
+                            <>
+                                <AlertCircle className="w-4 h-4" />
+                                Limit Reached
+                            </>
+                        ) : (
+                            <>
+                                <Plus className="w-4 h-4" />
+                                CV Builder
+                            </>
+                        )}
                     </Link>
                 </div>
             </div>

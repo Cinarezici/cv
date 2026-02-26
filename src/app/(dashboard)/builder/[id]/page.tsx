@@ -7,6 +7,7 @@
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import BuilderClient from './BuilderClient';
+import { X, Loader2 } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -31,14 +32,29 @@ export default async function BuilderPage({
         .eq('user_id', user.id)
         .single();
 
-    if (!resume) redirect('/dashboard');
+    if (!resume) {
+        return (
+            <div className="flex flex-col items-center justify-center min-h-screen bg-white p-4">
+                <div className="max-w-md text-center space-y-4">
+                    <div className="w-16 h-16 bg-red-50 text-red-500 rounded-full flex items-center justify-center mx-auto">
+                        <X className="w-8 h-8" />
+                    </div>
+                    <h2 className="text-2xl font-bold text-zinc-900">CV Not Found</h2>
+                    <p className="text-zinc-600">The CV you are looking for doesn't exist or you don't have permission to view it.</p>
+                    <a href="/dashboard" className="inline-block bg-indigo-600 text-white px-6 py-2 rounded-xl font-bold hover:bg-indigo-700 transition-colors">
+                        Go to Dashboard
+                    </a>
+                </div>
+            </div>
+        );
+    }
 
     // Check subscription status
     const { data: sub } = await supabase
         .from('subscriptions')
         .select('*')
         .eq('user_id', user.id)
-        .single();
+        .maybeSingle();
 
     const isPro = sub?.status === 'active';
 

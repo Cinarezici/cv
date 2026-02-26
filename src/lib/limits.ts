@@ -6,7 +6,7 @@ export async function checkUsageLimits(userId: string, action: 'create_cv' | 'cr
 
     // 1. Fetch user's subscription and earliest profile to determine trial/pro status
     const [{ data: sub }, { data: profiles }] = await Promise.all([
-        supabase.from('subscriptions').select('*').eq('user_id', userId).single(),
+        supabase.from('subscriptions').select('*').eq('user_id', userId).maybeSingle(),
         supabase.from('profiles').select('created_at').eq('user_id', userId).order('created_at', { ascending: true }).limit(1)
     ]);
 

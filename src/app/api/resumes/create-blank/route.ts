@@ -30,20 +30,28 @@ export async function POST(request: NextRequest) {
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
+        const body = await request.json().catch(() => ({}));
+        const { profileId } = body;
+
         // --- CHECK LIMITS BEFORE CREATING CV ---
         const { allowed, reason } = await checkUsageLimits(user.id, 'create_cv');
         if (!allowed) {
             return NextResponse.json({ error: reason, code: 'LIMIT_REACHED' }, { status: 403 });
         }
 
-        // Fetch basic info from profile if available
-        const { data: profile } = await supabase
+        // Fetch specified profile or newest one
+        let profileQuery = supabase
             .from('profiles')
             .select('id, raw_json')
-            .eq('user_id', user.id)
-            .order('created_at', { ascending: false })
-            .limit(1)
-            .maybeSingle();
+            .eq('user_id', user.id);
+
+        if (profileId) {
+            profileQuery = profileQuery.eq('id', profileId);
+        } else {
+            profileQuery = profileQuery.order('created_at', { ascending: false });
+        }
+
+        const { data: profile } = await profileQuery.limit(1).maybeSingle();
 
         const raw = profile?.raw_json as any;
         const initialJson = {
