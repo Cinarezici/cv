@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from "@/components/ui/button";
-import { ArrowRight, CheckCircle2, FileText, Download, Share2, Zap, Globe, MessageSquare, ShieldCheck } from "lucide-react";
+import { ArrowRight, CheckCircle2, FileText, Download, Share2, Zap, Globe, MessageSquare, ShieldCheck, X } from "lucide-react";
 import { ContainerScroll } from "@/components/ui/container-scroll-animation";
 import { TestimonialsSection } from "@/components/ui/testimonial-v2";
 import { InteractiveGlobe } from "@/components/ui/interactive-globe";
@@ -163,47 +163,91 @@ export default function Home() {
           </ContainerScroll>
         </section>
 
-        {/* --- Pricing CTA (Clean Cards) --- */}
+        {/* --- Pricing CTA (Synchronized with Upgrade Plan Style) --- */}
         <section className="w-full py-32 bg-white relative overflow-hidden">
           <div className="container px-6 mx-auto text-center relative z-10">
-            <h2 className="text-4xl md:text-6xl font-black text-zinc-900 mb-20">
-              Start building for <span className="text-blue-600">free today</span>
+            <h2 className="text-4xl md:text-5xl font-bold text-zinc-900 mb-20 tracking-tight">
+              Upgrade your Plan
             </h2>
 
-            <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-20">
+            <div className="flex flex-col sm:flex-row gap-8 max-w-[850px] mx-auto mb-20 items-stretch">
               {/* Free Plan */}
-              <div className="p-10 rounded-[40px] bg-zinc-50 border border-zinc-200 flex flex-col items-center">
-                <h3 className="text-xl font-bold mb-2 text-zinc-900">Free Plan</h3>
-                <p className="text-zinc-500 mb-8">Test the platform features</p>
-                <p className="text-6xl font-black text-zinc-900 mb-8">$0</p>
-                <div className="w-full space-y-4 mb-10 text-left">
-                  <div className="flex items-center gap-3 text-zinc-600 font-medium"><CheckCircle2 className="h-5 w-5 text-blue-500" /> 2 CVs & Cover Letters</div>
-                  <div className="flex items-center gap-3 text-zinc-600 font-medium"><CheckCircle2 className="h-5 w-5 text-blue-500" /> Daily Job Searches</div>
-                  <div className="flex items-center gap-3 text-zinc-400 italic text-sm"><ShieldCheck className="h-5 w-5 opacity-40" /> Watermarked Exports</div>
+              <div className="flex-1 bg-white rounded-[24px] shadow-[0_4px_24px_-4px_rgba(0,0,0,0.06)] p-10 flex flex-col border border-zinc-100 hover:shadow-xl transition-shadow">
+                <div className="text-left mb-6">
+                  <h3 className="text-[28px] font-bold text-black leading-tight">Free</h3>
+                  <p className="text-zinc-500 text-[15px] mt-1">Perfect for testing the platform.</p>
                 </div>
+                <div className="flex items-baseline gap-1.5 mb-8 text-left">
+                  <span className="text-[44px] font-bold tracking-tight text-zinc-900 leading-none">$0</span>
+                  <span className="text-zinc-500 text-[15px] font-medium">/forever</span>
+                </div>
+
+                <ul className="space-y-4 mb-10 flex-1 text-left">
+                  {[
+                    { text: "2 CVs (Resets every 14 days)", included: true },
+                    { text: "2 Cover Letters (Resets 14 days)", included: true },
+                    { text: "2 Daily Job Searches", included: true },
+                    { text: "PDF Export (Watermarked)", included: true },
+                    { text: "Advanced AI Optimization", included: false }
+                  ].map((item, i) => (
+                    <li key={i} className="flex items-start gap-3 text-[14px]">
+                      {item.included ? (
+                        <CheckCircle2 className="w-[18px] h-[18px] text-[#16a34a] shrink-0 mt-[2px]" strokeWidth={2.5} />
+                      ) : (
+                        <X className="w-[18px] h-[18px] text-zinc-300 shrink-0 mt-[2px]" strokeWidth={2.5} />
+                      )}
+                      <span className={item.included ? "text-zinc-700 font-medium" : "text-zinc-400"}>{item.text}</span>
+                    </li>
+                  ))}
+                </ul>
+
                 <Link href="/signup" className="w-full">
-                  <Button variant="outline" className="w-full h-16 rounded-2xl border-zinc-200 hover:bg-zinc-100 font-bold text-lg transition-all">Get Started</Button>
+                  <Button variant="outline" className="w-full h-14 rounded-[14px] border-zinc-200 text-black font-semibold text-[15px] hover:bg-zinc-50 transition-all">
+                    Start for Free
+                  </Button>
                 </Link>
               </div>
 
               {/* Pro Plan */}
-              <div className="p-10 rounded-[40px] bg-white border-2 border-blue-600 flex flex-col items-center relative shadow-2xl shadow-blue-500/10">
-                <div className="absolute top-6 right-8 bg-blue-600 text-white text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest">Best Value</div>
-                <h3 className="text-xl font-bold mb-2 text-zinc-900">Lifetime Access</h3>
-                <p className="text-zinc-500 mb-8">Single payment, forever yours</p>
-                <div className="flex flex-col items-center mb-8">
-                  <p className="text-6xl font-black text-zinc-900">$99</p>
-                  <p className="text-xs text-blue-600 font-black mt-2 uppercase tracking-wide">
+              <div className="flex-1 relative bg-white rounded-[24px] shadow-[0_12px_40px_-4px_rgba(37,99,235,0.12)] border-[2.5px] border-[#2563eb] p-10 flex flex-col hover:scale-[1.01] transition-transform">
+                <div className="absolute top-6 right-8 bg-[#2563eb] text-white text-[11px] font-bold tracking-wide px-3 py-1.5 rounded-full uppercase shadow-lg shadow-blue-600/20 z-20">
+                  BEST VALUE
+                </div>
+
+                <div className="text-left mb-6 mt-4">
+                  <h3 className="text-[28px] font-bold text-black leading-tight">Pro Lifetime</h3>
+                  <p className="text-zinc-500 text-[15px] mt-1">Single payment, unlimited access.</p>
+                </div>
+
+                <div className="flex flex-col mb-8 text-left">
+                  <div className="flex items-baseline gap-1.5">
+                    <span className="text-[44px] font-bold tracking-tight text-zinc-900 leading-none">$99</span>
+                    <span className="text-zinc-600 text-[15px] font-medium">one-time</span>
+                  </div>
+                  <p className="text-[11px] text-[#2563eb] font-black mt-2 uppercase tracking-wider bg-blue-50 w-fit px-2 py-0.5 rounded">
                     Approx. $8.25/mo for one year
                   </p>
                 </div>
-                <div className="w-full space-y-4 mb-10 text-left">
-                  <div className="flex items-center gap-3 text-zinc-800 font-bold"><CheckCircle2 className="h-5 w-5 text-blue-600" /> Unlimited Everything</div>
-                  <div className="flex items-center gap-3 text-zinc-800 font-bold"><CheckCircle2 className="h-5 w-5 text-blue-600" /> Advanced AI Optimization</div>
-                  <div className="flex items-center gap-3 text-zinc-800 font-bold"><CheckCircle2 className="h-5 w-5 text-blue-600" /> Premium Templates</div>
-                </div>
+
+                <ul className="space-y-4 mb-10 flex-1 text-left">
+                  {[
+                    "Unlimited Everything",
+                    "Advanced AI Optimization",
+                    "No Watermark Exports",
+                    "LinkedIn Integration",
+                    "Premium Templates"
+                  ].map((feat, i) => (
+                    <li key={i} className="flex items-start gap-3 text-[14px]">
+                      <CheckCircle2 className="w-[18px] h-[18px] text-[#16a34a] shrink-0 mt-[2px]" strokeWidth={2.5} />
+                      <span className="text-zinc-800 font-bold">{feat}</span>
+                    </li>
+                  ))}
+                </ul>
+
                 <Link href="/signup" className="w-full">
-                  <Button className="w-full h-16 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-black text-lg shadow-xl shadow-blue-500/20 transition-transform hover:scale-[1.02]">Upgrade Now</Button>
+                  <Button className="w-full h-14 rounded-[14px] bg-[#2563eb] hover:bg-black text-white font-bold text-[15px] shadow-xl shadow-blue-500/20 transition-all">
+                    Upgrade to Pro
+                  </Button>
                 </Link>
               </div>
             </div>
