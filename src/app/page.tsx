@@ -89,31 +89,41 @@ export default function Home() {
                 Build professional CVs, generate tailored cover letters, and land interviews at top companies with our AI-powered standard.
               </p>
 
-              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
+              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-6 pt-4">
                 <Link href="/signup">
                   <Button size="lg" className="h-16 px-10 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-lg shadow-xl shadow-blue-600/10 transition-all hover:scale-[1.02] active:scale-95">
                     Start Building for Free <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
                 </Link>
-                <div className="flex items-center gap-3 px-2">
-                  <div className="flex -space-x-3">
+                <div className="flex items-center gap-4">
+                  <div className="flex -space-x-4">
                     {testimonials.map((t, i) => (
-                      <div key={i} className="w-10 h-10 rounded-full border-2 border-white bg-zinc-100 overflow-hidden shadow-sm">
-                        <Image src={t.author.avatar} alt={t.author.name} width={40} height={40} className="object-cover" />
+                      <div key={i} className="w-12 h-12 rounded-full border-4 border-white bg-zinc-100 overflow-hidden shadow-md relative z-[10]">
+                        <Image src={t.author.avatar} alt={t.author.name} width={48} height={48} className="object-cover" />
                       </div>
                     ))}
                   </div>
-                  <p className="text-xs font-bold text-zinc-400">Join 10k+ professionals</p>
+                  <div className="flex flex-col items-start -space-y-1">
+                    <p className="text-[15px] font-bold text-zinc-900 tracking-tight">Join 10k+ professionals</p>
+                    <div className="flex items-center gap-1">
+                      <div className="flex">
+                        {[1, 2, 3, 4, 5].map(i => (
+                          <svg key={i} className="w-3.5 h-3.5 fill-blue-500" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" /></svg>
+                        ))}
+                      </div>
+                      <span className="text-[11px] font-bold text-zinc-400 uppercase tracking-wider">Top Rated AI</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
 
-            <div className="flex-1 flex items-center justify-center relative scale-90 lg:scale-110">
+            <div className="flex-1 flex items-center justify-center relative scale-100 lg:scale-[1.25] transform cursor-grab active:cursor-grabbing">
               {/* Clean Globe Implementation */}
               <InteractiveGlobe
                 size={700}
                 dotColor="rgba(59, 130, 246, ALPHA)"
-                arcColor="rgba(59, 130, 246, 0.2)"
+                arcColor="rgba(59, 130, 246, 0.4)"
                 markerColor="rgba(59, 130, 246, 1)"
                 className="opacity-100 transition-opacity duration-1000"
               />
