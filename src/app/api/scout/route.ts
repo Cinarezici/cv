@@ -56,6 +56,22 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: 'limit_reached', message: reason }, { status: 403 });
         }
 
+        const mapJobs = (items: any[]) => items.map((j: any) => ({
+            id: j.id || Math.random().toString(36).substr(2, 9),
+            title: j.title,
+            companyName: j.companyName,
+            companyLogo: j.companyLogo || null,
+            location: j.location || 'Unknown',
+            link: j.url || j.link || '',
+            postedAt: j.postedAt || new Date().toISOString(),
+            applicantsCount: j.applicantsCount || null,
+            employmentType: j.employmentType || null,
+            seniorityLevel: j.seniorityLevel || null,
+            descriptionText: j.description || j.descriptionText || '',
+            salaryInfo: Array.isArray(j.salaryInfo) ? j.salaryInfo : [],
+            benefits: Array.isArray(j.benefits) ? j.benefits : [],
+        }));
+
         if (type === 'jobs') {
             await logJobSearch(user.id, query);
             const searchLocation = location || 'Worldwide';
@@ -67,7 +83,7 @@ export async function POST(request: NextRequest) {
                     apifyProxyGroups: ['RESIDENTIAL']
                 }
             }, token);
-            results = items || [];
+            results = items ? mapJobs(items) : [];
         } else if (type === 'people') {
             const items = await callApifyActor('dev_fusion/linkedin-profile-scraper', {
                 profileUrls: [query],
@@ -84,7 +100,7 @@ export async function POST(request: NextRequest) {
                     apifyProxyGroups: ['RESIDENTIAL']
                 }
             }, token);
-            results = items || [];
+            results = items ? mapJobs(items) : [];
         } else {
             return NextResponse.json({ error: 'Invalid search type' }, { status: 400 });
         }
