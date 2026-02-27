@@ -101,7 +101,7 @@ export async function POST(request: NextRequest) {
       console.log(`Starting Apify Scraper for URL: ${linkedinUrl}`);
       try {
         const safeActorId = 'dev_fusion~linkedin-profile-scraper';
-        const startRes = await fetch(`https://api.apify.com/v2/acts/${safeActorId}/runs?token=${token}&memory=4096`, {
+        const startRes = await fetch(`https://api.apify.com/v2/acts/${safeActorId}/runs?token=${token}&memory=2048`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ profileUrls: [linkedinUrl] })
