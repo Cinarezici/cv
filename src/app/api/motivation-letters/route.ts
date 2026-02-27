@@ -90,7 +90,7 @@ export async function POST(request: NextRequest) {
 
         // 2. Check Plan & Limits
         console.log("-> Fetching subscription for user", user.id);
-        const { data: sub } = await supabase.from('subscriptions').select('*').eq('user_id', user.id).single();
+        const { data: sub } = await supabase.from('subscriptions').select('*').eq('user_id', user.id).maybeSingle();
         const isPro = ['active', 'trialing'].includes(sub?.status as string);
         console.log("-> isPro?", isPro);
 
@@ -121,7 +121,7 @@ export async function POST(request: NextRequest) {
 
             const { data: letter, error: insertError } = await supabase.from('motivation_letters').insert({
                 user_id: user.id,
-                cv_id: null,
+                cv_id: cvId, // Save the actual ID used
                 company_name: company.name || 'Unknown',
                 job_title: config.targetRole || '',
                 tone: config.tone || 'corporate',

@@ -252,10 +252,6 @@ export default function LetterCreationWizard({
                 toast.success('✨ Cover letter creation started! Redirecting...');
                 const newLetters: MotivationLetter[] = Array.isArray(data.letters) ? data.letters : (data.letter ? [data.letter] : []);
                 onSuccess(newLetters);
-                // Small delay to let toast render, then hard redirect
-                setTimeout(() => {
-                    window.location.href = '/motivation-letters';
-                }, 400);
             }
         } catch (err: any) {
             toast.error(err.message || 'An error occurred.');

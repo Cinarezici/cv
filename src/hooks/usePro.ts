@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/client';
 
 export function usePro() {
     const [isPro, setIsPro] = useState<boolean | null>(null);
+    const [status, setStatus] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
@@ -22,9 +23,9 @@ export function usePro() {
                     .eq('user_id', user.id)
                     .maybeSingle();
 
-                // Strictly check status === 'active'
-                // If we want to be safe with date, we can include it, but the instruction emphasized 'active' status.
-                const isProActive = ['active', 'trialing'].includes(sub?.status as string);
+                const currentStatus = sub?.status as string;
+                setStatus(currentStatus);
+                const isProActive = ['active', 'trialing'].includes(currentStatus);
 
                 setIsPro(isProActive);
             } catch (error) {
@@ -50,5 +51,5 @@ export function usePro() {
         }
     };
 
-    return { isPro, isLoading, requirePro };
+    return { isPro, isLoading, requirePro, status };
 }

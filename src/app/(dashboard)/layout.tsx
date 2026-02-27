@@ -39,7 +39,7 @@ export default function DashboardLayout({
 const Sidebar = () => {
     const [open, setOpen] = useState(true);
     const pathname = usePathname();
-    const { isPro } = usePro();
+    const { status } = usePro();
 
     return (
         <nav
@@ -101,8 +101,8 @@ const Sidebar = () => {
                         selected={pathname === "/motivation-letters"}
                         open={open}
                     />
-                    {/* UPGRADE PLAN — only show if NOT Pro */}
-                    {isPro === false && (
+                    {/* UPGRADE PLAN — only show if NOT active (so trialing or free sees it) */}
+                    {status !== 'active' && (
                         <UpgradeOption open={open} selected={pathname === "/upgrade"} />
                     )}
                     <Option
