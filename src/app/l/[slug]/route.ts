@@ -48,7 +48,7 @@ export async function GET(
         const now = new Date();
 
         // Check if owner is active pro or active trialing/free trial
-        const isProActive = ['active', 'trialing'].includes(sub?.status as string);
+        const isProActive = ['active'].includes(sub?.status as string);
 
         let isTrialActive = false;
         if (sub?.trial_ends_at) {

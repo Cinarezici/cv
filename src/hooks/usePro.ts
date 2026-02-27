@@ -25,7 +25,7 @@ export function usePro() {
 
                 const currentStatus = sub?.status as string;
                 setStatus(currentStatus);
-                const isProActive = ['active', 'trialing'].includes(currentStatus);
+                const isProActive = ['active'].includes(currentStatus);
 
                 setIsPro(isProActive);
             } catch (error) {

@@ -31,7 +31,7 @@ export async function POST(
 
         // Check plan
         const { data: sub } = await supabase.from('subscriptions').select('*').eq('user_id', user.id).maybeSingle();
-        const isPro = ['active', 'trialing'].includes(sub?.status as string);
+        const isPro = ['active'].includes(sub?.status as string);
 
         // Fetch CV / profile data
         let resumeJSON: any = null;

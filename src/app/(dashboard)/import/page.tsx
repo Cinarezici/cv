@@ -214,7 +214,7 @@ export default function ImportPage() {
                                 </Button>
                             ) : (
                                 <Button
-                                    onClick={() => window.location.href = process.env.NEXT_PUBLIC_POLAR_CHECKOUT_URL!}
+                                    onClick={() => window.location.href = 'https://cvoptimizerai.com/upgrade'}
                                     className="w-full bg-indigo-600 hover:bg-indigo-700 text-white h-12 font-bold flex items-center justify-center gap-2"
                                 >
                                     <Sparkles className="w-4 h-4" />
@@ -306,7 +306,7 @@ export default function ImportPage() {
                                 </Button>
                             ) : (
                                 <Button
-                                    onClick={() => window.location.href = process.env.NEXT_PUBLIC_POLAR_CHECKOUT_URL!}
+                                    onClick={() => window.location.href = 'https://cvoptimizerai.com/upgrade'}
                                     className="w-full bg-indigo-600 hover:bg-indigo-700 text-white h-12 font-bold flex items-center justify-center gap-2"
                                 >
                                     <Sparkles className="w-4 h-4" />
@@ -348,7 +348,7 @@ export default function ImportPage() {
                                         <p className="text-zinc-900 font-bold mb-1">Limit Reached</p>
                                         <p className="text-zinc-600 text-sm font-medium mb-4">You have used your 2 free "From Scratch" CV credits. Upgrade to Pro for unlimited access.</p>
                                         <Button
-                                            onClick={() => window.location.href = process.env.NEXT_PUBLIC_POLAR_CHECKOUT_URL!}
+                                            onClick={() => window.location.href = 'https://cvoptimizerai.com/upgrade'}
                                             className="w-full bg-orange-500 hover:bg-orange-600 text-white h-12 font-bold rounded-xl shadow-md"
                                         >
                                             Upgrade to Pro for Unlimited

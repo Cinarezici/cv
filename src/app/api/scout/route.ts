@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
         if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
         if (!token) {
-            return NextResponse.json({ error: 'Apify API Token is missing' }, { status: 500 });
+            return NextResponse.json({ error: 'Apify API Token is missing. Please add APIFY_API_TOKEN to your Vercel Environment Variables or local .env file.' }, { status: 500 });
         }
 
         const { query, type, location } = await request.json();

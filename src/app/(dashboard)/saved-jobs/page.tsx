@@ -17,7 +17,7 @@ export default async function SavedJobsPage() {
     const initialJobs = savedJobs?.map(j => j.job_data) || [];
 
     const { data: sub } = await supabase.from('subscriptions').select('*').eq('user_id', user.id).single();
-    const isPro = ['active', 'trialing'].includes(sub?.status as string);
+    const isPro = ['active'].includes(sub?.status as string);
 
     return <SavedJobsClient initialJobs={initialJobs} isPro={isPro} userId={user.id} />;
 }

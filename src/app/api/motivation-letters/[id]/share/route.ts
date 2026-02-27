@@ -28,7 +28,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
         }
 
         const { data: sub } = await supabase.from('subscriptions').select('*').eq('user_id', user.id).single();
-        const isPro = ['active', 'trialing'].includes(sub?.status as string);
+        const isPro = ['active'].includes(sub?.status as string);
         const shareExpiry = !isPro ? new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString() : null;
 
         const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://cvoptimizerai.com';

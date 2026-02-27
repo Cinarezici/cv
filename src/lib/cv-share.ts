@@ -69,7 +69,7 @@ export async function resolveShareAccess(shareId: string): Promise<ShareResolved
         }
 
         // ── 3. Compute access ────────────────────────────────────────────────────
-        const isPro = sub?.is_pro === true || ['active', 'trialing'].includes(sub?.status as string) || sub?.plan === 'lifetime';
+        const isPro = sub?.is_pro === true || ['active'].includes(sub?.status as string) || sub?.plan === 'lifetime';
 
         console.log('[resolveShareAccess] auth check:', {
             shareId, ownerUserId: owner_user_id, isPro,
@@ -205,7 +205,7 @@ function computeProActive(
     sub: { status?: string | null } | null | undefined,
     now: Date,
 ): boolean {
-    return ['active', 'trialing'].includes(sub?.status as string);
+    return ['active'].includes(sub?.status as string);
 }
 
 /* ---------- Create a share link for a resume ---------- */

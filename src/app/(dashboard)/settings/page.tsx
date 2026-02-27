@@ -95,7 +95,7 @@ export default function SettingsPage() {
         );
     }
 
-    const isPro = ['active', 'trialing'].includes(subscription?.status as string);
+    const isPro = ['active'].includes(subscription?.status as string);
 
     return (
         <div className="max-w-4xl mx-auto py-12 px-4 bg-[#fafafa] min-h-[calc(100vh-100px)] text-zinc-900 font-sans">

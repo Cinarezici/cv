@@ -36,7 +36,7 @@ export default async function PublicResumePage({ params }: { params: Promise<{ s
     const trialEndDate = new Date(accountCreationDate.getTime() + 14 * 24 * 60 * 60 * 1000);
     const now = new Date();
 
-    const hasActiveSub = ['active', 'trialing'].includes(subscription?.status as string);
+    const hasActiveSub = ['active'].includes(subscription?.status as string);
     const trialTimeRemaining = now < trialEndDate;
 
     if (!hasActiveSub && !trialTimeRemaining) {

@@ -31,7 +31,7 @@ export default function ScoutPage() {
             if (user) {
                 setUserId(user.id);
                 const { data: sub } = await supabase.from('subscriptions').select('*').eq('user_id', user.id).single();
-                setIsPro(['active', 'trialing'].includes(sub?.status as string));
+                setIsPro(['active'].includes(sub?.status as string));
             }
 
             try {

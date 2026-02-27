@@ -58,7 +58,7 @@ export async function POST(request: NextRequest) {
         .eq('user_id', user.id)
         .maybeSingle();
 
-      const isPro = ['active', 'trialing'].includes(sub?.status as string);
+      const isPro = ['active'].includes(sub?.status as string);
       if (!isPro) {
         return NextResponse.json({
           error: 'LinkedIn URL import is a Pro feature. Please use the Manual Text option or upgrade to Pro.',
@@ -97,7 +97,7 @@ export async function POST(request: NextRequest) {
     } else {
       // URL Approach
       if (!process.env.APIFY_API_TOKEN) {
-        return NextResponse.json({ error: 'Apify API Token eksik. Lütfen Manuel seçeneği kullanın.' }, { status: 500 });
+        return NextResponse.json({ error: 'Apify API Token is missing. Please add APIFY_API_TOKEN to your Vercel Environment Variables or local .env file.' }, { status: 500 });
       }
 
       console.log(`Starting Apify Scraper for URL: ${linkedinUrl}`);
