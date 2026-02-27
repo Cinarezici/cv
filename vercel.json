@@ -1,0 +1,10 @@
+{
+  "functions": {
+    "src/app/api/jobs/search/route.ts": {
+      "maxDuration": 300
+    },
+    "src/app/api/scout/route.ts": {
+      "maxDuration": 300
+    }
+  }
+}
