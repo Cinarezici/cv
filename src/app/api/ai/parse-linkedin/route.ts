@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getOpenAI } from '@/lib/openai-client';
 import { createClient } from '@/lib/supabase/server';
-import { ApifyClient } from 'apify-client';
+
 
 export const dynamic = 'force-dynamic';
 
@@ -45,7 +45,7 @@ STRICT RULES:
 export async function POST(request: NextRequest) {
   try {
     const token = process.env.APIFY_API_TOKEN || process.env.NEXT_PUBLIC_APIFY_API_TOKEN;
-    const apify = new ApifyClient({ token: token });
+    if (!token) throw new Error('APIFY_API_TOKEN is missing');
     const openai = getOpenAI();
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
@@ -100,11 +100,30 @@ export async function POST(request: NextRequest) {
     } else {
       console.log(`Starting Apify Scraper for URL: ${linkedinUrl}`);
       try {
-        const run = await apify.actor('dev_fusion/linkedin-profile-scraper').call({
-          profileUrls: [linkedinUrl]
+        const safeActorId = 'dev_fusion~linkedin-profile-scraper';
+        const startRes = await fetch(`https://api.apify.com/v2/acts/${safeActorId}/runs?token=${token}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ profileUrls: [linkedinUrl] })
         });
+        if (!startRes.ok) throw new Error(`Failed to start actor: ${await startRes.text()}`);
+        let run = (await startRes.json()).data;
 
-        const { items } = await apify.dataset(run.defaultDatasetId).listItems();
+        // Poll for completion
+        while (run.status === 'RUNNING' || run.status === 'READY') {
+          await new Promise(r => setTimeout(r, 2000));
+          const checkRes = await fetch(`https://api.apify.com/v2/actor-runs/${run.id}?token=${token}`);
+          if (!checkRes.ok) throw new Error(`Failed to check run: ${await checkRes.text()}`);
+          run = (await checkRes.json()).data;
+        }
+
+        if (run.status !== 'SUCCEEDED') throw new Error(`Actor run failed with status: ${run.status}`);
+
+        // Fetch dataset
+        const datasetRes = await fetch(`https://api.apify.com/v2/datasets/${run.defaultDatasetId}/items?token=${token}`);
+        if (!datasetRes.ok) throw new Error(`Failed to fetch dataset: ${await datasetRes.text()}`);
+        const items = await datasetRes.json();
+
         if (!items || items.length === 0) {
           throw new Error('No data retrieved from LinkedIn! LinkedIn bot detection might have blocked the URL.');
         }

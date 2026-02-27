@@ -1,19 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
-import { ApifyClient } from 'apify-client';
 import { checkUsageLimits, logJobSearch } from '@/lib/limits';
 
 export const dynamic = 'force-dynamic';
 
-const ACTOR_ID = 'curious_coder/linkedin-jobs-scraper';
-
-// We will rely on environment variables to avoid committing secrets
-// Ensure APIFY_API_TOKEN is set in your .env.local and Vercel environment variables
+const ACTOR_ID = 'curious_coder~linkedin-jobs-scraper'; // Note: ~ instead of / for API URL
 
 export async function POST(request: NextRequest) {
     try {
         const token = process.env.APIFY_API_TOKEN || process.env.NEXT_PUBLIC_APIFY_API_TOKEN;
-        const apify = new ApifyClient({ token: token });
         const supabase = await createClient();
         const { data: { user } } = await supabase.auth.getUser();
 
@@ -36,17 +31,30 @@ export async function POST(request: NextRequest) {
 
         console.log(`Starting Job Search Run for ${keywords} in ${searchLocation}`);
 
-        // Start the run via apify-client (no wait needed for POST)
-        // Added proxy back because the user has provided a valid token with Residential proxy access
-        const run = await apify.actor(ACTOR_ID).start({
-            urls: [linkedInUrl],
-            count: 100, // Minimum required by this actor
-            scrapeCompany: true,
-            proxy: {
-                useApifyProxy: true,
-                apifyProxyGroups: ['RESIDENTIAL']
-            }
+        // Start the run via native fetch
+        const response = await fetch(`https://api.apify.com/v2/acts/${ACTOR_ID}/runs?token=${token}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                urls: [linkedInUrl],
+                count: 100, // Minimum required by this actor
+                scrapeCompany: true,
+                proxy: {
+                    useApifyProxy: true,
+                    apifyProxyGroups: ['RESIDENTIAL']
+                }
+            })
         });
+
+        if (!response.ok) {
+            const errBody = await response.text();
+            throw new Error(`Apify POST Error: ${response.status} - ${errBody}`);
+        }
+
+        const apifyData = await response.json();
+        const run = apifyData.data;
 
         await logJobSearch(user.id, `${keywords} in ${searchLocation}`);
 
@@ -66,7 +74,6 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest) {
     try {
         const token = process.env.APIFY_API_TOKEN || process.env.NEXT_PUBLIC_APIFY_API_TOKEN;
-        const apify = new ApifyClient({ token: token });
         const { searchParams } = new URL(request.url);
         const runId = searchParams.get('runId');
         const datasetId = searchParams.get('datasetId');
@@ -75,19 +82,28 @@ export async function GET(request: NextRequest) {
             return NextResponse.json({ error: 'Missing runId or datasetId' }, { status: 400 });
         }
 
-        const run = await apify.run(runId).get();
-        if (!run) return NextResponse.json({ error: 'Run not found' }, { status: 404 });
+        const runResponse = await fetch(`https://api.apify.com/v2/actor-runs/${runId}?token=${token}`);
+        if (!runResponse.ok) {
+            return NextResponse.json({ error: 'Run not found or API error' }, { status: runResponse.status });
+        }
+
+        const runData = await runResponse.json();
+        const run = runData.data;
 
         if (run.status === 'RUNNING' || run.status === 'READY') {
             return NextResponse.json({ status: run.status });
         }
 
         if (run.status === 'SUCCEEDED') {
-            const { items } = await apify.dataset(datasetId).listItems({ limit: 50 });
+            const itemsResponse = await fetch(`https://api.apify.com/v2/datasets/${datasetId}/items?token=${token}&limit=50`);
+            if (!itemsResponse.ok) {
+                throw new Error(`Apify Dataset Error: ${itemsResponse.status}`);
+            }
+            const items = await itemsResponse.json() || [];
 
             const cleanedJobs = items
-                .filter(j => j.title && j.companyName)
-                .map(j => ({
+                .filter((j: any) => j.title && j.companyName)
+                .map((j: any) => ({
                     id: j.id || Math.random().toString(36).substr(2, 9),
                     title: j.title,
                     companyName: j.companyName,
@@ -110,9 +126,8 @@ export async function GET(request: NextRequest) {
             });
         }
 
-        // If failed, try to get logs
-        const log = await apify.run(runId).log().get();
-        console.error(`Run failed logic: ${run.status}. Log snippet: ${typeof log === 'string' ? log.slice(-300) : 'N/A'}`);
+        // If failed
+        console.error(`Run failed logic: ${run.status}`);
 
         return NextResponse.json({
             status: run.status,
