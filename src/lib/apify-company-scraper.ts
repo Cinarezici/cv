@@ -1,60 +1,36 @@
+import { ApifyClient } from 'apify-client';
 import { ApifyWebCrawlerItem } from '@/types/motivation-letter';
 
-const APIFY_BASE = 'https://api.apify.com/v2';
-const WEBSITE_CRAWLER_ACTOR = 'apify~website-content-crawler';
+// Ensure APIFY_API_TOKEN is set in your .env.local and Vercel environment variables
+const WEBSITE_CRAWLER_ACTOR = 'apify/website-content-crawler';
 
 export async function scrapeCompanyWebsite(
     urls: string[]
 ): Promise<ApifyWebCrawlerItem[]> {
-    const TOKEN = process.env.APIFY_API_TOKEN;
-    if (!TOKEN) {
-        throw new Error('Apify API token is not configured.');
-    }
+    const token = process.env.APIFY_API_TOKEN || process.env.NEXT_PUBLIC_APIFY_API_TOKEN;
+    const apify = new ApifyClient({ token: token });
 
     console.log(`Starting Apify Website Scraper for URLs: ${urls.join(', ')}`);
 
     try {
+        // 1. Run the actor
         const input = {
             startUrls: urls.map(url => ({ url })),
             maxCrawlPages: 5,
             maxCrawlDepth: 1,
-            crawlerType: 'cheerio',
+            crawlerType: 'cheerio', // Fast lightweight scraping
             removeCookieWarnings: true,
             useSitemapUrls: false,
         };
 
-        // Start actor via REST API
-        const startRes = await fetch(`${APIFY_BASE}/acts/${WEBSITE_CRAWLER_ACTOR}/runs?token=${TOKEN}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(input),
-        });
+        const run = await apify.actor(WEBSITE_CRAWLER_ACTOR).call(input);
 
-        if (!startRes.ok) {
-            const errText = await startRes.text();
-            throw new Error(`Apify actor start failed (${startRes.status}): ${errText.slice(0, 200)}`);
+        if (!run || !run.defaultDatasetId) {
+            throw new Error('No run ID returned from Apify');
         }
 
-        const startData = await startRes.json();
-        const runId = startData.data.id;
-        const datasetId = startData.data.defaultDatasetId;
-
-        // Poll until done (max 3 minutes)
-        let status = 'RUNNING';
-        for (let i = 0; i < 60; i++) {
-            await new Promise(r => setTimeout(r, 3000));
-            const runRes = await fetch(`${APIFY_BASE}/actor-runs/${runId}?token=${TOKEN}`);
-            const runData = await runRes.json();
-            status = runData.data?.status;
-            if (status !== 'RUNNING' && status !== 'READY') break;
-        }
-
-        if (status !== 'SUCCEEDED') {
-            throw new Error(`Apify crawler ended with status: ${status}`);
-        }
-
-        const dataRes = await fetch(`${APIFY_BASE}/datasets/${datasetId}/items?token=${TOKEN}&limit=20&clean=true`);
-        const items: any[] = dataRes.ok ? await dataRes.json() : [];
+        // 2. Fetch data
+        const { items } = await apify.dataset(run.defaultDatasetId).listItems();
 
         if (!items || items.length === 0) {
             throw new Error('No company data retrieved from crawler. It may have been blocked or no content found.');
