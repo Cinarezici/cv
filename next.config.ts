@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  serverExternalPackages: ['apify-client', 'pdf2json'],
+  serverExternalPackages: ['apify-client', 'pdf2json', 'proxy-agent'],
   images: {
     remotePatterns: [
       {
