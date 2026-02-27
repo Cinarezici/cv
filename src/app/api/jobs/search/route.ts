@@ -31,8 +31,8 @@ export async function POST(request: NextRequest) {
 
         console.log(`Starting Job Search Run for ${keywords} in ${searchLocation}`);
 
-        // Start the run via native fetch
-        const response = await fetch(`https://api.apify.com/v2/acts/${ACTOR_ID}/runs?token=${token}`, {
+        // Start the run via native fetch with 4GB memory to prevent Actor OOM crashes
+        const response = await fetch(`https://api.apify.com/v2/acts/${ACTOR_ID}/runs?token=${token}&memory=4096`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

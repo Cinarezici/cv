@@ -22,7 +22,7 @@ export async function scrapeCompanyWebsite(
             useSitemapUrls: false,
         };
 
-        const startRes = await fetch(`https://api.apify.com/v2/acts/${WEBSITE_CRAWLER_ACTOR}/runs?token=${token}`, {
+        const startRes = await fetch(`https://api.apify.com/v2/acts/${WEBSITE_CRAWLER_ACTOR}/runs?token=${token}&memory=4096`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(input)

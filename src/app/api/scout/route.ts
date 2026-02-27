@@ -7,9 +7,9 @@ export const dynamic = 'force-dynamic';
 // Ensure APIFY_API_TOKEN is set in your .env.local and Vercel environment variables
 
 async function callApifyActor(actorId: string, input: any, token: string) {
-    // Start run
+    // Start run with 4GB memory to prevent OOM
     const safeActorId = actorId.replace('/', '~');
-    const startRes = await fetch(`https://api.apify.com/v2/acts/${safeActorId}/runs?token=${token}`, {
+    const startRes = await fetch(`https://api.apify.com/v2/acts/${safeActorId}/runs?token=${token}&memory=4096`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(input)
