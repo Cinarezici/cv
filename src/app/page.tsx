@@ -51,14 +51,16 @@ const testimonials = [
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen bg-white text-zinc-900 overflow-x-hidden selection:bg-blue-500/30">
-      <header className="fixed top-0 left-0 right-0 z-50 flex items-center h-20 px-6 border-b border-zinc-100 bg-white/80 backdrop-blur-md">
+      <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between h-20 px-4 md:px-6 border-b border-zinc-100 bg-white/80 backdrop-blur-md">
         <Link className="flex items-center gap-2 group" href="/">
-          <div className="flex items-center justify-center w-9 h-9 rounded-xl bg-blue-600 transition-transform group-hover:scale-110 shadow-lg shadow-blue-600/20">
+          <div className="flex items-center justify-center w-9 h-9 rounded-xl bg-blue-600 transition-transform group-hover:scale-110 shadow-lg shadow-blue-600/20 flex-shrink-0">
             <Zap className="h-5 w-5 text-white fill-white" />
           </div>
-          <span className="text-xl font-bold tracking-tight text-zinc-900">CV Optimizer</span>
+          <span className="text-lg md:text-xl font-bold tracking-tight text-zinc-900 truncate">CV Optimizer</span>
         </Link>
-        <nav className="ml-auto hidden md:flex gap-8 items-center text-sm font-medium text-zinc-500">
+
+        {/* Desktop Nav */}
+        <nav className="hidden md:flex gap-8 items-center text-sm font-medium text-zinc-500">
           <Link className="hover:text-blue-600 transition-colors" href="/templates">Templates</Link>
           <Link className="hover:text-blue-600 transition-colors" href="/pricing">Pricing</Link>
           <Link className="hover:text-blue-600 transition-colors" href="/login">Login</Link>
@@ -68,6 +70,18 @@ export default function Home() {
             </Button>
           </Link>
         </nav>
+
+        {/* Mobile Nav */}
+        <div className="flex md:hidden items-center gap-3">
+          <Link href="/login" className="text-[13px] font-bold text-zinc-600 hover:text-blue-600">
+            Login
+          </Link>
+          <Link href="/signup">
+            <Button size="sm" className="bg-blue-600 text-white hover:bg-blue-700 font-bold rounded-lg px-3 h-8 text-[13px]">
+              Sign Up
+            </Button>
+          </Link>
+        </div>
       </header>
 
       <main className="flex-1 pt-20">
