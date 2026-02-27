@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getOpenAI } from '@/lib/openai-client';
 import { createClient } from '@/lib/supabase/server';
-import { ApifyClient } from 'apify-client';
 
 export const dynamic = 'force-dynamic';
+
+const APIFY_BASE = 'https://api.apify.com/v2';
 
 const PARSE_PROMPT = `You are a resume parser. Extract information from the structured LinkedIn profile data or raw text below and return ONLY a valid JSON object with this exact structure:
 {
@@ -42,7 +43,6 @@ STRICT RULES:
 
 export async function POST(request: NextRequest) {
   try {
-    const apify = new ApifyClient({ token: process.env.APIFY_API_TOKEN });
     const openai = getOpenAI();
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
@@ -95,23 +95,47 @@ export async function POST(request: NextRequest) {
       // Manual Approach
       contentToParse = linkedinText;
     } else {
-      // URL Approach
-      if (!process.env.APIFY_API_TOKEN) {
-        return NextResponse.json({ error: 'Apify API Token is missing. Please add APIFY_API_TOKEN to your Vercel Environment Variables or local .env file.' }, { status: 500 });
+      // URL Approach — using Apify REST API directly (no apify-client SDK needed)
+      const TOKEN = process.env.APIFY_API_TOKEN;
+      if (!TOKEN) {
+        return NextResponse.json({ error: 'Apify API Token is missing. Please add APIFY_API_TOKEN to your Vercel Environment Variables.' }, { status: 500 });
       }
 
       console.log(`Starting Apify Scraper for URL: ${linkedinUrl}`);
       try {
-        // We use apimaestro/linkedin-profile-detail as it allows API execution and is reliable
-        // Apimaestro requires the 'username' param otherwise it defaults to a placeholder
-        const usernameMatch = linkedinUrl.match(/linkedin\.com\/in\/([^\/]+)/i);
-        const profileUsername = usernameMatch ? usernameMatch[1] : '';
-
-        const run = await apify.actor('dev_fusion/linkedin-profile-scraper').call({
-          profileUrls: [linkedinUrl]
+        // Start actor via REST API
+        const startRes = await fetch(`${APIFY_BASE}/acts/dev_fusion~linkedin-profile-scraper/runs?token=${TOKEN}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ profileUrls: [linkedinUrl] }),
         });
 
-        const { items } = await apify.dataset(run.defaultDatasetId).listItems();
+        if (!startRes.ok) {
+          const errBody = await startRes.text();
+          throw new Error(`Apify start failed: ${startRes.status} — ${errBody.slice(0, 200)}`);
+        }
+
+        const startData = await startRes.json();
+        const runId = startData.data.id;
+        const datasetId = startData.data.defaultDatasetId;
+
+        // Poll until done
+        let status = 'RUNNING';
+        for (let i = 0; i < 60; i++) {
+          await new Promise(r => setTimeout(r, 3000));
+          const runRes = await fetch(`${APIFY_BASE}/actor-runs/${runId}?token=${TOKEN}`);
+          const runData = await runRes.json();
+          status = runData.data?.status;
+          if (status !== 'RUNNING' && status !== 'READY') break;
+        }
+
+        if (status !== 'SUCCEEDED') {
+          throw new Error(`Apify run ended with status: ${status}. Please try using the Manual Text option.`);
+        }
+
+        const dataRes = await fetch(`${APIFY_BASE}/datasets/${datasetId}/items?token=${TOKEN}&limit=1&clean=true`);
+        const items: any[] = dataRes.ok ? await dataRes.json() : [];
+
         if (!items || items.length === 0) {
           throw new Error('No data retrieved from LinkedIn! LinkedIn bot detection might have blocked the URL.');
         }
@@ -119,7 +143,7 @@ export async function POST(request: NextRequest) {
       } catch (apifyErr: any) {
         const errMsg = apifyErr.message || '';
         if (errMsg.includes('paid Actor') || errMsg.includes('free trial has expired') || errMsg.includes('not found')) {
-          return NextResponse.json({ error: 'Apify bot aktör limiti veya hatası. Lütfen "Manuel Metin" sekmesinden metni yapıştırarak devam edin (%100 Kesin Çözüm).' }, { status: 402 });
+          return NextResponse.json({ error: 'Apify actor limit reached. Please use the "Manual Text" tab by pasting your LinkedIn profile text.' }, { status: 402 });
         }
         throw apifyErr;
       }
