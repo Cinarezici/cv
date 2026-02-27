@@ -71,11 +71,13 @@ export async function POST(request: NextRequest) {
 
         console.log("-> Parsed request payload:", { companies: companies.length, cvId });
 
+        let isResume = false;
         // 1. Fetch CV Data
         let resumeJSON: any = null;
         const { data: cv } = await supabase.from('resumes').select('*').eq('id', cvId).eq('user_id', user.id).single();
         if (cv) {
             resumeJSON = cv.optimized_json;
+            isResume = true;
         } else {
             const { data: profile } = await supabase.from('profiles').select('*').eq('id', cvId).eq('user_id', user.id).single();
             if (profile) {
@@ -121,7 +123,7 @@ export async function POST(request: NextRequest) {
 
             const { data: letter, error: insertError } = await supabase.from('motivation_letters').insert({
                 user_id: user.id,
-                cv_id: cvId, // Save the actual ID used
+                cv_id: isResume ? cvId : null, // Fix: Profiles are not compatible with the cv_id foreign key check
                 company_name: company.name || 'Unknown',
                 job_title: config.targetRole || '',
                 tone: config.tone || 'corporate',

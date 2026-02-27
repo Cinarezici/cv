@@ -27,9 +27,21 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
         }
 
         // Get Base CV Data
-        const { data: cv } = await supabase.from('cvs').select('resume_json').eq('id', letter.cv_id).single();
-        if (!cv) {
-            return NextResponse.json({ error: 'Base CV is missing' }, { status: 400 });
+        let resumeJSON: any = null;
+        if (letter.cv_id) {
+            const { data: cv } = await supabase.from('resumes').select('optimized_json').eq('id', letter.cv_id).single();
+            if (cv) resumeJSON = cv.optimized_json;
+        }
+        if (!resumeJSON) {
+            const { data: profiles } = await supabase.from('profiles').select('raw_json').eq('user_id', user.id).order('created_at', { ascending: false }).limit(1);
+            if (profiles && profiles[0]) {
+                const { mapToResumeJSON } = await import('@/lib/resume-mapper');
+                resumeJSON = mapToResumeJSON(profiles[0].raw_json);
+            }
+        }
+
+        if (!resumeJSON) {
+            return NextResponse.json({ error: 'Base CV / Profile is missing' }, { status: 400 });
         }
 
         // Remove old PDF if exists
@@ -42,7 +54,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
 
         const { pdfUrl, pdfStoragePath } = await generateLetterPDF(
             letter.letter_html,
-            cv.resume_json,
+            resumeJSON,
             letter.company_name,
             letter.target_role,
             activeTemplate,
