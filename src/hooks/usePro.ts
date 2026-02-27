@@ -24,7 +24,7 @@ export function usePro() {
 
                 // Strictly check status === 'active'
                 // If we want to be safe with date, we can include it, but the instruction emphasized 'active' status.
-                const isProActive = sub?.status === 'active';
+                const isProActive = ['active', 'trialing'].includes(sub?.status as string);
 
                 setIsPro(isProActive);
             } catch (error) {

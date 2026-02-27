@@ -29,9 +29,49 @@ export async function GET(
             return NextResponse.redirect(HOME_URL);
         }
 
-        // 2. Check expiration
+        // 2. Fetch Owner Subscription & Profile
+        const [{ data: sub }, { data: profile }] = await Promise.all([
+            supabase
+                .from('subscriptions')
+                .select('*')
+                .eq('user_id', link.owner_user_id)
+                .maybeSingle(),
+            supabase
+                .from('profiles')
+                .select('created_at')
+                .eq('user_id', link.owner_user_id)
+                .order('created_at', { ascending: true })
+                .limit(1)
+                .maybeSingle()
+        ]);
+
+        const now = new Date();
+
+        // Check if owner is active pro or active trialing/free trial
+        const isProActive = ['active', 'trialing'].includes(sub?.status as string);
+
+        let isTrialActive = false;
+        if (sub?.trial_ends_at) {
+            isTrialActive = now < new Date(sub.trial_ends_at);
+        } else if (sub?.trial_started_at) {
+            const end = new Date(sub.trial_started_at);
+            end.setDate(end.getDate() + 14);
+            isTrialActive = now < end;
+        } else if (profile?.created_at) {
+            const end = new Date(profile.created_at);
+            end.setDate(end.getDate() + 14);
+            isTrialActive = now < end;
+        }
+
+        // 3. User Requested: If creator is NOT active and NOT trialing (meaning cancelled/expired free trial)
+        // Redirect to homepage automatically!
+        if (!isProActive && !isTrialActive) {
+            console.warn(`[ShortLink] Creator subscription is inactive/canceled for slug: ${slug}`);
+            return NextResponse.redirect(HOME_URL);
+        }
+
+        // 4. Check explicit token/link expiration (fallback for older or standard trial limits)
         if (link.expires_at) {
-            const now = new Date();
             const expires = new Date(link.expires_at);
             if (now > expires) {
                 console.warn(`[ShortLink] Slug expired: ${slug}`);

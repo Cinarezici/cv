@@ -56,7 +56,7 @@ export default async function BuilderPage({
         .eq('user_id', user.id)
         .maybeSingle();
 
-    const isPro = sub?.status === 'active';
+    const isPro = ['active', 'trialing'].includes(sub?.status as string);
 
     // Extract avatar from joined profile
     let avatarUrl: string | null = null;

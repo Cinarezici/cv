@@ -24,7 +24,7 @@ export default async function MotivationLettersPage() {
         .eq('user_id', user.id)
         .single();
 
-    const isPro = sub?.status === 'active';
+    const isPro = ['active', 'trialing'].includes(sub?.status as string);
 
     return <LetterDashboardClient initialLetters={letters || []} isPro={isPro} userId={user.id} />;
 }

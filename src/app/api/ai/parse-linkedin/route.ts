@@ -58,7 +58,7 @@ export async function POST(request: NextRequest) {
         .eq('user_id', user.id)
         .maybeSingle();
 
-      const isPro = sub?.status === 'active';
+      const isPro = ['active', 'trialing'].includes(sub?.status as string);
       if (!isPro) {
         return NextResponse.json({
           error: 'LinkedIn URL import is a Pro feature. Please use the Manual Text option or upgrade to Pro.',

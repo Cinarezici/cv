@@ -13,7 +13,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
         }
 
         const { data: sub } = await supabase.from('subscriptions').select('*').eq('user_id', user.id).single();
-        const isPro = sub?.status === 'active';
+        const isPro = ['active', 'trialing'].includes(sub?.status as string);
         if (!isPro) {
             return NextResponse.json({ error: 'upgrade_required', message: 'PDF regeneration is a Pro feature' }, { status: 403 });
         }

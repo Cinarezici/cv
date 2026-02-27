@@ -91,7 +91,7 @@ export async function POST(request: NextRequest) {
         // 2. Check Plan & Limits
         console.log("-> Fetching subscription for user", user.id);
         const { data: sub } = await supabase.from('subscriptions').select('*').eq('user_id', user.id).single();
-        const isPro = sub?.status === 'active';
+        const isPro = ['active', 'trialing'].includes(sub?.status as string);
         console.log("-> isPro?", isPro);
 
         if (!isPro && companies.length > 1) {

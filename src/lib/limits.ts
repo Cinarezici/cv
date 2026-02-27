@@ -13,7 +13,7 @@ export async function checkUsageLimits(userId: string, action: 'create_cv' | 'cr
     const now = new Date();
 
     // Check if Pro is active
-    const isPro = sub?.status === 'active';
+    const isPro = ['active', 'trialing'].includes(sub?.status as string);
     if (isPro) {
         return { allowed: true };
     }

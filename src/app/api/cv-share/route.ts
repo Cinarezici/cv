@@ -59,7 +59,7 @@ export async function POST(req: NextRequest) {
             .eq('user_id', user.id)
             .maybeSingle();
 
-        const isPro = sub?.is_pro === true || sub?.status === 'active' || sub?.plan === 'lifetime';
+        const isPro = sub?.is_pro === true || ['active', 'trialing'].includes(sub?.status as string) || sub?.plan === 'lifetime';
 
         // We assume a newly created link is enabled and its createdAt is roughly now
         return NextResponse.json({
@@ -138,7 +138,7 @@ export async function GET(req: NextRequest) {
         .eq('user_id', user.id)
         .maybeSingle();
 
-    const isPro = sub?.is_pro === true || sub?.status === 'active' || sub?.plan === 'lifetime';
+    const isPro = sub?.is_pro === true || ['active', 'trialing'].includes(sub?.status as string) || sub?.plan === 'lifetime';
 
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://cvoptimizerai.com';
     return NextResponse.json({
