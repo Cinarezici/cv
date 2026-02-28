@@ -4,29 +4,104 @@ import * as React from "react";
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import {
-    Card,
-    CardHeader,
-    CardTitle,
-    CardDescription,
-    CardContent,
-    CardFooter,
-} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import {
-    Eye,
-    EyeOff,
-    Lock,
-    Mail,
-    FileText,
-    ArrowRight,
-    Chrome,
-    Loader2
-} from "lucide-react";
+import { Eye, EyeOff, Mail, Lock, ArrowRight, Chrome, Loader2, Zap, CheckCircle2, MailCheck } from "lucide-react";
 import Link from "next/link";
+
+/* ─── Animated background canvas (blue particle rain, matching landing palette) ─── */
+function ParticleCanvas() {
+    const canvasRef = useRef<HTMLCanvasElement | null>(null);
+    useEffect(() => {
+        const canvas = canvasRef.current;
+        const ctx = canvas?.getContext("2d");
+        if (!canvas || !ctx) return;
+        const setSize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
+        setSize();
+        type P = { x: number; y: number; v: number; o: number };
+        let ps: P[] = [];
+        let raf = 0;
+        const make = (): P => ({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            v: Math.random() * 0.3 + 0.05,
+            o: Math.random() * 0.25 + 0.05,
+        });
+        const init = () => { ps = []; const n = Math.floor((canvas.width * canvas.height) / 10000); for (let i = 0; i < n; i++) ps.push(make()); };
+        const draw = () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ps.forEach(p => {
+                p.y -= p.v;
+                if (p.y < 0) { p.x = Math.random() * canvas.width; p.y = canvas.height + 40; p.v = Math.random() * 0.3 + 0.05; p.o = Math.random() * 0.25 + 0.05; }
+                ctx.fillStyle = `rgba(96,165,250,${p.o})`;
+                ctx.fillRect(p.x, p.y, 1, 2.5);
+            });
+            raf = requestAnimationFrame(draw);
+        };
+        const onResize = () => { setSize(); init(); };
+        window.addEventListener("resize", onResize);
+        init(); raf = requestAnimationFrame(draw);
+        return () => { window.removeEventListener("resize", onResize); cancelAnimationFrame(raf); };
+    }, []);
+    return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none opacity-40" />;
+}
+
+/* ─── "Check your email" success screen ─── */
+function CheckEmailScreen({ email }: { email: string }) {
+    return (
+        <div className="flex flex-col items-center text-center animate-in fade-in slide-in-from-bottom-4 duration-700">
+            {/* Icon */}
+            <div className="relative mb-8">
+                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-500/20 to-blue-600/10 border border-blue-500/30 flex items-center justify-center">
+                    <MailCheck className="w-9 h-9 text-blue-400" />
+                </div>
+                <div className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                </div>
+            </div>
+
+            {/* Heading */}
+            <h1 className="text-3xl font-extrabold tracking-tight text-white mb-3">
+                Check your inbox.
+            </h1>
+            <p className="text-zinc-400 text-[16px] font-medium leading-relaxed mb-2 max-w-xs">
+                We&apos;ve sent a confirmation link to
+            </p>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 mb-8">
+                <Mail className="w-4 h-4 text-blue-400" />
+                <span className="text-blue-300 font-bold text-[14px] break-all">{email}</span>
+            </div>
+
+            {/* Instructions */}
+            <div className="w-full bg-white/5 border border-white/10 rounded-2xl p-6 mb-8 text-left space-y-4">
+                {[
+                    { step: "1", text: "Open your email inbox and look for a message from CV Optimizer." },
+                    { step: "2", text: "Click the \"Confirm your account\" button in the email." },
+                    { step: "3", text: "You'll be redirected back here and signed in automatically." },
+                ].map(item => (
+                    <div key={item.step} className="flex items-start gap-3">
+                        <div className="w-6 h-6 rounded-full bg-blue-600/20 border border-blue-500/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <span className="text-[11px] font-black text-blue-400">{item.step}</span>
+                        </div>
+                        <p className="text-[14px] text-zinc-400 font-medium leading-relaxed">{item.text}</p>
+                    </div>
+                ))}
+            </div>
+
+            {/* Spam note */}
+            <p className="text-[12px] text-zinc-600 font-medium mb-6">
+                Didn&apos;t receive it? Check your spam folder or wait a few minutes.
+            </p>
+
+            <Link href="/login">
+                <button className="text-[14px] font-bold text-zinc-400 hover:text-white transition-colors flex items-center gap-1.5 group">
+                    Back to Sign In
+                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                </button>
+            </Link>
+        </div>
+    );
+}
 
 export default function SignupPage() {
     const [showPassword, setShowPassword] = useState(false);
@@ -42,185 +117,171 @@ export default function SignupPage() {
         setLoading(true);
         setError(null);
         const supabase = createClient();
-
-        const { error } = await supabase.auth.signUp({
-            email,
-            password,
-        });
-
+        const { error } = await supabase.auth.signUp({ email, password });
         if (error) {
             setError(error.message);
             setLoading(false);
         } else {
             setSuccess(true);
             setLoading(false);
-            setTimeout(() => {
-                router.push("/login");
-            }, 3000);
         }
     };
 
-    const handleOAuth = async (provider: 'google') => {
+    const handleOAuth = async (provider: "google") => {
         const supabase = createClient();
         await supabase.auth.signInWithOAuth({
             provider,
-            options: {
-                redirectTo: `${window.location.origin}/auth/callback`,
-            },
+            options: { redirectTo: `${window.location.origin}/auth/callback` },
         });
     };
 
-    const canvasRef = useRef<HTMLCanvasElement | null>(null);
-    useEffect(() => {
-        const canvas = canvasRef.current;
-        const ctx = canvas?.getContext("2d");
-        if (!canvas || !ctx) return;
-
-        const setSize = () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        };
-        setSize();
-
-        type P = { x: number; y: number; v: number; o: number };
-        let ps: P[] = [];
-        let raf = 0;
-
-        const make = () => ({
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height,
-            v: Math.random() * 0.25 + 0.05,
-            o: Math.random() * 0.35 + 0.15,
-        });
-
-        const init = () => {
-            ps = [];
-            const count = Math.floor((canvas.width * canvas.height) / 9000);
-            for (let i = 0; i < count; i++) ps.push(make());
-        };
-
-        const draw = () => {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ps.forEach((p) => {
-                p.y -= p.v;
-                if (p.y < 0) {
-                    p.x = Math.random() * canvas.width;
-                    p.y = canvas.height + Math.random() * 40;
-                    p.v = Math.random() * 0.25 + 0.05;
-                    p.o = Math.random() * 0.35 + 0.15;
-                }
-                ctx.fillStyle = `rgba(250,250,250,${p.o})`;
-                ctx.fillRect(p.x, p.y, 0.7, 2.2);
-            });
-            raf = requestAnimationFrame(draw);
-        };
-
-        const onResize = () => {
-            setSize();
-            init();
-        };
-
-        window.addEventListener("resize", onResize);
-        init();
-        raf = requestAnimationFrame(draw);
-        return () => {
-            window.removeEventListener("resize", onResize);
-            cancelAnimationFrame(raf);
-        };
-    }, []);
-
     return (
-        <section className="min-h-screen bg-zinc-50 flex flex-col">
-            <header className="px-4 lg:px-6 h-14 flex items-center border-b bg-white">
-                <Link className="flex items-center justify-center" href="/">
-                    <FileText className="h-6 w-6 text-indigo-600" />
-                    <span className="ml-2 text-xl font-bold">Interview-Ready CV</span>
+        <section className="fixed inset-0 bg-[#080d1a] text-zinc-50 overflow-hidden">
+            {/* Grid background */}
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:4rem_4rem] pointer-events-none" />
+
+            {/* Blue radial glow */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-blue-600/8 rounded-full blur-[120px] pointer-events-none" />
+
+            {/* Particles */}
+            <ParticleCanvas />
+
+            {/* Navbar */}
+            <header className="absolute top-0 left-0 right-0 flex items-center justify-between px-6 py-5 z-20">
+                <Link href="/" className="flex items-center gap-2 group">
+                    <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center shadow-lg shadow-blue-600/30 group-hover:scale-110 transition-transform">
+                        <Zap className="w-4 h-4 text-white fill-white" />
+                    </div>
+                    <span className="font-extrabold text-[17px] tracking-tight text-white">CV Optimizer</span>
+                </Link>
+                <Link href="/login">
+                    <button className="text-[13px] font-bold text-zinc-400 hover:text-white transition-colors flex items-center gap-1.5 group">
+                        Sign In <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                    </button>
                 </Link>
             </header>
 
-            <div className="flex-1 flex items-center justify-center p-4">
-                <Card className="w-full max-w-md shadow-lg border-zinc-200">
-                    <CardHeader className="space-y-1">
-                        <CardTitle className="text-2xl font-bold">Create an account</CardTitle>
-                        <CardDescription>
-                            Enter your email to create a new account
-                        </CardDescription>
-                    </CardHeader>
-                    <CardContent className="grid gap-4">
-                        <form onSubmit={handleSignup} className="grid gap-4">
-                            <div className="grid gap-2">
-                                <Label htmlFor="email">Email</Label>
-                                <Input
-                                    id="email"
-                                    type="email"
-                                    placeholder="name@example.com"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    required
-                                />
-                            </div>
-                            <div className="grid gap-2">
-                                <Label htmlFor="password">Password</Label>
-                                <div className="relative">
-                                    <Input
-                                        id="password"
-                                        type={showPassword ? "text" : "password"}
-                                        value={password}
-                                        onChange={(e) => setPassword(e.target.value)}
-                                        required
-                                    />
-                                    <button
-                                        type="button"
-                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-700"
-                                        onClick={() => setShowPassword(!showPassword)}
-                                    >
-                                        {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-                                    </button>
+            {/* Main content */}
+            <div className="h-full w-full flex items-center justify-center px-4 relative z-10">
+                <div className="w-full max-w-[420px] animate-in fade-in slide-in-from-bottom-6 duration-700">
+
+                    {success ? (
+                        <CheckEmailScreen email={email} />
+                    ) : (
+                        <>
+                            {/* Header */}
+                            <div className="text-center mb-8">
+                                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[12px] font-bold mb-6">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
+                                    Start your 14-day free trial
                                 </div>
-                            </div>
-                            {error && (
-                                <p className="text-sm text-red-600 font-medium">
-                                    {error}
+                                <h1 className="text-3xl font-extrabold tracking-tight text-white mb-2">
+                                    Create your account.
+                                </h1>
+                                <p className="text-zinc-400 text-[15px] font-medium">
+                                    No credit card required. Cancel anytime.
                                 </p>
-                            )}
-                            {success && (
-                                <p className="text-sm text-green-600 font-medium">
-                                    Account created successfully! Redirecting to login...
+                            </div>
+
+                            {/* Google OAuth */}
+                            <button
+                                type="button"
+                                onClick={() => handleOAuth("google")}
+                                className="w-full h-12 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 text-white font-bold text-[14px] flex items-center justify-center gap-3 transition-all mb-5"
+                            >
+                                <Chrome className="w-4 h-4" />
+                                Continue with Google
+                            </button>
+
+                            {/* Divider */}
+                            <div className="flex items-center gap-3 mb-5">
+                                <div className="flex-1 h-px bg-white/10" />
+                                <span className="text-[11px] font-bold uppercase tracking-widest text-zinc-600">or</span>
+                                <div className="flex-1 h-px bg-white/10" />
+                            </div>
+
+                            {/* Form */}
+                            <form onSubmit={handleSignup} className="space-y-4">
+                                {/* Email */}
+                                <div className="space-y-2">
+                                    <label className="text-[13px] font-bold text-zinc-300">Email address</label>
+                                    <div className="relative">
+                                        <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
+                                        <Input
+                                            id="email"
+                                            type="email"
+                                            placeholder="you@example.com"
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}
+                                            required
+                                            className="pl-10 h-12 bg-white/5 border-white/10 text-white placeholder:text-zinc-600 rounded-xl focus:border-blue-500/60 focus:ring-blue-500/20 transition-all"
+                                        />
+                                    </div>
+                                </div>
+
+                                {/* Password */}
+                                <div className="space-y-2">
+                                    <label className="text-[13px] font-bold text-zinc-300">Password</label>
+                                    <div className="relative">
+                                        <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
+                                        <Input
+                                            id="password"
+                                            type={showPassword ? "text" : "password"}
+                                            placeholder="8+ characters"
+                                            value={password}
+                                            onChange={(e) => setPassword(e.target.value)}
+                                            required
+                                            className="pl-10 pr-11 h-12 bg-white/5 border-white/10 text-white placeholder:text-zinc-600 rounded-xl focus:border-blue-500/60 focus:ring-blue-500/20 transition-all"
+                                        />
+                                        <button
+                                            type="button"
+                                            aria-label={showPassword ? "Hide password" : "Show password"}
+                                            className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 text-zinc-500 hover:text-zinc-300 transition-colors"
+                                            onClick={() => setShowPassword(v => !v)}
+                                        >
+                                            {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                                        </button>
+                                    </div>
+                                </div>
+
+                                {/* Error */}
+                                {error && (
+                                    <div className="flex items-center gap-2 px-4 py-3 bg-red-500/10 border border-red-500/20 rounded-xl">
+                                        <span className="w-1.5 h-1.5 rounded-full bg-red-400 flex-shrink-0" />
+                                        <p className="text-[13px] text-red-400 font-medium">{error}</p>
+                                    </div>
+                                )}
+
+                                {/* Submit */}
+                                <Button
+                                    type="submit"
+                                    disabled={loading}
+                                    className="w-full h-12 rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-600 text-white font-bold text-[15px] shadow-lg shadow-blue-900/40 transition-all hover:scale-[1.01] active:scale-[0.99] mt-2"
+                                >
+                                    {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+                                    {loading ? "Creating account…" : "Create Account — It's Free"}
+                                    {!loading && <ArrowRight className="ml-2 w-4 h-4" />}
+                                </Button>
+
+                                {/* Terms note */}
+                                <p className="text-[11px] text-zinc-600 text-center font-medium leading-relaxed">
+                                    By creating an account, you agree to our{" "}
+                                    <a href="#" className="text-zinc-500 hover:text-zinc-300 transition-colors underline underline-offset-2">Terms of Service</a>
+                                    {" "}and{" "}
+                                    <a href="#" className="text-zinc-500 hover:text-zinc-300 transition-colors underline underline-offset-2">Privacy Policy</a>.
                                 </p>
-                            )}
-                            <Button type="submit" className="w-full font-bold" disabled={loading || success}>
-                                {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                                Sign Up
-                            </Button>
-                        </form>
-                        <div className="relative">
-                            <div className="absolute inset-0 flex items-center">
-                                <span className="w-full border-t border-zinc-200" />
-                            </div>
-                            <div className="relative flex justify-center text-xs uppercase">
-                                <span className="bg-white px-2 text-zinc-500">Or continue with</span>
-                            </div>
-                        </div>
-                        <Button
-                            variant="outline"
-                            type="button"
-                            className="w-full font-bold"
-                            onClick={() => handleOAuth('google')}
-                        >
-                            <Chrome className="mr-2 h-4 w-4" />
-                            Google
-                        </Button>
-                    </CardContent>
-                    <CardFooter className="flex flex-wrap items-center justify-center gap-1 text-sm text-zinc-500">
-                        Already have an account?{" "}
-                        <Link
-                            href="/login"
-                            className="font-bold text-indigo-600 hover:text-indigo-500"
-                        >
-                            Sign In
-                        </Link>
-                    </CardFooter>
-                </Card>
+                            </form>
+
+                            {/* Footer */}
+                            <p className="text-center text-[14px] text-zinc-500 font-medium mt-8">
+                                Already have an account?{" "}
+                                <Link href="/login" className="text-blue-400 hover:text-blue-300 font-bold transition-colors">
+                                    Sign in
+                                </Link>
+                            </p>
+                        </>
+                    )}
+                </div>
             </div>
         </section>
     );
