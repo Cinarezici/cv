@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { Button } from "@/components/ui/button";
 import { ArrowRight, CheckCircle2, FileText, Download, Share2, Zap, MessageSquare, ShieldCheck, X } from "lucide-react";
 import { TestimonialsSection } from "@/components/ui/testimonials-with-marquee";
+import { SpiralAnimation } from "@/components/ui/spiral-animation"; // Added import for SpiralAnimation
 
 const testimonials = [
   {
@@ -305,6 +306,26 @@ export default function Home() {
                 <p className="font-extrabold text-2xl tracking-tighter">Amazon</p>
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* --- Final Spiral CTA Section --- */}
+        <section className="relative w-full h-[600px] border-t border-zinc-100 overflow-hidden bg-[#fafafa]">
+          {/* We import SpiralAnimation dynamically below if needed, but it's a client component so we can use it directly since page is client */}
+          <div className="absolute inset-0">
+            <SpiralAnimation />
+          </div>
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+            <Link href="/signup" className="pointer-events-auto">
+              <div className="flex flex-col items-center gap-6 group">
+                <p className="text-3xl md:text-5xl font-extrabold tracking-tighter text-zinc-900 group-hover:scale-105 transition-transform duration-500 drop-shadow-md">
+                  Stop Applying. <span className="text-[#2563eb]">Start Getting Offers.</span>
+                </p>
+                <Button size="lg" className="rounded-full bg-zinc-900 hover:bg-black text-white h-14 px-10 text-[15px] font-bold shadow-xl shadow-zinc-900/20 group-hover:shadow-2xl transition-all group-hover:-translate-y-1">
+                  Create Your First CV <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </div>
+            </Link>
           </div>
         </section>
       </main>
