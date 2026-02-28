@@ -176,9 +176,9 @@ export default function ScoutPage() {
     };
 
     return (
-        <div className="flex flex-col min-h-screen bg-[#F9FAFB] dark:bg-[#080d1a]">
+        <div className="flex flex-col min-h-screen bg-[#F9FAFB] dark:bg-zinc-950">
             {/* Header Section */}
-            <div className="bg-white dark:bg-[#0f1525] border-b border-zinc-200 dark:border-white/10 py-12 px-6">
+            <div className="bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-white/10 py-12 px-6">
                 <div className="max-w-4xl mx-auto text-center space-y-4 mb-8">
                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 text-xs font-bold uppercase tracking-widest border border-indigo-100 dark:border-indigo-500/20">
                         <Briefcase className="w-3.5 h-3.5" />
@@ -230,7 +230,7 @@ export default function ScoutPage() {
                 )}
 
                 {status === 'error' && (
-                    <div className="max-w-lg mx-auto bg-white dark:bg-[#0f1525] border border-rose-100 dark:border-rose-900/50 rounded-3xl p-8 shadow-sm text-center space-y-6">
+                    <div className="max-w-lg mx-auto bg-white dark:bg-zinc-900 border border-rose-100 dark:border-rose-900/50 rounded-3xl p-8 shadow-sm text-center space-y-6">
                         <div className="w-16 h-16 bg-rose-50 dark:bg-rose-500/10 rounded-full flex items-center justify-center text-rose-500 dark:text-rose-400 mx-auto">
                             <TriangleAlert className="w-8 h-8" />
                         </div>

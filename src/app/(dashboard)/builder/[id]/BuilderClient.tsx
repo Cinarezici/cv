@@ -75,7 +75,7 @@ function SortableRow({ id, label }: { id: string; label: string }) {
         <div
             ref={setNodeRef}
             style={{ transform: CSS.Transform.toString(transform), transition }}
-            className={`flex items-center gap-3 py-3 px-4 bg-white dark:bg-[#0f1525] rounded-xl border border-gray-200 dark:border-white/10 select-none
+            className={`flex items-center gap-3 py-3 px-4 bg-white dark:bg-zinc-900 rounded-xl border border-gray-200 dark:border-white/10 select-none
         ${isDragging ? "opacity-50 shadow-lg" : "hover:bg-gray-50 dark:hover:bg-white/5"}`}
         >
             <div {...attributes} {...listeners} className="cursor-grab text-gray-400 dark:text-zinc-500 hover:text-gray-600 dark:hover:text-zinc-300 touch-none">
@@ -192,10 +192,10 @@ export default function BuilderClient({ data, avatarUrl, isPro }: { data: any; a
     const meta = PANEL_META[activeTab];
 
     return (
-        <div className="fixed inset-0 z-50 flex flex-col bg-gray-50 dark:bg-[#080d1a]" style={{ fontFamily: "'Inter', sans-serif" }}>
+        <div className="fixed inset-0 z-50 flex flex-col bg-gray-50 dark:bg-zinc-950" style={{ fontFamily: "'Inter', sans-serif" }}>
 
             {/* ── Top Header ─────────────────────────────────────────────────── */}
-            <header className="h-12 shrink-0 bg-white dark:bg-[#0f1525] border-b border-gray-200 dark:border-white/10 flex items-center px-4 gap-3 z-10">
+            <header className="h-12 shrink-0 bg-white dark:bg-zinc-900 border-b border-gray-200 dark:border-white/10 flex items-center px-4 gap-3 z-10">
                 <button
                     onClick={() => router.push("/dashboard")}
                     className="flex items-center gap-1.5 text-sm font-semibold text-foreground/60 dark:text-zinc-400 hover:text-foreground dark:hover:text-white transition-colors"
@@ -244,7 +244,7 @@ export default function BuilderClient({ data, avatarUrl, isPro }: { data: any; a
             <div className="flex flex-1 overflow-hidden">
 
                 {/* ── Narrow icon sidebar ───────────────────────────────── */}
-                <aside className="w-[60px] shrink-0 bg-white dark:bg-[#0f1525] border-r border-gray-200 dark:border-white/10 flex flex-col items-center py-3 gap-1">
+                <aside className="w-[60px] shrink-0 bg-white dark:bg-zinc-900 border-r border-gray-200 dark:border-white/10 flex flex-col items-center py-3 gap-1">
                     {TABS.map(({ id, Icon, label }) => {
                         const active = activeTab === id;
                         return (
@@ -266,7 +266,7 @@ export default function BuilderClient({ data, avatarUrl, isPro }: { data: any; a
                 </aside>
 
                 {/* ── Section panel ─────────────────────────────────────── */}
-                <aside className="w-[420px] shrink-0 bg-white dark:bg-[#0f1525] border-r border-gray-200 dark:border-white/10 flex flex-col overflow-hidden">
+                <aside className="w-[420px] shrink-0 bg-white dark:bg-zinc-900 border-r border-gray-200 dark:border-white/10 flex flex-col overflow-hidden">
                     {/* Panel header */}
                     <div className="px-6 py-4 border-b border-gray-100 dark:border-white/5 shrink-0">
                         <h2 className="font-bold text-gray-900 dark:text-white text-base">{meta.title}</h2>
@@ -298,7 +298,7 @@ export default function BuilderClient({ data, avatarUrl, isPro }: { data: any; a
                 </aside>
 
                 {/* ── Live Preview — dark bg, A4 scaled to fit ─────────── */}
-                <main className="flex-1 flex flex-col overflow-hidden bg-zinc-950/5 dark:bg-[#080d1a] relative">
+                <main className="flex-1 flex flex-col overflow-hidden bg-zinc-950/5 dark:bg-zinc-950 relative">
                     <div className="absolute inset-0 pointer-events-none [background:radial-gradient(80%_80%_at_50%_10%,rgba(0,0,0,0.02),transparent)] dark:[background:radial-gradient(80%_80%_at_50%_10%,rgba(255,255,255,0.02),transparent)]"></div>
                     <div className="flex items-center justify-between px-6 py-2.5 border-b border-border/20 dark:border-white/5 shrink-0 glass relative z-10 shadow-sm">
                         <span className="text-foreground/80 text-xs font-semibold tracking-wide flex items-center gap-2">

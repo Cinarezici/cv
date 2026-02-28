@@ -62,7 +62,7 @@ export default function TemplatePanel() {
                             className={`relative flex flex-col gap-2 p-4 rounded-2xl border-2 text-left transition-all
                 ${isSelected
                                     ? "border-blue-500 dark:border-blue-500 bg-blue-50 dark:bg-blue-500/10"
-                                    : "border-gray-200 dark:border-white/10 bg-white dark:bg-[#0f1525] hover:border-gray-300 dark:hover:border-white/20 hover:bg-gray-50 dark:hover:bg-white/5"
+                                    : "border-gray-200 dark:border-white/10 bg-white dark:bg-zinc-900 hover:border-gray-300 dark:hover:border-white/20 hover:bg-gray-50 dark:hover:bg-white/5"
                                 }`}
                         >
                             {isSelected && (

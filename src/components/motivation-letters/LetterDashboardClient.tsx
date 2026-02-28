@@ -45,7 +45,7 @@ function StatusBadge({ status, error, onClick }: { status: string; error?: strin
 function PresentationPreviewModal({ letter, onClose }: { letter: MotivationLetter; onClose: () => void }) {
     return (
         <Dialog open={true} onOpenChange={onClose}>
-            <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto bg-white dark:bg-[#0f1525] dark:border-white/10">
+            <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto bg-white dark:bg-zinc-900 dark:border-white/10">
                 <DialogHeader>
                     <DialogTitle className="flex items-center gap-2 text-lg font-extrabold dark:text-white">
                         <Sparkles className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
@@ -240,7 +240,7 @@ export default function LetterDashboardClient({ initialLetters, isPro, userId }:
             {/* Letter List */}
             <div className="grid gap-3">
                 {filteredGroups.length === 0 ? (
-                    <div className="text-center p-16 bg-white dark:bg-[#0f1525] rounded-2xl border border-dashed border-zinc-300 dark:border-white/20">
+                    <div className="text-center p-16 bg-white dark:bg-zinc-900 rounded-2xl border border-dashed border-zinc-300 dark:border-white/20">
                         <div className="text-4xl mb-3">🎯</div>
                         <h3 className="text-lg font-bold text-zinc-700 dark:text-zinc-200">No letters yet</h3>
                         <p className="text-zinc-400 dark:text-zinc-500 text-sm mt-1 mb-4">
@@ -325,7 +325,7 @@ function BatchLetterCard({
     if (!letter) return null;
 
     return (
-        <Card className="overflow-hidden border border-zinc-200 dark:border-white/10 shadow-sm hover:shadow-md dark:hover:shadow-white/5 transition-shadow bg-white dark:bg-[#0f1525] animate-in fade-in duration-300 relative">
+        <Card className="overflow-hidden border border-zinc-200 dark:border-white/10 shadow-sm hover:shadow-md dark:hover:shadow-white/5 transition-shadow bg-white dark:bg-zinc-900 animate-in fade-in duration-300 relative">
             <CardContent className="p-0 flex flex-col sm:flex-row items-stretch">
                 {/* Left: colored accent bar */}
                 <div className={`w-1.5 shrink-0 ${letter.generation_status === 'completed' ? 'bg-emerald-500' : letter.generation_status === 'failed' ? 'bg-rose-400' : 'bg-indigo-400 animate-pulse'}`} />
@@ -367,7 +367,7 @@ function BatchLetterCard({
                 </div>
 
                 {/* Actions */}
-                <div className="px-4 py-3 bg-zinc-50 dark:bg-[#080d1a] border-t sm:border-t-0 sm:border-l border-zinc-100 dark:border-white/10 flex items-center gap-1.5 justify-end">
+                <div className="px-4 py-3 bg-zinc-50 dark:bg-zinc-950 border-t sm:border-t-0 sm:border-l border-zinc-100 dark:border-white/10 flex items-center gap-1.5 justify-end">
                     {letter.generation_status === 'failed' && (
                         <Button
                             variant="outline"

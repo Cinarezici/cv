@@ -89,7 +89,7 @@ export default function SettingsPage() {
 
     if (loading) {
         return (
-            <div className="flex h-[calc(100vh-100px)] items-center justify-center bg-[#fafafa] dark:bg-[#080d1a]">
+            <div className="flex h-[calc(100vh-100px)] items-center justify-center bg-[#fafafa] dark:bg-zinc-950">
                 <Loader2 className="w-8 h-8 animate-spin text-zinc-400 dark:text-zinc-500" />
             </div>
         );
@@ -98,7 +98,7 @@ export default function SettingsPage() {
     const isPro = ['active'].includes(subscription?.status as string);
 
     return (
-        <div className="max-w-4xl mx-auto py-12 px-4 bg-[#fafafa] dark:bg-[#080d1a] min-h-[calc(100vh-100px)] text-zinc-900 font-sans">
+        <div className="max-w-4xl mx-auto py-12 px-4 bg-[#fafafa] dark:bg-zinc-950 min-h-[calc(100vh-100px)] text-zinc-900 font-sans">
             <div className="mb-8">
                 <h1 className="text-3xl font-bold tracking-tight mb-2 dark:text-white">Settings</h1>
                 <p className="text-zinc-500 dark:text-zinc-400 text-[15px]">Manage your account and billing preferences.</p>
@@ -108,7 +108,7 @@ export default function SettingsPage() {
 
             <div className="space-y-6">
                 {/* Account Information */}
-                <Card className="border border-zinc-200 dark:border-white/10 shadow-sm rounded-xl bg-white dark:bg-[#0f1525] overflow-hidden">
+                <Card className="border border-zinc-200 dark:border-white/10 shadow-sm rounded-xl bg-white dark:bg-zinc-900 overflow-hidden">
                     <CardContent className="p-6">
                         <div className="flex items-center gap-3 mb-2">
                             <User className="h-[18px] w-[18px] text-zinc-800 dark:text-zinc-200" />
@@ -128,7 +128,7 @@ export default function SettingsPage() {
                 </Card>
 
                 {/* Plan & Limits */}
-                <Card className="border border-zinc-200 dark:border-white/10 shadow-sm rounded-xl bg-white dark:bg-[#0f1525] overflow-hidden">
+                <Card className="border border-zinc-200 dark:border-white/10 shadow-sm rounded-xl bg-white dark:bg-zinc-900 overflow-hidden">
                     <CardContent className="p-6">
                         <div className="flex items-center gap-3 mb-2">
                             <CreditCard className="h-[18px] w-[18px] text-zinc-800 dark:text-zinc-200" />
@@ -204,7 +204,7 @@ export default function SettingsPage() {
                 </Card>
 
                 {/* Logout Section */}
-                <Card className="border border-zinc-200 dark:border-white/10 shadow-sm rounded-xl bg-white dark:bg-[#0f1525] overflow-hidden mt-8">
+                <Card className="border border-zinc-200 dark:border-white/10 shadow-sm rounded-xl bg-white dark:bg-zinc-900 overflow-hidden mt-8">
                     <CardContent className="p-6">
                         <div className="flex items-center gap-3 mb-2">
                             <LogOut className="h-[18px] w-[18px] text-zinc-800 dark:text-zinc-200" />
@@ -233,7 +233,7 @@ export default function SettingsPage() {
                 </Card>
 
                 {/* Danger Zone */}
-                <Card className="border border-red-200 dark:border-red-900/50 shadow-sm rounded-xl bg-white dark:bg-[#0f1525] overflow-hidden mt-8">
+                <Card className="border border-red-200 dark:border-red-900/50 shadow-sm rounded-xl bg-white dark:bg-zinc-900 overflow-hidden mt-8">
                     <CardContent className="p-6">
                         <div className="flex items-center gap-3 mb-2">
                             <AlertTriangle className="h-[18px] w-[18px] text-red-600 dark:text-red-500" />
@@ -274,7 +274,7 @@ function UsageWidget({ title, current, max, barColor, isPro }: { title: string, 
     const progress = isPro ? 100 : Math.min((current / max) * 100, 100);
 
     return (
-        <div className="border border-zinc-200 dark:border-white/10 rounded-xl p-5 bg-white dark:bg-[#0f1525]">
+        <div className="border border-zinc-200 dark:border-white/10 rounded-xl p-5 bg-white dark:bg-zinc-900">
             <h4 className="text-[11px] font-bold text-zinc-400 dark:text-zinc-500 tracking-widest mb-4">{title}</h4>
             <div className="flex items-end justify-between mb-3">
                 <span className="text-3xl font-bold text-zinc-900 dark:text-white leading-none">{current}</span>

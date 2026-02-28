@@ -135,7 +135,7 @@ export default async function DashboardPage() {
             </div>
 
             {/* ─── Recent CVs ────────────────────────────────────────── */}
-            <section className="bg-white dark:bg-[#0f1525] border border-zinc-200 dark:border-white/10 rounded-2xl shadow-sm overflow-hidden">
+            <section className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 rounded-2xl shadow-sm overflow-hidden">
                 <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-100 dark:border-white/5">
                     <h2 className="text-base font-bold text-zinc-900 dark:text-white">Recent CVs</h2>
                     <div className="flex items-center gap-3">
@@ -203,7 +203,7 @@ export default async function DashboardPage() {
             </section>
 
             {/* ─── Recent Cover Letters ──────────────────────────────── */}
-            <section className="bg-white dark:bg-[#0f1525] border border-zinc-200 dark:border-white/10 rounded-2xl shadow-sm overflow-hidden mt-8">
+            <section className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 rounded-2xl shadow-sm overflow-hidden mt-8">
                 <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-100 dark:border-white/5">
                     <h2 className="text-base font-bold text-zinc-900 dark:text-white">Recent Cover Letters</h2>
                     <Link href="/motivation-letters" className="text-xs font-bold text-indigo-600 dark:text-blue-400 hover:text-indigo-800 dark:hover:text-blue-300 transition-colors">
@@ -262,7 +262,7 @@ function StatCard({ icon, iconBg, value, label }: { icon: React.ReactNode; iconB
     const darkBgClass = `dark:bg-${color}-500/10`;
 
     return (
-        <div className={`bg-white dark:bg-[#0f1525] border border-zinc-200 dark:border-white/10 rounded-2xl shadow-sm p-6 flex items-center gap-5`}>
+        <div className={`bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 rounded-2xl shadow-sm p-6 flex items-center gap-5`}>
             <div className={`w-12 h-12 rounded-xl ${iconBg} ${darkBgClass} flex items-center justify-center shrink-0`}>
                 {icon}
             </div>

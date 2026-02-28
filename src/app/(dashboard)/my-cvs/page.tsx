@@ -99,7 +99,7 @@ export default async function MyCVsPage() {
 
             {/* Grid */}
             {documents.length === 0 ? (
-                <div className="flex flex-col items-center justify-center py-24 border-2 border-dashed border-zinc-200 dark:border-white/10 rounded-2xl bg-white dark:bg-[#0f1525]">
+                <div className="flex flex-col items-center justify-center py-24 border-2 border-dashed border-zinc-200 dark:border-white/10 rounded-2xl bg-white dark:bg-zinc-900">
                     <div className="w-16 h-16 rounded-2xl bg-indigo-50 dark:bg-indigo-500/10 flex items-center justify-center mb-4">
                         <FileText className="w-8 h-8 text-indigo-400 dark:text-indigo-500" />
                     </div>
@@ -134,7 +134,7 @@ export default async function MyCVsPage() {
                         return (
                             <div
                                 key={`${doc.type}-${doc.id}`}
-                                className="group relative bg-white dark:bg-[#0f1525] rounded-2xl border border-zinc-200 dark:border-white/10 shadow-sm hover:shadow-lg dark:hover:shadow-white/5 transition-all duration-200 overflow-hidden"
+                                className="group relative bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-white/10 shadow-sm hover:shadow-lg dark:hover:shadow-white/5 transition-all duration-200 overflow-hidden"
                             >
                                 {/* Top accent bar */}
                                 <div className={`h-1 ${isProfile ? 'bg-gradient-to-r from-blue-500 to-cyan-500' : 'bg-gradient-to-r from-indigo-500 to-violet-500'}`} />

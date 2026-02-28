@@ -171,7 +171,7 @@ export default function ManualResumePage() {
             <div className="space-y-6">
 
                 {/* Professional Summary */}
-                <Card className="border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#0f1525] shadow-sm rounded-xl">
+                <Card className="border border-zinc-200 dark:border-white/10 bg-white dark:bg-zinc-900 shadow-sm rounded-xl">
                     <CardContent className="pt-6 space-y-2">
                         <label className="text-sm font-bold text-zinc-900 dark:text-white">
                             Professional Summary <span className="text-red-500">*</span>
@@ -187,7 +187,7 @@ export default function ManualResumePage() {
                 </Card>
 
                 {/* Experience */}
-                <Card className="border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#0f1525] shadow-sm rounded-xl">
+                <Card className="border border-zinc-200 dark:border-white/10 bg-white dark:bg-zinc-900 shadow-sm rounded-xl">
                     <CardContent className="pt-6 space-y-2">
                         <label className="text-sm font-bold text-zinc-900 dark:text-white">
                             Experience
@@ -203,7 +203,7 @@ export default function ManualResumePage() {
                 </Card>
 
                 {/* Education */}
-                <Card className="border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#0f1525] shadow-sm rounded-xl">
+                <Card className="border border-zinc-200 dark:border-white/10 bg-white dark:bg-zinc-900 shadow-sm rounded-xl">
                     <CardContent className="pt-6 space-y-2">
                         <label className="text-sm font-bold text-zinc-900 dark:text-white">
                             Education
@@ -219,7 +219,7 @@ export default function ManualResumePage() {
                 </Card>
 
                 {/* Skills */}
-                <Card className="border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#0f1525] shadow-sm rounded-xl mb-8">
+                <Card className="border border-zinc-200 dark:border-white/10 bg-white dark:bg-zinc-900 shadow-sm rounded-xl mb-8">
                     <CardContent className="pt-6 space-y-2">
                         <label className="text-sm font-bold text-zinc-900 dark:text-white">
                             Skills

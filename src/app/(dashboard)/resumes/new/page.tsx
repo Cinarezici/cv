@@ -90,7 +90,7 @@ function NewResumeForm() {
     if (!isPro) {
         return (
             <div className="max-w-4xl mx-auto py-12 px-6">
-                <Card className="border-0 shadow-2xl max-w-2xl mx-auto bg-white dark:bg-[#0f1525] rounded-3xl overflow-hidden animate-in fade-in zoom-in duration-500">
+                <Card className="border-0 shadow-2xl max-w-2xl mx-auto bg-white dark:bg-zinc-900 rounded-3xl overflow-hidden animate-in fade-in zoom-in duration-500">
                     <div className="bg-orange-500 p-8 text-center text-white relative">
                         <div className="absolute top-0 right-0 p-4 opacity-10">
                             <Sparkles className="w-24 h-24" />
@@ -149,7 +149,7 @@ function NewResumeForm() {
     if (!documentId) {
         return (
             <div className="space-y-6">
-                <Card className="border shadow-sm bg-white dark:bg-[#0f1525] dark:border-white/10 rounded-xl">
+                <Card className="border shadow-sm bg-white dark:bg-zinc-900 dark:border-white/10 rounded-xl">
                     <CardHeader>
                         <CardTitle className="text-xl font-bold dark:text-white">Choose your CV</CardTitle>
                         <CardDescription className="text-zinc-500 dark:text-zinc-400">
@@ -263,7 +263,7 @@ function NewResumeForm() {
 
             <div className="grid grid-cols-1 md:grid-cols-5 gap-5 items-start">
                 {/* Left: optional meta */}
-                <Card className="md:col-span-2 border shadow-sm rounded-xl bg-white dark:bg-[#0f1525] dark:border-white/10">
+                <Card className="md:col-span-2 border shadow-sm rounded-xl bg-white dark:bg-zinc-900 dark:border-white/10">
                     <CardHeader className="pb-3">
                         <CardTitle className="text-base font-bold dark:text-white">Job Details <span className="text-zinc-400 dark:text-zinc-500 font-normal text-xs">(optional)</span></CardTitle>
                     </CardHeader>
@@ -290,7 +290,7 @@ function NewResumeForm() {
                 </Card>
 
                 {/* Right: job description */}
-                <Card className="md:col-span-3 border shadow-sm rounded-xl bg-white dark:bg-[#0f1525] dark:border-white/10 h-[340px] flex flex-col">
+                <Card className="md:col-span-3 border shadow-sm rounded-xl bg-white dark:bg-zinc-900 dark:border-white/10 h-[340px] flex flex-col">
                     <CardHeader className="pb-3 shrink-0">
                         <CardTitle className="text-base font-bold dark:text-white">Job Description</CardTitle>
                         <CardDescription className="dark:text-zinc-400">Paste the entire job description text here.</CardDescription>

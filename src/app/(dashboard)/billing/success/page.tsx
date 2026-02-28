@@ -12,7 +12,7 @@ export default function BillingSuccessPage({
 
     return (
         <div className="flex flex-col items-center justify-center min-h-[calc(100vh-100px)] px-4">
-            <div className="bg-white dark:bg-[#0f1525] p-8 md:p-12 rounded-2xl shadow-sm border border-zinc-200 dark:border-white/10 text-center max-w-md w-full">
+            <div className="bg-white dark:bg-zinc-900 p-8 md:p-12 rounded-2xl shadow-sm border border-zinc-200 dark:border-white/10 text-center max-w-md w-full">
                 <div className="flex justify-center mb-6">
                     <CheckCircle2 className="w-16 h-16 text-green-500" />
                 </div>

@@ -105,7 +105,7 @@ export default function BaseResumePage() {
             )}
 
             {profilesCount === 0 ? (
-                <div className="border border-dashed border-zinc-300 dark:border-white/20 rounded-3xl p-12 text-center bg-zinc-50/50 dark:bg-[#0f1525] flex flex-col items-center justify-center max-w-2xl mx-auto hover:bg-zinc-50 dark:hover:bg-white/5 transition-colors">
+                <div className="border border-dashed border-zinc-300 dark:border-white/20 rounded-3xl p-12 text-center bg-zinc-50/50 dark:bg-zinc-900 flex flex-col items-center justify-center max-w-2xl mx-auto hover:bg-zinc-50 dark:hover:bg-white/5 transition-colors">
                     <div className="bg-white dark:bg-white/5 p-4 rounded-full shadow-sm mb-4">
                         <FileText className="w-8 h-8 text-zinc-400 dark:text-zinc-500" />
                     </div>
@@ -119,7 +119,7 @@ export default function BaseResumePage() {
                 <div className="space-y-8">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 relative">
                         {profiles.map(p => (
-                            <div key={p.id} className="group relative flex flex-col bg-white dark:bg-[#0f1525] rounded-3xl border border-zinc-200/80 dark:border-white/10 shadow-sm hover:shadow-xl dark:shadow-none transition-all duration-300 overflow-hidden hover:-translate-y-1">
+                            <div key={p.id} className="group relative flex flex-col bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200/80 dark:border-white/10 shadow-sm hover:shadow-xl dark:shadow-none transition-all duration-300 overflow-hidden hover:-translate-y-1">
                                 <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-indigo-500 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity"></div>
 
                                 <div className="p-6 flex-1">
@@ -157,7 +157,7 @@ export default function BaseResumePage() {
                                     </div>
                                 </div>
 
-                                <div className="p-4 bg-zinc-50 dark:bg-[#080d1a] border-t border-zinc-100 dark:border-white/10 mt-auto">
+                                <div className="p-4 bg-zinc-50 dark:bg-zinc-950 border-t border-zinc-100 dark:border-white/10 mt-auto">
                                     <Button
                                         onClick={() => handleCreateBaseCv(p.id)}
                                         disabled={generatingId !== null || deletingId !== null}

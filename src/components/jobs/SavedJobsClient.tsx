@@ -49,7 +49,7 @@ export default function SavedJobsClient({ initialJobs, isPro, userId }: Props) {
     };
 
     return (
-        <div className="flex flex-col min-h-screen bg-[#F9FAFB] dark:bg-[#080d1a] py-8 px-6">
+        <div className="flex flex-col min-h-screen bg-[#F9FAFB] dark:bg-zinc-950 py-8 px-6">
             <div className="max-w-7xl mx-auto w-full space-y-8">
                 <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-zinc-200 dark:border-white/10 pb-6">
                     <div>
@@ -67,7 +67,7 @@ export default function SavedJobsClient({ initialJobs, isPro, userId }: Props) {
                 </div>
 
                 {jobs.length === 0 ? (
-                    <div className="flex flex-col items-center justify-center py-20 text-center space-y-6 bg-white dark:bg-[#0f1525] border border-dashed border-zinc-200 dark:border-white/10 rounded-3xl">
+                    <div className="flex flex-col items-center justify-center py-20 text-center space-y-6 bg-white dark:bg-zinc-900 border border-dashed border-zinc-200 dark:border-white/10 rounded-3xl">
                         <div className="w-20 h-20 bg-zinc-50 dark:bg-white/5 rounded-full flex items-center justify-center text-zinc-300 dark:text-zinc-600">
                             <Briefcase className="w-10 h-10" />
                         </div>

@@ -39,7 +39,7 @@ export function JobCard({ job, isPro, isSaved = false, isSelected = false, onTog
     };
 
     return (
-        <div className={`group bg-white dark:bg-[#0f1525] border-2 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col h-full relative overflow-hidden ${isSelected
+        <div className={`group bg-white dark:bg-zinc-900 border-2 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col h-full relative overflow-hidden ${isSelected
             ? 'border-indigo-500 shadow-indigo-100 dark:shadow-indigo-500/20 shadow-md'
             : 'border-zinc-200 dark:border-white/10 hover:border-indigo-200 dark:hover:border-indigo-500/30'
             }`}>

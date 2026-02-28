@@ -106,8 +106,8 @@ export default function ImportPage() {
 
     if (successProfileId) {
         return (
-            <div className="max-w-4xl mx-auto py-12 px-4 space-y-8 bg-zinc-50 dark:bg-[#080d1a] min-h-[calc(100vh-100px)] text-zinc-900">
-                <Card className="border shadow-sm rounded-xl overflow-hidden text-center p-8 bg-white dark:bg-[#0f1525] border-zinc-200 dark:border-white/10">
+            <div className="max-w-4xl mx-auto py-12 px-4 space-y-8 bg-zinc-50 dark:bg-zinc-950 min-h-[calc(100vh-100px)] text-zinc-900">
+                <Card className="border shadow-sm rounded-xl overflow-hidden text-center p-8 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-white/10">
                     <div className="flex justify-center mb-6">
                         <CheckCircle2 className="w-16 h-16 text-emerald-500" />
                     </div>
@@ -142,7 +142,7 @@ export default function ImportPage() {
     }
 
     return (
-        <div className="max-w-4xl mx-auto py-12 px-4 space-y-8 bg-zinc-50 dark:bg-[#080d1a] min-h-[calc(100vh-100px)] text-zinc-900">
+        <div className="max-w-4xl mx-auto py-12 px-4 space-y-8 bg-zinc-50 dark:bg-zinc-950 min-h-[calc(100vh-100px)] text-zinc-900">
             <h1 className="text-3xl font-extrabold tracking-tight dark:text-white">Import Profile</h1>
             <p className="text-zinc-500 dark:text-zinc-400 font-medium">Create your base profile quickly using one of the methods below.</p>
 
@@ -177,7 +177,7 @@ export default function ImportPage() {
                 </TabsList>
 
                 <TabsContent value="url">
-                    <Card className="border border-zinc-200 dark:border-white/10 shadow-sm rounded-xl bg-white dark:bg-[#0f1525]">
+                    <Card className="border border-zinc-200 dark:border-white/10 shadow-sm rounded-xl bg-white dark:bg-zinc-900">
                         <CardHeader>
                             <CardTitle className="text-xl font-bold dark:text-white">Import from LinkedIn</CardTitle>
                             <CardDescription className="text-zinc-500 dark:text-zinc-400 font-medium">
@@ -226,7 +226,7 @@ export default function ImportPage() {
                 </TabsContent>
 
                 <TabsContent value="pdf">
-                    <Card className="border border-zinc-200 dark:border-white/10 shadow-sm rounded-xl flex flex-col bg-white dark:bg-[#0f1525]">
+                    <Card className="border border-zinc-200 dark:border-white/10 shadow-sm rounded-xl flex flex-col bg-white dark:bg-zinc-900">
                         <CardHeader>
                             <CardTitle className="text-xl font-bold dark:text-white">Upload existing CV (PDF)</CardTitle>
                             <CardDescription className="text-zinc-500 dark:text-zinc-400 font-medium">
@@ -272,7 +272,7 @@ export default function ImportPage() {
                 </TabsContent>
 
                 <TabsContent value="text">
-                    <Card className="border border-zinc-200 dark:border-white/10 shadow-sm rounded-xl bg-white dark:bg-[#0f1525]">
+                    <Card className="border border-zinc-200 dark:border-white/10 shadow-sm rounded-xl bg-white dark:bg-zinc-900">
                         <CardHeader>
                             <CardTitle className="text-xl font-bold dark:text-white">Import from Text</CardTitle>
                             <CardDescription className="text-zinc-500 dark:text-zinc-400 font-medium">
@@ -318,7 +318,7 @@ export default function ImportPage() {
                 </TabsContent>
 
                 <TabsContent value="manual">
-                    <Card className="border border-zinc-200 dark:border-white/10 shadow-sm rounded-xl bg-white dark:bg-[#0f1525]">
+                    <Card className="border border-zinc-200 dark:border-white/10 shadow-sm rounded-xl bg-white dark:bg-zinc-900">
                         <CardHeader>
                             <CardTitle className="text-xl font-bold dark:text-white">Manual Entry</CardTitle>
                             <CardDescription className="text-zinc-500 dark:text-zinc-400 font-medium">

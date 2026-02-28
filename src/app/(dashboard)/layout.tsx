@@ -26,7 +26,7 @@ export default function DashboardLayout({
     children: React.ReactNode;
 }) {
     return (
-        <div className="flex min-h-screen w-full bg-white dark:bg-[#080d1a] text-zinc-900 dark:text-zinc-50">
+        <div className="flex min-h-screen w-full bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50">
             <Sidebar />
             <div className="flex-1 overflow-auto">
                 <main className="p-6 max-w-7xl mx-auto">
@@ -45,7 +45,7 @@ const Sidebar = () => {
     return (
         <nav
             className={`sticky top-0 h-screen shrink-0 border-r transition-all duration-300 ease-in-out ${open ? 'w-64' : 'w-16'
-                } border-zinc-200 dark:border-white/10 bg-white dark:bg-[#080d1a] flex flex-col shadow-sm`}
+                } border-zinc-200 dark:border-white/10 bg-white dark:bg-zinc-950 flex flex-col shadow-sm`}
         >
             <div className="flex-1 overflow-y-auto p-2">
                 <TitleSection open={open} />
