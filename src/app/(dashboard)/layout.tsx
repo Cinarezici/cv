@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 import { usePro } from "@/hooks/usePro";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { useLang } from "@/lib/i18n";
 
 export default function DashboardLayout({
     children,
@@ -198,19 +199,20 @@ function NavItems({
     open: boolean;
     status: string | null;
 }) {
+    const { t } = useLang();
     return (
         <>
-            <Option Icon={LayoutDashboard} title="Dashboard" href="/dashboard" selected={pathname === "/dashboard"} open={open} />
-            <Option Icon={Import} title="Import CV" href="/import" selected={pathname === "/import"} open={open} />
-            <Option Icon={LayoutGrid} title="My CVs" href="/my-cvs" selected={pathname === "/my-cvs"} open={open} />
-            <Option Icon={FileText} title="CV Optimizer" href="/resumes/new" selected={pathname === "/resumes/new"} open={open} />
-            <Option Icon={Search} title="Search Jobs" href="/scout" selected={pathname === "/scout"} open={open} variant="blue" />
-            <Option Icon={Star} title="Saved Jobs ⭐" href="/saved-jobs" selected={pathname === "/saved-jobs"} open={open} />
-            <Option Icon={Sparkles} title="My Letters" href="/motivation-letters" selected={pathname === "/motivation-letters"} open={open} />
+            <Option Icon={LayoutDashboard} title={t.dashboard} href="/dashboard" selected={pathname === "/dashboard"} open={open} />
+            <Option Icon={Import} title={t.importCV} href="/import" selected={pathname === "/import"} open={open} />
+            <Option Icon={LayoutGrid} title={t.myCVs} href="/my-cvs" selected={pathname === "/my-cvs"} open={open} />
+            <Option Icon={FileText} title={t.cvOptimizer} href="/resumes/new" selected={pathname === "/resumes/new"} open={open} />
+            <Option Icon={Search} title={t.searchJobs} href="/scout" selected={pathname === "/scout"} open={open} variant="blue" />
+            <Option Icon={Star} title={t.savedJobs} href="/saved-jobs" selected={pathname === "/saved-jobs"} open={open} />
+            <Option Icon={Sparkles} title={t.myLetters} href="/motivation-letters" selected={pathname === "/motivation-letters"} open={open} />
             {status !== "active" && (
                 <UpgradeOption open={open} selected={pathname === "/upgrade"} />
             )}
-            <Option Icon={Settings} title="Settings" href="/settings" selected={pathname === "/settings"} open={open} />
+            <Option Icon={Settings} title={t.settings} href="/settings" selected={pathname === "/settings"} open={open} />
         </>
     );
 }
@@ -236,10 +238,10 @@ const Option = ({
         <Link
             href={href}
             className={`relative flex h-11 w-full items-center rounded-md transition-all duration-200 ${selected
-                    ? "bg-indigo-50 text-indigo-600 dark:bg-blue-500/10 dark:text-blue-400 shadow-sm border-l-2 border-indigo-600 dark:border-blue-500 font-semibold"
-                    : isBlue
-                        ? "text-indigo-600 dark:text-blue-400 hover:bg-indigo-50 dark:hover:bg-white/5 hover:text-indigo-700 dark:hover:text-blue-300 font-semibold"
-                        : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/5 hover:text-zinc-900 dark:hover:text-zinc-200"
+                ? "bg-indigo-50 text-indigo-600 dark:bg-blue-500/10 dark:text-blue-400 shadow-sm border-l-2 border-indigo-600 dark:border-blue-500 font-semibold"
+                : isBlue
+                    ? "text-indigo-600 dark:text-blue-400 hover:bg-indigo-50 dark:hover:bg-white/5 hover:text-indigo-700 dark:hover:text-blue-300 font-semibold"
+                    : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/5 hover:text-zinc-900 dark:hover:text-zinc-200"
                 }`}
         >
             <div className="grid h-full w-12 place-content-center">
@@ -255,20 +257,23 @@ const Option = ({
 };
 
 /* ─── Upgrade option ──────────────────────────────────────────── */
-const UpgradeOption = ({ open, selected }: { open: boolean; selected: boolean }) => (
-    <Link
-        href="/upgrade"
-        className={`relative flex h-11 w-full items-center rounded-md transition-all duration-200 ${selected
+const UpgradeOption = ({ open, selected }: { open: boolean; selected: boolean }) => {
+    const { t } = useLang();
+    return (
+        <Link
+            href="/upgrade"
+            className={`relative flex h-11 w-full items-center rounded-md transition-all duration-200 ${selected
                 ? "bg-amber-50 text-amber-700 dark:bg-amber-500/10 dark:text-amber-400 shadow-sm border-l-2 border-amber-500 font-semibold"
                 : "text-amber-600 hover:bg-amber-50 dark:hover:bg-white/5 hover:text-amber-700 dark:hover:text-amber-300"
-            }`}
-    >
-        <div className="grid h-full w-12 place-content-center">
-            <Zap className="h-4 w-4" />
-        </div>
-        {open && <span className="text-sm font-semibold">Upgrade Plan</span>}
-    </Link>
-);
+                }`}
+        >
+            <div className="grid h-full w-12 place-content-center">
+                <Zap className="h-4 w-4" />
+            </div>
+            {open && <span className="text-sm font-semibold">{t.upgradePlan}</span>}
+        </Link>
+    );
+};
 
 /* ─── Title section ───────────────────────────────────────────── */
 const TitleSection = ({ open }: { open: boolean }) => (
@@ -297,14 +302,17 @@ const Logo = () => (
     </div>
 );
 
-const ToggleClose = ({ open, setOpen }: { open: boolean; setOpen: (open: boolean) => void }) => (
-    <button
-        onClick={() => setOpen(!open)}
-        className="w-full flex items-center p-3 hover:bg-zinc-100 dark:hover:bg-white/5 text-zinc-600 dark:text-zinc-400 transition-colors"
-    >
-        <div className="grid size-10 place-content-center shrink-0">
-            <ChevronsRight className={`h-4 w-4 transition-transform duration-300 ${open ? "rotate-180" : ""}`} />
-        </div>
-        {open && <span className="text-sm font-medium">Collapse</span>}
-    </button>
-);
+const ToggleClose = ({ open, setOpen }: { open: boolean; setOpen: (open: boolean) => void }) => {
+    const { t } = useLang();
+    return (
+        <button
+            onClick={() => setOpen(!open)}
+            className="w-full flex items-center p-3 hover:bg-zinc-100 dark:hover:bg-white/5 text-zinc-600 dark:text-zinc-400 transition-colors"
+        >
+            <div className="grid size-10 place-content-center shrink-0">
+                <ChevronsRight className={`h-4 w-4 transition-transform duration-300 ${open ? "rotate-180" : ""}`} />
+            </div>
+            {open && <span className="text-sm font-medium">{t.collapse}</span>}
+        </button>
+    );
+};

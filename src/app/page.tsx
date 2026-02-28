@@ -255,8 +255,6 @@ export default function Home() {
             <Link className="hover:text-zinc-900 transition-colors" href="/templates">Templates</Link>
             <Link className="hover:text-zinc-900 transition-colors cursor-pointer" href="/#pricing">Pricing</Link>
             <Link className="hover:text-zinc-900 transition-colors" href="/login">Login</Link>
-            {/* Language flag picker */}
-            <LangFlagPicker />
             <Link href="/signup">
               <Button className="bg-zinc-900 text-white hover:bg-zinc-800 font-bold rounded-full px-6 h-10 shadow-sm transition-all hover:scale-105 active:scale-95">
                 Get Started Free
@@ -266,7 +264,6 @@ export default function Home() {
 
           {/* Mobile Nav */}
           <div className="flex md:hidden items-center gap-2">
-            <LangFlagPicker />
             <Link href="/login" className="text-[13px] font-bold text-zinc-600 hover:text-zinc-900">
               Login
             </Link>

@@ -4,6 +4,20 @@ html {
   scroll-behavior: smooth;
 }
 
+/* ─── Global interactive-element cursors ─────────────── */
+button,
+a,
+[role="button"],
+[role="tab"],
+[role="option"],
+label[for],
+select,
+input[type="checkbox"],
+input[type="radio"],
+input[type="file"] {
+  cursor: pointer;
+}
+
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
