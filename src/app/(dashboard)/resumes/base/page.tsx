@@ -86,31 +86,31 @@ export default function BaseResumePage() {
     return (
         <div className="max-w-5xl mx-auto py-12 px-6">
             <div className="mb-10 text-center">
-                <div className="inline-flex items-center justify-center p-3 bg-indigo-50 rounded-2xl mb-4">
-                    <UserCircle className="w-8 h-8 text-indigo-600" />
+                <div className="inline-flex items-center justify-center p-3 bg-indigo-50 dark:bg-indigo-500/10 rounded-2xl mb-4">
+                    <UserCircle className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
                 </div>
-                <h1 className="text-3xl md:text-4xl font-black tracking-tight text-zinc-900 mb-3">
+                <h1 className="text-3xl md:text-4xl font-black tracking-tight text-zinc-900 dark:text-white mb-3">
                     Select Your Baseline Profile
                 </h1>
-                <p className="text-zinc-500 font-medium max-w-2xl mx-auto text-sm md:text-base">
+                <p className="text-zinc-500 dark:text-zinc-400 font-medium max-w-2xl mx-auto text-sm md:text-base">
                     Choose one of your imported profiles to instantly generate an ATS-friendly Master CV. You can safely store up to {MAX_PROFILES} unique histories.
                 </p>
             </div>
 
             {error && (
-                <div className="flex items-center gap-2 text-rose-600 bg-rose-50 p-4 rounded-xl border border-rose-200 mb-8 max-w-2xl mx-auto shadow-sm">
+                <div className="flex items-center gap-2 text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-500/10 p-4 rounded-xl border border-rose-200 dark:border-rose-500/20 mb-8 max-w-2xl mx-auto shadow-sm">
                     <AlertCircle className="h-5 w-5 shrink-0" />
                     <p className="text-sm font-medium">{error}</p>
                 </div>
             )}
 
             {profilesCount === 0 ? (
-                <div className="border border-dashed border-zinc-300 rounded-3xl p-12 text-center bg-zinc-50/50 flex flex-col items-center justify-center max-w-2xl mx-auto hover:bg-zinc-50 transition-colors">
-                    <div className="bg-white p-4 rounded-full shadow-sm mb-4">
-                        <FileText className="w-8 h-8 text-zinc-400" />
+                <div className="border border-dashed border-zinc-300 dark:border-white/20 rounded-3xl p-12 text-center bg-zinc-50/50 dark:bg-[#0f1525] flex flex-col items-center justify-center max-w-2xl mx-auto hover:bg-zinc-50 dark:hover:bg-white/5 transition-colors">
+                    <div className="bg-white dark:bg-white/5 p-4 rounded-full shadow-sm mb-4">
+                        <FileText className="w-8 h-8 text-zinc-400 dark:text-zinc-500" />
                     </div>
-                    <h3 className="text-xl font-bold text-zinc-900 mb-2">No Profiles Found</h3>
-                    <p className="text-zinc-500 mb-6 text-sm max-w-xs">You haven't imported any profile data yet. Let's get your first base profile created.</p>
+                    <h3 className="text-xl font-bold text-zinc-900 dark:text-white mb-2">No Profiles Found</h3>
+                    <p className="text-zinc-500 dark:text-zinc-400 mb-6 text-sm max-w-xs">You haven't imported any profile data yet. Let's get your first base profile created.</p>
                     <Button onClick={() => router.push('/import')} className="bg-indigo-600 hover:bg-indigo-700 h-12 px-8 rounded-full font-bold shadow-md hover:shadow-lg transition-all">
                         <Plus className="w-4 h-4 mr-2" /> Import Your First Profile
                     </Button>
@@ -119,18 +119,18 @@ export default function BaseResumePage() {
                 <div className="space-y-8">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 relative">
                         {profiles.map(p => (
-                            <div key={p.id} className="group relative flex flex-col bg-white rounded-3xl border border-zinc-200/80 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden hover:-translate-y-1">
+                            <div key={p.id} className="group relative flex flex-col bg-white dark:bg-[#0f1525] rounded-3xl border border-zinc-200/80 dark:border-white/10 shadow-sm hover:shadow-xl dark:shadow-none transition-all duration-300 overflow-hidden hover:-translate-y-1">
                                 <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-indigo-500 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity"></div>
 
                                 <div className="p-6 flex-1">
                                     <div className="flex justify-between items-start mb-4">
                                         <div className="flex items-center gap-3">
-                                            <div className="w-10 h-10 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600 font-bold border border-indigo-100">
+                                            <div className="w-10 h-10 rounded-full bg-indigo-50 dark:bg-indigo-500/10 flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-bold border border-indigo-100 dark:border-indigo-500/20">
                                                 {p.full_name?.charAt(0) || 'U'}
                                             </div>
                                             <div>
-                                                <h3 className="font-bold text-lg text-zinc-900 leading-tight">{p.full_name || 'Unknown User'}</h3>
-                                                <span className="text-xs font-bold uppercase tracking-wider text-indigo-500 bg-indigo-50 px-2 py-0.5 rounded-md mt-1 inline-block">
+                                                <h3 className="font-bold text-lg text-zinc-900 dark:text-white leading-tight">{p.full_name || 'Unknown User'}</h3>
+                                                <span className="text-xs font-bold uppercase tracking-wider text-indigo-500 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-500/10 px-2 py-0.5 rounded-md mt-1 inline-block">
                                                     Base Profile
                                                 </span>
                                             </div>
@@ -138,30 +138,30 @@ export default function BaseResumePage() {
                                         <button
                                             onClick={() => handleDeleteProfile(p.id)}
                                             disabled={deletingId === p.id || generatingId !== null}
-                                            className="p-2 text-zinc-400 hover:text-rose-600 hover:bg-rose-50 rounded-full transition-colors disabled:opacity-50"
+                                            className="p-2 text-zinc-400 dark:text-zinc-500 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-500/10 rounded-full transition-colors disabled:opacity-50"
                                             title="Delete Profile"
                                         >
                                             {deletingId === p.id ? <Loader2 className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
                                         </button>
                                     </div>
 
-                                    <div className="flex items-start gap-2 mt-4 text-sm text-zinc-600">
-                                        <Briefcase className="w-4 h-4 mt-0.5 shrink-0 text-zinc-400" />
+                                    <div className="flex items-start gap-2 mt-4 text-sm text-zinc-600 dark:text-zinc-400">
+                                        <Briefcase className="w-4 h-4 mt-0.5 shrink-0 text-zinc-400 dark:text-zinc-500" />
                                         <p className="line-clamp-2 leading-relaxed font-medium">
                                             {p.headline || 'No specific headline provided for this profile load.'}
                                         </p>
                                     </div>
-                                    <div className="text-[11px] text-zinc-400 mt-4 font-semibold uppercase tracking-widest flex items-center justify-between">
+                                    <div className="text-[11px] text-zinc-400 dark:text-zinc-500 mt-4 font-semibold uppercase tracking-widest flex items-center justify-between">
                                         <span>Imported: {new Date(p.created_at).toLocaleDateString()}</span>
                                         <span>ID: {p.id.substring(0, 6)}</span>
                                     </div>
                                 </div>
 
-                                <div className="p-4 bg-zinc-50 border-t border-zinc-100 mt-auto">
+                                <div className="p-4 bg-zinc-50 dark:bg-[#080d1a] border-t border-zinc-100 dark:border-white/10 mt-auto">
                                     <Button
                                         onClick={() => handleCreateBaseCv(p.id)}
                                         disabled={generatingId !== null || deletingId !== null}
-                                        className="w-full bg-zinc-900 hover:bg-black text-white rounded-xl h-12 font-bold shadow-md transition-transform active:scale-[0.98]"
+                                        className="w-full bg-zinc-900 dark:bg-white hover:bg-black dark:hover:bg-zinc-200 text-white dark:text-zinc-900 rounded-xl h-12 font-bold shadow-md transition-transform active:scale-[0.98]"
                                     >
                                         {generatingId === p.id
                                             ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Forging Master CV...</>
@@ -176,9 +176,9 @@ export default function BaseResumePage() {
                         {!isLimitReached && (
                             <button
                                 onClick={() => router.push('/import')}
-                                className="group flex flex-col items-center justify-center p-8 bg-transparent border-2 border-dashed border-zinc-300 rounded-3xl hover:border-indigo-400 hover:bg-indigo-50/30 transition-all text-zinc-500 hover:text-indigo-600 min-h-[280px]"
+                                className="group flex flex-col items-center justify-center p-8 bg-transparent border-2 border-dashed border-zinc-300 dark:border-white/20 rounded-3xl hover:border-indigo-400 dark:hover:border-indigo-500 hover:bg-indigo-50/30 dark:hover:bg-indigo-500/10 transition-all text-zinc-500 dark:text-zinc-400 hover:text-indigo-600 dark:hover:text-indigo-400 min-h-[280px]"
                             >
-                                <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm border border-zinc-200 mb-4 group-hover:scale-110 transition-transform">
+                                <div className="w-12 h-12 bg-white dark:bg-white/5 rounded-full flex items-center justify-center shadow-sm border border-zinc-200 dark:border-white/10 mb-4 group-hover:scale-110 transition-transform">
                                     <Plus className="w-6 h-6" />
                                 </div>
                                 <span className="font-bold text-lg mb-1">Add Another Profile</span>

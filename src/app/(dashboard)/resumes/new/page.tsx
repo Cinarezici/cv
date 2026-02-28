@@ -90,7 +90,7 @@ function NewResumeForm() {
     if (!isPro) {
         return (
             <div className="max-w-4xl mx-auto py-12 px-6">
-                <Card className="border-0 shadow-2xl max-w-2xl mx-auto bg-white rounded-3xl overflow-hidden animate-in fade-in zoom-in duration-500">
+                <Card className="border-0 shadow-2xl max-w-2xl mx-auto bg-white dark:bg-[#0f1525] rounded-3xl overflow-hidden animate-in fade-in zoom-in duration-500">
                     <div className="bg-orange-500 p-8 text-center text-white relative">
                         <div className="absolute top-0 right-0 p-4 opacity-10">
                             <Sparkles className="w-24 h-24" />
@@ -103,22 +103,22 @@ function NewResumeForm() {
                     </div>
                     <CardContent className="p-10 text-center space-y-8">
                         <div className="space-y-4">
-                            <h3 className="text-xl font-bold text-zinc-900">Tailor your CV perfectly for every job description.</h3>
+                            <h3 className="text-xl font-bold text-zinc-900 dark:text-white">Tailor your CV perfectly for every job description.</h3>
                             <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left max-w-md mx-auto">
-                                <li className="flex items-center gap-3 text-sm font-semibold text-zinc-700">
-                                    <div className="w-6 h-6 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 font-bold text-xs">✓</div>
+                                <li className="flex items-center gap-3 text-sm font-semibold text-zinc-700 dark:text-zinc-300">
+                                    <div className="w-6 h-6 rounded-full bg-emerald-100 dark:bg-emerald-500/20 flex items-center justify-center text-emerald-600 dark:text-emerald-400 font-bold text-xs">✓</div>
                                     AI-powered bullet points
                                 </li>
-                                <li className="flex items-center gap-3 text-sm font-semibold text-zinc-700">
-                                    <div className="w-6 h-6 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 font-bold text-xs">✓</div>
+                                <li className="flex items-center gap-3 text-sm font-semibold text-zinc-700 dark:text-zinc-300">
+                                    <div className="w-6 h-6 rounded-full bg-emerald-100 dark:bg-emerald-500/20 flex items-center justify-center text-emerald-600 dark:text-emerald-400 font-bold text-xs">✓</div>
                                     Job-specific tailoring
                                 </li>
-                                <li className="flex items-center gap-3 text-sm font-semibold text-zinc-700">
-                                    <div className="w-6 h-6 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 font-bold text-xs">✓</div>
+                                <li className="flex items-center gap-3 text-sm font-semibold text-zinc-700 dark:text-zinc-300">
+                                    <div className="w-6 h-6 rounded-full bg-emerald-100 dark:bg-emerald-500/20 flex items-center justify-center text-emerald-600 dark:text-emerald-400 font-bold text-xs">✓</div>
                                     ATS-Friendly Keywords
                                 </li>
-                                <li className="flex items-center gap-3 text-sm font-semibold text-zinc-700">
-                                    <div className="w-6 h-6 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 font-bold text-xs">✓</div>
+                                <li className="flex items-center gap-3 text-sm font-semibold text-zinc-700 dark:text-zinc-300">
+                                    <div className="w-6 h-6 rounded-full bg-emerald-100 dark:bg-emerald-500/20 flex items-center justify-center text-emerald-600 dark:text-emerald-400 font-bold text-xs">✓</div>
                                     Higher response rates
                                 </li>
                             </ul>
@@ -149,17 +149,17 @@ function NewResumeForm() {
     if (!documentId) {
         return (
             <div className="space-y-6">
-                <Card className="border shadow-sm bg-white rounded-xl">
+                <Card className="border shadow-sm bg-white dark:bg-[#0f1525] dark:border-white/10 rounded-xl">
                     <CardHeader>
-                        <CardTitle className="text-xl font-bold">Choose your CV</CardTitle>
-                        <CardDescription className="text-zinc-500">
+                        <CardTitle className="text-xl font-bold dark:text-white">Choose your CV</CardTitle>
+                        <CardDescription className="text-zinc-500 dark:text-zinc-400">
                             Select the CV or Profile you want to optimize for a specific job.
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
                         {documents.length === 0 ? (
                             <div className="text-center py-6">
-                                <p className="text-zinc-500 font-medium mb-4">You don't have any CVs yet.</p>
+                                <p className="text-zinc-500 dark:text-zinc-400 font-medium mb-4">You don't have any CVs yet.</p>
                                 <Button onClick={() => router.push('/import')} className="bg-indigo-600 hover:bg-indigo-700 text-white">
                                     Import LinkedIn / Add CV
                                 </Button>
@@ -173,26 +173,26 @@ function NewResumeForm() {
                                             setDocumentId(doc.id);
                                             setDocumentType(doc.type);
                                         }}
-                                        className="border border-zinc-200 rounded-xl p-4 cursor-pointer hover:border-indigo-500 hover:bg-indigo-50 transition-all flex items-center justify-between group relative"
+                                        className="border border-zinc-200 dark:border-white/10 rounded-xl p-4 cursor-pointer hover:border-indigo-500 dark:hover:border-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 transition-all flex items-center justify-between group relative"
                                     >
                                         <div className="flex-1 min-w-0 pr-10">
                                             <div className="flex items-center gap-2">
-                                                <span className="text-xs font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full uppercase tracking-wider">
+                                                <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-500/10 px-2 py-0.5 rounded-full uppercase tracking-wider">
                                                     {doc.type}
                                                 </span>
-                                                <p className="font-bold text-zinc-900 truncate">{doc.title}</p>
+                                                <p className="font-bold text-zinc-900 dark:text-white truncate">{doc.title}</p>
                                             </div>
-                                            <p className="text-sm text-zinc-500 mt-1 truncate">{doc.subtitle}</p>
+                                            <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1 truncate">{doc.subtitle}</p>
                                         </div>
                                         <div className="flex items-center gap-2">
                                             <button
                                                 onClick={(e) => handleDocDelete(e, doc.id, doc.type)}
-                                                className="p-2 text-zinc-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+                                                className="p-2 text-zinc-400 dark:text-zinc-500 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-500/10 rounded-lg transition-colors"
                                                 title="Delete"
                                             >
                                                 <Trash2 className="w-4 h-4" />
                                             </button>
-                                            <ChevronRight className="w-5 h-5 text-zinc-300 group-hover:text-indigo-500 shrink-0" />
+                                            <ChevronRight className="w-5 h-5 text-zinc-300 dark:text-zinc-600 group-hover:text-indigo-500 dark:group-hover:text-indigo-400 shrink-0" />
                                         </div>
                                     </div>
                                 ))}
@@ -246,42 +246,42 @@ function NewResumeForm() {
         <div className="space-y-6">
             <div className="flex items-center justify-between">
                 <div>
-                    <h2 className="text-2xl font-bold flex items-center gap-2">
-                        <Sparkles className="w-6 h-6 text-indigo-600" />
+                    <h2 className="text-2xl font-bold dark:text-white flex items-center gap-2">
+                        <Sparkles className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
                         CV Optimization
                     </h2>
-                    <p className="text-zinc-500 mt-1 text-sm">
-                        Preparing a tailored CV targeting the job using <span className="font-semibold text-indigo-700">{selectedDoc?.title}</span>.
+                    <p className="text-zinc-500 dark:text-zinc-400 mt-1 text-sm">
+                        Preparing a tailored CV targeting the job using <span className="font-semibold text-indigo-700 dark:text-indigo-400">{selectedDoc?.title}</span>.
                     </p>
                 </div>
-                <Button onClick={() => setDocumentId(null)} variant="outline" className="h-9 text-sm" disabled={loading}>
+                <Button onClick={() => setDocumentId(null)} variant="outline" className="h-9 text-sm dark:text-zinc-300 dark:border-white/20 dark:hover:bg-white/5" disabled={loading}>
                     Change CV
                 </Button>
             </div>
 
-            {error && <p className="text-rose-600 bg-rose-50 p-3 rounded-lg border border-rose-200 text-sm font-medium">{error}</p>}
+            {error && <p className="text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-500/10 p-3 rounded-lg border border-rose-200 dark:border-rose-500/20 text-sm font-medium">{error}</p>}
 
             <div className="grid grid-cols-1 md:grid-cols-5 gap-5 items-start">
                 {/* Left: optional meta */}
-                <Card className="md:col-span-2 border shadow-sm rounded-xl bg-white">
+                <Card className="md:col-span-2 border shadow-sm rounded-xl bg-white dark:bg-[#0f1525] dark:border-white/10">
                     <CardHeader className="pb-3">
-                        <CardTitle className="text-base font-bold">Job Details <span className="text-zinc-400 font-normal text-xs">(optional)</span></CardTitle>
+                        <CardTitle className="text-base font-bold dark:text-white">Job Details <span className="text-zinc-400 dark:text-zinc-500 font-normal text-xs">(optional)</span></CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-3">
                         <div>
-                            <label className="text-xs font-bold text-zinc-500 uppercase tracking-wide">Job Title</label>
+                            <label className="text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wide">Job Title</label>
                             <input
                                 placeholder="Senior Frontend Engineer"
-                                className="mt-1 flex h-9 w-full rounded-md border border-zinc-300 bg-transparent px-3 py-1 text-sm placeholder:text-zinc-400 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-indigo-500"
+                                className="mt-1 flex h-9 w-full rounded-md border border-zinc-300 dark:border-white/20 bg-transparent px-3 py-1 text-sm dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-indigo-500 dark:focus-visible:ring-indigo-400"
                                 value={jobTitle}
                                 onChange={(e) => setJobTitle(e.target.value)}
                             />
                         </div>
                         <div>
-                            <label className="text-xs font-bold text-zinc-500 uppercase tracking-wide">Company</label>
+                            <label className="text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wide">Company</label>
                             <input
                                 placeholder="Google"
-                                className="mt-1 flex h-9 w-full rounded-md border border-zinc-300 bg-transparent px-3 py-1 text-sm placeholder:text-zinc-400 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-indigo-500"
+                                className="mt-1 flex h-9 w-full rounded-md border border-zinc-300 dark:border-white/20 bg-transparent px-3 py-1 text-sm dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-indigo-500 dark:focus-visible:ring-indigo-400"
                                 value={company}
                                 onChange={(e) => setCompany(e.target.value)}
                             />
@@ -290,15 +290,15 @@ function NewResumeForm() {
                 </Card>
 
                 {/* Right: job description */}
-                <Card className="md:col-span-3 border shadow-sm rounded-xl bg-white h-[340px] flex flex-col">
+                <Card className="md:col-span-3 border shadow-sm rounded-xl bg-white dark:bg-[#0f1525] dark:border-white/10 h-[340px] flex flex-col">
                     <CardHeader className="pb-3 shrink-0">
-                        <CardTitle className="text-base font-bold">Job Description</CardTitle>
-                        <CardDescription>Paste the entire job description text here.</CardDescription>
+                        <CardTitle className="text-base font-bold dark:text-white">Job Description</CardTitle>
+                        <CardDescription className="dark:text-zinc-400">Paste the entire job description text here.</CardDescription>
                     </CardHeader>
                     <CardContent className="flex-1 pb-5">
                         <Textarea
                             placeholder="We are looking for a highly skilled..."
-                            className="h-full w-full resize-none border-zinc-300 text-sm focus-visible:ring-indigo-500"
+                            className="h-full w-full resize-none border-zinc-300 dark:border-white/20 text-sm dark:text-white focus-visible:ring-indigo-500 dark:focus-visible:ring-indigo-400 bg-transparent placeholder:text-zinc-400 dark:placeholder:text-zinc-500"
                             value={jd}
                             onChange={(e) => setJd(e.target.value)}
                         />

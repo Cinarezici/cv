@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { createServiceRoleClient } from '@/lib/supabase/service';
 
 const HOME_URL = 'https://cvoptimizerai.com';
-const PRICING_URL = 'https://cvoptimizerai.com/pricing';
+const PRICING_URL = 'https://cvoptimizerai.com/#pricing';
 
 export async function GET(
     request: Request,

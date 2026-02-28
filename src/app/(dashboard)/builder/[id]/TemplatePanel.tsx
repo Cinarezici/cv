@@ -48,8 +48,8 @@ export default function TemplatePanel() {
 
             {/* Template cards */}
             <div className="flex flex-col gap-2">
-                <h3 className="text-sm font-bold text-gray-900">Choose Your CV Template</h3>
-                <p className="text-xs text-gray-400">Select a template that best fits your industry and style</p>
+                <h3 className="text-sm font-bold text-gray-900 dark:text-white">Choose Your CV Template</h3>
+                <p className="text-xs text-gray-400 dark:text-zinc-500">Select a template that best fits your industry and style</p>
             </div>
 
             <div className="grid grid-cols-2 gap-3">
@@ -61,8 +61,8 @@ export default function TemplatePanel() {
                             onClick={() => updateTheme(tpl.id, tpl.category)}
                             className={`relative flex flex-col gap-2 p-4 rounded-2xl border-2 text-left transition-all
                 ${isSelected
-                                    ? "border-blue-500 bg-blue-50"
-                                    : "border-gray-200 bg-white hover:border-gray-300 hover:bg-gray-50"
+                                    ? "border-blue-500 dark:border-blue-500 bg-blue-50 dark:bg-blue-500/10"
+                                    : "border-gray-200 dark:border-white/10 bg-white dark:bg-[#0f1525] hover:border-gray-300 dark:hover:border-white/20 hover:bg-gray-50 dark:hover:bg-white/5"
                                 }`}
                         >
                             {isSelected && (
@@ -74,13 +74,13 @@ export default function TemplatePanel() {
 
                             <span className="text-2xl">{tpl.emoji}</span>
                             <div>
-                                <div className="font-bold text-gray-900 text-sm">{tpl.name}</div>
-                                <div className="text-[11px] text-gray-500 mt-0.5 leading-snug">{tpl.description}</div>
+                                <div className="font-bold text-gray-900 dark:text-white text-sm">{tpl.name}</div>
+                                <div className="text-[11px] text-gray-500 dark:text-zinc-400 mt-0.5 leading-snug">{tpl.description}</div>
                             </div>
 
                             <ul className="flex flex-col gap-0.5 mt-1">
                                 {tpl.features.map((f) => (
-                                    <li key={f} className="flex items-start gap-1.5 text-[11px] text-gray-500">
+                                    <li key={f} className="flex items-start gap-1.5 text-[11px] text-gray-500 dark:text-zinc-400">
                                         <Check className="w-3 h-3 text-blue-500 mt-0.5 shrink-0" />
                                         {f}
                                     </li>
@@ -93,13 +93,13 @@ export default function TemplatePanel() {
 
             {/* Accent Color */}
             <div>
-                <h3 className="text-sm font-bold text-gray-900 mb-3">Accent Color</h3>
+                <h3 className="text-sm font-bold text-gray-900 dark:text-white mb-3">Accent Color</h3>
                 <div className="flex gap-2 flex-wrap">
                     {/* Default (no tint) */}
                     <button
                         onClick={() => updateColorPalette("default")}
                         className={`w-8 h-8 rounded-full border-2 transition-all
-              ${colorPaletteId === "default" ? "border-gray-800 scale-110" : "border-transparent hover:scale-105"}`}
+              ${colorPaletteId === "default" ? "border-gray-800 dark:border-white scale-110" : "border-transparent hover:scale-105"}`}
                         style={{ background: "linear-gradient(135deg, #e2e8f0 50%, #94a3b8 50%)" }}
                         title="Default"
                     />
@@ -109,7 +109,7 @@ export default function TemplatePanel() {
                             onClick={() => updateColorPalette(p.id)}
                             title={p.name}
                             className={`w-8 h-8 rounded-full border-2 transition-all
-                ${colorPaletteId === p.id ? "border-gray-800 scale-110 shadow-md" : "border-transparent hover:scale-105"}`}
+                ${colorPaletteId === p.id ? "border-gray-800 dark:border-white scale-110 shadow-md" : "border-transparent hover:scale-105"}`}
                             style={{ backgroundColor: p.hex }}
                         />
                     ))}
@@ -117,9 +117,9 @@ export default function TemplatePanel() {
             </div>
 
             {/* Tip */}
-            <div className="flex items-start gap-2.5 bg-blue-50 border border-blue-100 rounded-xl px-4 py-3">
+            <div className="flex items-start gap-2.5 bg-blue-50 dark:bg-blue-500/10 border border-blue-100 dark:border-blue-500/20 rounded-xl px-4 py-3">
                 <span className="text-base">💡</span>
-                <p className="text-xs text-blue-700 font-medium leading-relaxed">
+                <p className="text-xs text-blue-700 dark:text-blue-400 font-medium leading-relaxed">
                     You can change the template anytime. Your data will be preserved.
                 </p>
             </div>

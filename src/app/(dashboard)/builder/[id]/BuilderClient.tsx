@@ -75,13 +75,13 @@ function SortableRow({ id, label }: { id: string; label: string }) {
         <div
             ref={setNodeRef}
             style={{ transform: CSS.Transform.toString(transform), transition }}
-            className={`flex items-center gap-3 py-3 px-4 bg-white rounded-xl border border-gray-200 select-none
-        ${isDragging ? "opacity-50 shadow-lg" : "hover:bg-gray-50"}`}
+            className={`flex items-center gap-3 py-3 px-4 bg-white dark:bg-[#0f1525] rounded-xl border border-gray-200 dark:border-white/10 select-none
+        ${isDragging ? "opacity-50 shadow-lg" : "hover:bg-gray-50 dark:hover:bg-white/5"}`}
         >
-            <div {...attributes} {...listeners} className="cursor-grab text-gray-400 hover:text-gray-600 touch-none">
+            <div {...attributes} {...listeners} className="cursor-grab text-gray-400 dark:text-zinc-500 hover:text-gray-600 dark:hover:text-zinc-300 touch-none">
                 <GripVertical className="w-4 h-4" />
             </div>
-            <span className="text-sm font-semibold text-gray-700">{label}</span>
+            <span className="text-sm font-semibold text-gray-700 dark:text-zinc-300">{label}</span>
         </div>
     );
 }
@@ -172,7 +172,7 @@ export default function BuilderClient({ data, avatarUrl, isPro }: { data: any; a
             case "order":
                 return (
                     <div className="space-y-3 p-4">
-                        <p className="text-xs text-gray-400">Drag and drop to reorder sections in your CV.</p>
+                        <p className="text-xs text-gray-400 dark:text-zinc-500">Drag and drop to reorder sections in your CV.</p>
                         <DndContext id="builder-order-dnd" sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
                             <SortableContext items={sectionOrder.filter(k => k in SECTION_LABELS)} strategy={verticalListSortingStrategy}>
                                 <div className="flex flex-col gap-2">
@@ -192,23 +192,23 @@ export default function BuilderClient({ data, avatarUrl, isPro }: { data: any; a
     const meta = PANEL_META[activeTab];
 
     return (
-        <div className="fixed inset-0 z-50 flex flex-col bg-gray-50" style={{ fontFamily: "'Inter', sans-serif" }}>
+        <div className="fixed inset-0 z-50 flex flex-col bg-gray-50 dark:bg-[#080d1a]" style={{ fontFamily: "'Inter', sans-serif" }}>
 
             {/* ── Top Header ─────────────────────────────────────────────────── */}
-            <header className="h-12 shrink-0 bg-white border-b border-gray-200 flex items-center px-4 gap-3 z-10">
+            <header className="h-12 shrink-0 bg-white dark:bg-[#0f1525] border-b border-gray-200 dark:border-white/10 flex items-center px-4 gap-3 z-10">
                 <button
                     onClick={() => router.push("/dashboard")}
-                    className="flex items-center gap-1.5 text-sm font-semibold text-foreground/60 hover:text-foreground transition-colors"
+                    className="flex items-center gap-1.5 text-sm font-semibold text-foreground/60 dark:text-zinc-400 hover:text-foreground dark:hover:text-white transition-colors"
                 >
                     <ArrowLeft className="w-4 h-4" />
                     Back to Dashboard
                 </button>
 
                 <div className="flex-1 flex items-center justify-center gap-2">
-                    <span className="font-bold text-foreground text-sm">CV Editor</span>
+                    <span className="font-bold text-foreground dark:text-white text-sm">CV Editor</span>
                     <span className={`text-[11px] font-bold px-2 py-0.5 rounded-full border ${isPro
-                        ? 'bg-amber-50 text-amber-600 border-amber-200'
-                        : 'bg-blue-50 text-blue-600 border-blue-100'
+                        ? 'bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-200 dark:border-amber-500/20'
+                        : 'bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-100 dark:border-blue-500/20'
                         }`}>
                         {isPro ? 'PRO' : 'FREE'}
                     </span>
@@ -221,7 +221,7 @@ export default function BuilderClient({ data, avatarUrl, isPro }: { data: any; a
                     className={`flex items-center gap-2 px-4 py-1.5 rounded-lg font-bold text-sm transition-all
             ${hasUnsaved && !saving
                             ? "bg-blue-600 hover:bg-blue-700 text-white shadow-sm active:scale-95"
-                            : "bg-gray-100 text-gray-400 cursor-default"
+                            : "bg-gray-100 dark:bg-white/5 text-gray-400 dark:text-zinc-500 cursor-default"
                         }`}
                 >
                     {saving
@@ -234,7 +234,7 @@ export default function BuilderClient({ data, avatarUrl, isPro }: { data: any; a
 
                 <button
                     onClick={() => router.push("/dashboard")}
-                    className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors"
+                    className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 dark:text-zinc-500 hover:text-gray-700 dark:hover:text-zinc-300 hover:bg-gray-100 dark:hover:bg-white/10 transition-colors"
                 >
                     <X className="w-4 h-4" />
                 </button>
@@ -244,7 +244,7 @@ export default function BuilderClient({ data, avatarUrl, isPro }: { data: any; a
             <div className="flex flex-1 overflow-hidden">
 
                 {/* ── Narrow icon sidebar ───────────────────────────────── */}
-                <aside className="w-[60px] shrink-0 bg-white border-r border-gray-200 flex flex-col items-center py-3 gap-1">
+                <aside className="w-[60px] shrink-0 bg-white dark:bg-[#0f1525] border-r border-gray-200 dark:border-white/10 flex flex-col items-center py-3 gap-1">
                     {TABS.map(({ id, Icon, label }) => {
                         const active = activeTab === id;
                         return (
@@ -254,8 +254,8 @@ export default function BuilderClient({ data, avatarUrl, isPro }: { data: any; a
                                 title={label}
                                 className={`w-12 h-12 flex flex-col items-center justify-center rounded-xl gap-0.5 transition-all text-[9px] font-semibold leading-tight
                   ${active
-                                        ? "bg-blue-50 text-blue-600"
-                                        : "text-gray-400 hover:text-gray-700 hover:bg-gray-50"
+                                        ? "bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400"
+                                        : "text-gray-400 dark:text-zinc-500 hover:text-gray-700 dark:hover:text-zinc-300 hover:bg-gray-50 dark:hover:bg-white/5"
                                     }`}
                             >
                                 <Icon className="w-[18px] h-[18px]" strokeWidth={active ? 2.5 : 2} />
@@ -266,25 +266,25 @@ export default function BuilderClient({ data, avatarUrl, isPro }: { data: any; a
                 </aside>
 
                 {/* ── Section panel ─────────────────────────────────────── */}
-                <aside className="w-[420px] shrink-0 bg-white border-r border-gray-200 flex flex-col overflow-hidden">
+                <aside className="w-[420px] shrink-0 bg-white dark:bg-[#0f1525] border-r border-gray-200 dark:border-white/10 flex flex-col overflow-hidden">
                     {/* Panel header */}
-                    <div className="px-6 py-4 border-b border-gray-100 shrink-0">
-                        <h2 className="font-bold text-gray-900 text-base">{meta.title}</h2>
-                        <p className="text-xs text-gray-400 mt-0.5">{meta.subtitle}</p>
+                    <div className="px-6 py-4 border-b border-gray-100 dark:border-white/5 shrink-0">
+                        <h2 className="font-bold text-gray-900 dark:text-white text-base">{meta.title}</h2>
+                        <p className="text-xs text-gray-400 dark:text-zinc-500 mt-0.5">{meta.subtitle}</p>
                     </div>
                     {/* Panel content */}
                     <div className="flex-1 overflow-y-auto">
                         {renderPanel()}
                     </div>
                     {/* Bottom Save CV button (per-section, like cvmakerly) */}
-                    <div className="p-4 border-t border-gray-100 shrink-0">
+                    <div className="p-4 border-t border-gray-100 dark:border-white/5 shrink-0">
                         <button
                             onClick={handleSave}
                             disabled={saving || !hasUnsaved}
                             className={`w-full flex items-center justify-center gap-2 py-2.5 rounded-xl font-bold text-sm transition-all
                 ${hasUnsaved && !saving
                                     ? "bg-blue-600 hover:bg-blue-700 text-white shadow-sm active:scale-95"
-                                    : "bg-gray-100 text-gray-400 cursor-default"
+                                    : "bg-gray-100 dark:bg-white/5 text-gray-400 dark:text-zinc-500 cursor-default"
                                 }`}
                         >
                             {saving
@@ -298,9 +298,9 @@ export default function BuilderClient({ data, avatarUrl, isPro }: { data: any; a
                 </aside>
 
                 {/* ── Live Preview — dark bg, A4 scaled to fit ─────────── */}
-                <main className="flex-1 flex flex-col overflow-hidden bg-zinc-950/5 dark:bg-zinc-950 relative">
+                <main className="flex-1 flex flex-col overflow-hidden bg-zinc-950/5 dark:bg-[#080d1a] relative">
                     <div className="absolute inset-0 pointer-events-none [background:radial-gradient(80%_80%_at_50%_10%,rgba(0,0,0,0.02),transparent)] dark:[background:radial-gradient(80%_80%_at_50%_10%,rgba(255,255,255,0.02),transparent)]"></div>
-                    <div className="flex items-center justify-between px-6 py-2.5 border-b border-border/20 shrink-0 glass relative z-10 shadow-sm">
+                    <div className="flex items-center justify-between px-6 py-2.5 border-b border-border/20 dark:border-white/5 shrink-0 glass relative z-10 shadow-sm">
                         <span className="text-foreground/80 text-xs font-semibold tracking-wide flex items-center gap-2">
                             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                             Live Preview

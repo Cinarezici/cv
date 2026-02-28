@@ -106,13 +106,13 @@ export default function ImportPage() {
 
     if (successProfileId) {
         return (
-            <div className="max-w-4xl mx-auto py-12 px-4 space-y-8 bg-zinc-50 min-h-[calc(100vh-100px)] text-zinc-900">
-                <Card className="border shadow-sm rounded-xl overflow-hidden text-center p-8 bg-white border-zinc-200">
+            <div className="max-w-4xl mx-auto py-12 px-4 space-y-8 bg-zinc-50 dark:bg-[#080d1a] min-h-[calc(100vh-100px)] text-zinc-900">
+                <Card className="border shadow-sm rounded-xl overflow-hidden text-center p-8 bg-white dark:bg-[#0f1525] border-zinc-200 dark:border-white/10">
                     <div className="flex justify-center mb-6">
                         <CheckCircle2 className="w-16 h-16 text-emerald-500" />
                     </div>
-                    <CardTitle className="text-2xl font-bold mb-2">Profile Imported Successfully!</CardTitle>
-                    <CardDescription className="text-zinc-500 font-medium mb-8 text-base">
+                    <CardTitle className="text-2xl font-bold mb-2 dark:text-white">Profile Imported Successfully!</CardTitle>
+                    <CardDescription className="text-zinc-500 dark:text-zinc-400 font-medium mb-8 text-base">
                         AI has structured your data. Now, what would you like to do?
                     </CardDescription>
 
@@ -126,13 +126,13 @@ export default function ImportPage() {
                         <Button
                             onClick={() => router.push(successProfileId === 'new' ? '/resumes/new' : `/resumes/new?profileId=${successProfileId}`)}
                             variant="outline"
-                            className="h-14 font-semibold text-lg border-zinc-300 hover:bg-zinc-50"
+                            className="h-14 font-semibold text-lg border-zinc-300 dark:border-zinc-700 bg-white dark:bg-transparent text-zinc-900 dark:text-white hover:bg-zinc-50 dark:hover:bg-white/5"
                         >
                             Tailor for Job
                         </Button>
                     </div>
                     <div className="mt-8">
-                        <Button variant="ghost" className="text-zinc-500" onClick={() => router.push('/dashboard')}>
+                        <Button variant="ghost" className="text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-white/5" onClick={() => router.push('/dashboard')}>
                             Return to Dashboard
                         </Button>
                     </div>
@@ -142,13 +142,13 @@ export default function ImportPage() {
     }
 
     return (
-        <div className="max-w-4xl mx-auto py-12 px-4 space-y-8 bg-zinc-50 min-h-[calc(100vh-100px)] text-zinc-900">
-            <h1 className="text-3xl font-extrabold tracking-tight">Import Profile</h1>
-            <p className="text-zinc-500 font-medium">Create your base profile quickly using one of the methods below.</p>
+        <div className="max-w-4xl mx-auto py-12 px-4 space-y-8 bg-zinc-50 dark:bg-[#080d1a] min-h-[calc(100vh-100px)] text-zinc-900">
+            <h1 className="text-3xl font-extrabold tracking-tight dark:text-white">Import Profile</h1>
+            <p className="text-zinc-500 dark:text-zinc-400 font-medium">Create your base profile quickly using one of the methods below.</p>
 
             <Tabs defaultValue="url" className="w-full">
-                <TabsList className="grid w-full grid-cols-4 mb-8 bg-zinc-200 text-zinc-600 rounded-lg p-1 transition-all">
-                    <TabsTrigger value="url" className="data-[state=active]:bg-white data-[state=active]:text-zinc-900 data-[state=active]:shadow-sm rounded-md font-semibold relative">
+                <TabsList className="grid w-full grid-cols-4 mb-8 bg-zinc-200 dark:bg-white/5 text-zinc-600 dark:text-zinc-400 rounded-lg p-1 transition-all">
+                    <TabsTrigger value="url" className="data-[state=active]:bg-white dark:data-[state=active]:bg-white/10 data-[state=active]:text-zinc-900 dark:data-[state=active]:text-white data-[state=active]:shadow-sm rounded-md font-semibold relative">
                         <Linkedin className="w-4 h-4 mr-2" />
                         LinkedIn URL
                         {isPro === false && !proLoading && (
@@ -157,11 +157,11 @@ export default function ImportPage() {
                             </span>
                         )}
                     </TabsTrigger>
-                    <TabsTrigger value="pdf" className="data-[state=active]:bg-white data-[state=active]:text-zinc-900 data-[state=active]:shadow-sm rounded-md font-semibold">
+                    <TabsTrigger value="pdf" className="data-[state=active]:bg-white dark:data-[state=active]:bg-white/10 data-[state=active]:text-zinc-900 dark:data-[state=active]:text-white data-[state=active]:shadow-sm rounded-md font-semibold">
                         <FileUp className="w-4 h-4 mr-2" />
                         PDF Upload
                     </TabsTrigger>
-                    <TabsTrigger value="text" className="data-[state=active]:bg-white data-[state=active]:text-zinc-900 data-[state=active]:shadow-sm rounded-md font-semibold relative">
+                    <TabsTrigger value="text" className="data-[state=active]:bg-white dark:data-[state=active]:bg-white/10 data-[state=active]:text-zinc-900 dark:data-[state=active]:text-white data-[state=active]:shadow-sm rounded-md font-semibold relative">
                         <FileText className="w-4 h-4 mr-2" />
                         Manual Text
                         {isPro === false && !proLoading && (
@@ -170,26 +170,26 @@ export default function ImportPage() {
                             </span>
                         )}
                     </TabsTrigger>
-                    <TabsTrigger value="manual" className="data-[state=active]:bg-white data-[state=active]:text-zinc-900 data-[state=active]:shadow-sm rounded-md font-semibold">
+                    <TabsTrigger value="manual" className="data-[state=active]:bg-white dark:data-[state=active]:bg-white/10 data-[state=active]:text-zinc-900 dark:data-[state=active]:text-white data-[state=active]:shadow-sm rounded-md font-semibold">
                         <Keyboard className="w-4 h-4 mr-2" />
                         From Scratch
                     </TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="url">
-                    <Card className="border shadow-sm rounded-xl">
+                    <Card className="border border-zinc-200 dark:border-white/10 shadow-sm rounded-xl bg-white dark:bg-[#0f1525]">
                         <CardHeader>
-                            <CardTitle className="text-xl font-bold">Import from LinkedIn</CardTitle>
-                            <CardDescription className="text-zinc-500 font-medium">
+                            <CardTitle className="text-xl font-bold dark:text-white">Import from LinkedIn</CardTitle>
+                            <CardDescription className="text-zinc-500 dark:text-zinc-400 font-medium">
                                 Just paste the link and wait. Handled securely in the background using Apify Scraper.
                             </CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-6">
                             <div className="space-y-2">
-                                <label className="text-sm font-semibold text-zinc-700">LinkedIn Profile URL</label>
+                                <label className="text-sm font-semibold text-zinc-700 dark:text-zinc-300">LinkedIn Profile URL</label>
                                 <Input
                                     placeholder="https://www.linkedin.com/in/username/"
-                                    className="bg-white border-zinc-300 h-12"
+                                    className="bg-white dark:bg-transparent border-zinc-300 dark:border-white/20 dark:text-white dark:placeholder:text-zinc-500 h-12"
                                     value={url}
                                     onChange={(e) => setUrl(e.target.value)}
                                     onKeyDown={(e) => e.key === 'Enter' && handleImportUrl()}
@@ -203,8 +203,8 @@ export default function ImportPage() {
                             )}
 
                             {proLoading ? (
-                                <div className="h-12 w-full bg-zinc-100 animate-pulse rounded-lg flex items-center justify-center">
-                                    <Loader2 className="w-4 h-4 animate-spin text-zinc-400" />
+                                <div className="h-12 w-full bg-zinc-100 dark:bg-white/5 animate-pulse rounded-lg flex items-center justify-center">
+                                    <Loader2 className="w-4 h-4 animate-spin text-zinc-400 dark:text-zinc-500" />
                                 </div>
                             ) : isPro ? (
                                 <Button onClick={handleImportUrl} disabled={loading} className="w-full bg-blue-600 hover:bg-blue-700 text-white h-12 font-semibold">
@@ -226,20 +226,20 @@ export default function ImportPage() {
                 </TabsContent>
 
                 <TabsContent value="pdf">
-                    <Card className="border shadow-sm rounded-xl flex flex-col">
+                    <Card className="border border-zinc-200 dark:border-white/10 shadow-sm rounded-xl flex flex-col bg-white dark:bg-[#0f1525]">
                         <CardHeader>
-                            <CardTitle className="text-xl font-bold">Upload existing CV (PDF)</CardTitle>
-                            <CardDescription className="text-zinc-500 font-medium">
+                            <CardTitle className="text-xl font-bold dark:text-white">Upload existing CV (PDF)</CardTitle>
+                            <CardDescription className="text-zinc-500 dark:text-zinc-400 font-medium">
                                 Upload your existing resume to import the profile. Our AI model will instantly structure your data.
                             </CardDescription>
                         </CardHeader>
                         <CardContent className="flex-1">
-                            <div className={`border-2 border-dashed ${file ? 'border-indigo-500 bg-indigo-50/50' : 'border-zinc-300 hover:bg-zinc-100'} rounded-lg p-8 flex flex-col items-center justify-center text-center transition-colors`}>
-                                <FileUp className={`h-10 w-10 mb-4 ${file ? 'text-indigo-500' : 'text-zinc-400'}`} />
-                                <h3 className="font-semibold text-zinc-700 mb-1">
+                            <div className={`border-2 border-dashed ${file ? 'border-indigo-500 dark:border-indigo-500/50 bg-indigo-50/50 dark:bg-indigo-500/10' : 'border-zinc-300 dark:border-white/20 hover:bg-zinc-100 dark:hover:bg-white/5'} rounded-lg p-8 flex flex-col items-center justify-center text-center transition-colors`}>
+                                <FileUp className={`h-10 w-10 mb-4 ${file ? 'text-indigo-500 dark:text-indigo-400' : 'text-zinc-400 dark:text-zinc-500'}`} />
+                                <h3 className="font-semibold text-zinc-700 dark:text-zinc-300 mb-1">
                                     {file ? 'File Selected' : 'Choose a PDF file to upload'}
                                 </h3>
-                                <p className="text-sm text-zinc-500 mb-6">
+                                <p className="text-sm text-zinc-500 dark:text-zinc-500 mb-6">
                                     {file ? file.name : 'Maximum file size: 5MB'}
                                 </p>
                                 <Input
@@ -272,10 +272,10 @@ export default function ImportPage() {
                 </TabsContent>
 
                 <TabsContent value="text">
-                    <Card className="border shadow-sm rounded-xl">
+                    <Card className="border border-zinc-200 dark:border-white/10 shadow-sm rounded-xl bg-white dark:bg-[#0f1525]">
                         <CardHeader>
-                            <CardTitle className="text-xl font-bold">Import from Text</CardTitle>
-                            <CardDescription className="text-zinc-500 font-medium">
+                            <CardTitle className="text-xl font-bold dark:text-white">Import from Text</CardTitle>
+                            <CardDescription className="text-zinc-500 dark:text-zinc-400 font-medium">
                                 Paste your plain text resume or LinkedIn "About" content. AI will structure it for you.
                             </CardDescription>
                         </CardHeader>
@@ -284,7 +284,7 @@ export default function ImportPage() {
                                 value={url} // Reusing the same state or add new one? I'll use url or generic 'content'
                                 onChange={(e) => setUrl(e.target.value)}
                                 placeholder="Paste your resume text here..."
-                                className="w-full h-48 bg-white border border-zinc-300 rounded-xl p-4 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all"
+                                className="w-full h-48 bg-white dark:bg-transparent border border-zinc-300 dark:border-white/20 dark:text-white dark:placeholder:text-zinc-500 rounded-xl p-4 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all"
                             />
                             {error && (
                                 <div className="flex items-center gap-2 text-rose-600 bg-rose-50 p-4 rounded-lg border border-rose-200">
@@ -293,8 +293,8 @@ export default function ImportPage() {
                                 </div>
                             )}
                             {proLoading ? (
-                                <div className="h-12 w-full bg-zinc-100 animate-pulse rounded-lg flex items-center justify-center">
-                                    <Loader2 className="w-4 h-4 animate-spin text-zinc-400" />
+                                <div className="h-12 w-full bg-zinc-100 dark:bg-white/5 animate-pulse rounded-lg flex items-center justify-center">
+                                    <Loader2 className="w-4 h-4 animate-spin text-zinc-400 dark:text-zinc-500" />
                                 </div>
                             ) : isPro ? (
                                 <Button
@@ -318,17 +318,17 @@ export default function ImportPage() {
                 </TabsContent>
 
                 <TabsContent value="manual">
-                    <Card className="border shadow-sm rounded-xl">
+                    <Card className="border border-zinc-200 dark:border-white/10 shadow-sm rounded-xl bg-white dark:bg-[#0f1525]">
                         <CardHeader>
-                            <CardTitle className="text-xl font-bold">Manual Entry</CardTitle>
-                            <CardDescription className="text-zinc-500 font-medium">
+                            <CardTitle className="text-xl font-bold dark:text-white">Manual Entry</CardTitle>
+                            <CardDescription className="text-zinc-500 dark:text-zinc-400 font-medium">
                                 Don&apos;t have a LinkedIn profile or a PDF? You can manually type your experience, education, and skills.
                             </CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-6 pb-8 text-center pt-4">
                             {proLoading || cvCount === null ? (
-                                <div className="h-14 w-full bg-zinc-100 animate-pulse rounded-xl flex items-center justify-center max-w-sm mx-auto">
-                                    <Loader2 className="w-5 h-5 animate-spin text-zinc-400" />
+                                <div className="h-14 w-full bg-zinc-100 dark:bg-white/5 animate-pulse rounded-xl flex items-center justify-center max-w-sm mx-auto">
+                                    <Loader2 className="w-5 h-5 animate-spin text-zinc-400 dark:text-zinc-500" />
                                 </div>
                             ) : (isPro || cvCount < 2) ? (
                                 <Button
@@ -341,12 +341,12 @@ export default function ImportPage() {
                                 </Button>
                             ) : (
                                 <div className="space-y-4">
-                                    <div className="bg-orange-50 border border-orange-200 rounded-xl p-6 max-w-md mx-auto">
-                                        <div className="w-12 h-12 bg-orange-100 text-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                                    <div className="bg-orange-50 dark:bg-orange-500/10 border border-orange-200 dark:border-orange-500/20 rounded-xl p-6 max-w-md mx-auto">
+                                        <div className="w-12 h-12 bg-orange-100 dark:bg-orange-500/20 text-orange-600 dark:text-orange-400 rounded-2xl flex items-center justify-center mx-auto mb-4">
                                             <Sparkles className="w-6 h-6" />
                                         </div>
-                                        <p className="text-zinc-900 font-bold mb-1">Limit Reached</p>
-                                        <p className="text-zinc-600 text-sm font-medium mb-4">You have used your 2 free "From Scratch" CV credits. Upgrade to Pro for unlimited access.</p>
+                                        <p className="text-zinc-900 dark:text-zinc-100 font-bold mb-1">Limit Reached</p>
+                                        <p className="text-zinc-600 dark:text-zinc-400 text-sm font-medium mb-4">You have used your 2 free "From Scratch" CV credits. Upgrade to Pro for unlimited access.</p>
                                         <Button
                                             onClick={() => window.location.href = 'https://cvoptimizerai.com/upgrade'}
                                             className="w-full bg-orange-500 hover:bg-orange-600 text-white h-12 font-bold rounded-xl shadow-md"

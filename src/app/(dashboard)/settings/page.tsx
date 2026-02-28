@@ -89,8 +89,8 @@ export default function SettingsPage() {
 
     if (loading) {
         return (
-            <div className="flex h-[calc(100vh-100px)] items-center justify-center bg-[#fafafa]">
-                <Loader2 className="w-8 h-8 animate-spin text-zinc-400" />
+            <div className="flex h-[calc(100vh-100px)] items-center justify-center bg-[#fafafa] dark:bg-[#080d1a]">
+                <Loader2 className="w-8 h-8 animate-spin text-zinc-400 dark:text-zinc-500" />
             </div>
         );
     }
@@ -98,69 +98,69 @@ export default function SettingsPage() {
     const isPro = ['active'].includes(subscription?.status as string);
 
     return (
-        <div className="max-w-4xl mx-auto py-12 px-4 bg-[#fafafa] min-h-[calc(100vh-100px)] text-zinc-900 font-sans">
+        <div className="max-w-4xl mx-auto py-12 px-4 bg-[#fafafa] dark:bg-[#080d1a] min-h-[calc(100vh-100px)] text-zinc-900 font-sans">
             <div className="mb-8">
-                <h1 className="text-3xl font-bold tracking-tight mb-2">Settings</h1>
-                <p className="text-zinc-500 text-[15px]">Manage your account and billing preferences.</p>
+                <h1 className="text-3xl font-bold tracking-tight mb-2 dark:text-white">Settings</h1>
+                <p className="text-zinc-500 dark:text-zinc-400 text-[15px]">Manage your account and billing preferences.</p>
             </div>
 
             {error && <div className="mb-6 text-sm font-medium text-rose-600 bg-rose-50 p-4 rounded-lg border border-rose-200">{error}</div>}
 
             <div className="space-y-6">
                 {/* Account Information */}
-                <Card className="border border-zinc-200 shadow-sm rounded-xl bg-white overflow-hidden">
+                <Card className="border border-zinc-200 dark:border-white/10 shadow-sm rounded-xl bg-white dark:bg-[#0f1525] overflow-hidden">
                     <CardContent className="p-6">
                         <div className="flex items-center gap-3 mb-2">
-                            <User className="h-[18px] w-[18px] text-zinc-800" />
-                            <h2 className="text-[17px] font-semibold text-zinc-900 tracking-tight">Account Information</h2>
+                            <User className="h-[18px] w-[18px] text-zinc-800 dark:text-zinc-200" />
+                            <h2 className="text-[17px] font-semibold text-zinc-900 dark:text-white tracking-tight">Account Information</h2>
                         </div>
-                        <p className="text-[14px] text-zinc-500 mb-6 font-medium">Your personal account details.</p>
+                        <p className="text-[14px] text-zinc-500 dark:text-zinc-400 mb-6 font-medium">Your personal account details.</p>
 
                         <div className="space-y-2 max-w-full">
-                            <label className="text-[13px] font-semibold text-zinc-900">Email</label>
+                            <label className="text-[13px] font-semibold text-zinc-900 dark:text-zinc-300">Email</label>
                             <Input
                                 value={email}
                                 disabled
-                                className="h-11 bg-zinc-50 border-none text-zinc-900 cursor-not-allowed text-[14px] rounded-lg w-full"
+                                className="h-11 bg-zinc-50 dark:bg-white/5 border-none text-zinc-900 dark:text-white cursor-not-allowed text-[14px] rounded-lg w-full"
                             />
                         </div>
                     </CardContent>
                 </Card>
 
                 {/* Plan & Limits */}
-                <Card className="border border-zinc-200 shadow-sm rounded-xl bg-white overflow-hidden">
+                <Card className="border border-zinc-200 dark:border-white/10 shadow-sm rounded-xl bg-white dark:bg-[#0f1525] overflow-hidden">
                     <CardContent className="p-6">
                         <div className="flex items-center gap-3 mb-2">
-                            <CreditCard className="h-[18px] w-[18px] text-zinc-800" />
-                            <h2 className="text-[17px] font-semibold text-zinc-900 tracking-tight">Plan & Limits</h2>
+                            <CreditCard className="h-[18px] w-[18px] text-zinc-800 dark:text-zinc-200" />
+                            <h2 className="text-[17px] font-semibold text-zinc-900 dark:text-white tracking-tight">Plan & Limits</h2>
                         </div>
-                        <p className="text-[14px] text-zinc-500 mb-6 font-medium">Manage your plan and view usage limits.</p>
+                        <p className="text-[14px] text-zinc-500 dark:text-zinc-400 mb-6 font-medium">Manage your plan and view usage limits.</p>
 
-                        <div className="border border-zinc-200 rounded-xl p-5 mb-4 bg-[#fcfcfc]">
+                        <div className="border border-zinc-200 dark:border-white/10 rounded-xl p-5 mb-4 bg-[#fcfcfc] dark:bg-white/5">
                             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                                 <div>
                                     <div className="flex items-center gap-3 mb-1.5">
-                                        <h3 className="text-[18px] font-bold text-zinc-900">
+                                        <h3 className="text-[18px] font-bold text-zinc-900 dark:text-white">
                                             {isPro ? 'Pro Plan' : 'Free Plan'}
                                         </h3>
-                                        <span className={`text-[11px] font-bold px-2.5 py-0.5 rounded-full tracking-wide ${isPro ? 'bg-indigo-100 text-indigo-700' : 'bg-zinc-200 text-zinc-700'}`}>
+                                        <span className={`text-[11px] font-bold px-2.5 py-0.5 rounded-full tracking-wide ${isPro ? 'bg-indigo-100 dark:bg-indigo-500/20 text-indigo-700 dark:text-indigo-400' : 'bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-400'}`}>
                                             {isPro ? 'ACTIVE' : 'LIMITED'}
                                         </span>
                                     </div>
-                                    <p className="text-[14px] text-zinc-500 font-medium mb-3">
+                                    <p className="text-[14px] text-zinc-500 dark:text-zinc-400 font-medium mb-3">
                                         {isPro ? 'Enjoy unlimited access to all features.' : 'Your free limits reset every 14 days.'}
                                     </p>
 
                                     {!isPro && (
-                                        <div className="inline-flex items-center bg-orange-50 px-3 py-1.5 rounded-md border border-orange-100">
-                                            <span className="text-[13px] font-semibold text-orange-600">
+                                        <div className="inline-flex items-center bg-orange-50 dark:bg-orange-500/10 px-3 py-1.5 rounded-md border border-orange-100 dark:border-orange-500/20">
+                                            <span className="text-[13px] font-semibold text-orange-600 dark:text-orange-400">
                                                 Next Reset: {format(nextResetDate, 'M/d/yyyy')} ({trialDaysLeft} days left)
                                             </span>
                                         </div>
                                     )}
                                     {isPro && (
-                                        <div className="inline-flex items-center bg-indigo-50 px-3 py-1.5 rounded-md border border-indigo-100">
-                                            <span className="text-[13px] font-semibold text-indigo-600">
+                                        <div className="inline-flex items-center bg-indigo-50 dark:bg-indigo-500/10 px-3 py-1.5 rounded-md border border-indigo-100 dark:border-indigo-500/20">
+                                            <span className="text-[13px] font-semibold text-indigo-600 dark:text-indigo-400">
                                                 Status: Lifetime Access
                                             </span>
                                         </div>
@@ -204,24 +204,24 @@ export default function SettingsPage() {
                 </Card>
 
                 {/* Logout Section */}
-                <Card className="border border-zinc-200 shadow-sm rounded-xl bg-white overflow-hidden mt-8">
+                <Card className="border border-zinc-200 dark:border-white/10 shadow-sm rounded-xl bg-white dark:bg-[#0f1525] overflow-hidden mt-8">
                     <CardContent className="p-6">
                         <div className="flex items-center gap-3 mb-2">
-                            <LogOut className="h-[18px] w-[18px] text-zinc-800" />
-                            <h2 className="text-[17px] font-semibold text-zinc-900 tracking-tight">Account Session</h2>
+                            <LogOut className="h-[18px] w-[18px] text-zinc-800 dark:text-zinc-200" />
+                            <h2 className="text-[17px] font-semibold text-zinc-900 dark:text-white tracking-tight">Account Session</h2>
                         </div>
-                        <p className="text-[14px] text-zinc-500 mb-6 font-medium">Manage your current session and sign out of your account.</p>
+                        <p className="text-[14px] text-zinc-500 dark:text-zinc-400 mb-6 font-medium">Manage your current session and sign out of your account.</p>
 
-                        <div className="bg-zinc-50 border border-zinc-200 rounded-xl p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div className="bg-zinc-50 dark:bg-white/5 border border-zinc-200 dark:border-white/10 rounded-xl p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                             <div>
-                                <h3 className="text-[15px] font-semibold text-zinc-900 mb-1">Sign Out</h3>
-                                <p className="text-[13px] text-zinc-500 leading-snug">
+                                <h3 className="text-[15px] font-semibold text-zinc-900 dark:text-white mb-1">Sign Out</h3>
+                                <p className="text-[13px] text-zinc-500 dark:text-zinc-400 leading-snug">
                                     Safely end your current session. You can always sign back in.
                                 </p>
                             </div>
                             <Button
                                 variant="outline"
-                                className="border-zinc-300 hover:bg-zinc-100 text-zinc-700 font-semibold px-6 h-10 rounded-lg whitespace-nowrap"
+                                className="border-zinc-300 dark:border-zinc-700 bg-white dark:bg-transparent hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 font-semibold px-6 h-10 rounded-lg whitespace-nowrap"
                                 onClick={handleSignOut}
                                 disabled={logoutLoading}
                             >
@@ -233,18 +233,18 @@ export default function SettingsPage() {
                 </Card>
 
                 {/* Danger Zone */}
-                <Card className="border border-red-200 shadow-sm rounded-xl bg-white overflow-hidden mt-8">
+                <Card className="border border-red-200 dark:border-red-900/50 shadow-sm rounded-xl bg-white dark:bg-[#0f1525] overflow-hidden mt-8">
                     <CardContent className="p-6">
                         <div className="flex items-center gap-3 mb-2">
-                            <AlertTriangle className="h-[18px] w-[18px] text-red-600" />
-                            <h2 className="text-[17px] font-semibold text-red-600 tracking-tight">Danger Zone</h2>
+                            <AlertTriangle className="h-[18px] w-[18px] text-red-600 dark:text-red-500" />
+                            <h2 className="text-[17px] font-semibold text-red-600 dark:text-red-500 tracking-tight">Danger Zone</h2>
                         </div>
-                        <p className="text-[14px] text-zinc-500 mb-6 font-medium">Permanently delete your account and all associated data.</p>
+                        <p className="text-[14px] text-zinc-500 dark:text-zinc-400 mb-6 font-medium">Permanently delete your account and all associated data.</p>
 
-                        <div className="bg-[#fff5f5] border border-red-200 rounded-xl p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div className="bg-[#fff5f5] dark:bg-red-500/10 border border-red-200 dark:border-red-500/20 rounded-xl p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                             <div>
-                                <h3 className="text-[15px] font-semibold text-[#b91c1c] mb-1">Delete Account</h3>
-                                <p className="text-[13px] text-[#b91c1c] leading-snug">
+                                <h3 className="text-[15px] font-semibold text-[#b91c1c] dark:text-red-400 mb-1">Delete Account</h3>
+                                <p className="text-[13px] text-[#b91c1c] dark:text-red-400/80 leading-snug">
                                     This action cannot be undone. All your CVs, data, and subscription will be permanently deleted.
                                 </p>
                             </div>
@@ -274,14 +274,14 @@ function UsageWidget({ title, current, max, barColor, isPro }: { title: string, 
     const progress = isPro ? 100 : Math.min((current / max) * 100, 100);
 
     return (
-        <div className="border border-zinc-200 rounded-xl p-5 bg-white">
-            <h4 className="text-[11px] font-bold text-zinc-400 tracking-widest mb-4">{title}</h4>
+        <div className="border border-zinc-200 dark:border-white/10 rounded-xl p-5 bg-white dark:bg-[#0f1525]">
+            <h4 className="text-[11px] font-bold text-zinc-400 dark:text-zinc-500 tracking-widest mb-4">{title}</h4>
             <div className="flex items-end justify-between mb-3">
-                <span className="text-3xl font-bold text-zinc-900 leading-none">{current}</span>
-                {!isPro && <span className="text-sm font-semibold text-zinc-400 leading-none mb-1">/ {max}</span>}
-                {isPro && <span className="text-xs font-bold text-indigo-600 bg-indigo-50 px-2 py-1 rounded leading-none mb-0.5 uppercase tracking-wide">Unlimited</span>}
+                <span className="text-3xl font-bold text-zinc-900 dark:text-white leading-none">{current}</span>
+                {!isPro && <span className="text-sm font-semibold text-zinc-400 dark:text-zinc-600 leading-none mb-1">/ {max}</span>}
+                {isPro && <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-500/20 px-2 py-1 rounded leading-none mb-0.5 uppercase tracking-wide">Unlimited</span>}
             </div>
-            <div className="h-2.5 w-full bg-zinc-100 rounded-full overflow-hidden">
+            <div className="h-2.5 w-full bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden">
                 <div
                     className={`h-full rounded-full transition-all duration-500 ease-in-out ${isOver ? 'bg-red-500' : (isPro ? 'bg-indigo-600' : barColor)}`}
                     style={{ width: `${progress}%` }}

@@ -18,6 +18,7 @@ import {
     Zap,
 } from "lucide-react";
 import { usePro } from "@/hooks/usePro";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 export default function DashboardLayout({
     children,
@@ -25,7 +26,7 @@ export default function DashboardLayout({
     children: React.ReactNode;
 }) {
     return (
-        <div className="flex min-h-screen w-full bg-white text-zinc-900">
+        <div className="flex min-h-screen w-full bg-white dark:bg-[#080d1a] text-zinc-900 dark:text-zinc-50">
             <Sidebar />
             <div className="flex-1 overflow-auto">
                 <main className="p-6 max-w-7xl mx-auto">
@@ -44,7 +45,7 @@ const Sidebar = () => {
     return (
         <nav
             className={`sticky top-0 h-screen shrink-0 border-r transition-all duration-300 ease-in-out ${open ? 'w-64' : 'w-16'
-                } border-zinc-200 bg-white flex flex-col shadow-sm`}
+                } border-zinc-200 dark:border-white/10 bg-white dark:bg-[#080d1a] flex flex-col shadow-sm`}
         >
             <div className="flex-1 overflow-y-auto p-2">
                 <TitleSection open={open} />
@@ -115,7 +116,10 @@ const Sidebar = () => {
                 </div>
             </div>
 
-            <ToggleClose open={open} setOpen={setOpen} />
+            <div className="border-t border-zinc-200 dark:border-white/10 bg-zinc-50/80 dark:bg-white/5 backdrop-blur-sm">
+                <ThemeToggle open={open} />
+                <ToggleClose open={open} setOpen={setOpen} />
+            </div>
         </nav>
     );
 };
@@ -127,8 +131,8 @@ const Option = ({ Icon, title, href, selected, open, variant }: { Icon: any, tit
         <Link
             href={href}
             className={`relative flex h-11 w-full items-center rounded-md transition-all duration-200 ${selected
-                ? isBlue ? "bg-indigo-50 text-indigo-700 shadow-sm border-l-2 border-indigo-600 font-semibold" : "bg-indigo-50 text-indigo-600 shadow-sm border-l-2 border-indigo-600 font-semibold"
-                : isBlue ? "text-indigo-600 hover:bg-indigo-50 hover:text-indigo-700 font-semibold" : "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900"
+                ? isBlue ? "bg-indigo-50 text-indigo-700 dark:bg-blue-500/10 dark:text-blue-400 shadow-sm border-l-2 border-indigo-600 dark:border-blue-500 font-semibold" : "bg-indigo-50 text-indigo-600 dark:bg-blue-500/10 dark:text-blue-400 shadow-sm border-l-2 border-indigo-600 dark:border-blue-500 font-semibold"
+                : isBlue ? "text-indigo-600 dark:text-blue-400 hover:bg-indigo-50 dark:hover:bg-white/5 hover:text-indigo-700 dark:hover:text-blue-300 font-semibold" : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/5 hover:text-zinc-900 dark:hover:text-zinc-200"
                 }`}
         >
             <div className="grid h-full w-12 place-content-center">
@@ -152,8 +156,8 @@ const UpgradeOption = ({ open, selected }: { open: boolean; selected: boolean })
         <Link
             href="/upgrade"
             className={`relative flex h-11 w-full items-center rounded-md transition-all duration-200 ${selected
-                ? "bg-amber-50 text-amber-700 shadow-sm border-l-2 border-amber-500 font-semibold"
-                : "text-amber-600 hover:bg-amber-50 hover:text-amber-700"
+                ? "bg-amber-50 text-amber-700 dark:bg-amber-500/10 dark:text-amber-400 shadow-sm border-l-2 border-amber-500 font-semibold"
+                : "text-amber-600 hover:bg-amber-50 dark:hover:bg-white/5 hover:text-amber-700 dark:hover:text-amber-300"
                 }`}
         >
             <div className="grid h-full w-12 place-content-center">
@@ -170,16 +174,16 @@ const UpgradeOption = ({ open, selected }: { open: boolean; selected: boolean })
 
 const TitleSection = ({ open }: { open: boolean }) => {
     return (
-        <div className="mb-6 border-b border-zinc-200 pb-4">
-            <div className="flex cursor-pointer items-center justify-between rounded-md p-2 transition-colors hover:bg-zinc-100">
+        <div className="mb-6 border-b border-zinc-200 dark:border-white/10 pb-4">
+            <div className="flex cursor-pointer items-center justify-between rounded-md p-2 transition-colors hover:bg-zinc-100 dark:hover:bg-white/5">
                 <div className="flex items-center gap-3">
                     <Logo />
                     {open && (
                         <div className={`transition-opacity duration-200 ${open ? 'opacity-100' : 'opacity-0'}`}>
-                            <span className="block text-sm font-bold text-zinc-900 tracking-wider uppercase text-nowrap">
+                            <span className="block text-sm font-bold text-zinc-900 dark:text-zinc-100 tracking-wider uppercase text-nowrap">
                                 CV Optimizer AI
                             </span>
-                            <span className="block text-xs text-indigo-600 font-medium">
+                            <span className="block text-xs text-indigo-600 dark:text-blue-400 font-medium">
                                 Interview Ready
                             </span>
                         </div>
@@ -200,10 +204,10 @@ const Logo = () => {
 
 const ToggleClose = ({ open, setOpen }: { open: boolean, setOpen: (open: boolean) => void }) => {
     return (
-        <div className="border-t border-zinc-200 bg-zinc-50/80 backdrop-blur-sm">
+        <>
             <button
                 onClick={() => setOpen(!open)}
-                className="w-full flex items-center p-3 hover:bg-zinc-100 text-zinc-600 transition-colors"
+                className="w-full flex items-center p-3 hover:bg-zinc-100 dark:hover:bg-white/5 text-zinc-600 dark:text-zinc-400 transition-colors"
             >
                 <div className="grid size-10 place-content-center shrink-0">
                     <ChevronsRight
@@ -216,6 +220,6 @@ const ToggleClose = ({ open, setOpen }: { open: boolean, setOpen: (open: boolean
                     </span>
                 )}
             </button>
-        </div>
+        </>
     );
 };

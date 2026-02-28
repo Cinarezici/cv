@@ -176,18 +176,18 @@ export default function ScoutPage() {
     };
 
     return (
-        <div className="flex flex-col min-h-screen bg-[#F9FAFB]">
+        <div className="flex flex-col min-h-screen bg-[#F9FAFB] dark:bg-[#080d1a]">
             {/* Header Section */}
-            <div className="bg-white border-b border-zinc-200 py-12 px-6">
+            <div className="bg-white dark:bg-[#0f1525] border-b border-zinc-200 dark:border-white/10 py-12 px-6">
                 <div className="max-w-4xl mx-auto text-center space-y-4 mb-8">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 text-indigo-600 text-xs font-bold uppercase tracking-widest border border-indigo-100">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 text-xs font-bold uppercase tracking-widest border border-indigo-100 dark:border-indigo-500/20">
                         <Briefcase className="w-3.5 h-3.5" />
                         LinkedIn Scout
                     </div>
-                    <h1 className="text-4xl md:text-5xl font-extrabold text-zinc-900 tracking-tight">
-                        Find your next <span className="text-indigo-600">opportunity</span>.
+                    <h1 className="text-4xl md:text-5xl font-extrabold text-zinc-900 dark:text-white tracking-tight">
+                        Find your next <span className="text-indigo-600 dark:text-indigo-400">opportunity</span>.
                     </h1>
-                    <p className="text-zinc-500 text-lg max-w-2xl mx-auto font-medium">
+                    <p className="text-zinc-500 dark:text-zinc-400 text-lg max-w-2xl mx-auto font-medium">
                         Search LinkedIn for real-time job listings and let AI optimize your CV for the perfect match.
                     </p>
                 </div>
@@ -199,12 +199,12 @@ export default function ScoutPage() {
             <div className="flex-1 max-w-7xl mx-auto w-full p-6 md:p-12">
                 {status === 'idle' && (
                     <div className="flex flex-col items-center justify-center py-20 text-center space-y-6">
-                        <div className="w-24 h-24 bg-indigo-50 rounded-full flex items-center justify-center text-indigo-500 shadow-inner">
+                        <div className="w-24 h-24 bg-indigo-50 dark:bg-indigo-500/10 rounded-full flex items-center justify-center text-indigo-500 dark:text-indigo-400 shadow-inner">
                             <Search className="w-10 h-10" />
                         </div>
                         <div className="space-y-2">
-                            <h3 className="text-xl font-bold text-zinc-900">Ready to start searching?</h3>
-                            <p className="text-zinc-500 max-w-sm font-medium">
+                            <h3 className="text-xl font-bold text-zinc-900 dark:text-white">Ready to start searching?</h3>
+                            <p className="text-zinc-500 dark:text-zinc-400 max-w-sm font-medium">
                                 Enter a job title and location above to fetch the latest opportunities from LinkedIn.
                             </p>
                         </div>
@@ -214,15 +214,15 @@ export default function ScoutPage() {
                 {status === 'loading' && (
                     <div className="space-y-8">
                         <div className="flex items-center justify-between">
-                            <div className="h-6 bg-zinc-200 rounded w-48 animate-pulse" />
-                            <div className="h-4 bg-zinc-100 rounded w-32 animate-pulse" />
+                            <div className="h-6 bg-zinc-200 dark:bg-white/10 rounded w-48 animate-pulse" />
+                            <div className="h-4 bg-zinc-100 dark:bg-white/5 rounded w-32 animate-pulse" />
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             {[...Array(6)].map((_, i) => (
                                 <SkeletonJobCard key={i} />
                             ))}
                         </div>
-                        <div className="flex items-center justify-center gap-3 py-8 text-zinc-400">
+                        <div className="flex items-center justify-center gap-3 py-8 text-zinc-400 dark:text-zinc-500">
                             <Info className="w-5 h-5" />
                             <p className="font-medium animate-pulse">This usually takes 20-60 seconds. We're scraping LinkedIn in real-time...</p>
                         </div>
@@ -230,17 +230,17 @@ export default function ScoutPage() {
                 )}
 
                 {status === 'error' && (
-                    <div className="max-w-lg mx-auto bg-white border border-rose-100 rounded-3xl p-8 shadow-sm text-center space-y-6">
-                        <div className="w-16 h-16 bg-rose-50 rounded-full flex items-center justify-center text-rose-500 mx-auto">
+                    <div className="max-w-lg mx-auto bg-white dark:bg-[#0f1525] border border-rose-100 dark:border-rose-900/50 rounded-3xl p-8 shadow-sm text-center space-y-6">
+                        <div className="w-16 h-16 bg-rose-50 dark:bg-rose-500/10 rounded-full flex items-center justify-center text-rose-500 dark:text-rose-400 mx-auto">
                             <TriangleAlert className="w-8 h-8" />
                         </div>
                         <div className="space-y-2">
-                            <h3 className="text-lg font-bold text-zinc-900">Something went wrong</h3>
-                            <p className="text-zinc-500 font-medium">{error}</p>
+                            <h3 className="text-lg font-bold text-zinc-900 dark:text-white">Something went wrong</h3>
+                            <p className="text-zinc-500 dark:text-zinc-400 font-medium">{error}</p>
                         </div>
                         <button
                             onClick={() => query && handleSearch(query.keywords, query.location)}
-                            className="bg-zinc-900 text-white px-8 py-3 rounded-full font-bold hover:bg-zinc-800 transition-all scale-100 active:scale-95"
+                            className="bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 px-8 py-3 rounded-full font-bold hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-all scale-100 active:scale-95"
                         >
                             Try Again
                         </button>
@@ -249,32 +249,32 @@ export default function ScoutPage() {
 
                 {status === 'success' && jobs.length === 0 && (
                     <div className="max-w-lg mx-auto text-center py-20 space-y-6">
-                        <div className="w-20 h-20 bg-zinc-50 rounded-full flex items-center justify-center text-zinc-300 mx-auto">
+                        <div className="w-20 h-20 bg-zinc-50 dark:bg-white/5 rounded-full flex items-center justify-center text-zinc-300 dark:text-zinc-600 mx-auto">
                             <Search className="w-10 h-10" />
                         </div>
                         <div className="space-y-2">
-                            <h3 className="text-xl font-bold text-zinc-900">No jobs found for "{query?.keywords}"</h3>
-                            <p className="text-zinc-500 font-medium">Try broadening your search or checking for typos.</p>
+                            <h3 className="text-xl font-bold text-zinc-900 dark:text-white">No jobs found for "{query?.keywords}"</h3>
+                            <p className="text-zinc-500 dark:text-zinc-400 font-medium">Try broadening your search or checking for typos.</p>
                         </div>
                         <div className="flex flex-wrap justify-center gap-2 pt-4">
-                            <button onClick={() => handleSearch(query?.keywords || '', 'Remote')} className="text-xs font-bold text-indigo-600 bg-indigo-50 px-4 py-2 rounded-full hover:bg-indigo-100 transition-colors uppercase tracking-wider">Try Remote</button>
-                            <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-xs font-bold text-zinc-500 bg-zinc-100 px-4 py-2 rounded-full hover:bg-zinc-200 transition-colors uppercase tracking-wider">Change Title</button>
+                            <button onClick={() => handleSearch(query?.keywords || '', 'Remote')} className="text-xs font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-500/10 px-4 py-2 rounded-full hover:bg-indigo-100 dark:hover:bg-indigo-500/20 transition-colors uppercase tracking-wider">Try Remote</button>
+                            <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-xs font-bold text-zinc-500 dark:text-zinc-400 bg-zinc-100 dark:bg-white/5 px-4 py-2 rounded-full hover:bg-zinc-200 dark:hover:bg-white/10 transition-colors uppercase tracking-wider">Change Title</button>
                         </div>
                     </div>
                 )}
 
                 {status === 'success' && jobs.length > 0 && (
                     <div className="space-y-8">
-                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-zinc-200 pb-6">
+                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-zinc-200 dark:border-white/10 pb-6">
                             <div>
-                                <h2 className="text-2xl font-bold text-zinc-900">
+                                <h2 className="text-2xl font-bold text-zinc-900 dark:text-white">
                                     {jobs.length}+ Opportunities Found
                                 </h2>
-                                <p className="text-zinc-500 font-medium">
+                                <p className="text-zinc-500 dark:text-zinc-400 font-medium">
                                     Showing the latest "{query?.keywords}" jobs in {query?.location}
                                 </p>
                             </div>
-                            <div className="flex items-center gap-2 text-[10px] font-black text-zinc-400 uppercase tracking-[0.2em] bg-zinc-50 px-4 py-2 rounded-full border border-zinc-100">
+                            <div className="flex items-center gap-2 text-[10px] font-black text-zinc-400 dark:text-zinc-500 uppercase tracking-[0.2em] bg-zinc-50 dark:bg-white/5 px-4 py-2 rounded-full border border-zinc-100 dark:border-white/10">
                                 <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                                 Real-time LinkedIn Data
                             </div>
@@ -295,8 +295,8 @@ export default function ScoutPage() {
                             ))}
                         </div>
 
-                        <div className="text-center py-12 border-t border-zinc-100">
-                            <p className="text-zinc-400 text-sm font-medium">Showing top 50 results. Refine your search for more specific outcomes.</p>
+                        <div className="text-center py-12 border-t border-zinc-100 dark:border-white/5">
+                            <p className="text-zinc-400 dark:text-zinc-500 text-sm font-medium">Showing top 50 results. Refine your search for more specific outcomes.</p>
                         </div>
                     </div>
                 )}

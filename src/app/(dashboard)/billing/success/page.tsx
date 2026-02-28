@@ -12,21 +12,21 @@ export default function BillingSuccessPage({
 
     return (
         <div className="flex flex-col items-center justify-center min-h-[calc(100vh-100px)] px-4">
-            <div className="bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-zinc-200 text-center max-w-md w-full">
+            <div className="bg-white dark:bg-[#0f1525] p-8 md:p-12 rounded-2xl shadow-sm border border-zinc-200 dark:border-white/10 text-center max-w-md w-full">
                 <div className="flex justify-center mb-6">
                     <CheckCircle2 className="w-16 h-16 text-green-500" />
                 </div>
 
-                <h1 className="text-2xl font-bold text-zinc-900 mb-2">
+                <h1 className="text-2xl font-bold text-zinc-900 dark:text-white mb-2">
                     Payment Successful!
                 </h1>
 
-                <p className="text-zinc-500 mb-6">
+                <p className="text-zinc-500 dark:text-zinc-400 mb-6">
                     Thank you for your purchase. Your account has been upgraded successfully.
                 </p>
 
                 {checkoutId && (
-                    <div className="bg-zinc-50 border border-zinc-200 p-3 rounded-lg text-sm text-zinc-600 mb-8 break-all">
+                    <div className="bg-zinc-50 dark:bg-white/5 border border-zinc-200 dark:border-white/10 p-3 rounded-lg text-sm text-zinc-600 dark:text-zinc-300 mb-8 break-all">
                         <span className="font-semibold block mb-1">Checkout ID:</span>
                         {checkoutId}
                     </div>

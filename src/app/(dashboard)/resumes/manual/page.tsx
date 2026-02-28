@@ -164,21 +164,21 @@ export default function ManualResumePage() {
     return (
         <div className="max-w-4xl mx-auto py-8">
             <div className="mb-8">
-                <h1 className="text-3xl font-bold text-zinc-900">Create Manual CV</h1>
-                <p className="text-zinc-500 mt-2">Enter your details directly below to build your resume.</p>
+                <h1 className="text-3xl font-bold text-zinc-900 dark:text-white">Create Manual CV</h1>
+                <p className="text-zinc-500 dark:text-zinc-400 mt-2">Enter your details directly below to build your resume.</p>
             </div>
 
             <div className="space-y-6">
 
                 {/* Professional Summary */}
-                <Card className="border border-zinc-200 shadow-sm rounded-xl">
+                <Card className="border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#0f1525] shadow-sm rounded-xl">
                     <CardContent className="pt-6 space-y-2">
-                        <label className="text-sm font-bold text-zinc-900">
+                        <label className="text-sm font-bold text-zinc-900 dark:text-white">
                             Professional Summary <span className="text-red-500">*</span>
                         </label>
-                        <p className="text-xs text-zinc-500">A brief overview of your experience and skills</p>
+                        <p className="text-xs text-zinc-500 dark:text-zinc-400">A brief overview of your experience and skills</p>
                         <Textarea
-                            className="bg-zinc-50 border-zinc-200 min-h-[120px] resize-y mt-2 focus-visible:ring-indigo-500"
+                            className="bg-zinc-50 dark:bg-transparent border-zinc-200 dark:border-white/20 dark:text-white dark:placeholder:text-zinc-500 min-h-[120px] resize-y mt-2 focus-visible:ring-indigo-500 dark:focus-visible:ring-indigo-400"
                             placeholder="Experienced software engineer with 5+ years..."
                             value={summary}
                             onChange={(e) => setSummary(e.target.value)}
@@ -187,14 +187,14 @@ export default function ManualResumePage() {
                 </Card>
 
                 {/* Experience */}
-                <Card className="border border-zinc-200 shadow-sm rounded-xl">
+                <Card className="border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#0f1525] shadow-sm rounded-xl">
                     <CardContent className="pt-6 space-y-2">
-                        <label className="text-sm font-bold text-zinc-900">
+                        <label className="text-sm font-bold text-zinc-900 dark:text-white">
                             Experience
                         </label>
-                        <p className="text-xs text-zinc-500">Separate each role with a blank line</p>
+                        <p className="text-xs text-zinc-500 dark:text-zinc-400">Separate each role with a blank line</p>
                         <Textarea
-                            className="bg-zinc-50 border-zinc-200 min-h-[160px] font-mono text-sm resize-y mt-2 focus-visible:ring-indigo-500"
+                            className="bg-zinc-50 dark:bg-transparent border-zinc-200 dark:border-white/20 dark:text-white dark:placeholder:text-zinc-500 min-h-[160px] font-mono text-sm resize-y mt-2 focus-visible:ring-indigo-500 dark:focus-visible:ring-indigo-400"
                             placeholder="Senior Developer at Company A (2020-Present) - Led team of 5 engineers - Built scalable microservices&#10;&#10;Developer at Company B (2018-2020) - Developed frontend applications"
                             value={experience}
                             onChange={(e) => setExperience(e.target.value)}
@@ -203,14 +203,14 @@ export default function ManualResumePage() {
                 </Card>
 
                 {/* Education */}
-                <Card className="border border-zinc-200 shadow-sm rounded-xl">
+                <Card className="border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#0f1525] shadow-sm rounded-xl">
                     <CardContent className="pt-6 space-y-2">
-                        <label className="text-sm font-bold text-zinc-900">
+                        <label className="text-sm font-bold text-zinc-900 dark:text-white">
                             Education
                         </label>
-                        <p className="text-xs text-zinc-500">Separate each degree with a blank line</p>
+                        <p className="text-xs text-zinc-500 dark:text-zinc-400">Separate each degree with a blank line</p>
                         <Textarea
-                            className="bg-zinc-50 border-zinc-200 min-h-[100px] font-mono text-sm resize-y mt-2 focus-visible:ring-indigo-500"
+                            className="bg-zinc-50 dark:bg-transparent border-zinc-200 dark:border-white/20 dark:text-white dark:placeholder:text-zinc-500 min-h-[100px] font-mono text-sm resize-y mt-2 focus-visible:ring-indigo-500 dark:focus-visible:ring-indigo-400"
                             placeholder="Bachelor of Science in Computer Science University Name, 2018"
                             value={education}
                             onChange={(e) => setEducation(e.target.value)}
@@ -219,14 +219,14 @@ export default function ManualResumePage() {
                 </Card>
 
                 {/* Skills */}
-                <Card className="border border-zinc-200 shadow-sm rounded-xl mb-8">
+                <Card className="border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#0f1525] shadow-sm rounded-xl mb-8">
                     <CardContent className="pt-6 space-y-2">
-                        <label className="text-sm font-bold text-zinc-900">
+                        <label className="text-sm font-bold text-zinc-900 dark:text-white">
                             Skills
                         </label>
-                        <p className="text-xs text-zinc-500">Comma-separated list</p>
+                        <p className="text-xs text-zinc-500 dark:text-zinc-400">Comma-separated list</p>
                         <Textarea
-                            className="bg-zinc-50 border-zinc-200 min-h-[80px] resize-y mt-2 focus-visible:ring-indigo-500"
+                            className="bg-zinc-50 dark:bg-transparent border-zinc-200 dark:border-white/20 dark:text-white dark:placeholder:text-zinc-500 min-h-[80px] resize-y mt-2 focus-visible:ring-indigo-500 dark:focus-visible:ring-indigo-400"
                             placeholder="JavaScript, React, Node.js, Python, AWS"
                             value={skills}
                             onChange={(e) => setSkills(e.target.value)}
@@ -238,7 +238,7 @@ export default function ManualResumePage() {
                     <Button
                         onClick={handleGenerate}
                         disabled={loading}
-                        className="bg-zinc-900 hover:bg-zinc-800 text-white px-8 h-12 rounded-lg font-semibold text-base"
+                        className="bg-zinc-900 dark:bg-white hover:bg-zinc-800 dark:hover:bg-zinc-200 text-white dark:text-zinc-900 px-8 h-12 rounded-lg font-semibold text-base"
                     >
                         {loading ? <><Loader2 className="mr-2 h-5 w-5 animate-spin" /> Saving...</> : "Save CV Data"}
                     </Button>

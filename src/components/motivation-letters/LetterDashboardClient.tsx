@@ -23,12 +23,12 @@ interface Props {
 
 function StatusBadge({ status, error, onClick }: { status: string; error?: string | null; onClick?: () => void }) {
     const configs: Record<string, { label: string; color: string; icon: React.ReactNode }> = {
-        pending: { label: 'Pending', color: 'bg-zinc-100 text-zinc-700 border-zinc-200', icon: '⏸' },
-        researching: { label: 'Researching', color: 'bg-blue-100 text-blue-700 border-blue-200', icon: <Loader2 className="w-3 h-3 animate-spin inline" /> },
-        generating: { label: 'Generating', color: 'bg-violet-100 text-violet-700 border-violet-200', icon: <Loader2 className="w-3 h-3 animate-spin inline" /> },
-        creating_pdf: { label: 'PDF', color: 'bg-cyan-100 text-cyan-700 border-cyan-200', icon: <Loader2 className="w-3 h-3 animate-spin inline" /> },
-        completed: { label: 'Ready ✓', color: 'bg-emerald-100 text-emerald-700 border-emerald-200', icon: null },
-        failed: { label: 'Error', color: 'bg-rose-100 text-rose-700 border-rose-200', icon: '⚠️' },
+        pending: { label: 'Pending', color: 'bg-zinc-100 dark:bg-white/5 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-white/10', icon: '⏸' },
+        researching: { label: 'Researching', color: 'bg-blue-100 dark:bg-blue-500/10 text-blue-700 dark:text-blue-400 border-blue-200 dark:border-blue-500/20', icon: <Loader2 className="w-3 h-3 animate-spin inline" /> },
+        generating: { label: 'Generating', color: 'bg-violet-100 dark:bg-violet-500/10 text-violet-700 dark:text-violet-400 border-violet-200 dark:border-violet-500/20', icon: <Loader2 className="w-3 h-3 animate-spin inline" /> },
+        creating_pdf: { label: 'PDF', color: 'bg-cyan-100 dark:bg-cyan-500/10 text-cyan-700 dark:text-cyan-400 border-cyan-200 dark:border-cyan-500/20', icon: <Loader2 className="w-3 h-3 animate-spin inline" /> },
+        completed: { label: 'Ready ✓', color: 'bg-emerald-100 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-500/20', icon: null },
+        failed: { label: 'Error', color: 'bg-rose-100 dark:bg-rose-500/10 text-rose-700 dark:text-rose-400 border-rose-200 dark:border-rose-500/20', icon: '⚠️' },
     };
     const c = configs[status] || configs.pending;
     return (
@@ -45,29 +45,29 @@ function StatusBadge({ status, error, onClick }: { status: string; error?: strin
 function PresentationPreviewModal({ letter, onClose }: { letter: MotivationLetter; onClose: () => void }) {
     return (
         <Dialog open={true} onOpenChange={onClose}>
-            <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto bg-white">
+            <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto bg-white dark:bg-[#0f1525] dark:border-white/10">
                 <DialogHeader>
-                    <DialogTitle className="flex items-center gap-2 text-lg font-extrabold">
-                        <Sparkles className="w-5 h-5 text-indigo-600" />
+                    <DialogTitle className="flex items-center gap-2 text-lg font-extrabold dark:text-white">
+                        <Sparkles className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
                         {letter.company_name} — Cover Letter
                     </DialogTitle>
-                    <p className="text-sm text-zinc-500">{letter.job_title}</p>
+                    <p className="text-sm text-zinc-500 dark:text-zinc-400">{letter.job_title}</p>
                 </DialogHeader>
 
                 {letter.letter_html ? (
                     <div
-                        className="mt-4 prose-sm max-w-none"
+                        className="mt-4 prose-sm max-w-none dark:prose-invert"
                         dangerouslySetInnerHTML={{ __html: letter.letter_html }}
                     />
                 ) : (
-                    <div className="text-center py-12 text-zinc-400">
+                    <div className="text-center py-12 text-zinc-400 dark:text-zinc-500">
                         <Loader2 className="w-8 h-8 animate-spin mx-auto mb-3" />
                         <p className="text-sm">Letter is still being generated...</p>
                     </div>
                 )}
 
                 {letter.pdf_url && (
-                    <div className="pt-4 border-t flex justify-end">
+                    <div className="pt-4 border-t border-zinc-200 dark:border-white/10 flex justify-end">
                         <Button
                             onClick={() => window.open(letter.pdf_url, '_blank')}
                             className="bg-indigo-600 hover:bg-indigo-700 font-semibold gap-2"
@@ -210,11 +210,11 @@ export default function LetterDashboardClient({ initialLetters, isPro, userId }:
             {/* Header */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                    <h1 className="text-3xl font-extrabold tracking-tight text-zinc-900 flex items-center gap-2">
-                        <Sparkles className="w-7 h-7 text-indigo-600" />
+                    <h1 className="text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-white flex items-center gap-2">
+                        <Sparkles className="w-7 h-7 text-indigo-600 dark:text-indigo-400" />
                         My Letters
                     </h1>
-                    <p className="text-zinc-500 mt-1 text-sm">
+                    <p className="text-zinc-500 dark:text-zinc-400 mt-1 text-sm">
                         Personalized cover letters generated by GPT-4o.
                     </p>
                 </div>
@@ -228,10 +228,10 @@ export default function LetterDashboardClient({ initialLetters, isPro, userId }:
 
             {/* Search */}
             <div className="relative max-w-sm">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400 dark:text-zinc-500" />
                 <Input
                     placeholder="Search by company name..."
-                    className="pl-9 bg-white"
+                    className="pl-9 bg-white dark:bg-transparent dark:text-white dark:border-white/20 dark:placeholder:text-zinc-500"
                     value={search}
                     onChange={e => setSearch(e.target.value)}
                 />
@@ -240,10 +240,10 @@ export default function LetterDashboardClient({ initialLetters, isPro, userId }:
             {/* Letter List */}
             <div className="grid gap-3">
                 {filteredGroups.length === 0 ? (
-                    <div className="text-center p-16 bg-white rounded-2xl border border-dashed border-zinc-300">
+                    <div className="text-center p-16 bg-white dark:bg-[#0f1525] rounded-2xl border border-dashed border-zinc-300 dark:border-white/20">
                         <div className="text-4xl mb-3">🎯</div>
-                        <h3 className="text-lg font-bold text-zinc-700">No letters yet</h3>
-                        <p className="text-zinc-400 text-sm mt-1 mb-4">
+                        <h3 className="text-lg font-bold text-zinc-700 dark:text-zinc-200">No letters yet</h3>
+                        <p className="text-zinc-400 dark:text-zinc-500 text-sm mt-1 mb-4">
                             Click the "Create New Letter" button to create your first cover letter.
                         </p>
                         <Button onClick={() => setIsWizardOpen(true)} className="bg-indigo-600 hover:bg-indigo-700 gap-2">
@@ -325,7 +325,7 @@ function BatchLetterCard({
     if (!letter) return null;
 
     return (
-        <Card className="overflow-hidden border border-zinc-200 shadow-sm hover:shadow-md transition-shadow bg-white animate-in fade-in duration-300 relative">
+        <Card className="overflow-hidden border border-zinc-200 dark:border-white/10 shadow-sm hover:shadow-md dark:hover:shadow-white/5 transition-shadow bg-white dark:bg-[#0f1525] animate-in fade-in duration-300 relative">
             <CardContent className="p-0 flex flex-col sm:flex-row items-stretch">
                 {/* Left: colored accent bar */}
                 <div className={`w-1.5 shrink-0 ${letter.generation_status === 'completed' ? 'bg-emerald-500' : letter.generation_status === 'failed' ? 'bg-rose-400' : 'bg-indigo-400 animate-pulse'}`} />
@@ -334,27 +334,27 @@ function BatchLetterCard({
                 <div className="flex-1 p-4 flex flex-wrap gap-4 items-center">
                     <div className="flex items-center gap-3 min-w-[240px]">
                         {letters.length > 1 && (
-                            <div className="flex gap-0.5 mr-1 bg-zinc-100/80 rounded-full p-0.5 border border-zinc-200 shadow-sm">
-                                <Button variant="ghost" size="icon" className="w-7 h-7 rounded-full hover:bg-white shrink-0" onClick={handlePrev}>
-                                    <ChevronLeft className="w-4 h-4 text-zinc-700" />
+                            <div className="flex gap-0.5 mr-1 bg-zinc-100/80 dark:bg-white/5 rounded-full p-0.5 border border-zinc-200 dark:border-white/10 shadow-sm">
+                                <Button variant="ghost" size="icon" className="w-7 h-7 rounded-full hover:bg-white dark:hover:bg-white/10 shrink-0" onClick={handlePrev}>
+                                    <ChevronLeft className="w-4 h-4 text-zinc-700 dark:text-zinc-300" />
                                 </Button>
-                                <Button variant="ghost" size="icon" className="w-7 h-7 rounded-full hover:bg-white shrink-0" onClick={handleNext}>
-                                    <ChevronRight className="w-4 h-4 text-zinc-700" />
+                                <Button variant="ghost" size="icon" className="w-7 h-7 rounded-full hover:bg-white dark:hover:bg-white/10 shrink-0" onClick={handleNext}>
+                                    <ChevronRight className="w-4 h-4 text-zinc-700 dark:text-zinc-300" />
                                 </Button>
                             </div>
                         )}
                         <div>
-                            <p className="font-bold text-zinc-900 text-base leading-tight truncate max-w-[180px]" title={letter.company_name}>🏢 {letter.company_name}</p>
-                            <p className="text-sm text-zinc-500 mt-0.5 truncate max-w-[200px]" title={letter.job_title || ''}>{letter.job_title || '—'}</p>
+                            <p className="font-bold text-zinc-900 dark:text-white text-base leading-tight truncate max-w-[180px]" title={letter.company_name}>🏢 {letter.company_name}</p>
+                            <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-0.5 truncate max-w-[200px]" title={letter.job_title || ''}>{letter.job_title || '—'}</p>
                             {letters.length > 1 && (
-                                <p className="text-xs font-semibold text-indigo-600 mt-1">
+                                <p className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 mt-1">
                                     {letters.length} Selected Jobs ({currentIndex + 1}/{letters.length})
                                 </p>
                             )}
                         </div>
                     </div>
 
-                    <div className="text-xs text-zinc-400 font-medium">
+                    <div className="text-xs text-zinc-400 dark:text-zinc-500 font-medium">
                         {format(new Date(letter.created_at), 'd MMM yyyy')}
                     </div>
                     <div className="ml-auto">
@@ -367,14 +367,14 @@ function BatchLetterCard({
                 </div>
 
                 {/* Actions */}
-                <div className="px-4 py-3 bg-zinc-50 border-t sm:border-t-0 sm:border-l border-zinc-100 flex items-center gap-1.5 justify-end">
+                <div className="px-4 py-3 bg-zinc-50 dark:bg-[#080d1a] border-t sm:border-t-0 sm:border-l border-zinc-100 dark:border-white/10 flex items-center gap-1.5 justify-end">
                     {letter.generation_status === 'failed' && (
                         <Button
                             variant="outline"
                             size="sm"
                             onClick={() => handleRetry(letter.id)}
                             title="Retry"
-                            className="gap-1.5 text-xs font-semibold text-indigo-600 border-indigo-200 hover:bg-indigo-50"
+                            className="gap-1.5 text-xs font-semibold text-indigo-600 dark:text-indigo-400 border-indigo-200 dark:border-indigo-500/20 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 bg-white dark:bg-transparent"
                         >
                             <RefreshCw className="w-3.5 h-3.5" /> Retry
                         </Button>
@@ -387,7 +387,7 @@ function BatchLetterCard({
                                     size="sm"
                                     onClick={() => setPreviewLetter(letter)}
                                     title="Preview"
-                                    className="gap-1.5 text-xs font-semibold"
+                                    className="gap-1.5 text-xs font-semibold bg-white dark:bg-transparent dark:text-zinc-300 dark:border-white/20 dark:hover:bg-white/5"
                                 >
                                     <Eye className="w-3.5 h-3.5" /> View
                                 </Button>
@@ -398,7 +398,7 @@ function BatchLetterCard({
                                     size="sm"
                                     onClick={() => window.open(letter.pdf_url, '_blank')}
                                     title="Download"
-                                    className="gap-1.5 text-xs font-semibold"
+                                    className="gap-1.5 text-xs font-semibold bg-white dark:bg-transparent dark:text-zinc-300 dark:border-white/20 dark:hover:bg-white/5"
                                 >
                                     <Download className="w-3.5 h-3.5" /> PDF
                                 </Button>
@@ -408,7 +408,7 @@ function BatchLetterCard({
                                 size="sm"
                                 onClick={() => handleShare(letter)}
                                 title="Copy sharing link"
-                                className="gap-1.5 text-xs font-semibold text-violet-600 border-violet-200 hover:bg-violet-50"
+                                className="gap-1.5 text-xs font-semibold text-violet-600 dark:text-violet-400 border-violet-200 dark:border-violet-500/20 hover:bg-violet-50 dark:hover:bg-violet-500/10 bg-white dark:bg-transparent"
                             >
                                 <Share2 className="w-3.5 h-3.5" /> Copy Link
                             </Button>
@@ -417,7 +417,7 @@ function BatchLetterCard({
                     <Button
                         variant="ghost"
                         size="sm"
-                        className="text-rose-500 hover:text-rose-600 hover:bg-rose-50"
+                        className="text-rose-500 dark:text-rose-400 hover:text-rose-600 dark:hover:text-rose-300 hover:bg-rose-50 dark:hover:bg-rose-500/10"
                         onClick={() => handleDelete(letter.id)}
                         title="Delete"
                     >
