@@ -10,6 +10,23 @@ import { SpiralAnimation } from "@/components/ui/spiral-animation";
 import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { LandingDemoStrip } from "@/components/ui/landing-demo-strip";
 import { LandingCopyLinkSpotlight } from "@/components/ui/landing-copy-link-spotlight";
+import { useLang, type Lang } from "@/lib/i18n";
+
+function LangFlagPicker() {
+  const { lang, setLang } = useLang();
+  const next: Lang = lang === 'en' ? 'tr' : 'en';
+  return (
+    <button
+      onClick={() => setLang(next)}
+      title={lang === 'en' ? 'Switch to Turkish' : 'İngilizceye geç'}
+      className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full border border-zinc-200 bg-white hover:bg-zinc-50 transition-all text-sm font-semibold text-zinc-700 shadow-sm hover:shadow active:scale-95"
+    >
+      <span className="text-base leading-none">{lang === 'en' ? '🇬🇧' : '🇹🇷'}</span>
+      <span className="text-[11px] font-bold hidden sm:inline">{lang === 'en' ? 'EN' : 'TR'}</span>
+    </button>
+  );
+}
+
 
 const HeroVisualSlot = () => {
   return (
@@ -238,6 +255,8 @@ export default function Home() {
             <Link className="hover:text-zinc-900 transition-colors" href="/templates">Templates</Link>
             <Link className="hover:text-zinc-900 transition-colors cursor-pointer" href="/#pricing">Pricing</Link>
             <Link className="hover:text-zinc-900 transition-colors" href="/login">Login</Link>
+            {/* Language flag picker */}
+            <LangFlagPicker />
             <Link href="/signup">
               <Button className="bg-zinc-900 text-white hover:bg-zinc-800 font-bold rounded-full px-6 h-10 shadow-sm transition-all hover:scale-105 active:scale-95">
                 Get Started Free
@@ -246,7 +265,8 @@ export default function Home() {
           </nav>
 
           {/* Mobile Nav */}
-          <div className="flex md:hidden items-center gap-3">
+          <div className="flex md:hidden items-center gap-2">
+            <LangFlagPicker />
             <Link href="/login" className="text-[13px] font-bold text-zinc-600 hover:text-zinc-900">
               Login
             </Link>

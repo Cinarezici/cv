@@ -4,17 +4,19 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Loader2, User, CreditCard, AlertTriangle, Trash2, LogOut } from 'lucide-react';
+import { Loader2, User, CreditCard, AlertTriangle, Trash2, LogOut, Globe } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { LIMITS } from '@/lib/limits-config';
 import { format, addDays } from 'date-fns';
+import { useLang, type Lang } from '@/lib/i18n';
 
 export default function SettingsPage() {
     const [loading, setLoading] = useState(true);
     const [logoutLoading, setLogoutLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const router = useRouter();
+    const { lang, setLang, t } = useLang();
 
     // Auth state
     const [email, setEmail] = useState('');
@@ -100,13 +102,40 @@ export default function SettingsPage() {
     return (
         <div className="max-w-4xl mx-auto py-12 px-4 bg-[#fafafa] dark:bg-zinc-950 min-h-[calc(100vh-100px)] text-zinc-900 font-sans">
             <div className="mb-8">
-                <h1 className="text-3xl font-bold tracking-tight mb-2 dark:text-white">Settings</h1>
+                <h1 className="text-3xl font-bold tracking-tight mb-2 dark:text-white">{t.settingsTitle}</h1>
                 <p className="text-zinc-500 dark:text-zinc-400 text-[15px]">Manage your account and billing preferences.</p>
             </div>
 
             {error && <div className="mb-6 text-sm font-medium text-rose-600 bg-rose-50 p-4 rounded-lg border border-rose-200">{error}</div>}
 
             <div className="space-y-6">
+
+                {/* Language Selector */}
+                <Card className="border border-zinc-200 dark:border-white/10 shadow-sm rounded-xl bg-white dark:bg-zinc-900 overflow-hidden">
+                    <CardContent className="p-6">
+                        <div className="flex items-center gap-3 mb-2">
+                            <Globe className="h-[18px] w-[18px] text-zinc-800 dark:text-zinc-200" />
+                            <h2 className="text-[17px] font-semibold text-zinc-900 dark:text-white tracking-tight">{t.languageSettingLabel}</h2>
+                        </div>
+                        <p className="text-[14px] text-zinc-500 dark:text-zinc-400 mb-5 font-medium">{t.languageSettingDesc}</p>
+                        <div className="flex gap-3">
+                            {(['en', 'tr'] as Lang[]).map((l) => (
+                                <button
+                                    key={l}
+                                    onClick={() => setLang(l)}
+                                    className={`flex items-center gap-2 px-5 py-3 rounded-xl border-2 font-bold text-sm transition-all ${lang === l
+                                            ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-500/10 text-indigo-700 dark:text-indigo-300'
+                                            : 'border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-300 hover:border-zinc-300 dark:hover:border-white/20 hover:bg-zinc-50 dark:hover:bg-white/5'
+                                        }`}
+                                >
+                                    <span className="text-xl">{l === 'en' ? '🇬🇧' : '🇹🇷'}</span>
+                                    <span>{l === 'en' ? t.english : t.turkish}</span>
+                                </button>
+                            ))}
+                        </div>
+                    </CardContent>
+                </Card>
+
                 {/* Account Information */}
                 <Card className="border border-zinc-200 dark:border-white/10 shadow-sm rounded-xl bg-white dark:bg-zinc-900 overflow-hidden">
                     <CardContent className="p-6">

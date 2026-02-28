@@ -53,7 +53,7 @@ function CvDropdown({
                 type="button"
                 onClick={() => setOpen(o => !o)}
                 disabled={loading}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl border-2 transition-all text-left bg-white ${open ? 'border-indigo-500 shadow-sm rounded-b-none border-b-transparent' : 'border-zinc-200 hover:border-zinc-300'
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl border-2 transition-all text-left bg-white dark:bg-zinc-800 ${open ? 'border-indigo-500 shadow-sm rounded-b-none border-b-transparent dark:border-indigo-400' : 'border-zinc-200 dark:border-white/10 hover:border-zinc-300 dark:hover:border-white/20'
                     }`}
             >
                 {loading ? (
@@ -68,8 +68,8 @@ function CvDropdown({
                         <span className="text-sm text-zinc-400">Loading...</span>
                     ) : selected ? (
                         <>
-                            <span className="block text-sm font-semibold text-zinc-900 truncate">{selected.title}</span>
-                            <span className={`text-[11px] font-medium ${selected.type === 'profile' ? 'text-blue-600' : 'text-emerald-600'}`}>
+                            <span className="block text-sm font-semibold text-zinc-900 dark:text-white truncate">{selected.title}</span>
+                            <span className={`text-[11px] font-medium ${selected.type === 'profile' ? 'text-blue-600 dark:text-blue-400' : 'text-emerald-600 dark:text-emerald-400'}`}>
                                 {selected.type === 'profile' ? "My CV" : 'Optimized CV'}
                             </span>
                         </>
@@ -83,7 +83,7 @@ function CvDropdown({
             {/* Inline scrollable panel */}
             {open && !loading && (
                 <div
-                    className="w-full mt-0 border-2 border-t-0 border-indigo-500 rounded-b-xl bg-white overflow-y-auto shadow-sm"
+                    className="w-full mt-0 border-2 border-t-0 border-indigo-500 dark:border-indigo-400 rounded-b-xl bg-white dark:bg-zinc-800 overflow-y-auto shadow-sm"
                     style={{ maxHeight: ITEM_HEIGHT * VISIBLE_ITEMS }}
                 >
                     {cvs.length === 0 ? (
@@ -92,7 +92,7 @@ function CvDropdown({
                         <>
                             {cvs.some(c => c.type === 'profile') && (
                                 <div>
-                                    <div className="px-3 pt-2 pb-1 text-[10px] font-bold text-zinc-400 uppercase tracking-widest bg-zinc-50">
+                                    <div className="px-3 pt-2 pb-1 text-[10px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-widest bg-zinc-50 dark:bg-zinc-700/50">
                                         My CVs
                                     </div>
                                     {cvs.filter(c => c.type === 'profile').map(cv => (
@@ -108,7 +108,7 @@ function CvDropdown({
                             )}
                             {cvs.some(c => c.type === 'resume') && (
                                 <div>
-                                    <div className="px-3 pt-2 pb-1 text-[10px] font-bold text-zinc-400 uppercase tracking-widest bg-zinc-50 border-t border-zinc-100">
+                                    <div className="px-3 pt-2 pb-1 text-[10px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-widest bg-zinc-50 dark:bg-zinc-700/50 border-t border-zinc-100 dark:border-white/5">
                                         Optimized CVs
                                     </div>
                                     {cvs.filter(c => c.type === 'resume').map(cv => (
@@ -146,12 +146,12 @@ function DropdownItem({
             type="button"
             onClick={() => onSelect(cv.id)}
             style={{ height: itemHeight }}
-            className={`w-full flex items-center gap-3 px-4 text-left transition-colors ${isSelected ? 'bg-indigo-50' : 'hover:bg-zinc-50'
+            className={`w-full flex items-center gap-3 px-4 text-left transition-colors ${isSelected ? 'bg-indigo-50 dark:bg-indigo-500/10' : 'hover:bg-zinc-50 dark:hover:bg-white/5'
                 }`}
         >
             <span className="text-base flex-shrink-0">{cv.type === 'profile' ? '🔗' : '📄'}</span>
-            <span className="flex-1 min-w-0 text-sm font-medium text-zinc-900 truncate">{cv.title}</span>
-            {isSelected && <Check className="w-4 h-4 text-indigo-600 flex-shrink-0" />}
+            <span className="flex-1 min-w-0 text-sm font-medium text-zinc-900 dark:text-white truncate">{cv.title}</span>
+            {isSelected && <Check className="w-4 h-4 text-indigo-600 dark:text-indigo-400 flex-shrink-0" />}
         </button>
     );
 }
@@ -273,13 +273,13 @@ export default function LetterCreationWizard({
 
     return (
         <Dialog open={true} onOpenChange={onClose}>
-            <DialogContent className="max-w-lg bg-white border shadow-xl overflow-hidden">
+            <DialogContent className="max-w-lg bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 shadow-xl overflow-hidden">
                 <DialogHeader>
-                    <DialogTitle className="text-xl font-extrabold tracking-tight flex items-center gap-2">
-                        <Sparkles className="w-5 h-5 text-indigo-600" />
+                    <DialogTitle className="text-xl font-extrabold tracking-tight flex items-center gap-2 dark:text-white">
+                        <Sparkles className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
                         Create New Letter
                     </DialogTitle>
-                    <p className="text-sm text-zinc-500 mt-0.5">
+                    <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-0.5">
                         Enter the company URL, and AI will prepare a cover letter introducing you.
                     </p>
                 </DialogHeader>
@@ -287,7 +287,7 @@ export default function LetterCreationWizard({
                 {/* Step bar */}
                 <div className="flex gap-2 mt-1 mb-4">
                     {[1, 2].map(s => (
-                        <div key={s} className={`flex-1 h-1 rounded-full transition-colors ${step >= s ? 'bg-indigo-600' : 'bg-zinc-200'}`} />
+                        <div key={s} className={`flex-1 h-1 rounded-full transition-colors ${step >= s ? 'bg-indigo-600 dark:bg-indigo-500' : 'bg-zinc-200 dark:bg-zinc-700'}`} />
                     ))}
                 </div>
 
@@ -295,7 +295,7 @@ export default function LetterCreationWizard({
                     <div className="space-y-4">
                         {/* CV Dropdown */}
                         <div>
-                            <label className="flex items-center gap-2 text-sm font-bold text-zinc-700 mb-1.5">
+                            <label className="flex items-center gap-2 text-sm font-bold text-zinc-700 dark:text-zinc-200 mb-1.5">
                                 <FileText className="w-4 h-4 text-indigo-600" />
                                 CV / Profil
                             </label>
@@ -309,7 +309,7 @@ export default function LetterCreationWizard({
 
                         {/* Company URL */}
                         <div>
-                            <label className="flex items-center gap-2 text-sm font-bold text-zinc-700 mb-1.5">
+                            <label className="flex items-center gap-2 text-sm font-bold text-zinc-700 dark:text-zinc-200 mb-1.5">
                                 <Building2 className="w-4 h-4 text-indigo-600" />
                                 Company or Job URL
                             </label>
@@ -317,9 +317,9 @@ export default function LetterCreationWizard({
                                 placeholder="https://example.com or linkedin.com/jobs/..."
                                 value={companies[0].url}
                                 onChange={e => setCompanies([{ ...companies[0], url: e.target.value }])}
-                                className="h-11 text-sm rounded-xl border-zinc-200 focus-visible:ring-indigo-500"
+                                className="h-11 text-sm rounded-xl border-zinc-200 dark:border-white/10 dark:bg-zinc-800 dark:text-white focus-visible:ring-indigo-500"
                             />
-                            <p className="text-xs text-zinc-400 mt-1">
+                            <p className="text-xs text-zinc-400 dark:text-zinc-500 mt-1">
                                 Enter the company website or a LinkedIn job URL.
                             </p>
                         </div>
@@ -340,18 +340,18 @@ export default function LetterCreationWizard({
                     <div className="space-y-4">
                         {/* Target role */}
                         <div>
-                            <label className="text-sm font-bold text-zinc-700 mb-1.5 block">Target Role</label>
+                            <label className="text-sm font-bold text-zinc-700 dark:text-zinc-200 mb-1.5 block">Target Role</label>
                             <Input
                                 placeholder="e.g. Senior Product Manager"
                                 value={configs[0].targetRole}
                                 onChange={e => updateConfig('targetRole', e.target.value)}
-                                className="h-11 text-sm rounded-xl border-zinc-200 focus-visible:ring-indigo-500"
+                                className="h-11 text-sm rounded-xl border-zinc-200 dark:border-white/10 dark:bg-zinc-800 dark:text-white focus-visible:ring-indigo-500"
                             />
                         </div>
 
                         {/* Tone */}
                         <div>
-                            <label className="text-sm font-bold text-zinc-700 mb-1.5 block">Letter Tone</label>
+                            <label className="text-sm font-bold text-zinc-700 dark:text-zinc-200 mb-1.5 block">Letter Tone</label>
                             <div className="grid grid-cols-2 gap-2">
                                 {toneOptions.map(t => (
                                     <button
@@ -359,12 +359,12 @@ export default function LetterCreationWizard({
                                         type="button"
                                         onClick={() => updateConfig('tone', t.value)}
                                         className={`p-3 rounded-xl border-2 text-left transition-all ${configs[0].tone === t.value
-                                            ? 'border-indigo-500 bg-indigo-50'
-                                            : 'border-zinc-200 hover:border-zinc-300'
+                                            ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-500/10 dark:border-indigo-400'
+                                            : 'border-zinc-200 dark:border-white/10 hover:border-zinc-300 dark:hover:border-white/20'
                                             }`}
                                     >
-                                        <p className="text-sm font-semibold text-zinc-900">{t.label}</p>
-                                        <p className="text-[11px] text-zinc-400 mt-0.5">{t.desc}</p>
+                                        <p className="text-sm font-semibold text-zinc-900 dark:text-white">{t.label}</p>
+                                        <p className="text-[11px] text-zinc-400 dark:text-zinc-500 mt-0.5">{t.desc}</p>
                                     </button>
                                 ))}
                             </div>
@@ -372,7 +372,7 @@ export default function LetterCreationWizard({
 
                         {/* Language */}
                         <div>
-                            <label className="text-sm font-bold text-zinc-700 mb-1.5 block">Language</label>
+                            <label className="text-sm font-bold text-zinc-700 dark:text-zinc-200 mb-1.5 block">Language</label>
                             <div className="flex gap-2">
                                 {[{ val: 'tr', label: '🇹🇷 Turkish' }, { val: 'en', label: '🇬🇧 English' }].map(l => (
                                     <button
@@ -380,8 +380,8 @@ export default function LetterCreationWizard({
                                         type="button"
                                         onClick={() => updateConfig('language', l.val)}
                                         className={`flex-1 py-2.5 rounded-xl border-2 text-sm font-semibold transition-all ${configs[0].language === l.val
-                                            ? 'border-indigo-500 bg-indigo-50 text-indigo-700'
-                                            : 'border-zinc-200 text-zinc-600 hover:border-zinc-300'
+                                            ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-500/10 text-indigo-700 dark:text-indigo-300 dark:border-indigo-400'
+                                            : 'border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-300 hover:border-zinc-300 dark:hover:border-white/20'
                                             }`}
                                     >
                                         {l.label}
@@ -391,9 +391,9 @@ export default function LetterCreationWizard({
                         </div>
 
                         {/* Company info strip */}
-                        <div className="bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-2.5 flex items-center gap-2 text-sm">
+                        <div className="bg-zinc-50 dark:bg-white/5 border border-zinc-200 dark:border-white/10 rounded-xl px-3 py-2.5 flex items-center gap-2 text-sm">
                             <span className="text-base">🏢</span>
-                            <span className="font-semibold text-zinc-700 truncate">{companies[0].name || companies[0].url}</span>
+                            <span className="font-semibold text-zinc-700 dark:text-zinc-200 truncate">{companies[0].name || companies[0].url}</span>
                         </div>
 
                         <div className="flex justify-between pt-1">

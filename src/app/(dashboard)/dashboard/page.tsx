@@ -169,14 +169,13 @@ export default async function DashboardPage() {
                                         {isProfile ? <LinkIcon className="w-4 h-4 text-blue-500 dark:text-blue-400" /> : <FileText className="w-4 h-4 text-indigo-500 dark:text-indigo-400" />}
                                     </div>
                                     <div className="flex-1 min-w-0">
-                                        <p className="font-bold text-zinc-900 dark:text-zinc-100 text-sm leading-tight">{doc.title}</p>
-                                        <div className="flex items-center gap-1.5 mt-0.5">
-                                            {isProfile ? <LinkIcon className="w-3 h-3 text-zinc-400 dark:text-zinc-500" /> : <LayoutTemplate className="w-3 h-3 text-zinc-400 dark:text-zinc-500" />}
-                                            <span className="text-xs text-zinc-500 dark:text-zinc-400 truncate max-w-[150px]">{doc.subtitle}</span>
-                                            <span className="text-zinc-300 dark:text-zinc-700 text-xs">•</span>
-                                            <Clock className="w-3 h-3 text-zinc-400 dark:text-zinc-500" />
-                                            <span className="text-xs text-zinc-500 dark:text-zinc-400">
-                                                {doc.updatedAt ? `Updated ${formatDistanceToNow(new Date(doc.updatedAt), { addSuffix: true })}` : 'Recently'}
+                                        <p className="font-bold text-zinc-900 dark:text-zinc-100 text-sm leading-tight truncate">{doc.title}</p>
+                                        <div className="flex flex-wrap items-center gap-x-1.5 gap-y-0.5 mt-0.5">
+                                            {isProfile ? <LinkIcon className="w-3 h-3 text-zinc-400 dark:text-zinc-500 shrink-0" /> : <LayoutTemplate className="w-3 h-3 text-zinc-400 dark:text-zinc-500 shrink-0" />}
+                                            <span className="text-xs text-zinc-500 dark:text-zinc-400 truncate max-w-[120px]">{doc.subtitle}</span>
+                                            <span className="text-zinc-300 dark:text-zinc-700 text-xs hidden sm:inline">•</span>
+                                            <span className="text-xs text-zinc-500 dark:text-zinc-400 whitespace-nowrap">
+                                                {doc.updatedAt ? `${formatDistanceToNow(new Date(doc.updatedAt), { addSuffix: true })}` : 'Recently'}
                                             </span>
                                         </div>
                                     </div>
