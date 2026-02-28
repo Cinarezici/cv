@@ -43,7 +43,7 @@ class AnimationController {
         this.ctx = ctx
         this.dpr = dpr
         this.size = size
-        this.timeline = gsap.timeline({ repeat: -1 })
+        this.timeline = gsap.timeline({ paused: true })
 
         // 初始化
         this.setupRandomGenerator()
@@ -78,10 +78,10 @@ class AnimationController {
     private setupTimeline() {
         this.timeline
             .to(this, {
-                time: 1,
-                duration: 15,
-                repeat: -1,
-                ease: "none",
+                time: 0.45,
+                duration: 3,
+                repeat: 0,
+                ease: "power2.out",
                 onUpdate: () => this.render()
             })
     }
@@ -396,7 +396,7 @@ class Star {
     }
 }
 
-export function SpiralAnimation() {
+export function SpiralAnimation({ play = true }: { play?: boolean }) {
     const canvasRef = useRef<HTMLCanvasElement>(null)
     const animationRef = useRef<AnimationController | null>(null)
     const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
@@ -463,6 +463,13 @@ export function SpiralAnimation() {
             }
         }
     }, [dimensions])
+
+    // Monitor play prop to resume animation
+    useEffect(() => {
+        if (play && animationRef.current) {
+            animationRef.current.resume()
+        }
+    }, [play])
 
     return (
         <div ref={containerRef} className="relative w-full h-full min-h-[500px] overflow-hidden">

@@ -1,11 +1,34 @@
 "use client";
 
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from "@/components/ui/button";
 import { ArrowRight, CheckCircle2, FileText, Download, Share2, Zap, MessageSquare, ShieldCheck, X } from "lucide-react";
 import { TestimonialsSection } from "@/components/ui/testimonials-with-marquee";
-import { SpiralAnimation } from "@/components/ui/spiral-animation"; // Added import for SpiralAnimation
+import { SpiralAnimation } from "@/components/ui/spiral-animation";
+import { motion, AnimatePresence, useInView } from 'framer-motion';
+
+const HeroVisualSlot = () => {
+  return (
+    <div className="w-full h-full relative flex items-center justify-center bg-zinc-50 rounded-[24px] border border-zinc-200/80 shadow-[0_32px_80px_-20px_rgba(37,99,235,0.12)] overflow-hidden group">
+      <div className="absolute top-0 left-0 right-0 h-10 bg-[#fafafa] border-b border-neutral-200 flex items-center px-4 gap-2 z-20">
+        <div className="flex gap-1.5 opacity-60">
+          <div className="w-2.5 h-2.5 rounded-full bg-red-400"></div>
+          <div className="w-2.5 h-2.5 rounded-full bg-amber-400"></div>
+          <div className="w-2.5 h-2.5 rounded-full bg-green-400"></div>
+        </div>
+      </div>
+      <div className="absolute inset-0 pt-10 flex items-center justify-center bg-zinc-100">
+        <p className="text-zinc-500 font-bold text-sm tracking-widest uppercase relative z-10 w-full text-center px-4">
+          Hero Visual Slot
+          <br /><span className="text-xs text-zinc-400 normal-case font-medium mt-1 inline-block">(Placeholder image)</span>
+        </p>
+        <Image src="/cv_mockup.png" alt="Interface Placeholder" fill className="object-cover object-top opacity-50 mix-blend-multiply blur-[2px]" draggable={false} />
+      </div>
+    </div>
+  )
+}
 
 const testimonials = [
   {
@@ -47,6 +70,19 @@ const testimonials = [
 ];
 
 export default function Home() {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const ctaRef = useRef<HTMLDivElement>(null);
+  const isCtaInView = useInView(ctaRef, { once: true, margin: "-100px" });
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 80);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll(); // Initial check
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <div className="flex flex-col min-h-screen bg-[#fafafa] text-zinc-900 overflow-x-hidden selection:bg-blue-500/30">
 
@@ -97,80 +133,91 @@ export default function Home() {
             <div className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#2563eb] to-[#93c5fd] opacity-20 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]" style={{ clipPath: 'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)' }}></div>
           </div>
 
-          <div className="container px-6 mx-auto relative z-20 flex flex-col items-center text-center mt-12 mb-16 animate-in fade-in slide-in-from-bottom-4 duration-700">
+          <div className="container px-6 mx-auto relative z-20 mt-12 mb-16 h-auto min-h-[500px] flex flex-col justify-center">
 
-            <Link href="/signup">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-zinc-200/80 text-zinc-600 text-[13px] font-semibold mb-8 shadow-sm hover:shadow-md transition-all cursor-pointer hover:border-blue-200 group">
-                <span className="flex h-2 w-2 rounded-full bg-blue-500 animate-pulse"></span>
-                CV Optimizer AI 2.0 is live
-                <ArrowRight className="h-3.5 w-3.5 text-zinc-400 group-hover:text-blue-500 transition-colors group-hover:translate-x-0.5" />
-              </div>
-            </Link>
+            <motion.div
+              layout
+              transition={{ type: "spring", bounce: 0, duration: 0.9 }}
+              className={`flex w-full ${isScrolled ? 'justify-between' : 'justify-center'} items-center gap-12`}
+            >
 
-            <h1 className="text-6xl md:text-[80px] lg:text-[100px] font-extrabold tracking-tighter leading-[0.95] text-zinc-900 mb-8 max-w-5xl">
-              Interviews on <br className="md:hidden" />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2563eb] to-[#3b82f6]">Autopilot.</span>
-            </h1>
+              {/* Left Column (Text & CTAs) */}
+              <motion.div
+                layout
+                className={`flex flex-col z-20 transition-all duration-700 ${isScrolled ? 'w-full lg:w-1/2 items-start text-left' : 'w-full items-center text-center max-w-5xl'}`}
+              >
 
-            <p className="text-lg md:text-xl text-zinc-500 leading-relaxed max-w-2xl mx-auto mb-10 font-medium tracking-tight">
-              Stop the grind. Build professional CVs, tailor cover letters, and land interviews automatically. Our AI agents do the heavy lifting while you focus on the actual prep.
-            </p>
+                <motion.div layout>
+                  <Link href="/signup">
+                    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-zinc-200/80 text-zinc-600 text-[13px] font-semibold mb-8 shadow-sm hover:shadow-md transition-all cursor-pointer hover:border-blue-200 group">
+                      <span className="flex h-2 w-2 rounded-full bg-blue-500 animate-pulse"></span>
+                      CV Optimizer AI 2.0 is live
+                      <ArrowRight className="h-3.5 w-3.5 text-zinc-400 group-hover:text-blue-500 transition-colors group-hover:translate-x-0.5" />
+                    </div>
+                  </Link>
+                </motion.div>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto z-30 relative">
-              <Link href="/signup" className="w-full sm:w-auto">
-                <Button size="lg" className="w-full sm:w-auto h-14 px-8 rounded-full bg-gradient-to-r from-[#2563eb] to-[#3b82f6] hover:from-[#1d4ed8] hover:to-[#2563eb] text-white font-bold text-[15px] shadow-[0_0_24px_rgba(59,130,246,0.3)] hover:shadow-[0_0_32px_rgba(59,130,246,0.5)] transition-all hover:scale-[1.02] active:scale-95 border border-blue-400/20">
-                  Start for Free <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </Link>
-              <Link href="/templates" className="w-full sm:w-auto">
-                <Button size="lg" variant="outline" className="w-full sm:w-auto h-14 px-8 rounded-full bg-white border-zinc-200 text-zinc-700 font-bold text-[15px] hover:bg-zinc-50 hover:border-zinc-300 transition-all shadow-sm hover:shadow-md">
-                  Explore Templates
-                </Button>
-              </Link>
-            </div>
+                <motion.h1 layout className={`font-extrabold tracking-tighter leading-[0.95] text-zinc-900 mb-8 transition-all duration-700 ${isScrolled ? 'text-5xl md:text-6xl lg:text-7xl' : 'text-6xl md:text-[80px] lg:text-[100px]'}`}>
+                  Interviews on <br className="md:hidden" />
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2563eb] to-[#3b82f6]">Autopilot.</span>
+                </motion.h1>
 
-            <div className="flex flex-col items-center mt-12 gap-3">
-              <div className="flex -space-x-3">
-                {testimonials.map((t, i) => (
-                  <div key={i} className="w-10 h-10 rounded-full border-2 border-white bg-zinc-100 overflow-hidden shadow-sm relative z-[10] hover:scale-110 transition-transform cursor-pointer">
-                    <Image src={t.author.avatar} alt={t.author.name} width={40} height={40} className="object-cover" />
+                <motion.p layout className={`text-lg md:text-xl text-zinc-500 leading-relaxed font-medium tracking-tight transition-all duration-700 mb-10 ${isScrolled ? 'w-full max-w-xl mx-0' : 'max-w-2xl mx-auto'}`}>
+                  Stop the grind. Build professional CVs, tailor cover letters, and land interviews automatically. Our AI agents do the heavy lifting while you focus on the actual prep.
+                </motion.p>
+
+                <motion.div layout className={`flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto z-30 relative transition-all duration-700 ${isScrolled ? 'justify-start' : 'justify-center'}`}>
+                  <Link href="/signup" className="w-full sm:w-auto">
+                    <Button size="lg" className="w-full sm:w-auto h-14 px-8 rounded-full bg-gradient-to-r from-[#2563eb] to-[#3b82f6] hover:from-[#1d4ed8] hover:to-[#2563eb] text-white font-bold text-[15px] shadow-[0_0_24px_rgba(59,130,246,0.3)] hover:shadow-[0_0_32px_rgba(59,130,246,0.5)] transition-all hover:scale-[1.02] active:scale-95 border border-blue-400/20">
+                      Start for Free <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </Link>
+                  <Link href="/templates" className="w-full sm:w-auto">
+                    <Button size="lg" variant="outline" className="w-full sm:w-auto h-14 px-8 rounded-full bg-white border-zinc-200 text-zinc-700 font-bold text-[15px] hover:bg-zinc-50 hover:border-zinc-300 transition-all shadow-sm hover:shadow-md">
+                      Explore Templates
+                    </Button>
+                  </Link>
+                </motion.div>
+
+                <motion.div layout className={`flex flex-col mt-12 gap-3 transition-all duration-700 ${isScrolled ? 'items-start' : 'items-center'}`}>
+                  <div className="flex -space-x-3">
+                    {testimonials.map((t, i) => (
+                      <div key={i} className="w-10 h-10 rounded-full border-2 border-white bg-zinc-100 overflow-hidden shadow-sm relative z-[10] hover:scale-110 transition-transform cursor-pointer">
+                        <Image src={t.author.avatar} alt={t.author.name} width={40} height={40} className="object-cover" />
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="flex">
-                  {[1, 2, 3, 4, 5].map(i => (
-                    <svg key={i} className="w-3.5 h-3.5 fill-[#f59e0b]" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" /></svg>
-                  ))}
-                </div>
-                <p className="text-[14px] font-bold text-zinc-600 tracking-tight">Joined by 10,000+ top professionals</p>
-              </div>
-            </div>
+                  <div className="flex items-center gap-2">
+                    <div className="flex">
+                      {[1, 2, 3, 4, 5].map(i => (
+                        <svg key={i} className="w-3.5 h-3.5 fill-[#f59e0b]" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" /></svg>
+                      ))}
+                    </div>
+                    <p className="text-[14px] font-bold text-zinc-600 tracking-tight">Joined by 10,000+ top professionals</p>
+                  </div>
+                </motion.div>
+
+              </motion.div>
+
+              {/* Right Column (Visual Slot) */}
+              <AnimatePresence>
+                {isScrolled && (
+                  <motion.div
+                    initial={{ opacity: 0, x: 40, scale: 0.98 }}
+                    animate={{ opacity: 1, x: 0, scale: 1 }}
+                    exit={{ opacity: 0, x: 40, scale: 0.98 }}
+                    transition={{ type: "spring", bounce: 0, duration: 0.9, delay: 0.1 }}
+                    className="hidden lg:flex w-[45%] h-[550px] items-center justify-center relative origin-right"
+                  >
+                    <HeroVisualSlot />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+            </motion.div>
           </div>
 
-          <div className="container px-6 mx-auto relative z-20 w-full max-w-6xl mt-8">
-            <div className="relative w-full aspect-video bg-white rounded-[24px] overflow-hidden shadow-[0_24px_80px_-15px_rgba(37,99,235,0.12)] border border-neutral-200/80 group transition-all duration-700 hover:shadow-[0_32px_100px_-15px_rgba(37,99,235,0.2)] hover:-translate-y-1">
-              <div className="absolute top-0 left-0 right-0 h-12 bg-[#fafafa] border-b border-neutral-200 flex items-center px-4 gap-2 z-20">
-                <div className="flex gap-1.5 opacity-60">
-                  <div className="w-3 h-3 rounded-full bg-red-400"></div>
-                  <div className="w-3 h-3 rounded-full bg-amber-400"></div>
-                  <div className="w-3 h-3 rounded-full bg-green-400"></div>
-                </div>
-                <div className="mx-auto bg-white border border-neutral-200 rounded-md px-16 md:px-32 py-1 flex items-center shadow-sm">
-                  <span className="text-[10px] md:text-xs text-neutral-400 font-medium tracking-wide">cvoptimizerai.com</span>
-                </div>
-              </div>
-              <div className="absolute inset-0 pt-12">
-                <Image
-                  src="/cv_mockup.png"
-                  alt="Platform Interface Showcase"
-                  fill
-                  className="object-cover object-top"
-                  draggable={false}
-                />
-              </div>
-            </div>
-          </div>
+
         </section>
 
         {/* --- Feature Grid (Clean Minimalist high-end SaaS) --- */}
@@ -312,10 +359,10 @@ export default function Home() {
         </section>
 
         {/* --- Final Spiral CTA Section --- */}
-        <section className="relative w-full h-[600px] border-t border-zinc-100 overflow-hidden bg-[#fafafa]">
+        <section ref={ctaRef} className="relative w-full h-[600px] border-t border-zinc-100 overflow-hidden bg-[#fafafa]">
           {/* SpiralAnimation is now absolute centered directly behind the text block */}
           <div className="absolute left-1/2 top-[45%] -translate-x-1/2 -translate-y-1/2 w-full max-w-[800px] aspect-square pointer-events-none opacity-90 mix-blend-multiply">
-            <SpiralAnimation />
+            <SpiralAnimation play={isCtaInView} />
           </div>
 
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10 -mt-10">
