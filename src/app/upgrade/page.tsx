@@ -29,10 +29,10 @@ export default function UpgradePage() {
             {/* Subtle background glow */}
             <div className="absolute inset-x-0 bottom-0 h-96 bg-gradient-to-t from-blue-50/50 dark:from-blue-950/20 to-transparent pointer-events-none" />
 
-            <div className="container px-6 mx-auto text-center relative z-10 max-w-5xl py-16 md:py-24">
+            <div className="container px-6 mx-auto text-center relative z-10 max-w-5xl py-8 md:py-12">
 
                 {/* Back link */}
-                <div className="flex justify-start mb-10">
+                <div className="flex justify-start mb-6">
                     <Link
                         href="/dashboard"
                         className="inline-flex items-center gap-1.5 text-sm font-semibold text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors"
@@ -42,14 +42,13 @@ export default function UpgradePage() {
                     </Link>
                 </div>
 
-                {/* Header */}
-                <p className="text-[12px] font-black uppercase tracking-[0.15em] text-blue-600 mb-4">Pricing</p>
-                <h1 className="text-4xl md:text-5xl font-extrabold text-zinc-900 dark:text-white mb-5 tracking-tight">
-                    Simple, transparent pricing.
-                </h1>
-                <p className="text-lg text-zinc-500 dark:text-zinc-400 font-medium mb-16 max-w-xl mx-auto">
-                    Start free for 14 days. Upgrade once when you&apos;re ready — no subscription, ever.
-                </p>
+                {/* Compact header */}
+                <div className="mb-8 text-center">
+                    <p className="text-[12px] font-black uppercase tracking-[0.15em] text-blue-600 mb-2">Pricing</p>
+                    <h1 className="text-2xl md:text-3xl font-extrabold text-zinc-900 dark:text-white tracking-tight">
+                        Simple, transparent pricing.
+                    </h1>
+                </div>
 
                 {/* Plan Cards */}
                 <div className="flex flex-col md:flex-row gap-8 mx-auto mb-16 items-stretch justify-center">
