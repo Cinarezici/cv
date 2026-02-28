@@ -174,7 +174,7 @@ export default function BuilderClient({ data, avatarUrl, isPro }: { data: any; a
                     <div className="space-y-3 p-4">
                         <p className="text-xs text-gray-400 dark:text-zinc-500">Drag and drop to reorder sections in your CV.</p>
                         <DndContext id="builder-order-dnd" sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-                            <SortableContext items={sectionOrder.filter(k => k in SECTION_LABELS)} strategy={verticalListSortingStrategy}>
+                            <SortableContext items={sectionOrder.filter((k: string) => k in SECTION_LABELS)} strategy={verticalListSortingStrategy}>
                                 <div className="flex flex-col gap-2">
                                     {sectionOrder
                                         .filter((k: string) => k in SECTION_LABELS)
@@ -191,17 +191,21 @@ export default function BuilderClient({ data, avatarUrl, isPro }: { data: any; a
 
     const meta = PANEL_META[activeTab];
 
+    const [mobileView, setMobileView] = useState<"edit" | "preview">("edit");
+
+
     return (
         <div className="fixed inset-0 z-50 flex flex-col bg-gray-50 dark:bg-zinc-950" style={{ fontFamily: "'Inter', sans-serif" }}>
 
             {/* ── Top Header ─────────────────────────────────────────────────── */}
-            <header className="h-12 shrink-0 bg-white dark:bg-zinc-900 border-b border-gray-200 dark:border-white/10 flex items-center px-4 gap-3 z-10">
+            <header className="h-12 shrink-0 bg-white dark:bg-zinc-900 border-b border-gray-200 dark:border-white/10 flex items-center px-3 gap-2 z-10">
                 <button
                     onClick={() => router.push("/dashboard")}
-                    className="flex items-center gap-1.5 text-sm font-semibold text-foreground/60 dark:text-zinc-400 hover:text-foreground dark:hover:text-white transition-colors"
+                    className="flex items-center gap-1.5 text-sm font-semibold text-foreground/60 dark:text-zinc-400 hover:text-foreground dark:hover:text-white transition-colors shrink-0"
                 >
                     <ArrowLeft className="w-4 h-4" />
-                    Back to Dashboard
+                    <span className="hidden sm:inline">Back to Dashboard</span>
+                    <span className="sm:hidden">Back</span>
                 </button>
 
                 <div className="flex-1 flex items-center justify-center gap-2">
@@ -214,27 +218,43 @@ export default function BuilderClient({ data, avatarUrl, isPro }: { data: any; a
                     </span>
                 </div>
 
-                {/* Save */}
+                {/* Mobile: Edit/Preview toggle */}
+                <div className="md:hidden flex items-center gap-1 bg-zinc-100 dark:bg-white/5 rounded-lg p-0.5">
+                    <button
+                        onClick={() => setMobileView("edit")}
+                        className={`px-3 py-1 rounded-md text-xs font-bold transition-all ${mobileView === "edit" ? "bg-white dark:bg-white/10 text-zinc-900 dark:text-white shadow-sm" : "text-zinc-500 dark:text-zinc-400"}`}
+                    >
+                        Edit
+                    </button>
+                    <button
+                        onClick={() => setMobileView("preview")}
+                        className={`px-3 py-1 rounded-md text-xs font-bold transition-all ${mobileView === "preview" ? "bg-white dark:bg-white/10 text-zinc-900 dark:text-white shadow-sm" : "text-zinc-500 dark:text-zinc-400"}`}
+                    >
+                        Preview
+                    </button>
+                </div>
+
+                {/* Save button */}
                 <button
                     onClick={handleSave}
                     disabled={saving || !hasUnsaved}
-                    className={`flex items-center gap-2 px-4 py-1.5 rounded-lg font-bold text-sm transition-all
-            ${hasUnsaved && !saving
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-bold text-sm transition-all shrink-0
+                    ${hasUnsaved && !saving
                             ? "bg-blue-600 hover:bg-blue-700 text-white shadow-sm active:scale-95"
                             : "bg-gray-100 dark:bg-white/5 text-gray-400 dark:text-zinc-500 cursor-default"
                         }`}
                 >
                     {saving
-                        ? <><Loader2 className="w-4 h-4 animate-spin" /> Saving...</>
+                        ? <><Loader2 className="w-4 h-4 animate-spin" /><span className="hidden sm:inline"> Saving...</span></>
                         : savedOk
-                            ? <><Check className="w-4 h-4" /> Saved!</>
-                            : <><Save className="w-4 h-4" /> Save</>
+                            ? <><Check className="w-4 h-4" /><span className="hidden sm:inline"> Saved!</span></>
+                            : <><Save className="w-4 h-4" /><span className="hidden sm:inline"> Save</span></>
                     }
                 </button>
 
                 <button
                     onClick={() => router.push("/dashboard")}
-                    className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 dark:text-zinc-500 hover:text-gray-700 dark:hover:text-zinc-300 hover:bg-gray-100 dark:hover:bg-white/10 transition-colors"
+                    className="hidden md:flex w-8 h-8 items-center justify-center rounded-lg text-gray-400 dark:text-zinc-500 hover:text-gray-700 dark:hover:text-zinc-300 hover:bg-gray-100 dark:hover:bg-white/10 transition-colors"
                 >
                     <X className="w-4 h-4" />
                 </button>
@@ -243,8 +263,8 @@ export default function BuilderClient({ data, avatarUrl, isPro }: { data: any; a
             {/* ── Body ───────────────────────────────────────────────────────── */}
             <div className="flex flex-1 overflow-hidden">
 
-                {/* ── Narrow icon sidebar ───────────────────────────────── */}
-                <aside className="w-[60px] shrink-0 bg-white dark:bg-zinc-900 border-r border-gray-200 dark:border-white/10 flex flex-col items-center py-3 gap-1">
+                {/* ── Desktop: Narrow icon sidebar ──────────────────────────── */}
+                <aside className="hidden md:flex w-[60px] shrink-0 bg-white dark:bg-zinc-900 border-r border-gray-200 dark:border-white/10 flex-col items-center py-3 gap-1">
                     {TABS.map(({ id, Icon, label }) => {
                         const active = activeTab === id;
                         return (
@@ -265,10 +285,10 @@ export default function BuilderClient({ data, avatarUrl, isPro }: { data: any; a
                     })}
                 </aside>
 
-                {/* ── Section panel ─────────────────────────────────────── */}
-                <aside className="w-[420px] shrink-0 bg-white dark:bg-zinc-900 border-r border-gray-200 dark:border-white/10 flex flex-col overflow-hidden">
+                {/* ── Desktop Section panel  +  Mobile Edit panel ───────────── */}
+                <aside className={`${mobileView === "edit" ? "flex" : "hidden"} md:flex w-full md:w-[420px] shrink-0 bg-white dark:bg-zinc-900 border-r border-gray-200 dark:border-white/10 flex-col overflow-hidden`}>
                     {/* Panel header */}
-                    <div className="px-6 py-4 border-b border-gray-100 dark:border-white/5 shrink-0">
+                    <div className="px-4 md:px-6 py-3 md:py-4 border-b border-gray-100 dark:border-white/5 shrink-0">
                         <h2 className="font-bold text-gray-900 dark:text-white text-base">{meta.title}</h2>
                         <p className="text-xs text-gray-400 dark:text-zinc-500 mt-0.5">{meta.subtitle}</p>
                     </div>
@@ -276,7 +296,7 @@ export default function BuilderClient({ data, avatarUrl, isPro }: { data: any; a
                     <div className="flex-1 overflow-y-auto">
                         {renderPanel()}
                     </div>
-                    {/* Bottom Save CV button (per-section, like cvmakerly) */}
+                    {/* Bottom Save button */}
                     <div className="p-4 border-t border-gray-100 dark:border-white/5 shrink-0">
                         <button
                             onClick={handleSave}
@@ -297,10 +317,10 @@ export default function BuilderClient({ data, avatarUrl, isPro }: { data: any; a
                     </div>
                 </aside>
 
-                {/* ── Live Preview — dark bg, A4 scaled to fit ─────────── */}
-                <main className="flex-1 flex flex-col overflow-hidden bg-zinc-950/5 dark:bg-zinc-950 relative">
+                {/* ── Live Preview — desktop always visible, mobile toggle ─── */}
+                <main className={`${mobileView === "preview" ? "flex" : "hidden"} md:flex flex-1 flex-col overflow-hidden bg-zinc-950/5 dark:bg-zinc-950 relative`}>
                     <div className="absolute inset-0 pointer-events-none [background:radial-gradient(80%_80%_at_50%_10%,rgba(0,0,0,0.02),transparent)] dark:[background:radial-gradient(80%_80%_at_50%_10%,rgba(255,255,255,0.02),transparent)]"></div>
-                    <div className="flex items-center justify-between px-6 py-2.5 border-b border-border/20 dark:border-white/5 shrink-0 glass relative z-10 shadow-sm">
+                    <div className="flex items-center justify-between px-4 md:px-6 py-2.5 border-b border-border/20 dark:border-white/5 shrink-0 relative z-10 shadow-sm bg-white/50 dark:bg-zinc-900/50 backdrop-blur-sm">
                         <span className="text-foreground/80 text-xs font-semibold tracking-wide flex items-center gap-2">
                             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                             Live Preview
@@ -309,52 +329,65 @@ export default function BuilderClient({ data, avatarUrl, isPro }: { data: any; a
                             {hasUnsaved && (
                                 <span className="flex items-center gap-1.5 text-amber-500 text-[11px] font-semibold bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
                                     <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
-                                    Unsaved changes
+                                    Unsaved
                                 </span>
                             )}
-                            {/* Zoom Controls */}
-                            <div className="flex items-center gap-1 ml-4">
-                                <button
-                                    onClick={handleZoomOut}
-                                    title="Zoom Out"
-                                    className="w-7 h-7 flex items-center justify-center rounded-md text-foreground/60 hover:text-foreground hover:bg-foreground/10 transition-colors text-base font-bold"
-                                >
-                                    −
-                                </button>
-                                <button
-                                    onClick={handleZoomReset}
-                                    title="Reset"
-                                    className="px-2 h-7 rounded-md text-foreground/50 hover:text-foreground hover:bg-foreground/10 transition-colors text-[11px] font-bold tabular-nums"
-                                >
-                                    {Math.round(zoom * 100)}%
-                                </button>
-                                <button
-                                    onClick={handleZoomIn}
-                                    title="Zoom In"
-                                    className="w-7 h-7 flex items-center justify-center rounded-md text-foreground/60 hover:text-foreground hover:bg-foreground/10 transition-colors text-base font-bold"
-                                >
-                                    +
-                                </button>
+                            {/* Zoom Controls — desktop only */}
+                            <div className="hidden md:flex items-center gap-1 ml-4">
+                                <button onClick={handleZoomOut} title="Zoom Out" className="w-7 h-7 flex items-center justify-center rounded-md text-foreground/60 hover:text-foreground hover:bg-foreground/10 transition-colors text-base font-bold">−</button>
+                                <button onClick={handleZoomReset} title="Reset" className="px-2 h-7 rounded-md text-foreground/50 hover:text-foreground hover:bg-foreground/10 transition-colors text-[11px] font-bold tabular-nums">{Math.round(zoom * 100)}%</button>
+                                <button onClick={handleZoomIn} title="Zoom In" className="w-7 h-7 flex items-center justify-center rounded-md text-foreground/60 hover:text-foreground hover:bg-foreground/10 transition-colors text-base font-bold">+</button>
                             </div>
                         </div>
                     </div>
 
-                    {/* A4 canvas — scaled to fit the panel */}
-                    <div className="flex-1 overflow-auto flex items-start justify-center py-8 px-6">
+                    {/* A4 canvas */}
+                    <div className="flex-1 overflow-auto flex items-start justify-center py-6 px-4">
+                        {/* Mobile: full-width scaled preview */}
                         <div
+                            className="md:hidden w-full overflow-x-auto"
+                            style={{ transform: 'scale(0.45)', transformOrigin: 'top center', width: A4_WIDTH, marginBottom: `${(0.45 - 1) * 1123}px` }}
+                        >
+                            <CVRenderer avatarUrl={avatarUrl} showPhoto={true} />
+                        </div>
+                        {/* Desktop: zoom-controlled */}
+                        <div
+                            className="hidden md:block shrink-0 shadow-2xl shadow-black/60"
                             style={{
                                 width: A4_WIDTH,
                                 transform: `scale(${zoom})`,
                                 transformOrigin: 'top center',
-                                marginBottom: `${(zoom - 1) * 1123}px`, /* compensate height loss when scaled down */
+                                marginBottom: `${(zoom - 1) * 1123}px`,
                             }}
-                            className="shadow-2xl shadow-black/60 shrink-0"
                         >
                             <CVRenderer avatarUrl={avatarUrl} showPhoto={true} />
                         </div>
                     </div>
                 </main>
             </div>
+
+            {/* ── Mobile: Bottom Tab Bar ─────────────────────────────────────── */}
+            <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-zinc-900 border-t border-gray-200 dark:border-white/10 flex items-center justify-around px-1 py-1 safe-area-bottom shadow-[0_-4px_20px_-4px_rgba(0,0,0,0.1)]">
+                {TABS.map(({ id, Icon, label }) => {
+                    const active = activeTab === id && mobileView === "edit";
+                    return (
+                        <button
+                            key={id}
+                            onClick={() => { setActiveTab(id); setMobileView("edit"); }}
+                            className={`flex flex-col items-center justify-center gap-0.5 py-1.5 px-2 rounded-xl transition-all min-w-0 flex-1 ${active
+                                ? "bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400"
+                                : "text-gray-400 dark:text-zinc-500"
+                                }`}
+                        >
+                            <Icon className="w-5 h-5 shrink-0" strokeWidth={active ? 2.5 : 1.75} />
+                            <span className="text-[9px] font-semibold leading-none truncate">{label}</span>
+                        </button>
+                    );
+                })}
+            </nav>
+
+            {/* Padding for bottom tab bar on mobile */}
+            <div className="md:hidden h-[60px] shrink-0" />
         </div>
     );
 }
