@@ -3,11 +3,8 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from "@/components/ui/button";
-import { ArrowRight, CheckCircle2, FileText, Download, Share2, Zap, Globe, MessageSquare, ShieldCheck, X } from "lucide-react";
-import { ContainerScroll } from "@/components/ui/container-scroll-animation";
+import { ArrowRight, CheckCircle2, FileText, Download, Share2, Zap, MessageSquare, ShieldCheck, X } from "lucide-react";
 import { TestimonialsSection } from "@/components/ui/testimonials-with-marquee";
-import { InteractiveGlobe } from "@/components/ui/interactive-globe";
-import { RepeatType, Easing } from 'framer-motion';
 
 const testimonials = [
   {
@@ -50,178 +47,186 @@ const testimonials = [
 
 export default function Home() {
   return (
-    <div className="flex flex-col min-h-screen bg-white text-zinc-900 overflow-x-hidden selection:bg-blue-500/30">
-      <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between h-20 px-4 md:px-6 border-b border-zinc-100 bg-white/80 backdrop-blur-md">
-        <Link className="flex items-center gap-2 group" href="/">
-          <div className="flex items-center justify-center w-9 h-9 rounded-xl bg-blue-600 transition-transform group-hover:scale-110 shadow-lg shadow-blue-600/20 flex-shrink-0">
-            <Zap className="h-5 w-5 text-white fill-white" />
+    <div className="flex flex-col min-h-screen bg-[#fafafa] text-zinc-900 overflow-x-hidden selection:bg-blue-500/30">
+
+      {/* Floating Modern Navbar */}
+      <div className="fixed top-4 left-4 right-4 md:left-1/2 md:-translate-x-1/2 md:w-full md:max-w-5xl z-50 flex justify-center pointer-events-none">
+        <header className="flex items-center justify-between w-full h-16 px-4 md:px-6 border border-zinc-200/80 bg-white/70 backdrop-blur-xl rounded-full shadow-[0_8px_32px_-8px_rgba(0,0,0,0.08)] pointer-events-auto transition-all">
+          <Link className="flex items-center gap-2 group" href="/">
+            <div className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-600 transition-transform group-hover:scale-110 shadow-md shadow-blue-600/20 flex-shrink-0">
+              <Zap className="h-4 w-4 text-white fill-white" />
+            </div>
+            <span className="text-lg font-extrabold tracking-tight text-zinc-900 truncate">CV Optimizer</span>
+          </Link>
+
+          {/* Desktop Nav */}
+          <nav className="hidden md:flex gap-8 items-center text-[15px] font-bold text-zinc-500">
+            <Link className="hover:text-zinc-900 transition-colors" href="/templates">Templates</Link>
+            <Link className="hover:text-zinc-900 transition-colors" href="/pricing">Pricing</Link>
+            <Link className="hover:text-zinc-900 transition-colors" href="/login">Login</Link>
+            <Link href="/signup">
+              <Button className="bg-zinc-900 text-white hover:bg-zinc-800 font-bold rounded-full px-6 h-10 shadow-sm transition-all hover:scale-105 active:scale-95">
+                Start Free
+              </Button>
+            </Link>
+          </nav>
+
+          {/* Mobile Nav */}
+          <div className="flex md:hidden items-center gap-3">
+            <Link href="/login" className="text-[13px] font-bold text-zinc-600 hover:text-zinc-900">
+              Login
+            </Link>
+            <Link href="/signup">
+              <Button size="sm" className="bg-zinc-900 text-white hover:bg-zinc-800 font-bold rounded-full px-4 h-8 text-[13px]">
+                Start Free
+              </Button>
+            </Link>
           </div>
-          <span className="text-lg md:text-xl font-bold tracking-tight text-zinc-900 truncate">CV Optimizer</span>
-        </Link>
+        </header>
+      </div>
 
-        {/* Desktop Nav */}
-        <nav className="hidden md:flex gap-8 items-center text-sm font-medium text-zinc-500">
-          <Link className="hover:text-blue-600 transition-colors" href="/templates">Templates</Link>
-          <Link className="hover:text-blue-600 transition-colors" href="/pricing">Pricing</Link>
-          <Link className="hover:text-blue-600 transition-colors" href="/login">Login</Link>
-          <Link href="/signup">
-            <Button className="bg-blue-600 text-white hover:bg-blue-700 font-bold rounded-xl px-6">
-              Get Started
-            </Button>
-          </Link>
-        </nav>
+      <main className="flex-1">
 
-        {/* Mobile Nav */}
-        <div className="flex md:hidden items-center gap-3">
-          <Link href="/login" className="text-[13px] font-bold text-zinc-600 hover:text-blue-600">
-            Login
-          </Link>
-          <Link href="/signup">
-            <Button size="sm" className="bg-blue-600 text-white hover:bg-blue-700 font-bold rounded-lg px-3 h-8 text-[13px]">
-              Sign Up
-            </Button>
-          </Link>
-        </div>
-      </header>
+        {/* --- Hero Section --- */}
+        <section className="relative w-full overflow-hidden bg-[#fafafa] min-h-[90vh] flex flex-col items-center justify-center pt-32 pb-20">
 
-      <main className="flex-1 pt-20">
-        {/* --- Hero Section with Interactive Globe (Minimalist Light) --- */}
-        <section className="relative w-full overflow-hidden bg-white min-h-[85vh] flex items-center">
           {/* Subtle Background Elements */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-7xl bg-[radial-gradient(circle_at_50%_0%,rgba(59,130,246,0.05),transparent_50%)] pointer-events-none" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(37,99,235,0.06)_0%,transparent_70%)] pointer-events-none" />
+          <div className="absolute top-0 w-full h-full bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:6rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-40 pointer-events-none" />
 
-          <div className="container px-6 mx-auto relative z-20 flex flex-col lg:flex-row items-center gap-12 lg:gap-8">
-            <div className="flex-1 text-center lg:text-left space-y-10 max-w-2xl lg:max-w-xl">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-blue-600 text-[13px] font-semibold animate-fade-in shadow-sm">
-                <ShieldCheck className="h-4 w-4" /> Trusted by 120,000+ Professionals
-              </div>
-              <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight leading-[1.05] text-zinc-900">
-                The all-in-one <br />
-                <span className="text-blue-600">career platform.</span>
-              </h1>
-              <p className="text-xl text-zinc-500 leading-relaxed max-w-lg mx-auto lg:mx-0">
-                Build professional CVs, generate tailored cover letters, and land interviews at top companies with our AI-powered standard.
-              </p>
+          <div className="container px-6 mx-auto relative z-20 flex flex-col items-center text-center mt-12 mb-16 animate-in fade-in slide-in-from-bottom-4 duration-700">
 
-              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-6 pt-4">
-                <Link href="/signup">
-                  <Button size="lg" className="h-16 px-10 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-lg shadow-xl shadow-blue-600/10 transition-all hover:scale-[1.02] active:scale-95">
-                    Start Building for Free <ArrowRight className="ml-2 h-5 w-5" />
-                  </Button>
-                </Link>
-                <div className="flex items-center gap-4">
-                  <div className="flex -space-x-4">
-                    {testimonials.map((t, i) => (
-                      <div key={i} className="w-12 h-12 rounded-full border-4 border-white bg-zinc-100 overflow-hidden shadow-md relative z-[10]">
-                        <Image src={t.author.avatar} alt={t.author.name} width={48} height={48} className="object-cover" />
-                      </div>
-                    ))}
-                  </div>
-                  <div className="flex flex-col items-start -space-y-1">
-                    <p className="text-[15px] font-bold text-zinc-900 tracking-tight">Join 10k+ professionals</p>
-                    <div className="flex items-center gap-1">
-                      <div className="flex">
-                        {[1, 2, 3, 4, 5].map(i => (
-                          <svg key={i} className="w-3.5 h-3.5 fill-blue-500" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" /></svg>
-                        ))}
-                      </div>
-                      <span className="text-[11px] font-bold text-zinc-400 uppercase tracking-wider">Top Rated AI</span>
-                    </div>
-                  </div>
-                </div>
+            <Link href="/signup">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-zinc-200/80 text-zinc-600 text-[13px] font-semibold mb-8 shadow-sm hover:shadow-md transition-all cursor-pointer hover:border-blue-200 group">
+                <span className="flex h-2 w-2 rounded-full bg-blue-500 animate-pulse"></span>
+                CV Optimizer AI 2.0 is live
+                <ArrowRight className="h-3.5 w-3.5 text-zinc-400 group-hover:text-blue-500 transition-colors group-hover:translate-x-0.5" />
               </div>
+            </Link>
+
+            <h1 className="text-6xl md:text-[80px] lg:text-[100px] font-extrabold tracking-tighter leading-[0.95] text-zinc-900 mb-8 max-w-5xl">
+              Interviews on <br className="md:hidden" />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2563eb] to-[#3b82f6]">Autopilot.</span>
+            </h1>
+
+            <p className="text-lg md:text-xl text-zinc-500 leading-relaxed max-w-2xl mx-auto mb-10 font-medium tracking-tight">
+              Stop the grind. Build professional CVs, tailor cover letters, and land interviews automatically. Our AI agents do the heavy lifting while you focus on the actual prep.
+            </p>
+
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto z-30 relative">
+              <Link href="/signup" className="w-full sm:w-auto">
+                <Button size="lg" className="w-full sm:w-auto h-14 px-8 rounded-full bg-gradient-to-r from-[#2563eb] to-[#3b82f6] hover:from-[#1d4ed8] hover:to-[#2563eb] text-white font-bold text-[15px] shadow-[0_0_24px_rgba(59,130,246,0.3)] hover:shadow-[0_0_32px_rgba(59,130,246,0.5)] transition-all hover:scale-[1.02] active:scale-95 border border-blue-400/20">
+                  Start for Free <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
+              <Link href="/templates" className="w-full sm:w-auto">
+                <Button size="lg" variant="outline" className="w-full sm:w-auto h-14 px-8 rounded-full bg-white border-zinc-200 text-zinc-700 font-bold text-[15px] hover:bg-zinc-50 hover:border-zinc-300 transition-all shadow-sm hover:shadow-md">
+                  Explore Templates
+                </Button>
+              </Link>
             </div>
 
-            <div className="flex-1 flex items-center justify-center relative scale-100 lg:scale-[1.25] transform cursor-grab active:cursor-grabbing">
-              {/* Clean Globe Implementation */}
-              <InteractiveGlobe
-                size={700}
-                dotColor="rgba(59, 130, 246, ALPHA)"
-                arcColor="rgba(59, 130, 246, 0.4)"
-                markerColor="rgba(59, 130, 246, 1)"
-                className="opacity-100 transition-opacity duration-1000"
-              />
+            <div className="flex flex-col items-center mt-12 gap-3">
+              <div className="flex -space-x-3">
+                {testimonials.map((t, i) => (
+                  <div key={i} className="w-10 h-10 rounded-full border-2 border-white bg-zinc-100 overflow-hidden shadow-sm relative z-[10] hover:scale-110 transition-transform cursor-pointer">
+                    <Image src={t.author.avatar} alt={t.author.name} width={40} height={40} className="object-cover" />
+                  </div>
+                ))}
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="flex">
+                  {[1, 2, 3, 4, 5].map(i => (
+                    <svg key={i} className="w-3.5 h-3.5 fill-[#f59e0b]" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" /></svg>
+                  ))}
+                </div>
+                <p className="text-[14px] font-bold text-zinc-600 tracking-tight">Joined by 10,000+ top professionals</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="container px-6 mx-auto relative z-20 w-full max-w-6xl mt-8">
+            <div className="relative w-full aspect-video bg-white rounded-[24px] overflow-hidden shadow-[0_24px_80px_-15px_rgba(37,99,235,0.12)] border border-neutral-200/80 group transition-all duration-700 hover:shadow-[0_32px_100px_-15px_rgba(37,99,235,0.2)] hover:-translate-y-1">
+              <div className="absolute top-0 left-0 right-0 h-12 bg-[#fafafa] border-b border-neutral-200 flex items-center px-4 gap-2 z-20">
+                <div className="flex gap-1.5 opacity-60">
+                  <div className="w-3 h-3 rounded-full bg-red-400"></div>
+                  <div className="w-3 h-3 rounded-full bg-amber-400"></div>
+                  <div className="w-3 h-3 rounded-full bg-green-400"></div>
+                </div>
+                <div className="mx-auto bg-white border border-neutral-200 rounded-md px-16 md:px-32 py-1 flex items-center shadow-sm">
+                  <span className="text-[10px] md:text-xs text-neutral-400 font-medium tracking-wide">cvoptimizerai.com</span>
+                </div>
+              </div>
+              <div className="absolute inset-0 pt-12">
+                <Image
+                  src="/cv_mockup.png"
+                  alt="Platform Interface Showcase"
+                  fill
+                  className="object-cover object-top"
+                  draggable={false}
+                />
+              </div>
             </div>
           </div>
         </section>
 
-        {/* --- Feature Grid (Clean Minimalist) --- */}
-        <section className="w-full bg-zinc-50 py-32 border-y border-zinc-100">
-          <div className="container px-6 mx-auto">
-            <div className="max-w-3xl mb-20">
-              <h2 className="text-4xl font-black text-zinc-900 mb-6">Everything you need to master your job search.</h2>
-              <p className="text-lg text-zinc-500">We've combined powerful AI tools with professional templates to help you land your dream job faster than ever.</p>
+        {/* --- Feature Grid (Clean Minimalist high-end SaaS) --- */}
+        <section className="w-full bg-[#fbfcfd] py-32 border-y border-zinc-100/80">
+          <div className="container px-6 mx-auto max-w-6xl">
+            <div className="max-w-3xl mb-20 text-center mx-auto">
+              <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-zinc-900 mb-6">Unfair advantage in the job market.</h2>
+              <p className="text-lg md:text-xl text-zinc-500 font-medium tracking-tight leading-relaxed">Let our AI agents analyze, write, and optimize your application materials so you can simply hit apply with absolute confidence.</p>
             </div>
-            <div className="grid md:grid-cols-3 gap-12">
+
+            <div className="grid md:grid-cols-3 gap-8">
               {[
-                { title: "Smart CV Optimization", desc: "Get a realtime Match Score for your target job. AI suggests keywords and improvements.", icon: Zap },
-                { title: "AI Cover Letters", desc: "Tailor cover letters for specific job postings in seconds based on your experience.", icon: MessageSquare },
-                { title: "Live Template Switching", desc: "Switch between Modern, Executive, and Creative templates instantly without losing progress.", icon: FileText }
+                { title: "Smart Match Score", desc: "Instantly see how your CV stacks up against any job description with real-time keyword suggestions and scoring.", icon: Zap },
+                { title: "AI Cover Letters", desc: "Generate perfectly tailored cover letters for every application in exactly 3 seconds, all based on your actual experience.", icon: MessageSquare },
+                { title: "1-Click Template Swap", desc: "Instantly cycle through beautifully designed, ATS-friendly templates without ever losing your content or formatting.", icon: FileText }
               ].map((feat, i) => (
-                <div key={feat.title} className="space-y-4">
-                  <div className="size-12 rounded-2xl bg-blue-50 flex items-center justify-center">
+                <div key={feat.title} className="bg-white p-8 rounded-[24px] border border-neutral-200 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                  <div className="size-12 rounded-[16px] bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100/50 flex items-center justify-center mb-6">
                     <feat.icon className="h-6 w-6 text-blue-600" />
                   </div>
-                  <h3 className="text-xl font-bold text-zinc-900">{feat.title}</h3>
-                  <p className="text-zinc-500 leading-relaxed">{feat.desc}</p>
+                  <h3 className="text-xl font-extrabold text-zinc-900 mb-3 tracking-tight">{feat.title}</h3>
+                  <p className="text-zinc-500 leading-relaxed font-medium text-[15px]">{feat.desc}</p>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        <TestimonialsSection
-          title="Trusted by professionals worldwide"
-          description="Join thousands of professionals who are already landing interviews at top companies with CV Optimizer."
-          testimonials={testimonials}
-        />
-
-        {/* --- Editor Showcase (Subtle Light Mode) --- */}
-        <section className="w-full bg-zinc-50 py-32 border-t border-zinc-100">
-          <ContainerScroll
-            titleComponent={
-              <div className="max-w-4xl mx-auto mb-12 text-center">
-                <h2 className="text-4xl md:text-6xl font-black text-zinc-900 mb-6">
-                  Experience the <span className="text-blue-600">Power of AI</span>
-                </h2>
-                <p className="text-zinc-500 text-xl max-w-2xl mx-auto">
-                  Watch your career transform with our pixel-perfect editor. Real-time feedback, infinite customization.
-                </p>
-              </div>
-            }
-          >
-            <div className="relative w-full h-full bg-white rounded-3xl overflow-hidden border border-zinc-200 shadow-2xl">
-              <Image
-                src="/cv_mockup.png"
-                alt="AI CV Editor Mockup"
-                fill
-                className="object-cover"
-                draggable={false}
-              />
-            </div>
-          </ContainerScroll>
-        </section>
+        {/* Testimonials */}
+        <div className="bg-[#fafafa]">
+          <TestimonialsSection
+            title="Trusted by professionals worldwide"
+            description="Join thousands of professionals who are already landing interviews at top companies with CV Optimizer."
+            testimonials={testimonials}
+          />
+        </div>
 
         {/* --- Pricing CTA (Synchronized with Upgrade Plan Style) --- */}
-        <section className="w-full py-32 bg-white relative overflow-hidden">
-          <div className="container px-6 mx-auto text-center relative z-10">
-            <h2 className="text-4xl md:text-5xl font-bold text-zinc-900 mb-20 tracking-tight">
-              Upgrade your Plan
+        <section className="w-full py-32 bg-white border-t border-zinc-100 relative overflow-hidden">
+          <div className="absolute inset-x-0 bottom-0 h-96 bg-gradient-to-t from-blue-50/50 to-transparent pointer-events-none" />
+
+          <div className="container px-6 mx-auto text-center relative z-10 max-w-5xl">
+            <h2 className="text-4xl md:text-5xl font-extrabold text-zinc-900 mb-20 tracking-tight">
+              Simple, transparent pricing.
             </h2>
 
-            <div className="flex flex-col sm:flex-row gap-8 max-w-[850px] mx-auto mb-20 items-stretch">
+            <div className="flex flex-col md:flex-row gap-8 mx-auto mb-20 items-stretch justify-center">
               {/* Free Plan */}
-              <div className="flex-1 bg-white rounded-[24px] shadow-[0_4px_24px_-4px_rgba(0,0,0,0.06)] p-10 flex flex-col border border-zinc-100 hover:shadow-xl transition-shadow">
-                <div className="text-left mb-6">
-                  <h3 className="text-[28px] font-bold text-black leading-tight">Free</h3>
-                  <p className="text-zinc-500 text-[15px] mt-1">Perfect for testing the platform.</p>
+              <div className="flex-1 max-w-[400px] w-full bg-white rounded-[32px] shadow-[0_4px_24px_-4px_rgba(0,0,0,0.06)] p-10 flex flex-col border border-zinc-200 hover:shadow-xl transition-shadow text-left">
+                <div className="mb-6">
+                  <h3 className="text-[28px] font-extrabold text-black leading-tight tracking-tight">Free</h3>
+                  <p className="text-zinc-500 text-[15px] mt-2 font-medium">Perfect for testing the platform.</p>
                 </div>
-                <div className="flex items-baseline gap-1.5 mb-8 text-left">
-                  <span className="text-[44px] font-bold tracking-tight text-zinc-900 leading-none">$0</span>
-                  <span className="text-zinc-500 text-[15px] font-medium">/forever</span>
+                <div className="flex items-baseline gap-1.5 mb-8">
+                  <span className="text-[48px] font-extrabold tracking-tighter text-zinc-900 leading-none">$0</span>
+                  <span className="text-zinc-500 text-[15px] font-bold">/forever</span>
                 </div>
 
-                <ul className="space-y-4 mb-10 flex-1 text-left">
+                <ul className="space-y-4 mb-10 flex-1">
                   {[
                     { text: "2 CVs (Resets every 14 days)", included: true },
                     { text: "2 Cover Letters (Resets 14 days)", included: true },
@@ -231,44 +236,44 @@ export default function Home() {
                   ].map((item, i) => (
                     <li key={i} className="flex items-start gap-3 text-[14px]">
                       {item.included ? (
-                        <CheckCircle2 className="w-[18px] h-[18px] text-[#16a34a] shrink-0 mt-[2px]" strokeWidth={2.5} />
+                        <CheckCircle2 className="w-[20px] h-[20px] text-[#2563eb] shrink-0 mt-[2px]" strokeWidth={2.5} />
                       ) : (
-                        <X className="w-[18px] h-[18px] text-zinc-300 shrink-0 mt-[2px]" strokeWidth={2.5} />
+                        <X className="w-[20px] h-[20px] text-zinc-300 shrink-0 mt-[2px]" strokeWidth={2.5} />
                       )}
-                      <span className={item.included ? "text-zinc-700 font-medium" : "text-zinc-400"}>{item.text}</span>
+                      <span className={item.included ? "text-zinc-700 font-bold" : "text-zinc-400 font-medium"}>{item.text}</span>
                     </li>
                   ))}
                 </ul>
 
                 <Link href="/signup" className="w-full">
-                  <Button variant="outline" className="w-full h-14 rounded-[14px] border-zinc-200 text-black font-semibold text-[15px] hover:bg-zinc-50 transition-all">
-                    Start for Free
+                  <Button variant="outline" className="w-full h-14 rounded-full border-zinc-200 text-zinc-900 font-bold text-[15px] hover:bg-zinc-50 hover:border-zinc-300 transition-all shadow-sm shadow-zinc-200/50">
+                    Get Started Free
                   </Button>
                 </Link>
               </div>
 
               {/* Pro Plan */}
-              <div className="flex-1 relative bg-white rounded-[24px] shadow-[0_12px_40px_-4px_rgba(37,99,235,0.12)] border-[2.5px] border-[#2563eb] p-10 flex flex-col hover:scale-[1.01] transition-transform">
-                <div className="absolute top-6 right-8 bg-[#2563eb] text-white text-[11px] font-bold tracking-wide px-3 py-1.5 rounded-full uppercase shadow-lg shadow-blue-600/20 z-20">
-                  BEST VALUE
+              <div className="flex-1 max-w-[400px] w-full relative bg-white rounded-[32px] shadow-[0_12px_40px_-4px_rgba(37,99,235,0.15)] border-[2.5px] border-[#2563eb] p-10 flex flex-col hover:scale-[1.02] transition-transform text-left">
+                <div className="absolute top-0 right-10 -translate-y-1/2 bg-gradient-to-r from-[#2563eb] to-[#3b82f6] text-white text-[11px] font-extrabold tracking-wider px-4 py-1.5 rounded-full uppercase shadow-lg shadow-blue-600/20 z-20">
+                  Most Popular
                 </div>
 
-                <div className="text-left mb-6 mt-4">
-                  <h3 className="text-[28px] font-bold text-black leading-tight">Pro Lifetime</h3>
-                  <p className="text-zinc-500 text-[15px] mt-1">Single payment, unlimited access.</p>
+                <div className="mb-6">
+                  <h3 className="text-[28px] font-extrabold text-black leading-tight tracking-tight">Pro Lifetime</h3>
+                  <p className="text-zinc-500 text-[15px] mt-2 font-medium">Single payment, unlimited access.</p>
                 </div>
 
-                <div className="flex flex-col mb-8 text-left">
+                <div className="flex flex-col mb-8">
                   <div className="flex items-baseline gap-1.5">
-                    <span className="text-[44px] font-bold tracking-tight text-zinc-900 leading-none">$99</span>
-                    <span className="text-zinc-600 text-[15px] font-medium">one-time</span>
+                    <span className="text-[48px] font-extrabold tracking-tighter text-zinc-900 leading-none">$99</span>
+                    <span className="text-zinc-600 text-[15px] font-bold">one-time</span>
                   </div>
-                  <p className="text-[11px] text-[#2563eb] font-black mt-2 uppercase tracking-wider bg-blue-50 w-fit px-2 py-0.5 rounded">
+                  <p className="text-[11px] text-[#2563eb] font-black mt-3 uppercase tracking-wider bg-blue-50 border border-blue-100 w-fit px-2.5 py-1 rounded-md">
                     Approx. $8.25/mo for one year
                   </p>
                 </div>
 
-                <ul className="space-y-4 mb-10 flex-1 text-left">
+                <ul className="space-y-4 mb-10 flex-1">
                   {[
                     "Unlimited Everything",
                     "Advanced AI Optimization",
@@ -277,55 +282,59 @@ export default function Home() {
                     "Premium Templates"
                   ].map((feat, i) => (
                     <li key={i} className="flex items-start gap-3 text-[14px]">
-                      <CheckCircle2 className="w-[18px] h-[18px] text-[#16a34a] shrink-0 mt-[2px]" strokeWidth={2.5} />
-                      <span className="text-zinc-800 font-bold">{feat}</span>
+                      <CheckCircle2 className="w-[20px] h-[20px] text-[#2563eb] shrink-0 mt-[2px]" strokeWidth={2.5} />
+                      <span className="text-zinc-900 font-bold">{feat}</span>
                     </li>
                   ))}
                 </ul>
 
                 <Link href="/signup" className="w-full">
-                  <Button className="w-full h-14 rounded-[14px] bg-[#2563eb] hover:bg-black text-white font-bold text-[15px] shadow-xl shadow-blue-500/20 transition-all">
-                    Upgrade to Pro
+                  <Button className="w-full h-14 rounded-full bg-gradient-to-r from-[#2563eb] to-[#3b82f6] hover:from-[#1d4ed8] hover:to-[#2563eb] text-white font-bold text-[15px] shadow-xl shadow-blue-500/20 transition-all">
+                    Upgrade to Pro <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </Link>
               </div>
             </div>
 
-            <div className="flex flex-col items-center gap-4">
-              <p className="text-zinc-400 text-sm font-medium">Join over 10,000 professionals who use CV Optimizer to land interviews.</p>
-              <div className="flex items-center gap-8 opacity-40 grayscale pointer-events-none">
-                <p className="font-black text-xl tracking-tighter">indeed</p>
-                <p className="font-black text-xl tracking-tighter">Glassdoor</p>
-                <p className="font-black text-xl tracking-tighter">LinkedIn</p>
+            <div className="flex flex-col items-center gap-6 pb-4">
+              <p className="text-zinc-400 text-sm font-bold tracking-tight uppercase">Trusted by candidates hired at</p>
+              <div className="flex items-center justify-center gap-8 md:gap-16 opacity-30 grayscale pointer-events-none flex-wrap">
+                <p className="font-extrabold text-2xl tracking-tighter">Google</p>
+                <p className="font-extrabold text-2xl tracking-tighter">Microsoft</p>
+                <p className="font-extrabold text-2xl tracking-tighter">Meta</p>
+                <p className="font-extrabold text-2xl tracking-tighter">Amazon</p>
               </div>
             </div>
           </div>
         </section>
       </main>
 
-      <footer className="py-20 px-6 border-t border-zinc-100 bg-white">
-        <div className="container mx-auto flex flex-col md:flex-row justify-between items-start gap-12">
+      <footer className="py-20 px-6 border-t border-zinc-100 bg-[#fafafa]">
+        <div className="container mx-auto max-w-6xl flex flex-col md:flex-row justify-between items-start gap-12">
           <div className="flex flex-col gap-6 max-w-xs">
             <Link className="flex items-center gap-2" href="/">
-              <Zap className="h-6 w-6 text-blue-600 fill-blue-600" />
-              <span className="font-black text-2xl tracking-tight text-zinc-900">CV Optimizer</span>
+              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-600">
+                <Zap className="h-4 w-4 text-white fill-white" />
+              </div>
+              <span className="font-extrabold text-xl tracking-tight text-zinc-900">CV Optimizer</span>
             </Link>
             <p className="text-sm text-zinc-500 leading-relaxed font-medium">Handcrafted with precision to help candidates land their dream jobs at top companies worldwide.</p>
-            <p className="text-xs text-zinc-400 font-bold uppercase tracking-widest">© {new Date().getFullYear()} CV Optimizer. AI-Powered.</p>
+            <p className="text-xs text-zinc-400 font-bold uppercase tracking-widest mt-4">© {new Date().getFullYear()} CV Optimizer. AI-Powered.</p>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-16">
+          <div className="grid grid-cols-2 gap-16 md:gap-24">
             <div className="space-y-6">
-              <p className="text-xs font-black uppercase tracking-widest text-zinc-400">Product</p>
+              <p className="text-xs font-black uppercase tracking-widest text-[#2563eb]">Product</p>
               <nav className="flex flex-col gap-4 text-sm font-bold text-zinc-600">
-                <Link className="hover:text-blue-600 transition-colors" href="/templates">Templates</Link>
-                <Link className="hover:text-blue-600 transition-colors" href="/pricing">Pricing</Link>
+                <Link className="hover:text-zinc-900 transition-colors" href="/templates">Templates</Link>
+                <Link className="hover:text-zinc-900 transition-colors" href="/pricing">Pricing</Link>
+                <Link className="hover:text-zinc-900 transition-colors" href="/login">Login</Link>
               </nav>
             </div>
             <div className="space-y-6">
-              <p className="text-xs font-black uppercase tracking-widest text-zinc-400">Legal</p>
+              <p className="text-xs font-black uppercase tracking-widest text-[#2563eb]">Legal</p>
               <nav className="flex flex-col gap-4 text-sm font-bold text-zinc-600">
-                <Link className="hover:text-blue-600 transition-colors" href="#">Privacy</Link>
-                <Link className="hover:text-blue-600 transition-colors" href="#">Terms</Link>
+                <Link className="hover:text-zinc-900 transition-colors" href="#">Privacy</Link>
+                <Link className="hover:text-zinc-900 transition-colors" href="#">Terms</Link>
               </nav>
             </div>
           </div>
