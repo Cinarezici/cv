@@ -236,7 +236,7 @@ export default function Home() {
           {/* Desktop Nav */}
           <nav className="hidden md:flex gap-8 items-center text-[15px] font-bold text-zinc-500">
             <Link className="hover:text-zinc-900 transition-colors" href="/templates">Templates</Link>
-            <Link className="hover:text-zinc-900 transition-colors" href="/pricing">Pricing</Link>
+            <a className="hover:text-zinc-900 transition-colors cursor-pointer" href="#pricing">Pricing</a>
             <Link className="hover:text-zinc-900 transition-colors" href="/login">Login</Link>
             <Link href="/signup">
               <Button className="bg-zinc-900 text-white hover:bg-zinc-800 font-bold rounded-full px-6 h-10 shadow-sm transition-all hover:scale-105 active:scale-95">
@@ -419,7 +419,7 @@ export default function Home() {
         </div>
 
         {/* --- F) Pricing / Trial --- */}
-        <section className="w-full py-28 bg-[#fafafa] border-t border-zinc-100 relative overflow-hidden">
+        <section id="pricing" className="w-full py-28 bg-[#fafafa] border-t border-zinc-100 relative overflow-hidden">
           <div className="absolute inset-x-0 bottom-0 h-96 bg-gradient-to-t from-blue-50/50 to-transparent pointer-events-none" />
 
           <div className="container px-6 mx-auto text-center relative z-10 max-w-5xl">
