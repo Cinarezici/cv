@@ -91,9 +91,11 @@ export default function Home() {
         {/* --- Hero Section --- */}
         <section className="relative w-full overflow-hidden bg-[#fafafa] min-h-[90vh] flex flex-col items-center justify-center pt-32 pb-20">
 
-          {/* Subtle Background Elements */}
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(37,99,235,0.06)_0%,transparent_70%)] pointer-events-none" />
-          <div className="absolute top-0 w-full h-full bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:6rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-40 pointer-events-none" />
+          {/* New Background Grid patterned after viewcreator / cvmakerly */}
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#e5e7eb_1px,transparent_1px),linear-gradient(to_bottom,#e5e7eb_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_80%_at_50%_0%,#000_80%,transparent_100%)] opacity-30 pointer-events-none" />
+          <div className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80 pointer-events-none">
+            <div className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#2563eb] to-[#93c5fd] opacity-20 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]" style={{ clipPath: 'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)' }}></div>
+          </div>
 
           <div className="container px-6 mx-auto relative z-20 flex flex-col items-center text-center mt-12 mb-16 animate-in fade-in slide-in-from-bottom-4 duration-700">
 
@@ -311,11 +313,12 @@ export default function Home() {
 
         {/* --- Final Spiral CTA Section --- */}
         <section className="relative w-full h-[600px] border-t border-zinc-100 overflow-hidden bg-[#fafafa]">
-          {/* We import SpiralAnimation dynamically below if needed, but it's a client component so we can use it directly since page is client */}
-          <div className="absolute inset-0">
+          {/* SpiralAnimation is now absolute centered directly behind the text block */}
+          <div className="absolute left-1/2 top-[45%] -translate-x-1/2 -translate-y-1/2 w-full max-w-[800px] aspect-square pointer-events-none opacity-90 mix-blend-multiply">
             <SpiralAnimation />
           </div>
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10 -mt-10">
             <Link href="/signup" className="pointer-events-auto">
               <div className="flex flex-col items-center gap-6 group">
                 <p className="text-3xl md:text-5xl font-extrabold tracking-tighter text-zinc-900 group-hover:scale-105 transition-transform duration-500 drop-shadow-md">

@@ -195,7 +195,11 @@ class AnimationController {
         ctx.fillRect(0, 0, this.size, this.size)
 
         ctx.save()
-        ctx.translate(this.size / 2, this.size / 2)
+        // Adjust the translation to account for the startDotYOffset so the spiral origin is visually centered
+        // We know the initial y offset projected is approximately cameraZ * startDotYOffset / viewZoom
+        const yOffset2D = (this.cameraZ * this.startDotYOffset / this.viewZoom) * 4 // Add a multiplier to visually shift it
+
+        ctx.translate(this.size / 2, this.size / 2 - yOffset2D)
 
         // 计算时间参数
         const t1 = this.constrain(this.map(this.time, 0, this.changeEventTime + 0.25, 0, 1), 0, 1)
