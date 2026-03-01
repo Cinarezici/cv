@@ -393,19 +393,28 @@ export default function BuilderClient({ data, avatarUrl, isPro }: { data: any; a
                     {/* A4 canvas */}
                     <div className="flex-1 overflow-auto flex items-start justify-center py-6 px-4">
                         {/* Mobile: full-width scaled preview */}
-                        <div
-                            className="md:hidden w-full overflow-x-auto"
-                            style={{ transform: 'scale(0.45)', transformOrigin: 'top center', width: A4_WIDTH, marginBottom: `${(0.45 - 1) * 1123}px` }}
-                        >
-                            <CVRenderer avatarUrl={avatarUrl} showPhoto={true} />
+                        <div className="md:hidden w-full flex justify-center">
+                            <div
+                                className="shadow-lg bg-white shrink-0"
+                                style={{
+                                    width: `${A4_WIDTH}px`,
+                                    minHeight: "1123px",
+                                    transform: 'scale(0.42)',
+                                    transformOrigin: 'top center',
+                                    marginBottom: `${(0.42 - 1) * 1123}px`
+                                }}
+                            >
+                                <CVRenderer avatarUrl={avatarUrl} showPhoto={true} />
+                            </div>
                         </div>
-                        {/* Desktop: zoom-controlled */}
+                        {/* Desktop: standard scaled preview */}
                         <div
-                            className="hidden md:block shrink-0 shadow-2xl shadow-black/60"
+                            className="hidden md:block shadow-2xl bg-white transition-all duration-300 shrink-0"
                             style={{
-                                width: A4_WIDTH,
+                                width: `${A4_WIDTH}px`,
+                                minHeight: "1123px",
                                 transform: `scale(${zoom})`,
-                                transformOrigin: 'top center',
+                                transformOrigin: "top center",
                                 marginBottom: `${(zoom - 1) * 1123}px`,
                             }}
                         >
