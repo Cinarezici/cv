@@ -11,6 +11,7 @@ import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { LandingDemoStrip } from "@/components/ui/landing-demo-strip";
 import { LandingCopyLinkSpotlight } from "@/components/ui/landing-copy-link-spotlight";
 import { useLang, type Lang } from "@/lib/i18n";
+import { HeroInteractiveDemo } from "@/components/ui/hero-interactive-demo";
 
 function LangFlagPicker() {
   const { lang, setLang } = useLang();
@@ -28,26 +29,7 @@ function LangFlagPicker() {
 }
 
 
-const HeroVisualSlot = () => {
-  return (
-    <div className="w-full h-full relative flex items-center justify-center bg-zinc-50 rounded-[24px] border border-zinc-200/80 shadow-[0_32px_80px_-20px_rgba(37,99,235,0.12)] overflow-hidden group">
-      <div className="absolute top-0 left-0 right-0 h-10 bg-[#fafafa] border-b border-neutral-200 flex items-center px-4 gap-2 z-20">
-        <div className="flex gap-1.5 opacity-60">
-          <div className="w-2.5 h-2.5 rounded-full bg-red-400"></div>
-          <div className="w-2.5 h-2.5 rounded-full bg-amber-400"></div>
-          <div className="w-2.5 h-2.5 rounded-full bg-green-400"></div>
-        </div>
-      </div>
-      <div className="absolute inset-0 pt-10 flex items-center justify-center bg-zinc-100">
-        <p className="text-zinc-500 font-bold text-sm tracking-widest uppercase relative z-10 w-full text-center px-4">
-          Hero Visual Slot
-          <br /><span className="text-xs text-zinc-400 normal-case font-medium mt-1 inline-block">(Placeholder — replace with screenshot)</span>
-        </p>
-        <Image src="/cv_mockup.png" alt="Interface Placeholder" fill className="object-cover object-top opacity-50 mix-blend-multiply blur-[2px]" draggable={false} />
-      </div>
-    </div>
-  )
-}
+
 
 const testimonials = [
   {
@@ -224,18 +206,8 @@ function JobSearchPreview() {
 }
 
 export default function Home() {
-  const [isScrolled, setIsScrolled] = useState(false);
   const ctaRef = useRef<HTMLDivElement>(null);
   const isCtaInView = useInView(ctaRef, { once: true, margin: "-100px" });
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 80);
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   return (
     <div className="flex flex-col min-h-screen bg-[#fafafa] text-zinc-900 overflow-x-hidden selection:bg-blue-500/30">
@@ -289,43 +261,34 @@ export default function Home() {
 
           <div className="container px-6 mx-auto relative z-20 mt-12 mb-16 h-auto min-h-[500px] flex flex-col justify-center">
 
-            <motion.div
-              layout
-              transition={{ type: "spring", bounce: 0, duration: 0.9 }}
-              className={`flex w-full ${isScrolled ? 'justify-between' : 'justify-center'} items-center gap-12`}
-            >
+            <div className="flex w-full justify-between items-center gap-12">
 
               {/* Left Column (Text & CTAs) */}
-              <motion.div
-                layout
-                className={`flex flex-col z-20 transition-all duration-700 ${isScrolled ? 'w-full lg:w-1/2 items-start text-left' : 'w-full items-center text-center max-w-4xl'}`}
-              >
+              <div className="flex flex-col z-20 w-full lg:w-[55%] items-start text-left">
 
-                <motion.div layout>
-                  <Link href="/signup">
-                    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-zinc-200/80 text-zinc-600 text-[13px] font-semibold mb-8 shadow-sm hover:shadow-md transition-all cursor-pointer hover:border-blue-200 group">
-                      <span className="flex h-2 w-2 rounded-full bg-blue-500 animate-pulse"></span>
-                      CV Optimizer AI 2.0 is live
-                      <ArrowRight className="h-3.5 w-3.5 text-zinc-400 group-hover:text-blue-500 transition-colors group-hover:translate-x-0.5" />
-                    </div>
-                  </Link>
-                </motion.div>
+                <Link href="/signup">
+                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-zinc-200/80 text-zinc-600 text-[13px] font-semibold mb-8 shadow-sm hover:shadow-md transition-all cursor-pointer hover:border-blue-200 group">
+                    <span className="flex h-2 w-2 rounded-full bg-blue-500 animate-pulse"></span>
+                    CV Optimizer AI 2.0 is live
+                    <ArrowRight className="h-3.5 w-3.5 text-zinc-400 group-hover:text-blue-500 transition-colors group-hover:translate-x-0.5" />
+                  </div>
+                </Link>
 
-                <motion.h1 layout className={`font-extrabold tracking-tighter leading-[0.95] text-zinc-900 mb-6 transition-all duration-700 ${isScrolled ? 'text-5xl md:text-6xl lg:text-7xl' : 'text-5xl md:text-[72px] lg:text-[88px]'}`}>
+                <h1 className="font-extrabold tracking-tighter leading-[0.95] text-zinc-900 mb-6 text-5xl md:text-[64px] lg:text-[72px]">
                   Build, tailor, and share<br />
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2563eb] to-[#3b82f6]">job-winning CVs</span> — fast.
-                </motion.h1>
+                </h1>
 
-                <motion.p layout className={`text-lg md:text-xl text-zinc-500 leading-relaxed font-medium tracking-tight transition-all duration-700 mb-8 ${isScrolled ? 'w-full max-w-xl mx-0' : 'max-w-2xl mx-auto'}`}>
+                <p className="text-lg md:text-xl text-zinc-500 leading-relaxed font-medium tracking-tight mb-8 w-full max-w-xl">
                   Create stunning CVs, import from LinkedIn, PDF, or plain text, optimize for any role, and share a professional letter link directly in your LinkedIn invite.
-                </motion.p>
+                </p>
 
                 {/* Proof Chips */}
-                <motion.div layout className={`flex flex-wrap gap-2 mb-10 transition-all duration-700 ${isScrolled ? 'justify-start' : 'justify-center'}`}>
+                <div className="flex flex-wrap items-start gap-2 mb-10">
                   {proofChips.map((chip, i) => (
                     <div
                       key={chip}
-                      className={`inline-flex items-center px-3 py-1.5 rounded-full text-[12px] font-bold border transition-all
+                      className={`inline-flex items-center px-3 py-1.5 rounded-full text-[12px] font-bold border
                         ${i === 2
                           ? 'bg-blue-50 border-blue-200 text-blue-700'
                           : 'bg-white border-zinc-200 text-zinc-600'
@@ -334,9 +297,9 @@ export default function Home() {
                       {chip}
                     </div>
                   ))}
-                </motion.div>
+                </div>
 
-                <motion.div layout className={`flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto z-30 relative transition-all duration-700 ${isScrolled ? 'justify-start' : 'justify-center'}`}>
+                <div className="flex flex-col sm:flex-row items-center justify-start gap-4 w-full sm:w-auto z-30 relative">
                   <Link href="/signup" className="w-full sm:w-auto">
                     <Button size="lg" className="w-full sm:w-auto h-14 px-8 rounded-full bg-gradient-to-r from-[#2563eb] to-[#3b82f6] hover:from-[#1d4ed8] hover:to-[#2563eb] text-white font-bold text-[15px] shadow-[0_0_24px_rgba(59,130,246,0.3)] hover:shadow-[0_0_32px_rgba(59,130,246,0.5)] transition-all hover:scale-[1.02] active:scale-95 border border-blue-400/20">
                       Get Started Free <ArrowRight className="ml-2 h-4 w-4" />
@@ -347,9 +310,9 @@ export default function Home() {
                       See how it works
                     </Button>
                   </a>
-                </motion.div>
+                </div>
 
-                <motion.div layout className={`flex flex-col mt-12 gap-3 transition-all duration-700 ${isScrolled ? 'items-start' : 'items-center'}`}>
+                <div className="flex flex-col mt-12 items-start gap-3">
                   <div className="flex -space-x-3">
                     {testimonials.map((t, i) => (
                       <div key={i} className="w-10 h-10 rounded-full border-2 border-white bg-zinc-100 overflow-hidden shadow-sm relative z-[10] hover:scale-110 transition-transform cursor-pointer">
@@ -365,26 +328,18 @@ export default function Home() {
                     </div>
                     <p className="text-[14px] font-bold text-zinc-600 tracking-tight">Joined by 10,000+ top professionals</p>
                   </div>
-                </motion.div>
+                </div>
 
-              </motion.div>
+              </div>
 
-              {/* Right Column (Visual Slot — appears on scroll) */}
-              <AnimatePresence>
-                {isScrolled && (
-                  <motion.div
-                    initial={{ opacity: 0, x: 40, scale: 0.98 }}
-                    animate={{ opacity: 1, x: 0, scale: 1 }}
-                    exit={{ opacity: 0, x: 40, scale: 0.98 }}
-                    transition={{ type: "spring", bounce: 0, duration: 0.9, delay: 0.1 }}
-                    className="hidden lg:flex w-[45%] h-[550px] items-center justify-center relative origin-right"
-                  >
-                    <HeroVisualSlot />
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              {/* Right Column (HeroInteractiveDemo) */}
+              <div
+                className="hidden lg:flex w-[45%] h-[550px] items-center justify-center relative"
+              >
+                <HeroInteractiveDemo />
+              </div>
 
-            </motion.div>
+            </div>
           </div>
 
         </section>
