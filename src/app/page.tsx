@@ -518,19 +518,19 @@ export default function Home() {
           {/* Sparkles positioned exactly below the text/button */}
           <div className="w-[40rem] h-40 relative mt-[-1rem] z-10 pointer-events-none">
             {/* Base gradients for glow effect */}
-            <div className="absolute inset-x-20 top-0 bg-gradient-to-r from-transparent via-blue-500 to-transparent h-[2px] w-3/4 blur-sm opacity-50" />
-            <div className="absolute inset-x-20 top-0 bg-gradient-to-r from-transparent via-blue-500 to-transparent h-px w-3/4 opacity-50" />
-            <div className="absolute inset-x-60 top-0 bg-gradient-to-r from-transparent via-sky-400 to-transparent h-[5px] w-1/4 blur-sm opacity-50" />
-            <div className="absolute inset-x-60 top-0 bg-gradient-to-r from-transparent via-sky-400 to-transparent h-px w-1/4 opacity-50" />
+            <div className="absolute inset-x-20 top-0 bg-gradient-to-r from-transparent via-blue-600 to-transparent h-[2px] w-3/4 blur-sm opacity-80" />
+            <div className="absolute inset-x-20 top-0 bg-gradient-to-r from-transparent via-blue-600 to-transparent h-px w-3/4 opacity-100" />
+            <div className="absolute inset-x-60 top-0 bg-gradient-to-r from-transparent via-sky-400 to-transparent h-[5px] w-1/4 blur-sm opacity-80" />
+            <div className="absolute inset-x-60 top-0 bg-gradient-to-r from-transparent via-sky-400 to-transparent h-px w-1/4 opacity-100" />
 
             {/* Core component */}
             <SparklesCore
               background="transparent"
-              minSize={0.4}
-              maxSize={1.2}
-              particleDensity={1000}
+              minSize={0.8}
+              maxSize={2.0}
+              particleDensity={1800}
               className="w-full h-full"
-              particleColor="#2563eb"
+              particleColor="#1d4ed8"
             />
 
             {/* Radial Gradient to blend borders smoothly back to background color */}
