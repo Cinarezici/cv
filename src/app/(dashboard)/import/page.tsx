@@ -152,9 +152,8 @@ export default function ImportPage() {
             <p className="text-zinc-500 dark:text-zinc-400 font-medium">Create your base profile quickly using one of the methods below.</p>
 
             <Tabs defaultValue="url" className="w-full">
-                {/* Mobile: 2x2 grid, Desktop: 1x4 grid */}
-                <TabsList className="grid grid-cols-2 lg:grid-cols-4 w-full mb-8 bg-zinc-100 dark:bg-white/[0.06] text-zinc-500 dark:text-zinc-300 rounded-xl p-1.5 sm:p-1.5 transition-all gap-1.5 sm:gap-1.5 h-auto lg:h-[52px]">
-                    <TabsTrigger value="url" className="data-[state=active]:bg-white dark:data-[state=active]:bg-white/15 data-[state=active]:text-zinc-900 dark:data-[state=active]:text-white data-[state=active]:shadow-sm rounded-lg font-semibold relative py-3 sm:py-2.5 flex items-center justify-center gap-1.5 px-1 sm:px-2 h-full text-[12px] sm:text-[13px] shrink-0">
+                <TabsList className="grid grid-cols-2 lg:grid-cols-4 w-full mb-8 bg-zinc-100 dark:bg-white/[0.06] text-zinc-500 dark:text-zinc-300 rounded-xl p-1.5 sm:p-1.5 transition-all gap-1.5 sm:gap-1.5 !h-auto lg:!h-[52px]">
+                    <TabsTrigger value="url" className="data-[state=active]:bg-white dark:data-[state=active]:bg-white/15 data-[state=active]:text-zinc-900 dark:data-[state=active]:text-white data-[state=active]:shadow-sm rounded-lg font-semibold relative py-3 sm:py-2.5 flex items-center justify-center gap-1.5 px-1 sm:px-2 !h-full text-[12px] sm:text-[13px] shrink-0">
                         <Linkedin className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
                         <span className="truncate">LinkedIn URL</span>
                         {isPro === false && !proLoading && (
@@ -163,11 +162,11 @@ export default function ImportPage() {
                             </span>
                         )}
                     </TabsTrigger>
-                    <TabsTrigger value="pdf" className="data-[state=active]:bg-white dark:data-[state=active]:bg-white/15 data-[state=active]:text-zinc-900 dark:data-[state=active]:text-white data-[state=active]:shadow-sm rounded-lg font-semibold py-3 sm:py-2.5 flex items-center justify-center gap-1.5 px-1 sm:px-2 h-full text-[12px] sm:text-[13px] shrink-0">
+                    <TabsTrigger value="pdf" className="data-[state=active]:bg-white dark:data-[state=active]:bg-white/15 data-[state=active]:text-zinc-900 dark:data-[state=active]:text-white data-[state=active]:shadow-sm rounded-lg font-semibold py-3 sm:py-2.5 flex items-center justify-center gap-1.5 px-1 sm:px-2 !h-full text-[12px] sm:text-[13px] shrink-0">
                         <FileUp className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
                         <span className="truncate">PDF Upload</span>
                     </TabsTrigger>
-                    <TabsTrigger value="text" className="data-[state=active]:bg-white dark:data-[state=active]:bg-white/15 data-[state=active]:text-zinc-900 dark:data-[state=active]:text-white data-[state=active]:shadow-sm rounded-lg font-semibold relative py-3 sm:py-2.5 flex items-center justify-center gap-1.5 px-1 sm:px-2 h-full text-[12px] sm:text-[13px] shrink-0">
+                    <TabsTrigger value="text" className="data-[state=active]:bg-white dark:data-[state=active]:bg-white/15 data-[state=active]:text-zinc-900 dark:data-[state=active]:text-white data-[state=active]:shadow-sm rounded-lg font-semibold relative py-3 sm:py-2.5 flex items-center justify-center gap-1.5 px-1 sm:px-2 !h-full text-[12px] sm:text-[13px] shrink-0">
                         <FileText className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
                         <span className="truncate">Manual Text</span>
                         {isPro === false && !proLoading && (
@@ -176,7 +175,7 @@ export default function ImportPage() {
                             </span>
                         )}
                     </TabsTrigger>
-                    <TabsTrigger value="manual" className="data-[state=active]:bg-white dark:data-[state=active]:bg-white/15 data-[state=active]:text-zinc-900 dark:data-[state=active]:text-white data-[state=active]:shadow-sm rounded-lg font-semibold py-3 sm:py-2.5 flex items-center justify-center gap-1.5 px-1 sm:px-2 h-full text-[12px] sm:text-[13px] shrink-0">
+                    <TabsTrigger value="manual" className="data-[state=active]:bg-white dark:data-[state=active]:bg-white/15 data-[state=active]:text-zinc-900 dark:data-[state=active]:text-white data-[state=active]:shadow-sm rounded-lg font-semibold py-3 sm:py-2.5 flex items-center justify-center gap-1.5 px-1 sm:px-2 !h-full text-[12px] sm:text-[13px] shrink-0">
                         <Keyboard className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
                         <span className="truncate">From Scratch</span>
                     </TabsTrigger>

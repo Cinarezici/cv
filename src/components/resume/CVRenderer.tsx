@@ -685,8 +685,8 @@ export function CVRenderer({ avatarUrl, showPhoto, isPro = true }: CVRendererPro
     // ─────────────────────────────────────────────────────────────────────────
     return (
         <div
-            className="max-w-[210mm] w-full bg-white shadow-2xl print:shadow-none flex flex-row overflow-hidden rounded-xl print:rounded-none shrink-0 relative"
-            style={{ minHeight: '297mm', WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact', fontFamily } as any}
+            className="max-w-[210mm] w-full shadow-2xl print:shadow-none flex flex-row overflow-hidden rounded-xl print:rounded-none shrink-0 relative"
+            style={{ minHeight: '297mm', WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact', fontFamily, backgroundColor: sidebarBg } as any}
         >
             {!isPro && <div className="hidden print:block absolute bottom-0 left-0 right-0 py-4 text-center text-[11px] font-bold text-zinc-400 tracking-widest z-50 uppercase bg-white/80 backdrop-blur-sm">Created with CV Optimizer AI</div>}
             {/* Left Sidebar */}
