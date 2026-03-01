@@ -21,10 +21,6 @@ export default function ImportPage() {
     const [cvCount, setCvCount] = useState<number | null>(null);
     const router = useRouter();
 
-    if (!proLoading && status === 'canceled') {
-        return <LockedPageView featureName="Import CV" subtitle="Import your LinkedIn profile or upload a PDF with a Pro subscription." />;
-    }
-
     useEffect(() => {
         const fetchCvCount = async () => {
             const supabase = createClient();
@@ -35,6 +31,10 @@ export default function ImportPage() {
         };
         fetchCvCount();
     }, []);
+
+    if (!proLoading && status === 'canceled') {
+        return <LockedPageView featureName="Import CV" subtitle="Import your LinkedIn profile or upload a PDF with a Pro subscription." />;
+    }
 
     const handleImportUrl = async () => {
         const isLinkedInUrl = url.trim().includes("linkedin.com/in/");

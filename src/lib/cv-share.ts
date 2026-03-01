@@ -76,6 +76,12 @@ export async function resolveShareAccess(shareId: string): Promise<ShareResolved
             subStatus: sub?.status, subIsPro: sub?.is_pro, subPlan: sub?.plan
         });
 
+        // Explicitly block canceled users immediately
+        if (sub?.status === 'canceled') {
+            console.log('[resolveShareAccess] Access denied: owner subscription is canceled.');
+            return { allowed: false, reason: 'expired' };
+        }
+
         // If not Pro, enforce 14-day limit
         if (!isPro) {
             const linkCreatedAt = new Date(created_at);
@@ -146,6 +152,10 @@ export async function resolveLetterAccess(token: string): Promise<ShareResolved>
                 .limit(1)
                 .maybeSingle()
         ]);
+
+        if (sub?.status === 'canceled') {
+            return { allowed: false, reason: 'expired' };
+        }
 
         const trialActive = computeTrialActive(sub, profile?.created_at, now);
         const proActive = computeProActive(sub, now);
