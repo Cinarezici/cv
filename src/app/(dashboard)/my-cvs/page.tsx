@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { CvShareLinkButton } from '@/components/CvShareLinkButton';
 import { DeleteButton } from '@/components/DeleteButton';
+import { CvPreviewModal } from '@/components/CvPreviewModal';
 import { FileText, Plus, Pencil, Clock, LayoutTemplate, Link as LinkIcon, AlertCircle } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { checkUsageLimits } from '@/lib/limits';
@@ -169,6 +170,9 @@ export default async function MyCVsPage() {
                                             <Pencil className="w-3.5 h-3.5" />
                                             {isProfile ? "Convert to CV" : 'Edit'}
                                         </Link>
+                                        {doc.type === 'resume' && (
+                                            <CvPreviewModal resumeId={doc.id} title={doc.title} />
+                                        )}
                                         {doc.type === 'resume' && (
                                             <CvShareLinkButton resumeId={doc.id} size="sm" variant="outline" />
                                         )}

@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Resume } from '@/types';
 import { DeleteButton } from '@/components/DeleteButton';
 import { CvShareLinkButton } from '@/components/CvShareLinkButton';
+import { CvPreviewModal } from '@/components/CvPreviewModal';
 import { FileText, Mail, Plus, Pencil, Clock, LayoutTemplate, Zap, Link as LinkIcon, AlertCircle } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { checkUsageLimits } from '@/lib/limits';
@@ -191,6 +192,9 @@ export default async function DashboardPage() {
                                         >
                                             <Pencil className="w-3.5 h-3.5" /> {isProfile ? "Convert" : 'Edit'}
                                         </Link>
+                                        {!isProfile && (
+                                            <CvPreviewModal resumeId={doc.id} title={doc.title} />
+                                        )}
                                         {!isProfile && (
                                             <CvShareLinkButton resumeId={doc.id} size="sm" variant="outline" />
                                         )}
