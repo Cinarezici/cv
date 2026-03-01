@@ -132,11 +132,11 @@ and express availability for an interview. Use a professional sign-off.`,
 function extractCvContext(resumeJSON: any, targetRole: string): string {
     if (!resumeJSON) return 'No CV data provided.';
 
-    const name = resumeJSON.name || resumeJSON.full_name || 'Candidate';
-    const headline = resumeJSON.headline || '';
+    const name = resumeJSON.header?.full_name || resumeJSON.name || resumeJSON.full_name || 'Candidate';
+    const headline = resumeJSON.header?.headline || resumeJSON.headline || '';
     const summary = resumeJSON.summary || resumeJSON.about || '';
-    const email = resumeJSON.email || '';
-    const location = resumeJSON.location || '';
+    const email = resumeJSON.header?.email || resumeJSON.email || '';
+    const location = resumeJSON.header?.location || resumeJSON.location || '';
 
     // Skills — handle both array and nested object formats
     let skills: string[] = [];
@@ -230,7 +230,7 @@ function buildPresentationPrompt(
     const lang = language === 'tr' ? 'Turkish' : 'English';
     const toneProfile = TONE_PROFILES[tone] ?? TONE_PROFILES.corporate;
     const cvContext = extractCvContext(resumeJSON, targetRole);
-    const candidateName = resumeJSON?.name || resumeJSON?.full_name || 'Candidate';
+    const candidateName = resumeJSON?.header?.full_name || resumeJSON?.name || resumeJSON?.full_name || 'Candidate';
 
     const companyContext = `
 === TARGET COMPANY ===
@@ -262,13 +262,16 @@ Each section = ONE flowing paragraph of 2-4 sentences (target 350-600 characters
 The text must fill the slide naturally — write richly, not sparingly.
 NO bullet points. NO line breaks within a section. NO preamble before [INTRO].
 
-IMPORTANT — SPARSE CV FALLBACK:
-If the CV data is limited or thin, DO NOT write empty or vague platitudes.
-Instead, use the target role (${targetRole}), company context (${companyProfile.name}),
-and the tone persona to intelligently INFER and CONSTRUCT compelling content.
-Imagine what a strong candidate for this exact role and company must have done,
-and write as if that is the candidate's background — in a way that sounds authentic
-and matches the selected tone (${toneProfile.label}).
+PERSPECTIVE & VOICE (CRITICAL INSTRUCTION):
+You ARE the candidate (${candidateName}).
+Write entirely in the FIRST-PERSON ("I", "my", "me" / "Ben", "benim", "bana").
+NEVER write in the third-person. NEVER talk about the candidate from an external perspective.
+Do NOT say "${candidateName} is an experienced professional". Say "I am an experienced professional".
+
+IMPORTANT — DEALING WITH SPARSE CV DATA:
+If the CV data is limited or thin, DO NOT invent fake job titles or fake companies that are not in the CV.
+Instead, focus on generalized enthusiasm, relevant soft skills, and your alignment with the company context (${companyProfile.name}) and the target role (${targetRole}).
+Write as yourself (${candidateName}) with absolute confidence and the selected tone (${toneProfile.label}).
 
 ${cvContext}
 
@@ -278,7 +281,7 @@ SECTION INSTRUCTIONS:
 
 [INTRO]
 ${toneProfile.sectionInstructions.intro}
-IMPORTANT: Mention the candidate's actual name (${candidateName}) and specific skills from the CV.
+IMPORTANT: Write strictly as yourself ("I" / "Ben"). Mention your actual name (${candidateName}).
 [/INTRO]
 
 [STRENGTHS]
@@ -379,11 +382,12 @@ export async function generateMotivationLetter(
     let letterHtml = '';
 
     try {
+        const candidateName = resumeJSON?.header?.full_name || resumeJSON?.name || resumeJSON?.full_name || 'the candidate';
         const completion = await openai.chat.completions.create({
             model: 'gpt-4o',
             messages: [
                 { role: 'system', content: systemPrompt },
-                { role: 'user', content: `Generate the ${TONE_PROFILES[tone]?.label ?? tone} self-introduction presentation for ${resumeJSON?.name || resumeJSON?.full_name || 'the candidate'} applying to ${companyProfile.name}.` }
+                { role: 'user', content: `You are ${candidateName}. Write your motivation presentation applying for ${targetRole} at ${companyProfile.name} in the ${TONE_PROFILES[tone]?.label ?? tone} tone. Write entirely in the first-person perspective.` }
             ],
             temperature: 0.75,
             max_tokens: 2000,
@@ -413,7 +417,7 @@ export function buildPreviewHtml(
     resumeJSON?: any
 ): string {
     const sections = parsePresentationSections(text);
-    const candidateName = resumeJSON?.name || resumeJSON?.full_name || '';
+    const candidateName = resumeJSON?.header?.full_name || resumeJSON?.name || resumeJSON?.full_name || '';
     const NAVY = '#0f172a';
     const GOLD = '#e6a817';
 
