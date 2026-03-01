@@ -9,6 +9,7 @@ import { FileText, Mail, Plus, Pencil, Clock, LayoutTemplate, Zap, Link as LinkI
 import { formatDistanceToNow } from 'date-fns';
 import { checkUsageLimits } from '@/lib/limits';
 import { getEffectiveStatus } from '@/lib/subscription';
+import LockedDashboardClient from './LockedDashboardClient';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -18,34 +19,16 @@ export default async function DashboardPage() {
     const { data: { user }, error: userError } = await supabase.auth.getUser();
     if (userError || !user) redirect('/login');
 
-    // Check subscription status — canceled users see locked dashboard
+    // Check subscription status — canceled users see locked dashboard with modal-intercepted cards
     const subStatus = await getEffectiveStatus(user.id);
-    if (subStatus === 'canceled') {
-        return <LockedDashboard />;
-    }
-
-    const limitCheck = await checkUsageLimits(user.id, 'create_cv');
-    const isCVLimitReached = !limitCheck.allowed;
 
     const [{ data: resumes }, { data: profiles }, { data: letters }] = await Promise.all([
-        supabase
-            .from('resumes')
-            .select('*')
-            .eq('user_id', user.id)
-            .order('updated_at', { ascending: false }),
-        supabase
-            .from('profiles')
-            .select('*')
-            .eq('user_id', user.id)
-            .order('updated_at', { ascending: false }),
-        supabase
-            .from('motivation_letters')
-            .select('*')
-            .eq('user_id', user.id)
-            .order('created_at', { ascending: false })
+        supabase.from('resumes').select('*').eq('user_id', user.id).order('updated_at', { ascending: false }),
+        supabase.from('profiles').select('*').eq('user_id', user.id).order('updated_at', { ascending: false }),
+        supabase.from('motivation_letters').select('*').eq('user_id', user.id).order('created_at', { ascending: false }),
     ]);
 
-    const documents = [];
+    const documents: { id: string; type: 'resume' | 'profile'; title: string; subtitle: string; updatedAt: string }[] = [];
 
     if (profiles) {
         documents.push(...profiles.map(p => ({
@@ -56,7 +39,6 @@ export default async function DashboardPage() {
             updatedAt: p.updated_at
         })));
     }
-
     if (resumes) {
         documents.push(...resumes.map(r => ({
             id: r.id,
@@ -66,20 +48,34 @@ export default async function DashboardPage() {
             updatedAt: r.updated_at
         })));
     }
-
     documents.sort((a, b) => {
         const timeA = a.updatedAt ? new Date(a.updatedAt).getTime() : 0;
         const timeB = b.updatedAt ? new Date(b.updatedAt).getTime() : 0;
         return timeB - timeA;
     });
 
+    const recentCVs = documents.slice(0, 5);
+    const recentLetters = (letters?.slice(0, 3) || []).map(l => ({
+        id: l.id, company_name: l.company_name, target_role: l.target_role, created_at: l.created_at
+    }));
     const totalDocs = documents.length + (letters?.length || 0);
     const cvsCreated = documents.length;
     const coverLetters = letters?.length || 0;
 
-    const recentCVs = documents.slice(0, 5);
+    if (subStatus === 'canceled') {
+        return (
+            <LockedDashboardClient
+                recentCVs={recentCVs}
+                recentLetters={recentLetters}
+                totalDocs={totalDocs}
+                cvsCreated={cvsCreated}
+                coverLetters={coverLetters}
+            />
+        );
+    }
 
-    const recentLetters = letters?.slice(0, 3) || [];
+    const limitCheck = await checkUsageLimits(user.id, 'create_cv');
+    const isCVLimitReached = !limitCheck.allowed;
 
     return (
         <div className="max-w-5xl mx-auto py-8 space-y-8">
