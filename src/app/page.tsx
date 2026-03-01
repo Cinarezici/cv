@@ -7,12 +7,33 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, CheckCircle2, FileText, Download, Share2, Zap, MessageSquare, ShieldCheck, X, Star, Search, Bookmark } from "lucide-react";
 import { TestimonialsSection } from "@/components/ui/testimonials-with-marquee";
 import { SpiralAnimation } from "@/components/ui/spiral-animation";
-import { motion, AnimatePresence, useInView } from 'framer-motion';
+import { motion, AnimatePresence, useInView, animate } from 'framer-motion';
 import { LandingDemoStrip } from "@/components/ui/landing-demo-strip";
 import { LandingCopyLinkSpotlight } from "@/components/ui/landing-copy-link-spotlight";
 import { useLang, type Lang } from "@/lib/i18n";
 import { HeroInteractiveDemo } from "@/components/ui/hero-interactive-demo";
 import { SparklesCore } from "@/components/ui/sparkles";
+
+function AnimatedCounter({ from = 4000, to = 20000 }: { from?: number, to?: number }) {
+  const [val, setVal] = useState(from);
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true });
+
+  useEffect(() => {
+    if (inView) {
+      const controls = animate(from, to, {
+        duration: 2.5,
+        ease: "easeOut",
+        onUpdate(value) {
+          setVal(Math.round(value));
+        }
+      });
+      return () => controls.stop();
+    }
+  }, [inView, from, to]);
+
+  return <span ref={ref}>{val.toLocaleString()}</span>;
+}
 
 function LangFlagPicker() {
   const { lang, setLang } = useLang();
@@ -329,7 +350,7 @@ export default function Home() {
                           <svg key={i} className="w-4 h-4 fill-[#f59e0b]" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" /></svg>
                         ))}
                       </div>
-                      <p className="text-[14px] font-bold text-zinc-600 tracking-tight whitespace-nowrap">Joined by 20,000+ top professionals</p>
+                      <p className="text-[14px] font-bold text-zinc-600 tracking-tight whitespace-nowrap">Joined by <AnimatedCounter />+ top professionals</p>
                     </div>
                   </div>
                 </div>

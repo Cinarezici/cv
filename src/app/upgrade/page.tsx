@@ -29,7 +29,7 @@ export default function UpgradePage() {
             {/* Subtle background glow */}
             <div className="absolute inset-x-0 bottom-0 h-96 bg-gradient-to-t from-blue-50/50 dark:from-blue-950/20 to-transparent pointer-events-none" />
 
-            <div className="container px-6 mx-auto text-center relative z-10 max-w-5xl py-8 md:py-12">
+            <div className="container px-6 mx-auto text-center relative z-10 max-w-5xl py-4 md:py-8">
 
                 {/* Back link */}
                 <div className="flex justify-start mb-6">
@@ -51,20 +51,20 @@ export default function UpgradePage() {
                 </div>
 
                 {/* Plan Cards */}
-                <div className="flex flex-col md:flex-row gap-8 mx-auto mb-16 items-stretch justify-center">
+                <div className="flex flex-col md:flex-row gap-6 mx-auto mb-10 items-stretch justify-center">
 
                     {/* Trial Plan */}
-                    <div className="flex-1 max-w-[400px] w-full bg-white dark:bg-zinc-900 rounded-[32px] shadow-[0_4px_24px_-4px_rgba(0,0,0,0.06)] dark:shadow-none p-10 flex flex-col border border-zinc-200 dark:border-white/8 hover:shadow-xl dark:hover:border-white/12 transition-all text-left">
-                        <div className="mb-6">
+                    <div className="flex-1 max-w-[400px] w-full bg-white dark:bg-zinc-900 rounded-[32px] shadow-[0_4px_24px_-4px_rgba(0,0,0,0.06)] dark:shadow-none p-6 md:p-8 flex flex-col border border-zinc-200 dark:border-white/8 hover:shadow-xl dark:hover:border-white/12 transition-all text-left">
+                        <div className="mb-4">
                             <h3 className="text-[28px] font-extrabold text-black dark:text-white leading-tight tracking-tight">14-Day Trial</h3>
-                            <p className="text-zinc-500 dark:text-zinc-400 text-[15px] mt-2 font-medium">Try everything free. No credit card.</p>
+                            <p className="text-zinc-500 dark:text-zinc-400 text-[14px] mt-1 font-medium">Try everything free. No credit card.</p>
                         </div>
-                        <div className="flex items-baseline gap-1.5 mb-8">
+                        <div className="flex items-baseline gap-1.5 mb-6">
                             <span className="text-[48px] font-extrabold tracking-tighter text-zinc-900 dark:text-white leading-none">$0</span>
-                            <span className="text-zinc-500 dark:text-zinc-400 text-[15px] font-bold">/ 14 days</span>
+                            <span className="text-zinc-500 dark:text-zinc-400 text-[14px] font-bold">/ 14 days</span>
                         </div>
 
-                        <ul className="space-y-4 mb-10 flex-1">
+                        <ul className="space-y-3 mb-8 flex-1">
                             {[
                                 { text: "2 CVs", included: true },
                                 { text: "4 Custom Cover Letters", included: true },
@@ -95,28 +95,28 @@ export default function UpgradePage() {
                     </div>
 
                     {/* Pro Plan */}
-                    <div className="flex-1 max-w-[400px] w-full relative bg-white dark:bg-zinc-900 rounded-[32px] shadow-[0_12px_40px_-4px_rgba(37,99,235,0.15)] dark:shadow-[0_12px_40px_-4px_rgba(37,99,235,0.08)] border-[2.5px] border-[#2563eb] p-10 flex flex-col hover:scale-[1.02] transition-transform text-left">
+                    <div className="flex-1 max-w-[400px] w-full relative bg-white dark:bg-zinc-900 rounded-[32px] shadow-[0_12px_40px_-4px_rgba(37,99,235,0.15)] dark:shadow-[0_12px_40px_-4px_rgba(37,99,235,0.08)] border-[2.5px] border-[#2563eb] p-6 md:p-8 flex flex-col hover:scale-[1.02] transition-transform text-left">
                         {/* Most Popular badge */}
                         <div className="absolute top-0 right-10 -translate-y-1/2 bg-gradient-to-r from-[#2563eb] to-[#3b82f6] text-white text-[11px] font-extrabold tracking-wider px-4 py-1.5 rounded-full uppercase shadow-lg shadow-blue-600/20 z-20">
                             Most Popular
                         </div>
 
-                        <div className="mb-6">
+                        <div className="mb-4">
                             <h3 className="text-[28px] font-extrabold text-black dark:text-white leading-tight tracking-tight">Pro Plan</h3>
-                            <p className="text-zinc-500 dark:text-zinc-400 text-[15px] mt-2 font-medium">One-time payment. 3 years of access.</p>
+                            <p className="text-zinc-500 dark:text-zinc-400 text-[14px] mt-1 font-medium">One-time payment. 3 years of access.</p>
                         </div>
 
-                        <div className="flex flex-col mb-8">
+                        <div className="flex flex-col mb-6">
                             <div className="flex items-baseline gap-1.5">
                                 <span className="text-[48px] font-extrabold tracking-tighter text-zinc-900 dark:text-white leading-none">$99</span>
-                                <span className="text-zinc-600 dark:text-zinc-400 text-[15px] font-bold">one-time · 3 years</span>
+                                <span className="text-zinc-600 dark:text-zinc-400 text-[14px] font-bold">one-time · 3 years</span>
                             </div>
-                            <p className="text-[11px] text-[#2563eb] font-black mt-3 uppercase tracking-wider bg-blue-50 dark:bg-blue-500/10 border border-blue-100 dark:border-blue-500/20 w-fit px-2.5 py-1 rounded-md">
+                            <p className="text-[10px] text-[#2563eb] font-black mt-2 uppercase tracking-wider bg-blue-50 dark:bg-blue-500/10 border border-blue-100 dark:border-blue-500/20 w-fit px-2.5 py-1 rounded-md">
                                 ≈ $2.75 / month for 3 years
                             </p>
                         </div>
 
-                        <ul className="space-y-4 mb-10 flex-1">
+                        <ul className="space-y-3 mb-8 flex-1">
                             {[
                                 "Unlimited CVs",
                                 "Unlimited Cover Letters",
