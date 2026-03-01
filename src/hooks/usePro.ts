@@ -26,11 +26,17 @@ export function usePro() {
                 // Compute effective status client-side (mirrors server logic)
                 let effectiveStatus = (sub?.status as string) || 'trialing';
 
+                // Active users: skip all expiry logic — full unlimited access
+                if (effectiveStatus === 'active') {
+                    setStatus('active');
+                    setIsPro(true);
+                    return;
+                }
+
                 if (effectiveStatus === 'trialing') {
                     const rawEnd = sub?.trial_end_at ?? sub?.trial_ends_at;
                     if (rawEnd && new Date() > new Date(rawEnd)) {
                         effectiveStatus = 'canceled';
-                        // Fire-and-forget DB update via API (avoids service role on client)
                         fetch('/api/subscription/expire', { method: 'POST' }).catch(() => { });
                     }
                 }
