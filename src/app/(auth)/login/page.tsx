@@ -51,6 +51,8 @@ export default function LoginPage() {
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [resendLoading, setResendLoading] = useState(false);
+    const [resendSent, setResendSent] = useState(false);
     const router = useRouter();
 
     const handleLogin = async (e?: React.FormEvent) => {
@@ -66,6 +68,22 @@ export default function LoginPage() {
             router.push("/dashboard");
             router.refresh();
         }
+    };
+
+    const handleResend = async () => {
+        if (!email) {
+            setError("Please enter your email address above first, then click Resend.");
+            return;
+        }
+        setResendLoading(true);
+        const supabase = createClient();
+        await supabase.auth.resend({
+            type: 'signup',
+            email,
+            options: { emailRedirectTo: `${window.location.origin}/auth/callback` },
+        });
+        setResendLoading(false);
+        setResendSent(true);
     };
 
     const handleOAuth = async (provider: "google") => {
@@ -190,9 +208,29 @@ export default function LoginPage() {
 
                         {/* Error */}
                         {error && (
-                            <div className="flex items-center gap-2 px-4 py-3 bg-red-500/10 border border-red-500/20 rounded-xl">
-                                <span className="w-1.5 h-1.5 rounded-full bg-red-400 flex-shrink-0" />
-                                <p className="text-[13px] text-red-400 font-medium">{error}</p>
+                            <div className="flex flex-col gap-2">
+                                <div className="flex items-center gap-2 px-4 py-3 bg-red-500/10 border border-red-500/20 rounded-xl">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-red-400 flex-shrink-0" />
+                                    <p className="text-[13px] text-red-400 font-medium">{error}</p>
+                                </div>
+                                {error.toLowerCase().includes('not confirmed') && (
+                                    resendSent ? (
+                                        <div className="flex items-center gap-2 px-4 py-3 bg-emerald-500/10 border border-emerald-500/20 rounded-xl">
+                                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 flex-shrink-0" />
+                                            <p className="text-[13px] text-emerald-400 font-medium">Confirmation email resent! Check your inbox and spam folder.</p>
+                                        </div>
+                                    ) : (
+                                        <button
+                                            type="button"
+                                            onClick={handleResend}
+                                            disabled={resendLoading}
+                                            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-blue-500/10 border border-blue-500/20 rounded-xl text-[13px] text-blue-400 font-bold hover:bg-blue-500/20 transition-colors disabled:opacity-60"
+                                        >
+                                            {resendLoading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Mail className="w-3.5 h-3.5" />}
+                                            {resendLoading ? "Sending…" : "Resend confirmation email"}
+                                        </button>
+                                    )
+                                )}
                             </div>
                         )}
 
