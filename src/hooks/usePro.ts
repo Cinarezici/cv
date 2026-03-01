@@ -19,7 +19,7 @@ export function usePro() {
 
                 const { data: sub } = await supabase
                     .from('subscriptions')
-                    .select('status, trial_end_at, trial_ends_at')
+                    .select('*')
                     .eq('user_id', user.id)
                     .maybeSingle();
 

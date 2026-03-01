@@ -27,7 +27,7 @@ export async function getEffectiveStatus(userId: string): Promise<SubscriptionSt
 
     const { data: sub } = await supabase
         .from('subscriptions')
-        .select('status, trial_end_at, trial_ends_at, trial_started_at')
+        .select('*')
         .eq('user_id', userId)
         .maybeSingle();
 
