@@ -300,36 +300,41 @@ export default function Home() {
                   ))}
                 </div>
 
-                <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 w-full z-30 relative">
-                  <Link href="/signup" className="w-full sm:w-auto">
-                    <Button size="lg" className="w-full sm:w-auto h-14 px-8 rounded-full bg-gradient-to-r from-[#2563eb] to-[#3b82f6] hover:from-[#1d4ed8] hover:to-[#2563eb] text-white font-bold text-[15px] shadow-[0_0_24px_rgba(59,130,246,0.3)] hover:shadow-[0_0_32px_rgba(59,130,246,0.5)] transition-all hover:scale-[1.02] active:scale-95 border border-blue-400/20">
-                      Get Started Free <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
-                  </Link>
-                  <a href="#demo" className="w-full sm:w-auto">
-                    <Button size="lg" variant="outline" className="w-full sm:w-auto h-14 px-8 rounded-full bg-white border-zinc-200 text-zinc-700 font-bold text-[15px] hover:bg-zinc-50 hover:border-zinc-300 transition-all shadow-sm hover:shadow-md">
-                      See how it works
-                    </Button>
-                  </a>
-                </div>
-
-                <div className="flex flex-col mt-12 items-center lg:items-start gap-3">
-                  <div className="flex -space-x-3">
-                    {testimonials.map((t, i) => (
-                      <div key={i} className="w-10 h-10 rounded-full border-2 border-white bg-zinc-100 overflow-hidden shadow-sm relative z-[10] hover:scale-110 transition-transform cursor-pointer">
-                        <Image src={t.author.avatar} alt={t.author.name} width={40} height={40} className="object-cover" />
-                      </div>
-                    ))}
+                <div className="flex flex-col xl:flex-row items-center justify-center lg:justify-start gap-4 xl:gap-8 w-full z-30 relative mt-2">
+                  <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
+                    <Link href="/signup" className="w-full sm:w-auto">
+                      <Button size="lg" className="w-full sm:w-auto h-14 px-8 rounded-full bg-gradient-to-r from-[#2563eb] to-[#3b82f6] hover:from-[#1d4ed8] hover:to-[#2563eb] text-white font-bold text-[15px] shadow-[0_0_24px_rgba(59,130,246,0.3)] hover:shadow-[0_0_32px_rgba(59,130,246,0.5)] transition-all hover:scale-[1.02] active:scale-95 border border-blue-400/20">
+                        Get Started Free <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </Link>
+                    <a href="#demo" className="w-full sm:w-auto">
+                      <Button size="lg" variant="outline" className="w-full sm:w-auto h-14 px-8 rounded-full bg-white border-zinc-200 text-zinc-700 font-bold text-[15px] hover:bg-zinc-50 hover:border-zinc-300 transition-all shadow-sm hover:shadow-md">
+                        See how it works
+                      </Button>
+                    </a>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <div className="flex">
-                      {[1, 2, 3, 4, 5].map(i => (
-                        <svg key={i} className="w-3.5 h-3.5 fill-[#f59e0b]" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" /></svg>
+
+                  {/* Social Proof Avatars moved next to buttons on XL */}
+                  <div className="flex flex-col items-center xl:items-start gap-1.5 mt-6 xl:mt-0 xl:mb-2">
+                    <div className="flex -space-x-3">
+                      {testimonials.map((t, i) => (
+                        <div key={i} className="w-8 h-8 rounded-full border-2 border-[#fafafa] bg-zinc-100 overflow-hidden shadow-sm relative z-[10] hover:scale-110 transition-transform cursor-pointer">
+                          <Image src={t.author.avatar} alt={t.author.name} width={32} height={32} className="object-cover" />
+                        </div>
                       ))}
                     </div>
-                    <p className="text-[14px] font-bold text-zinc-600 tracking-tight">Joined by 10,000+ top professionals</p>
+                    <div className="flex items-center gap-1.5">
+                      <div className="flex">
+                        {[1, 2, 3, 4, 5].map(i => (
+                          <svg key={i} className="w-3 h-3 fill-[#f59e0b]" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" /></svg>
+                        ))}
+                      </div>
+                      <p className="text-[12px] font-bold text-zinc-600 tracking-tight whitespace-nowrap">Joined by 10,000+ top professionals</p>
+                    </div>
                   </div>
                 </div>
+
+
 
               </div>
 
