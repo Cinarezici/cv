@@ -300,7 +300,7 @@ export default function Home() {
                   ))}
                 </div>
 
-                <div className="flex flex-col xl:flex-row items-center justify-center lg:justify-start gap-4 xl:gap-8 w-full z-30 relative mt-2">
+                <div className="flex flex-col lg:flex-row items-center justify-center lg:justify-start gap-4 lg:gap-8 w-full z-30 relative mt-2">
                   <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
                     <Link href="/signup" className="w-full sm:w-auto">
                       <Button size="lg" className="w-full sm:w-auto h-14 px-8 rounded-full bg-gradient-to-r from-[#2563eb] to-[#3b82f6] hover:from-[#1d4ed8] hover:to-[#2563eb] text-white font-bold text-[15px] shadow-[0_0_24px_rgba(59,130,246,0.3)] hover:shadow-[0_0_32px_rgba(59,130,246,0.5)] transition-all hover:scale-[1.02] active:scale-95 border border-blue-400/20">
@@ -314,9 +314,9 @@ export default function Home() {
                     </a>
                   </div>
 
-                  {/* Social Proof Avatars moved next to buttons on XL */}
-                  <div className="flex flex-col items-center xl:items-start gap-1.5 mt-6 xl:mt-0 xl:mb-2">
-                    <div className="flex -space-x-3">
+                  {/* Social Proof Avatars centered above text */}
+                  <div className="flex flex-col items-center gap-1.5 mt-4 lg:mt-0 lg:ml-2">
+                    <div className="flex -space-x-3 mb-1">
                       {testimonials.map((t, i) => (
                         <div key={i} className="w-8 h-8 rounded-full border-2 border-[#fafafa] bg-zinc-100 overflow-hidden shadow-sm relative z-[10] hover:scale-110 transition-transform cursor-pointer">
                           <Image src={t.author.avatar} alt={t.author.name} width={32} height={32} className="object-cover" />
@@ -326,10 +326,10 @@ export default function Home() {
                     <div className="flex items-center gap-1.5">
                       <div className="flex">
                         {[1, 2, 3, 4, 5].map(i => (
-                          <svg key={i} className="w-3 h-3 fill-[#f59e0b]" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" /></svg>
+                          <svg key={i} className="w-4 h-4 fill-[#f59e0b]" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" /></svg>
                         ))}
                       </div>
-                      <p className="text-[12px] font-bold text-zinc-600 tracking-tight whitespace-nowrap">Joined by 10,000+ top professionals</p>
+                      <p className="text-[14px] font-bold text-zinc-600 tracking-tight whitespace-nowrap">Joined by 20,000+ top professionals</p>
                     </div>
                   </div>
                 </div>
