@@ -12,7 +12,7 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import {
     ArrowLeft, Save, Check, Loader2, X,
-    User, AlignLeft, Briefcase, GraduationCap, Wrench, LayoutTemplate, List,
+    User, AlignLeft, Briefcase, GraduationCap, Wrench, LayoutTemplate, List, Pencil,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -89,7 +89,7 @@ function SortableRow({ id, label }: { id: string; label: string }) {
 export default function BuilderClient({ data, avatarUrl, isPro }: { data: any; avatarUrl: string | null; isPro?: boolean }) {
     const router = useRouter();
     const {
-        cvId, setCvData,
+        cvId, setCvData, title, setTitle,
         resumeJson, themeId, themeCategory, colorPaletteId,
         sectionOrder, hiddenSections,
         updateSectionOrder,
@@ -105,6 +105,34 @@ export default function BuilderClient({ data, avatarUrl, isPro }: { data: any; a
     const [hasUnsaved, setHasUnsaved] = useState(false);
     const [saving, setSaving] = useState(false);
     const [savedOk, setSavedOk] = useState(false);
+
+    // ── Inline title editing ─────────────────────────────────────────
+    const [editingTitle, setEditingTitle] = useState(false);
+    const [titleDraft, setTitleDraft] = useState('');
+    const titleInputRef = useRef<HTMLInputElement>(null);
+
+    const startEditTitle = () => {
+        setTitleDraft(title || 'Untitled CV');
+        setEditingTitle(true);
+        setTimeout(() => titleInputRef.current?.select(), 20);
+    };
+    const commitTitle = async () => {
+        const newTitle = titleDraft.trim() || 'Untitled CV';
+        setTitle(newTitle);
+        setEditingTitle(false);
+        if (cvId) {
+            try {
+                await fetch(`/api/resumes/${cvId}`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ job_title: newTitle }),
+                });
+            } catch {/* silent */ }
+        }
+    };
+    const cancelTitle = () => {
+        setEditingTitle(false);
+    };
 
     // Zoom state (scale applied to the A4 preview, default fits in panel)
     const [zoom, setZoom] = useState(0.75); // 75% default — fits a 794px wide A4 in ~600px panel
@@ -208,9 +236,31 @@ export default function BuilderClient({ data, avatarUrl, isPro }: { data: any; a
                     <span className="sm:hidden">Back</span>
                 </button>
 
-                <div className="flex-1 flex items-center justify-center gap-2">
-                    <span className="font-bold text-foreground dark:text-white text-sm">CV Editor</span>
-                    <span className={`text-[11px] font-bold px-2 py-0.5 rounded-full border ${isPro
+                <div className="flex-1 flex items-center justify-center gap-2 min-w-0">
+                    {editingTitle ? (
+                        <input
+                            ref={titleInputRef}
+                            value={titleDraft}
+                            onChange={e => setTitleDraft(e.target.value)}
+                            onBlur={commitTitle}
+                            onKeyDown={e => { if (e.key === 'Enter') commitTitle(); if (e.key === 'Escape') cancelTitle(); }}
+                            className="max-w-[200px] sm:max-w-[300px] px-2 py-0.5 rounded-lg border border-indigo-300 dark:border-indigo-500/60 bg-white dark:bg-zinc-800 text-sm font-bold text-zinc-900 dark:text-white outline-none focus:ring-2 focus:ring-indigo-400/40 dark:focus:ring-indigo-500/40 text-center truncate"
+                            maxLength={80}
+                            autoFocus
+                        />
+                    ) : (
+                        <button
+                            onClick={startEditTitle}
+                            title="Click to rename CV"
+                            className="group flex items-center gap-1.5 max-w-[260px] px-2 py-0.5 rounded-lg hover:bg-zinc-100 dark:hover:bg-white/5 transition-colors"
+                        >
+                            <span className="font-bold text-foreground dark:text-white text-sm truncate">
+                                {title || 'Untitled CV'}
+                            </span>
+                            <Pencil className="w-3 h-3 text-zinc-400 dark:text-zinc-500 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity" />
+                        </button>
+                    )}
+                    <span className={`shrink-0 text-[11px] font-bold px-2 py-0.5 rounded-full border ${isPro
                         ? 'bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-200 dark:border-amber-500/20'
                         : 'bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-100 dark:border-blue-500/20'
                         }`}>
