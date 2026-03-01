@@ -503,38 +503,39 @@ export default function Home() {
         </section>
 
         {/* --- G) Final CTA with Sparkles --- */}
-        <section ref={ctaRef} className="relative w-full h-[600px] border-t border-zinc-100 bg-[#fafafa] flex flex-col items-center justify-center overflow-hidden">
-          <div className="relative z-20 flex flex-col items-center transition-transform hover:scale-105 duration-500 group">
-            <p className="text-3xl md:text-5xl font-extrabold tracking-tighter text-zinc-900 text-center px-4 mb-8 drop-shadow-sm">
+        <section ref={ctaRef} className="relative w-full h-[550px] border-t border-zinc-100 bg-[#fafafa] flex flex-col items-center justify-center overflow-hidden">
+          <div className="relative z-20 flex flex-col items-center w-full">
+            <p className="text-3xl md:text-5xl font-extrabold tracking-tighter text-zinc-900 text-center px-4 drop-shadow-sm relative z-30">
               Stop Applying. <span className="text-[#2563eb]">Start Getting Offers.</span>
             </p>
-            <Link href="/signup" className="pointer-events-auto">
-              <Button size="lg" className="rounded-full bg-zinc-900 hover:bg-black text-white h-14 px-10 text-[15px] font-bold shadow-xl shadow-zinc-900/20 hover:shadow-2xl transition-all group-hover:-translate-y-1 relative z-20">
+
+            {/* Sparkles positioned exactly below the text */}
+            <div className="w-full max-w-[40rem] h-40 relative mt-1 mb-[-4rem] z-10 pointer-events-none">
+              {/* Base gradients for glow effect */}
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 bg-gradient-to-r from-transparent via-blue-600 to-transparent h-[2px] w-3/4 md:w-full blur-sm opacity-80" />
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 bg-gradient-to-r from-transparent via-blue-600 to-transparent h-px w-3/4 md:w-full opacity-100" />
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 bg-gradient-to-r from-transparent via-sky-400 to-transparent h-[5px] w-1/4 sm:w-1/2 blur-sm opacity-80" />
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 bg-gradient-to-r from-transparent via-sky-400 to-transparent h-px w-1/4 sm:w-1/2 opacity-100" />
+
+              {/* Core component */}
+              <SparklesCore
+                background="transparent"
+                minSize={0.8}
+                maxSize={2.0}
+                particleDensity={1800}
+                className="w-full h-full"
+                particleColor="#1d4ed8"
+              />
+
+              {/* Radial Gradient to blend borders smoothly back to background color */}
+              <div className="absolute inset-0 w-full h-full bg-[#fafafa] [mask-image:radial-gradient(400px_200px_at_top,transparent_20%,white)]" />
+            </div>
+
+            <Link href="/signup" className="pointer-events-auto relative z-30 mt-6 hover:scale-105 transition-transform duration-300">
+              <Button size="lg" className="rounded-full bg-zinc-900 hover:bg-black text-white h-14 px-10 text-[15px] font-bold shadow-xl shadow-zinc-900/20 hover:shadow-2xl transition-all">
                 Create Your First CV <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>
-          </div>
-
-          {/* Sparkles positioned exactly below the text/button */}
-          <div className="w-[40rem] h-40 relative mt-[-1rem] z-10 pointer-events-none">
-            {/* Base gradients for glow effect */}
-            <div className="absolute inset-x-20 top-0 bg-gradient-to-r from-transparent via-blue-600 to-transparent h-[2px] w-3/4 blur-sm opacity-80" />
-            <div className="absolute inset-x-20 top-0 bg-gradient-to-r from-transparent via-blue-600 to-transparent h-px w-3/4 opacity-100" />
-            <div className="absolute inset-x-60 top-0 bg-gradient-to-r from-transparent via-sky-400 to-transparent h-[5px] w-1/4 blur-sm opacity-80" />
-            <div className="absolute inset-x-60 top-0 bg-gradient-to-r from-transparent via-sky-400 to-transparent h-px w-1/4 opacity-100" />
-
-            {/* Core component */}
-            <SparklesCore
-              background="transparent"
-              minSize={0.8}
-              maxSize={2.0}
-              particleDensity={1800}
-              className="w-full h-full"
-              particleColor="#1d4ed8"
-            />
-
-            {/* Radial Gradient to blend borders smoothly back to background color */}
-            <div className="absolute inset-0 w-full h-full bg-[#fafafa] [mask-image:radial-gradient(350px_200px_at_top,transparent_20%,white)]" />
           </div>
         </section>
       </main>
