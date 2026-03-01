@@ -248,7 +248,7 @@ export default function MyCVsClient({ documents: initialDocuments, isCVLimitReac
                             : `${resumeCount} CV${resumeCount !== 1 ? 's' : ''} · ${profileCount} profile${profileCount !== 1 ? 's' : ''}`}
                     </p>
                 </div>
-                <div className="flex items-center gap-3 flex-shrink-0">
+                <div className="flex flex-wrap items-center gap-3 flex-shrink-0 w-full sm:w-auto">
                     {/* ─── Segmented Filter Pill ─── */}
                     <div className="flex items-center bg-zinc-100 dark:bg-white/[0.06] border border-zinc-200 dark:border-white/10 rounded-xl p-1 gap-0.5">
                         {FILTERS.map(f => {

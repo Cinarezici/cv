@@ -12,6 +12,7 @@ import { LandingDemoStrip } from "@/components/ui/landing-demo-strip";
 import { LandingCopyLinkSpotlight } from "@/components/ui/landing-copy-link-spotlight";
 import { useLang, type Lang } from "@/lib/i18n";
 import { HeroInteractiveDemo } from "@/components/ui/hero-interactive-demo";
+import { SparklesCore } from "@/components/ui/sparkles";
 
 function LangFlagPicker() {
   const { lang, setLang } = useLang();
@@ -264,7 +265,7 @@ export default function Home() {
             <div className="flex w-full justify-between items-center gap-12">
 
               {/* Left Column (Text & CTAs) */}
-              <div className="flex flex-col z-20 w-full lg:w-[55%] items-start text-left">
+              <div className="flex flex-col z-20 w-full lg:w-[55%] items-center text-center lg:items-start lg:text-left">
 
                 <Link href="/signup">
                   <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-zinc-200/80 text-zinc-600 text-[13px] font-semibold mb-8 shadow-sm hover:shadow-md transition-all cursor-pointer hover:border-blue-200 group">
@@ -284,7 +285,7 @@ export default function Home() {
                 </p>
 
                 {/* Proof Chips */}
-                <div className="flex flex-wrap items-start gap-2 mb-10">
+                <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2 mb-10">
                   {proofChips.map((chip, i) => (
                     <div
                       key={chip}
@@ -299,7 +300,7 @@ export default function Home() {
                   ))}
                 </div>
 
-                <div className="flex flex-col sm:flex-row items-center justify-start gap-4 w-full sm:w-auto z-30 relative">
+                <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 w-full z-30 relative">
                   <Link href="/signup" className="w-full sm:w-auto">
                     <Button size="lg" className="w-full sm:w-auto h-14 px-8 rounded-full bg-gradient-to-r from-[#2563eb] to-[#3b82f6] hover:from-[#1d4ed8] hover:to-[#2563eb] text-white font-bold text-[15px] shadow-[0_0_24px_rgba(59,130,246,0.3)] hover:shadow-[0_0_32px_rgba(59,130,246,0.5)] transition-all hover:scale-[1.02] active:scale-95 border border-blue-400/20">
                       Get Started Free <ArrowRight className="ml-2 h-4 w-4" />
@@ -312,7 +313,7 @@ export default function Home() {
                   </a>
                 </div>
 
-                <div className="flex flex-col mt-12 items-start gap-3">
+                <div className="flex flex-col mt-12 items-center lg:items-start gap-3">
                   <div className="flex -space-x-3">
                     {testimonials.map((t, i) => (
                       <div key={i} className="w-10 h-10 rounded-full border-2 border-white bg-zinc-100 overflow-hidden shadow-sm relative z-[10] hover:scale-110 transition-transform cursor-pointer">
@@ -501,23 +502,39 @@ export default function Home() {
           </div>
         </section>
 
-        {/* --- G) Final Spiral CTA Section --- */}
-        <section ref={ctaRef} className="relative w-full h-[600px] border-t border-zinc-100 overflow-hidden bg-[#fafafa]">
-          <div className="absolute left-1/2 top-[45%] -translate-x-1/2 -translate-y-1/2 w-full max-w-[800px] aspect-square pointer-events-none opacity-90 mix-blend-multiply">
-            <SpiralAnimation play={isCtaInView} />
+        {/* --- G) Final CTA with Sparkles --- */}
+        <section ref={ctaRef} className="relative w-full h-[600px] border-t border-zinc-100 bg-[#fafafa] flex flex-col items-center justify-center overflow-hidden">
+          <div className="relative z-20 flex flex-col items-center transition-transform hover:scale-105 duration-500 group">
+            <p className="text-3xl md:text-5xl font-extrabold tracking-tighter text-zinc-900 text-center px-4 mb-8 drop-shadow-sm">
+              Stop Applying. <span className="text-[#2563eb]">Start Getting Offers.</span>
+            </p>
+            <Link href="/signup" className="pointer-events-auto">
+              <Button size="lg" className="rounded-full bg-zinc-900 hover:bg-black text-white h-14 px-10 text-[15px] font-bold shadow-xl shadow-zinc-900/20 hover:shadow-2xl transition-all group-hover:-translate-y-1 relative z-20">
+                Create Your First CV <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </Link>
           </div>
 
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10 -mt-10">
-            <Link href="/signup" className="pointer-events-auto">
-              <div className="flex flex-col items-center gap-6 group">
-                <p className="text-3xl md:text-5xl font-extrabold tracking-tighter text-zinc-900 group-hover:scale-105 transition-transform duration-500 drop-shadow-md text-center px-4">
-                  Stop Applying. <span className="text-[#2563eb]">Start Getting Offers.</span>
-                </p>
-                <Button size="lg" className="rounded-full bg-zinc-900 hover:bg-black text-white h-14 px-10 text-[15px] font-bold shadow-xl shadow-zinc-900/20 group-hover:shadow-2xl transition-all group-hover:-translate-y-1">
-                  Create Your First CV <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </div>
-            </Link>
+          {/* Sparkles positioned exactly below the text/button */}
+          <div className="w-[40rem] h-40 relative mt-[-1rem] z-10 pointer-events-none">
+            {/* Base gradients for glow effect */}
+            <div className="absolute inset-x-20 top-0 bg-gradient-to-r from-transparent via-blue-500 to-transparent h-[2px] w-3/4 blur-sm opacity-50" />
+            <div className="absolute inset-x-20 top-0 bg-gradient-to-r from-transparent via-blue-500 to-transparent h-px w-3/4 opacity-50" />
+            <div className="absolute inset-x-60 top-0 bg-gradient-to-r from-transparent via-sky-400 to-transparent h-[5px] w-1/4 blur-sm opacity-50" />
+            <div className="absolute inset-x-60 top-0 bg-gradient-to-r from-transparent via-sky-400 to-transparent h-px w-1/4 opacity-50" />
+
+            {/* Core component */}
+            <SparklesCore
+              background="transparent"
+              minSize={0.4}
+              maxSize={1.2}
+              particleDensity={1000}
+              className="w-full h-full"
+              particleColor="#2563eb"
+            />
+
+            {/* Radial Gradient to blend borders smoothly back to background color */}
+            <div className="absolute inset-0 w-full h-full bg-[#fafafa] [mask-image:radial-gradient(350px_200px_at_top,transparent_20%,white)]" />
           </div>
         </section>
       </main>

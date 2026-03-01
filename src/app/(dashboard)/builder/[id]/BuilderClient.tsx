@@ -226,17 +226,16 @@ export default function BuilderClient({ data, avatarUrl, isPro }: { data: any; a
         <div className="fixed inset-0 z-50 flex flex-col bg-gray-50 dark:bg-zinc-950" style={{ fontFamily: "'Inter', sans-serif" }}>
 
             {/* ── Top Header ─────────────────────────────────────────────────── */}
-            <header className="h-12 shrink-0 bg-white dark:bg-zinc-900 border-b border-gray-200 dark:border-white/10 flex items-center px-3 gap-2 z-10">
+            <header className="h-auto min-h-[48px] py-2 shrink-0 bg-white dark:bg-zinc-900 border-b border-gray-200 dark:border-white/10 flex flex-wrap items-center px-3 gap-2 z-10">
                 <button
                     onClick={() => router.push("/dashboard")}
                     className="flex items-center gap-1.5 text-sm font-semibold text-foreground/60 dark:text-zinc-400 hover:text-foreground dark:hover:text-white transition-colors shrink-0"
                 >
-                    <ArrowLeft className="w-4 h-4" />
+                    <ArrowLeft className="w-4 h-4 shrink-0" />
                     <span className="hidden sm:inline">Back to Dashboard</span>
-                    <span className="sm:hidden">Back</span>
                 </button>
 
-                <div className="flex-1 flex items-center justify-center gap-2 min-w-0">
+                <div className="flex-1 flex flex-wrap items-center justify-center sm:justify-start lg:justify-center gap-2 min-w-[120px]">
                     {editingTitle ? (
                         <input
                             ref={titleInputRef}
@@ -244,7 +243,7 @@ export default function BuilderClient({ data, avatarUrl, isPro }: { data: any; a
                             onChange={e => setTitleDraft(e.target.value)}
                             onBlur={commitTitle}
                             onKeyDown={e => { if (e.key === 'Enter') commitTitle(); if (e.key === 'Escape') cancelTitle(); }}
-                            className="max-w-[200px] sm:max-w-[300px] px-2 py-0.5 rounded-lg border border-indigo-300 dark:border-indigo-500/60 bg-white dark:bg-zinc-800 text-sm font-bold text-zinc-900 dark:text-white outline-none focus:ring-2 focus:ring-indigo-400/40 dark:focus:ring-indigo-500/40 text-center truncate"
+                            className="max-w-[150px] sm:max-w-[200px] md:max-w-[300px] px-2 py-0.5 rounded-lg border border-indigo-300 dark:border-indigo-500/60 bg-white dark:bg-zinc-800 text-sm font-bold text-zinc-900 dark:text-white outline-none focus:ring-2 focus:ring-indigo-400/40 dark:focus:ring-indigo-500/40 text-center truncate"
                             maxLength={80}
                             autoFocus
                         />
@@ -252,15 +251,15 @@ export default function BuilderClient({ data, avatarUrl, isPro }: { data: any; a
                         <button
                             onClick={startEditTitle}
                             title="Click to rename CV"
-                            className="group flex items-center gap-1.5 max-w-[260px] px-2 py-0.5 rounded-lg hover:bg-zinc-100 dark:hover:bg-white/5 transition-colors"
+                            className="group flex items-center gap-1.5 max-w-[150px] sm:max-w-[260px] px-1 sm:px-2 py-0.5 rounded-lg hover:bg-zinc-100 dark:hover:bg-white/5 transition-colors"
                         >
                             <span className="font-bold text-foreground dark:text-white text-sm truncate">
                                 {title || 'Untitled CV'}
                             </span>
-                            <Pencil className="w-3 h-3 text-zinc-400 dark:text-zinc-500 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity" />
+                            <Pencil className="w-3 h-3 text-zinc-400 dark:text-zinc-500 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity hidden sm:block" />
                         </button>
                     )}
-                    <span className={`shrink-0 text-[11px] font-bold px-2 py-0.5 rounded-full border ${isPro
+                    <span className={`shrink-0 text-[10px] sm:text-[11px] font-bold px-1.5 sm:px-2 py-0.5 rounded-full border ${isPro
                         ? 'bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-200 dark:border-amber-500/20'
                         : 'bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-100 dark:border-blue-500/20'
                         }`}>

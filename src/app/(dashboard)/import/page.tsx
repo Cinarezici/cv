@@ -152,10 +152,10 @@ export default function ImportPage() {
             <p className="text-zinc-500 dark:text-zinc-400 font-medium">Create your base profile quickly using one of the methods below.</p>
 
             <Tabs defaultValue="url" className="w-full">
-                {/* Mobile: 2×2 grid, Desktop: single row */}
-                <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 mb-8 bg-zinc-100 dark:bg-white/[0.06] text-zinc-500 dark:text-zinc-300 rounded-xl p-1.5 transition-all gap-1 h-auto sm:h-[52px] sm:items-stretch">
-                    <TabsTrigger value="url" className="data-[state=active]:bg-white dark:data-[state=active]:bg-white/15 data-[state=active]:text-zinc-900 dark:data-[state=active]:text-white data-[state=active]:shadow-sm rounded-lg font-semibold relative py-2.5 sm:py-0 flex-col sm:flex-row sm:items-center gap-1 sm:gap-0 h-auto text-xs sm:text-[13px]">
-                        <Linkedin className="w-4 h-4 sm:mr-2 shrink-0" />
+                {/* Mobile: horizontal scroll, Desktop: single row grid */}
+                <TabsList className="flex w-full overflow-x-auto hide-scrollbar justify-start sm:grid sm:grid-cols-4 mb-8 bg-zinc-100 dark:bg-white/[0.06] text-zinc-500 dark:text-zinc-300 rounded-xl p-1.5 transition-all gap-1 h-auto sm:h-[52px] items-center sm:items-stretch">
+                    <TabsTrigger value="url" className="data-[state=active]:bg-white dark:data-[state=active]:bg-white/15 data-[state=active]:text-zinc-900 dark:data-[state=active]:text-white data-[state=active]:shadow-sm rounded-lg font-semibold relative py-2.5 sm:py-0 flex-row items-center justify-center gap-1.5 whitespace-nowrap px-4 sm:px-0 h-auto text-[13px] shrink-0">
+                        <Linkedin className="w-4 h-4 shrink-0" />
                         <span>LinkedIn URL</span>
                         {isPro === false && !proLoading && (
                             <span className="absolute -top-1.5 -right-1.5 bg-indigo-600 text-white text-[9px] px-1.5 py-0.5 rounded-full font-bold shadow-sm">
@@ -163,12 +163,12 @@ export default function ImportPage() {
                             </span>
                         )}
                     </TabsTrigger>
-                    <TabsTrigger value="pdf" className="data-[state=active]:bg-white dark:data-[state=active]:bg-white/15 data-[state=active]:text-zinc-900 dark:data-[state=active]:text-white data-[state=active]:shadow-sm rounded-lg font-semibold py-2.5 sm:py-0 flex-col sm:flex-row sm:items-center gap-1 sm:gap-0 h-auto text-xs sm:text-[13px]">
-                        <FileUp className="w-4 h-4 sm:mr-2 shrink-0" />
+                    <TabsTrigger value="pdf" className="data-[state=active]:bg-white dark:data-[state=active]:bg-white/15 data-[state=active]:text-zinc-900 dark:data-[state=active]:text-white data-[state=active]:shadow-sm rounded-lg font-semibold py-2.5 sm:py-0 flex-row items-center justify-center gap-1.5 whitespace-nowrap px-4 sm:px-0 h-auto text-[13px] shrink-0">
+                        <FileUp className="w-4 h-4 shrink-0" />
                         <span>PDF Upload</span>
                     </TabsTrigger>
-                    <TabsTrigger value="text" className="data-[state=active]:bg-white dark:data-[state=active]:bg-white/15 data-[state=active]:text-zinc-900 dark:data-[state=active]:text-white data-[state=active]:shadow-sm rounded-lg font-semibold relative py-2.5 sm:py-0 flex-col sm:flex-row sm:items-center gap-1 sm:gap-0 h-auto text-xs sm:text-[13px]">
-                        <FileText className="w-4 h-4 sm:mr-2 shrink-0" />
+                    <TabsTrigger value="text" className="data-[state=active]:bg-white dark:data-[state=active]:bg-white/15 data-[state=active]:text-zinc-900 dark:data-[state=active]:text-white data-[state=active]:shadow-sm rounded-lg font-semibold relative py-2.5 sm:py-0 flex-row items-center justify-center gap-1.5 whitespace-nowrap px-4 sm:px-0 h-auto text-[13px] shrink-0">
+                        <FileText className="w-4 h-4 shrink-0" />
                         <span>Manual Text</span>
                         {isPro === false && !proLoading && (
                             <span className="absolute -top-1.5 -right-1.5 bg-indigo-600 text-white text-[9px] px-1.5 py-0.5 rounded-full font-bold shadow-sm">
@@ -176,8 +176,8 @@ export default function ImportPage() {
                             </span>
                         )}
                     </TabsTrigger>
-                    <TabsTrigger value="manual" className="data-[state=active]:bg-white dark:data-[state=active]:bg-white/15 data-[state=active]:text-zinc-900 dark:data-[state=active]:text-white data-[state=active]:shadow-sm rounded-lg font-semibold py-2.5 sm:py-0 flex-col sm:flex-row sm:items-center gap-1 sm:gap-0 h-auto text-xs sm:text-[13px]">
-                        <Keyboard className="w-4 h-4 sm:mr-2 shrink-0" />
+                    <TabsTrigger value="manual" className="data-[state=active]:bg-white dark:data-[state=active]:bg-white/15 data-[state=active]:text-zinc-900 dark:data-[state=active]:text-white data-[state=active]:shadow-sm rounded-lg font-semibold py-2.5 sm:py-0 flex-row items-center justify-center gap-1.5 whitespace-nowrap px-4 sm:px-0 h-auto text-[13px] shrink-0">
+                        <Keyboard className="w-4 h-4 shrink-0" />
                         <span>From Scratch</span>
                     </TabsTrigger>
                 </TabsList>
