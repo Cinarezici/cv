@@ -1,4 +1,5 @@
 import { createClient } from './supabase/server';
+import { getEffectiveStatus } from './subscription';
 
 export async function requireAuth() {
     const supabase = await createClient();
@@ -25,4 +26,27 @@ export async function requirePro() {
     }
 
     return auth;
+}
+
+/**
+ * Returns 402 if the user's subscription is canceled (trial expired, not upgraded).
+ * Use this guard at the top of any API route that should be blocked for canceled users.
+ */
+export async function requireNotCanceled() {
+    const auth = await requireAuth();
+    if (auth.error) return auth;
+
+    const effectiveStatus = await getEffectiveStatus(auth.user!.id);
+
+    if (effectiveStatus === 'canceled') {
+        return {
+            error: 'trial_expired',
+            status: 402,
+            user: auth.user,
+            isPro: false,
+            message: 'Your trial has ended. Please upgrade to Pro to continue.',
+        };
+    }
+
+    return { ...auth, subscriptionStatus: effectiveStatus };
 }

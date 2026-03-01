@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { checkUsageLimits, logJobSearch } from '@/lib/limits';
+import { requireNotCanceled } from '@/lib/auth-middleware';
 
 export const dynamic = 'force-dynamic';
 
@@ -8,12 +9,14 @@ const ACTOR_ID = 'curious_coder~linkedin-jobs-scraper'; // Note: ~ instead of / 
 
 export async function POST(request: NextRequest) {
     try {
+        const guard = await requireNotCanceled();
+        if (guard.error) {
+            return NextResponse.json({ error: guard.error, message: (guard as any).message }, { status: guard.status ?? 401 });
+        }
+        const user = guard.user!;
+
         const token = process.env.APIFY_API_TOKEN || process.env.NEXT_PUBLIC_APIFY_API_TOKEN;
         const supabase = await createClient();
-        const { data: { user } } = await supabase.auth.getUser();
-
-        if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-
         const { keywords, location } = await request.json();
 
         // Check search limits

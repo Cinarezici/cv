@@ -1,6 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
+import { getEffectiveStatus } from '@/lib/subscription';
 
+/**
+ * GET /api/motivation-letters/share/[token]
+ * Returns letter data for the public share preview page.
+ * SERVER-SIDE enforces: if letter owner is 'canceled' → redirect to homepage.
+ */
 export async function GET(request: NextRequest, { params }: { params: Promise<{ token: string }> }) {
     try {
         const { token } = await params;
@@ -19,6 +25,15 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
 
         if (letter.share_expires_at && new Date(letter.share_expires_at) < new Date()) {
             return NextResponse.json({ error: 'Paylaşım linki süresi doldu' }, { status: 410 });
+        }
+
+        // ── Subscription check: if owner is canceled, block access ──
+        const ownerStatus = await getEffectiveStatus(letter.user_id);
+        if (ownerStatus === 'canceled') {
+            return NextResponse.json(
+                { redirect: 'https://cvoptimizerai.com', error: 'subscription_canceled' },
+                { status: 402 }
+            );
         }
 
         return NextResponse.json({

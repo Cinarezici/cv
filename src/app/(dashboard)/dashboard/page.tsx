@@ -5,9 +5,10 @@ import { Resume } from '@/types';
 import { DeleteButton } from '@/components/DeleteButton';
 import { CvShareLinkButton } from '@/components/CvShareLinkButton';
 import { CvPreviewModal } from '@/components/CvPreviewModal';
-import { FileText, Mail, Plus, Pencil, Clock, LayoutTemplate, Zap, Link as LinkIcon, AlertCircle } from 'lucide-react';
+import { FileText, Mail, Plus, Pencil, Clock, LayoutTemplate, Zap, Link as LinkIcon, AlertCircle, Lock } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { checkUsageLimits } from '@/lib/limits';
+import { getEffectiveStatus } from '@/lib/subscription';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -16,6 +17,12 @@ export default async function DashboardPage() {
     const supabase = await createClient();
     const { data: { user }, error: userError } = await supabase.auth.getUser();
     if (userError || !user) redirect('/login');
+
+    // Check subscription status — canceled users see locked dashboard
+    const subStatus = await getEffectiveStatus(user.id);
+    if (subStatus === 'canceled') {
+        return <LockedDashboard />;
+    }
 
     const limitCheck = await checkUsageLimits(user.id, 'create_cv');
     const isCVLimitReached = !limitCheck.allowed;
@@ -278,3 +285,66 @@ function StatCard({ icon, iconBg, value, label }: { icon: React.ReactNode; iconB
         </div>
     );
 }
+
+/* ─── Locked Dashboard (shown to canceled users) ──────────────── */
+function LockedDashboard() {
+    const LOCKED_FEATURES = [
+        'Unlimited CV creation & editing',
+        'Unlimited LinkedIn job searches',
+        'Unlimited motivation letters',
+        'PDF export for all letters & CVs',
+        'Share links always stay active',
+        'AI-powered CV optimization',
+    ];
+
+    return (
+        <div className="flex flex-col items-center justify-center min-h-[70vh] text-center px-4 space-y-8">
+            {/* Icon */}
+            <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shadow-xl shadow-orange-200 dark:shadow-orange-500/10">
+                <Lock className="w-10 h-10 text-white" />
+            </div>
+
+            {/* Heading */}
+            <div className="space-y-3 max-w-lg">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 text-xs font-extrabold uppercase tracking-widest border border-amber-200 dark:border-amber-500/20">
+                    Trial Ended
+                </div>
+                <h1 className="text-4xl font-extrabold text-zinc-900 dark:text-white tracking-tight">
+                    Your free trial has ended
+                </h1>
+                <p className="text-zinc-500 dark:text-zinc-400 text-base leading-relaxed">
+                    Upgrade to Pro to regain access to your CVs, letters, and all features. Your data is safe and waiting for you.
+                </p>
+            </div>
+
+            {/* Features grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-md w-full text-left">
+                {LOCKED_FEATURES.map((f, i) => (
+                    <div key={i} className="flex items-center gap-2.5 text-sm text-zinc-600 dark:text-zinc-300 font-medium">
+                        <div className="w-5 h-5 rounded-full bg-indigo-100 dark:bg-indigo-500/20 flex items-center justify-center shrink-0">
+                            <Zap className="w-3 h-3 text-indigo-600 dark:text-indigo-400" />
+                        </div>
+                        {f}
+                    </div>
+                ))}
+            </div>
+
+            {/* Pricing */}
+            <div className="bg-zinc-50 dark:bg-white/5 border border-zinc-200 dark:border-white/10 rounded-2xl px-8 py-5 max-w-sm w-full">
+                <p className="text-xs font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-widest mb-1">Pro Plan</p>
+                <p className="text-3xl font-extrabold text-zinc-900 dark:text-white">$99 <span className="text-base font-semibold text-zinc-400">/ 3 years</span></p>
+                <p className="text-indigo-600 dark:text-indigo-400 text-sm font-bold mt-1">≈ $2.75/month — less than a coffee</p>
+            </div>
+
+            {/* CTA */}
+            <Link
+                href="/upgrade"
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white font-extrabold px-10 py-4 rounded-2xl shadow-lg shadow-indigo-200 dark:shadow-indigo-900/30 transition-all active:scale-95 text-sm"
+            >
+                <Zap className="w-4 h-4" />
+                Upgrade to Pro — $99 lifetime
+            </Link>
+        </div>
+    );
+}
+

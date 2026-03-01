@@ -45,12 +45,21 @@ export default function SettingsPage() {
                 const { data: sub } = await supabase.from('subscriptions').select('*').eq('user_id', user.id).single();
                 if (sub) setSubscription(sub);
 
-                // Calculate Trial / Reset Dates (14 days from account creation)
-                const creationDate = new Date(user.created_at || new Date());
-                const _trialEndDate = new Date(creationDate.getTime() + 14 * 24 * 60 * 60 * 1000);
-                const diffDays = Math.ceil((_trialEndDate.getTime() - new Date().getTime()) / (1000 * 3600 * 24));
-                setTrialDaysLeft(diffDays > 0 ? diffDays : 0);
-                setNextResetDate(_trialEndDate);
+                // Calculate Trial / Reset Dates from subscription row (prefer trial_end_at)
+                const rawEnd = sub?.trial_end_at ?? sub?.trial_ends_at;
+                if (rawEnd) {
+                    const _trialEndDate = new Date(rawEnd);
+                    const diffDays = Math.ceil((_trialEndDate.getTime() - new Date().getTime()) / (1000 * 3600 * 24));
+                    setTrialDaysLeft(diffDays > 0 ? diffDays : 0);
+                    setNextResetDate(_trialEndDate);
+                } else {
+                    // Fallback: 14 days from account creation
+                    const creationDate = new Date(user.created_at || new Date());
+                    const _trialEndDate = new Date(creationDate.getTime() + 14 * 24 * 60 * 60 * 1000);
+                    const diffDays = Math.ceil((_trialEndDate.getTime() - new Date().getTime()) / (1000 * 3600 * 24));
+                    setTrialDaysLeft(diffDays > 0 ? diffDays : 0);
+                    setNextResetDate(_trialEndDate);
+                }
 
                 // Fetch Usage Stats
                 const { count: cvs } = await supabase.from('resumes').select('*', { count: 'exact', head: true }).eq('user_id', user.id);
@@ -97,7 +106,9 @@ export default function SettingsPage() {
         );
     }
 
+    const rawEnd = subscription?.trial_end_at ?? subscription?.trial_ends_at;
     const isPro = ['active'].includes(subscription?.status as string);
+    const isCanceled = !isPro && rawEnd ? new Date() > new Date(rawEnd) : subscription?.status === 'canceled';
 
     return (
         <div className="max-w-4xl mx-auto py-12 px-4 bg-[#fafafa] dark:bg-zinc-950 min-h-[calc(100vh-100px)] text-zinc-900 font-sans">
@@ -124,8 +135,8 @@ export default function SettingsPage() {
                                     key={l}
                                     onClick={() => setLang(l)}
                                     className={`flex items-center gap-2 px-5 py-3 rounded-xl border-2 font-bold text-sm transition-all ${lang === l
-                                            ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-500/10 text-indigo-700 dark:text-indigo-300'
-                                            : 'border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-300 hover:border-zinc-300 dark:hover:border-white/20 hover:bg-zinc-50 dark:hover:bg-white/5'
+                                        ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-500/10 text-indigo-700 dark:text-indigo-300'
+                                        : 'border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-300 hover:border-zinc-300 dark:hover:border-white/20 hover:bg-zinc-50 dark:hover:bg-white/5'
                                         }`}
                                 >
                                     <span className="text-xl">{l === 'en' ? '🇬🇧' : '🇹🇷'}</span>
@@ -170,20 +181,32 @@ export default function SettingsPage() {
                                 <div>
                                     <div className="flex items-center gap-3 mb-1.5">
                                         <h3 className="text-[18px] font-bold text-zinc-900 dark:text-white">
-                                            {isPro ? 'Pro Plan' : 'Free Plan'}
+                                            {isPro ? 'Pro Plan' : isCanceled ? 'Free Plan — Expired' : 'Free Plan'}
                                         </h3>
-                                        <span className={`text-[11px] font-bold px-2.5 py-0.5 rounded-full tracking-wide ${isPro ? 'bg-indigo-100 dark:bg-indigo-500/20 text-indigo-700 dark:text-indigo-400' : 'bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-400'}`}>
-                                            {isPro ? 'ACTIVE' : 'LIMITED'}
+                                        <span className={`text-[11px] font-bold px-2.5 py-0.5 rounded-full tracking-wide ${isPro ? 'bg-indigo-100 dark:bg-indigo-500/20 text-indigo-700 dark:text-indigo-400'
+                                                : isCanceled ? 'bg-red-100 dark:bg-red-500/20 text-red-600 dark:text-red-400'
+                                                    : 'bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-400'
+                                            }`}>
+                                            {isPro ? 'ACTIVE' : isCanceled ? 'LOCKED' : 'LIMITED'}
                                         </span>
                                     </div>
                                     <p className="text-[14px] text-zinc-500 dark:text-zinc-400 font-medium mb-3">
-                                        {isPro ? 'Enjoy unlimited access to all features.' : 'Your free limits reset every 14 days.'}
+                                        {isPro ? 'Enjoy unlimited access to all features.'
+                                            : isCanceled ? 'Your trial ended. Upgrade to regain full access.'
+                                                : 'Your free limits reset every 14 days.'}
                                     </p>
 
-                                    {!isPro && (
+                                    {!isPro && !isCanceled && (
                                         <div className="inline-flex items-center bg-orange-50 dark:bg-orange-500/10 px-3 py-1.5 rounded-md border border-orange-100 dark:border-orange-500/20">
                                             <span className="text-[13px] font-semibold text-orange-600 dark:text-orange-400">
                                                 Next Reset: {format(nextResetDate, 'M/d/yyyy')} ({trialDaysLeft} days left)
+                                            </span>
+                                        </div>
+                                    )}
+                                    {isCanceled && (
+                                        <div className="inline-flex items-center bg-red-50 dark:bg-red-500/10 px-3 py-1.5 rounded-md border border-red-100 dark:border-red-500/20">
+                                            <span className="text-[13px] font-semibold text-red-600 dark:text-red-400">
+                                                Locked — Upgrade to continue
                                             </span>
                                         </div>
                                     )}
@@ -200,7 +223,7 @@ export default function SettingsPage() {
                                         onClick={() => window.location.href = process.env.NEXT_PUBLIC_POLAR_CHECKOUT_URL!}
                                         className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-semibold px-6 h-10 rounded-lg shadow-sm w-full sm:w-auto"
                                     >
-                                        Upgrade to Pro
+                                        {isCanceled ? 'Upgrade to Pro — $99' : 'Upgrade to Pro'}
                                     </Button>
                                 )}
                             </div>

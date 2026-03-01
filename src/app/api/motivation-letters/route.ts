@@ -8,6 +8,7 @@ import * as cheerio from 'cheerio';
 import { ToneType } from '@/types/motivation-letter';
 import { generateShortSlug } from '@/lib/short-id';
 import { mapToResumeJSON } from '@/lib/resume-mapper';
+import { requireNotCanceled } from '@/lib/auth-middleware';
 
 interface JobConfig {
     targetRole: string;
@@ -59,6 +60,12 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
     console.log("POST /api/motivation-letters reached");
     try {
+        // Guard: canceled users cannot create letters
+        const guard = await requireNotCanceled();
+        if (guard.error) {
+            return NextResponse.json({ error: guard.error, message: (guard as any).message }, { status: guard.status ?? 401 });
+        }
+
         const supabase = await createClient();
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

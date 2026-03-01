@@ -23,6 +23,7 @@ import {
 import { usePro } from "@/hooks/usePro";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { useLang } from "@/lib/i18n";
+import { TrialExpiredModal } from "@/components/TrialExpiredModal";
 
 export default function DashboardLayout({
     children,
@@ -44,6 +45,9 @@ export default function DashboardLayout({
                     {children}
                 </main>
             </div>
+
+            {/* Global trial-expired modal — listens for 'trial-expired' event */}
+            <TrialExpiredModal />
         </div>
     );
 }
@@ -200,6 +204,19 @@ function NavItems({
     status: string | null;
 }) {
     const { t } = useLang();
+    const isCanceled = status === 'canceled';
+
+    if (isCanceled) {
+        // Locked sidebar: only Dashboard, Upgrade, Settings
+        return (
+            <>
+                <Option Icon={LayoutDashboard} title={t.dashboard} href="/dashboard" selected={pathname === "/dashboard"} open={open} />
+                <UpgradeOption open={open} selected={pathname === "/upgrade"} />
+                <Option Icon={Settings} title={t.settings} href="/settings" selected={pathname === "/settings"} open={open} />
+            </>
+        );
+    }
+
     return (
         <>
             <Option Icon={LayoutDashboard} title={t.dashboard} href="/dashboard" selected={pathname === "/dashboard"} open={open} />

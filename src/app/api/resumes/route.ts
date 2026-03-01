@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
+import { requireNotCanceled } from '@/lib/auth-middleware';
 import crypto from 'crypto';
 
 const DEFAULT_CV_JSON = {
@@ -24,12 +25,13 @@ const DEFAULT_CV_JSON = {
 // POST — Create a blank/new CV and return its ID
 export async function POST(request: NextRequest) {
     try {
-        const supabase = await createClient();
-        const { data: { user } } = await supabase.auth.getUser();
-
-        if (!user) {
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        const guard = await requireNotCanceled();
+        if (guard.error) {
+            return NextResponse.json({ error: guard.error, message: (guard as any).message }, { status: guard.status ?? 401 });
         }
+        const user = guard.user!;
+
+        const supabase = await createClient();
 
         // Read optional body for profile_id / initial overrides
         let body: any = {};

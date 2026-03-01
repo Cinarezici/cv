@@ -19,15 +19,24 @@ export function usePro() {
 
                 const { data: sub } = await supabase
                     .from('subscriptions')
-                    .select('*')
+                    .select('status, trial_end_at, trial_ends_at')
                     .eq('user_id', user.id)
                     .maybeSingle();
 
-                const currentStatus = sub?.status as string;
-                setStatus(currentStatus);
-                const isProActive = ['active'].includes(currentStatus);
+                // Compute effective status client-side (mirrors server logic)
+                let effectiveStatus = (sub?.status as string) || 'trialing';
 
-                setIsPro(isProActive);
+                if (effectiveStatus === 'trialing') {
+                    const rawEnd = sub?.trial_end_at ?? sub?.trial_ends_at;
+                    if (rawEnd && new Date() > new Date(rawEnd)) {
+                        effectiveStatus = 'canceled';
+                        // Fire-and-forget DB update via API (avoids service role on client)
+                        fetch('/api/subscription/expire', { method: 'POST' }).catch(() => { });
+                    }
+                }
+
+                setStatus(effectiveStatus);
+                setIsPro(effectiveStatus === 'active');
             } catch (error) {
                 console.error('Error checking pro status:', error);
                 setIsPro(false);
@@ -43,8 +52,12 @@ export function usePro() {
         if (isPro) {
             if (callback) callback();
             return true;
+        } else if (status === 'canceled') {
+            // Fire trial-expired modal
+            window.dispatchEvent(new CustomEvent('trial-expired'));
+            return false;
         } else {
-            // Trigger upgrade modal event across app
+            // Trialing but hit a pro-only feature
             const event = new CustomEvent('open-upgrade-modal');
             window.dispatchEvent(event);
             return false;
