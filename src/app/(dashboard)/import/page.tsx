@@ -148,8 +148,8 @@ export default function ImportPage() {
 
             <Tabs defaultValue="url" className="w-full">
                 {/* Mobile: 2×2 grid, Desktop: single row */}
-                <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 mb-8 bg-zinc-200 dark:bg-white/5 text-zinc-600 dark:text-zinc-400 rounded-lg p-1 transition-all gap-1 h-auto">
-                    <TabsTrigger value="url" className="data-[state=active]:bg-white dark:data-[state=active]:bg-white/10 data-[state=active]:text-zinc-900 dark:data-[state=active]:text-white data-[state=active]:shadow-sm rounded-md font-semibold relative py-2.5 sm:py-3 flex-col sm:flex-row sm:items-center gap-1 sm:gap-0 h-auto text-xs sm:text-sm">
+                <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 mb-8 bg-zinc-200 dark:bg-white/5 text-zinc-600 dark:text-zinc-400 rounded-lg p-1 sm:p-1.5 transition-all gap-1 h-auto">
+                    <TabsTrigger value="url" className="data-[state=active]:bg-white dark:data-[state=active]:bg-white/10 data-[state=active]:text-zinc-900 dark:data-[state=active]:text-white data-[state=active]:shadow-sm rounded-md font-semibold relative py-2.5 sm:py-0 sm:h-12 flex-col sm:flex-row sm:items-center gap-1 sm:gap-0 h-auto text-xs sm:text-sm">
                         <Linkedin className="w-4 h-4 sm:mr-2" />
                         <span>LinkedIn URL</span>
                         {isPro === false && !proLoading && (
@@ -158,11 +158,11 @@ export default function ImportPage() {
                             </span>
                         )}
                     </TabsTrigger>
-                    <TabsTrigger value="pdf" className="data-[state=active]:bg-white dark:data-[state=active]:bg-white/10 data-[state=active]:text-zinc-900 dark:data-[state=active]:text-white data-[state=active]:shadow-sm rounded-md font-semibold py-2.5 sm:py-3 flex-col sm:flex-row sm:items-center gap-1 sm:gap-0 h-auto text-xs sm:text-sm">
+                    <TabsTrigger value="pdf" className="data-[state=active]:bg-white dark:data-[state=active]:bg-white/10 data-[state=active]:text-zinc-900 dark:data-[state=active]:text-white data-[state=active]:shadow-sm rounded-md font-semibold py-2.5 sm:py-0 sm:h-12 flex-col sm:flex-row sm:items-center gap-1 sm:gap-0 h-auto text-xs sm:text-sm">
                         <FileUp className="w-4 h-4 sm:mr-2" />
                         <span>PDF Upload</span>
                     </TabsTrigger>
-                    <TabsTrigger value="text" className="data-[state=active]:bg-white dark:data-[state=active]:bg-white/10 data-[state=active]:text-zinc-900 dark:data-[state=active]:text-white data-[state=active]:shadow-sm rounded-md font-semibold relative py-2.5 sm:py-3 flex-col sm:flex-row sm:items-center gap-1 sm:gap-0 h-auto text-xs sm:text-sm">
+                    <TabsTrigger value="text" className="data-[state=active]:bg-white dark:data-[state=active]:bg-white/10 data-[state=active]:text-zinc-900 dark:data-[state=active]:text-white data-[state=active]:shadow-sm rounded-md font-semibold relative py-2.5 sm:py-0 sm:h-12 flex-col sm:flex-row sm:items-center gap-1 sm:gap-0 h-auto text-xs sm:text-sm">
                         <FileText className="w-4 h-4 sm:mr-2" />
                         <span>Manual Text</span>
                         {isPro === false && !proLoading && (
@@ -171,7 +171,7 @@ export default function ImportPage() {
                             </span>
                         )}
                     </TabsTrigger>
-                    <TabsTrigger value="manual" className="data-[state=active]:bg-white dark:data-[state=active]:bg-white/10 data-[state=active]:text-zinc-900 dark:data-[state=active]:text-white data-[state=active]:shadow-sm rounded-md font-semibold py-2.5 sm:py-3 flex-col sm:flex-row sm:items-center gap-1 sm:gap-0 h-auto text-xs sm:text-sm">
+                    <TabsTrigger value="manual" className="data-[state=active]:bg-white dark:data-[state=active]:bg-white/10 data-[state=active]:text-zinc-900 dark:data-[state=active]:text-white data-[state=active]:shadow-sm rounded-md font-semibold py-2.5 sm:py-0 sm:h-12 flex-col sm:flex-row sm:items-center gap-1 sm:gap-0 h-auto text-xs sm:text-sm">
                         <Keyboard className="w-4 h-4 sm:mr-2" />
                         <span>From Scratch</span>
                     </TabsTrigger>
