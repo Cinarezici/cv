@@ -9,7 +9,7 @@ import { Loader2, Sparkles, ChevronRight, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { createClient } from '@/lib/supabase/client';
 import { usePro } from '@/hooks/usePro';
-import Link from 'next/link';
+import LockedPageView from '@/components/LockedPageView';
 
 function NewResumeForm() {
     const searchParams = useSearchParams();
@@ -81,68 +81,23 @@ function NewResumeForm() {
         }
     };
 
-    const { isPro, isLoading: proLoading } = usePro();
+    const { isPro, isLoading: proLoading, status } = usePro();
 
     if (fetchingDocs || proLoading) {
         return <div className="p-12 flex justify-center"><Loader2 className="animate-spin text-zinc-400 w-7 h-7" /></div>;
     }
 
-    if (!isPro) {
+    if (status === 'canceled' || !isPro) {
         return (
-            <div className="max-w-4xl mx-auto py-12 px-6">
-                <Card className="border-0 shadow-2xl max-w-2xl mx-auto bg-white dark:bg-zinc-900 rounded-3xl overflow-hidden animate-in fade-in zoom-in duration-500">
-                    <div className="bg-orange-500 p-8 text-center text-white relative">
-                        <div className="absolute top-0 right-0 p-4 opacity-10">
-                            <Sparkles className="w-24 h-24" />
-                        </div>
-                        <div className="w-20 h-20 bg-white/20 backdrop-blur-md text-white rounded-3xl flex items-center justify-center mx-auto mb-6 transform rotate-3 shadow-xl">
-                            <Sparkles className="w-10 h-10" />
-                        </div>
-                        <h2 className="text-3xl font-bold mb-2">Pro Feature</h2>
-                        <p className="text-orange-50 text-lg">AI CV Optimization is a Premium feature.</p>
-                    </div>
-                    <CardContent className="p-10 text-center space-y-8">
-                        <div className="space-y-4">
-                            <h3 className="text-xl font-bold text-zinc-900 dark:text-white">Tailor your CV perfectly for every job description.</h3>
-                            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left max-w-md mx-auto">
-                                <li className="flex items-center gap-3 text-sm font-semibold text-zinc-700 dark:text-zinc-300">
-                                    <div className="w-6 h-6 rounded-full bg-emerald-100 dark:bg-emerald-500/20 flex items-center justify-center text-emerald-600 dark:text-emerald-400 font-bold text-xs">✓</div>
-                                    AI-powered bullet points
-                                </li>
-                                <li className="flex items-center gap-3 text-sm font-semibold text-zinc-700 dark:text-zinc-300">
-                                    <div className="w-6 h-6 rounded-full bg-emerald-100 dark:bg-emerald-500/20 flex items-center justify-center text-emerald-600 dark:text-emerald-400 font-bold text-xs">✓</div>
-                                    Job-specific tailoring
-                                </li>
-                                <li className="flex items-center gap-3 text-sm font-semibold text-zinc-700 dark:text-zinc-300">
-                                    <div className="w-6 h-6 rounded-full bg-emerald-100 dark:bg-emerald-500/20 flex items-center justify-center text-emerald-600 dark:text-emerald-400 font-bold text-xs">✓</div>
-                                    ATS-Friendly Keywords
-                                </li>
-                                <li className="flex items-center gap-3 text-sm font-semibold text-zinc-700 dark:text-zinc-300">
-                                    <div className="w-6 h-6 rounded-full bg-emerald-100 dark:bg-emerald-500/20 flex items-center justify-center text-emerald-600 dark:text-emerald-400 font-bold text-xs">✓</div>
-                                    Higher response rates
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div className="pt-4 flex flex-col gap-3">
-                            <Button
-                                onClick={() => window.location.href = process.env.NEXT_PUBLIC_POLAR_CHECKOUT_URL!}
-                                className="w-full bg-orange-500 hover:bg-orange-600 text-white h-14 font-bold text-xl rounded-2xl shadow-lg shadow-orange-100 transition-all hover:scale-[1.02] active:scale-[0.98]"
-                            >
-                                <Sparkles className="mr-2 h-5 w-5" />
-                                Upgrade to Pro
-                            </Button>
-                            <Button
-                                variant="ghost"
-                                onClick={() => router.push('/dashboard')}
-                                className="text-zinc-500 font-bold h-12"
-                            >
-                                Back to Dashboard
-                            </Button>
-                        </div>
-                    </CardContent>
-                </Card>
-            </div>
+            <LockedPageView
+                featureName="AI CV Optimization"
+                features={[
+                    { text: 'AI-powered bullet points' },
+                    { text: 'Job-specific tailoring' },
+                    { text: 'ATS-Friendly Keywords' },
+                    { text: 'Higher response rates' }
+                ]}
+            />
         );
     }
 
