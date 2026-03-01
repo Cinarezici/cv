@@ -1,11 +1,12 @@
 "use client";
 
-import { Check } from "lucide-react";
+import { Check, Lock } from "lucide-react";
 import { useResumeStore } from "@/store/useResumeStore";
 import { COLOR_PALETTES } from "@/lib/theme-config";
 
-// Map our themes to cvmakerly-style template cards
+// All 10 templates (4 existing + 6 additional Pro)
 const TEMPLATES = [
+    // ── Free ────────────────────────────────────────────────────────
     {
         id: "clean-ats",
         category: "ats_safe" as const,
@@ -13,6 +14,7 @@ const TEMPLATES = [
         name: "Minimalist",
         description: "Clean, distraction-free design (ATS Friendly)",
         features: ["Simple format", "High readability", "Machine friendly"],
+        isPro: false,
     },
     {
         id: "startup-visual",
@@ -21,7 +23,9 @@ const TEMPLATES = [
         name: "Modern",
         description: "Clean sidebar layout with photo support",
         features: ["Photo support", "Sidebar design", "Colorful accents"],
+        isPro: false,
     },
+    // ── Pro ─────────────────────────────────────────────────────────
     {
         id: "executive-ats",
         category: "ats_safe" as const,
@@ -29,6 +33,7 @@ const TEMPLATES = [
         name: "Executive",
         description: "Sophisticated layout for corporate roles",
         features: ["Serif typography", "Elegant accents", "Traditional format"],
+        isPro: true,
     },
     {
         id: "creative-visual",
@@ -37,11 +42,81 @@ const TEMPLATES = [
         name: "Creative",
         description: "Bold design for creative professionals",
         features: ["Unique layout", "Visual flair", "Standout style"],
+        isPro: true,
+    },
+    {
+        id: "modern-ats",
+        category: "ats_safe" as const,
+        emoji: "⚡",
+        name: "Modern ATS",
+        description: "Clean ATS format with superior spacing",
+        features: ["ATS optimized", "Modern spacing", "Inter typeface"],
+        isPro: true,
+    },
+    {
+        id: "tech-ats",
+        category: "ats_safe" as const,
+        emoji: "💻",
+        name: "Tech",
+        description: "Dense layout optimized for software engineers",
+        features: ["Info-dense", "SWE-focused", "Monospace accents"],
+        isPro: true,
+    },
+    {
+        id: "minimal-visual",
+        category: "visual" as const,
+        emoji: "🤍",
+        name: "Minimal Visual",
+        description: "High whitespace, modern and refined",
+        features: ["Lots of whitespace", "Modern", "Photo optional"],
+        isPro: true,
+    },
+    {
+        id: "corporate-visual",
+        category: "visual" as const,
+        emoji: "🏢",
+        name: "Corporate",
+        description: "Serious multi-column design for corporate roles",
+        features: ["Two columns", "Structured", "Photo support"],
+        isPro: true,
+    },
+    {
+        id: "jake-ats",
+        category: "ats_safe" as const,
+        emoji: "⭐",
+        name: "Jake's Resume",
+        description: "Most-cloned ATS resume on GitHub",
+        features: ["Single page", "LaTeX-inspired", "FAANG favorite"],
+        isPro: true,
+    },
+    {
+        id: "deedy-visual",
+        category: "visual" as const,
+        emoji: "🔥",
+        name: "Deedy",
+        description: "Two-column layout loved by FAANG engineers",
+        features: ["Two columns", "Tech-focused", "Bold headers"],
+        isPro: true,
     },
 ];
 
-export default function TemplatePanel() {
+interface TemplatePanelProps {
+    isPro?: boolean;
+    onProTemplateBlocked?: (templateName: string) => void;
+}
+
+export default function TemplatePanel({ isPro = false, onProTemplateBlocked }: TemplatePanelProps) {
     const { themeId, colorPaletteId, updateTheme, updateColorPalette } = useResumeStore();
+
+    const handleTemplateClick = (tpl: typeof TEMPLATES[0]) => {
+        if (tpl.isPro && !isPro) {
+            // Allow selection for preview but notify parent that gating applies
+            updateTheme(tpl.id, tpl.category);
+            onProTemplateBlocked?.(tpl.name);
+        } else {
+            updateTheme(tpl.id, tpl.category);
+        }
+    };
 
     return (
         <div className="flex flex-col gap-6 p-5">
@@ -55,33 +130,49 @@ export default function TemplatePanel() {
             <div className="grid grid-cols-2 gap-3">
                 {TEMPLATES.map((tpl) => {
                     const isSelected = themeId === tpl.id;
+                    const isLocked = tpl.isPro && !isPro;
+
                     return (
                         <button
                             key={tpl.id}
-                            onClick={() => updateTheme(tpl.id, tpl.category)}
+                            onClick={() => handleTemplateClick(tpl)}
                             className={`relative flex flex-col gap-2 p-4 rounded-2xl border-2 text-left transition-all
-                ${isSelected
-                                    ? "border-blue-500 dark:border-blue-500 bg-blue-50 dark:bg-blue-500/10"
+                                ${isSelected
+                                    ? isLocked
+                                        ? "border-blue-400/40 dark:border-blue-400/40 bg-blue-50/50 dark:bg-blue-500/5"
+                                        : "border-blue-500 dark:border-blue-500 bg-blue-50 dark:bg-blue-500/10"
                                     : "border-gray-200 dark:border-white/10 bg-white dark:bg-zinc-900 hover:border-gray-300 dark:hover:border-white/20 hover:bg-gray-50 dark:hover:bg-white/5"
                                 }`}
                         >
-                            {isSelected && (
+                            {/* Selected check OR PRO badge */}
+                            {isSelected && !isLocked && (
                                 <span className="absolute top-2 right-2 flex items-center gap-1 bg-blue-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
                                     <Check className="w-2.5 h-2.5" />
                                     Selected
                                 </span>
                             )}
+                            {isLocked && (
+                                <span className="absolute top-2 right-2 flex items-center gap-1 bg-blue-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
+                                    <Lock className="w-2.5 h-2.5" />
+                                    PRO
+                                </span>
+                            )}
+                            {isSelected && isLocked && (
+                                <span className="absolute top-2 left-2 flex items-center gap-1 bg-blue-500/20 text-blue-400 text-[9px] font-bold px-1.5 py-0.5 rounded-full border border-blue-500/30">
+                                    Preview
+                                </span>
+                            )}
 
                             <span className="text-2xl">{tpl.emoji}</span>
                             <div>
-                                <div className="font-bold text-gray-900 dark:text-white text-sm">{tpl.name}</div>
+                                <div className={`font-bold text-sm ${isLocked ? "text-gray-500 dark:text-zinc-400" : "text-gray-900 dark:text-white"}`}>{tpl.name}</div>
                                 <div className="text-[11px] text-gray-500 dark:text-zinc-400 mt-0.5 leading-snug">{tpl.description}</div>
                             </div>
 
                             <ul className="flex flex-col gap-0.5 mt-1">
                                 {tpl.features.map((f) => (
                                     <li key={f} className="flex items-start gap-1.5 text-[11px] text-gray-500 dark:text-zinc-400">
-                                        <Check className="w-3 h-3 text-blue-500 mt-0.5 shrink-0" />
+                                        <Check className={`w-3 h-3 mt-0.5 shrink-0 ${isLocked ? "text-zinc-400 dark:text-zinc-600" : "text-blue-500"}`} />
                                         {f}
                                     </li>
                                 ))}

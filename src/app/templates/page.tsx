@@ -1,14 +1,19 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Link from 'next/link';
-import { Zap, ShieldCheck } from "lucide-react";
+import { Zap, ShieldCheck, Lock } from "lucide-react";
+import { usePro } from "@/hooks/usePro";
 
-/* ─── Fictional sample data for each template ─────────────────────────── */
+/* ─── All 10 templates ─────────────────────────────────────────────────── */
 const templates = [
+    // ── Free ──
     {
         id: "clean-ats",
         name: "Minimalist",
         category: "ATS Safe",
+        isProOnly: false,
         description: "Focuses on content with maximum readability for machine scanning.",
         tags: ["ATS Friendly", "Professional", "Clean"],
         color: "bg-slate-50",
@@ -21,7 +26,7 @@ const templates = [
             location: "San Francisco, CA",
             summary: "8+ years building scalable distributed systems. Led migration to microservices, reducing latency by 40%.",
             experience: [
-                { role: "Sr. Software Engineer", company: "DataFlow Inc.", period: "2021–Present", bullets: ["Led team of 6 engineers", "Reduced API latency by 42%", "Built real-time pipelines"] },
+                { role: "Sr. Software Engineer", company: "DataFlow Inc.", period: "2021–Present", bullets: ["Led team of 6 engineers", "Reduced API latency by 42%"] },
                 { role: "Software Engineer", company: "Stripe", period: "2018–2021", bullets: ["Payments SDK development", "99.99% uptime SLA"] },
             ],
             skills: ["TypeScript", "Go", "Kubernetes", "PostgreSQL", "AWS"],
@@ -32,6 +37,7 @@ const templates = [
         id: "startup-visual",
         name: "Modern",
         category: "Creative",
+        isProOnly: false,
         description: "Clean sidebar layout with integrated photo support. Great for tech roles.",
         tags: ["Photo Support", "Sidebar", "Tech-Focused"],
         color: "bg-indigo-50",
@@ -44,17 +50,19 @@ const templates = [
             location: "Berlin, Germany",
             summary: "Crafting intuitive digital experiences for 6+ years. Delivered 20+ products from 0→1.",
             experience: [
-                { role: "Lead Product Designer", company: "Framer", period: "2022–Present", bullets: ["End-to-end product design", "Design system owner", "User research lead"] },
+                { role: "Lead Product Designer", company: "Framer", period: "2022–Present", bullets: ["End-to-end product design", "Design system owner"] },
                 { role: "UX Designer", company: "N26", period: "2019–2022", bullets: ["Mobile banking UX", "A/B testing framework"] },
             ],
             skills: ["Figma", "Prototyping", "User Research", "Framer", "Webflow"],
         },
         style: "modern",
     },
+    // ── Pro ──
     {
         id: "executive-ats",
         name: "Executive",
         category: "Corporate",
+        isProOnly: true,
         description: "Sophisticated serif typography for leadership and traditional roles.",
         tags: ["Elegant", "Management", "Traditional"],
         color: "bg-zinc-50",
@@ -67,7 +75,7 @@ const templates = [
             location: "New York, NY",
             summary: "20+ years driving operational excellence and P&L ownership across Fortune 500 companies. $2.4B revenue portfolio.",
             experience: [
-                { role: "COO", company: "Nexgen Capital", period: "2019–Present", bullets: ["$2.4B P&L oversight", "Scaled team 180→420", "M&A integration x3"] },
+                { role: "COO", company: "Nexgen Capital", period: "2019–Present", bullets: ["$2.4B P&L oversight", "Scaled team 180→420"] },
                 { role: "VP Operations", company: "Goldman Sachs", period: "2013–2019", bullets: ["Global ops transformation", "Risk framework design"] },
             ],
             skills: ["P&L Management", "M&A", "Strategic Planning", "Operations", "Leadership"],
@@ -78,6 +86,7 @@ const templates = [
         id: "creative-visual",
         name: "Creative",
         category: "Visual",
+        isProOnly: true,
         description: "Bold design with unique visual flair for creative industries.",
         tags: ["Standout", "Portfolio", "Dynamic"],
         color: "bg-purple-50",
@@ -90,21 +99,165 @@ const templates = [
             location: "London, UK",
             summary: "Award-winning creative director blending brand strategy with visual storytelling. Cannes Lions shortlist 2023.",
             experience: [
-                { role: "Creative Director", company: "IDEO London", period: "2021–Present", bullets: ["Brand identity for 30+ clients", "Cannes Lions shortlist", "15-person creative team"] },
+                { role: "Creative Director", company: "IDEO London", period: "2021–Present", bullets: ["Brand identity for 30+ clients", "Cannes Lions shortlist"] },
                 { role: "Art Director", company: "Wieden+Kennedy", period: "2017–2021", bullets: ["Nike & Airbnb campaigns", "D&AD Yellow Pencil"] },
             ],
             skills: ["Brand Strategy", "Art Direction", "Motion Design", "Illustration", "Adobe CC"],
         },
         style: "creative",
     },
+    {
+        id: "modern-ats",
+        name: "Modern ATS",
+        category: "ATS Safe",
+        isProOnly: true,
+        description: "A modern take on ATS formats with clean Inter typography and superior spacing.",
+        tags: ["ATS Optimized", "Modern", "Clean"],
+        color: "bg-blue-50",
+        accent: "#2563eb",
+        preview: {
+            name: "Kai Nakamura",
+            title: "Engineering Manager",
+            email: "kai@company.io",
+            phone: "+1 (415) 555-7890",
+            location: "Seattle, WA",
+            summary: "Engineering leader with 10+ years in distributed systems. Built and scaled teams from 5 to 50+.",
+            experience: [
+                { role: "Engineering Manager", company: "Stripe", period: "2022–Present", bullets: ["Scaled platform 3x", "Zero-downtime migrations"] },
+                { role: "Staff SWE", company: "Airbnb", period: "2019–2022", bullets: ["Search infra redesign", "2M QPS at peak"] },
+            ],
+            skills: ["Go", "Rust", "Kubernetes", "gRPC", "Leadership"],
+        },
+        style: "minimalist",
+    },
+    {
+        id: "tech-ats",
+        name: "Tech",
+        category: "ATS Safe",
+        isProOnly: true,
+        description: "Dense, information-rich layout optimized for software engineers.",
+        tags: ["SWE-Focused", "Info-Dense", "ATS"],
+        color: "bg-emerald-50",
+        accent: "#059669",
+        preview: {
+            name: "Priya Sharma",
+            title: "Senior Backend Engineer",
+            email: "priya@dev.co",
+            phone: "+1 (650) 555-3344",
+            location: "Austin, TX",
+            summary: "Polyglot engineer specializing in high-throughput data pipelines and cloud-native architectures.",
+            experience: [
+                { role: "Sr. Backend Engineer", company: "Databricks", period: "2021–Present", bullets: ["Petabyte-scale data processing", "Reduced latency 65%"] },
+                { role: "Software Engineer", company: "Confluent", period: "2018–2021", bullets: ["Kafka ecosystem tooling", "OSS contributor"] },
+            ],
+            skills: ["Python", "Java", "Spark", "Kafka", "GCP", "Terraform"],
+        },
+        style: "minimalist",
+    },
+    {
+        id: "minimal-visual",
+        name: "Minimal Visual",
+        category: "Visual",
+        isProOnly: true,
+        description: "High whitespace, no clutter. Modern and refined for senior professionals.",
+        tags: ["Minimalist", "Premium", "Modern"],
+        color: "bg-gray-50",
+        accent: "#374151",
+        preview: {
+            name: "Sofia Andersen",
+            title: "VP of Product",
+            email: "sofia@product.se",
+            phone: "+46 70 123 4567",
+            location: "Stockholm, Sweden",
+            summary: "Strategic product leader with a track record of 0-to-1 launches and $50M+ ARR products.",
+            experience: [
+                { role: "VP of Product", company: "Klarna", period: "2022–Present", bullets: ["Launched 4 new markets", "12-person PM org"] },
+                { role: "Product Director", company: "Spotify", period: "2019–2022", bullets: ["Discovery features 200M+ users", "Creator tools monetization"] },
+            ],
+            skills: ["Product Strategy", "OKRs", "B2C", "B2B", "Data-Driven Design"],
+        },
+        style: "executive",
+    },
+    {
+        id: "corporate-visual",
+        name: "Corporate",
+        category: "Visual",
+        isProOnly: true,
+        description: "Serious, structured multi-column design for corporate professionals.",
+        tags: ["Two Columns", "Corporate", "Photo"],
+        color: "bg-amber-50",
+        accent: "#b45309",
+        preview: {
+            name: "James Whitfield",
+            title: "Senior Financial Analyst",
+            email: "james@finance.com",
+            phone: "+1 (312) 555-0099",
+            location: "Chicago, IL",
+            summary: "CFA-certified analyst with 8+ years in M&A advisory and financial modeling for mid-cap companies.",
+            experience: [
+                { role: "Sr. Financial Analyst", company: "JP Morgan", period: "2020–Present", bullets: ["$800M M&A advisory", "Valuation modeling"] },
+                { role: "Financial Analyst", company: "Deloitte", period: "2016–2020", bullets: ["Due diligence 15+ deals", "DCF & LBO modeling"] },
+            ],
+            skills: ["Financial Modeling", "M&A", "Excel", "Bloomberg", "CFA"],
+        },
+        style: "modern",
+    },
+    {
+        id: "jake-ats",
+        name: "Jake's Resume",
+        category: "ATS Safe",
+        isProOnly: true,
+        description: "The most-cloned resume on GitHub. Single-page LaTeX-inspired ATS format.",
+        tags: ["FAANG Favorite", "Single Page", "LaTeX-Inspired"],
+        color: "bg-slate-50",
+        accent: "#0f172a",
+        preview: {
+            name: "Alex Johnson",
+            title: "Software Engineer",
+            email: "alex@example.com",
+            phone: "+1 (512) 555-1234",
+            location: "Mountain View, CA",
+            summary: "Full-stack engineer with experience at scale. Passionate about open-source and developer tooling.",
+            experience: [
+                { role: "SWE II", company: "Google", period: "2022–Present", bullets: ["Ads serving infrastructure", "20M QPS reliability"] },
+                { role: "SWE I", company: "Meta", period: "2020–2022", bullets: ["React Native performance", "Hermes JS engine"] },
+            ],
+            skills: ["C++", "Python", "TypeScript", "React", "Kubernetes"],
+        },
+        style: "minimalist",
+    },
+    {
+        id: "deedy-visual",
+        name: "Deedy",
+        category: "Visual",
+        isProOnly: true,
+        description: "Two-column powerhouse inspired by Deedy Das. Beloved by FAANG engineers.",
+        tags: ["Two Columns", "FAANG Style", "Bold"],
+        color: "bg-rose-50",
+        accent: "#be123c",
+        preview: {
+            name: "Neha Kapoor",
+            title: "Machine Learning Engineer",
+            email: "neha@ml.ai",
+            phone: "+1 (628) 555-8877",
+            location: "San Francisco, CA",
+            summary: "ML engineer building production-grade recommendation systems serving 500M+ users.",
+            experience: [
+                { role: "ML Engineer", company: "Netflix", period: "2022–Present", bullets: ["Recommendation engine rewrite", "+12% engagement lift"] },
+                { role: "Research Scientist", company: "Stanford AI Lab", period: "2019–2022", bullets: ["NLP research", "2× NeurIPS publications"] },
+            ],
+            skills: ["Python", "PyTorch", "TensorFlow", "Spark", "MLflow"],
+        },
+        style: "creative",
+    },
 ];
 
-/* ─── CV Mini-preview components for each style ───────────────────────── */
+/* ─── CV Mini-preview components ──────────────────────────────────────── */
+type PreviewData = typeof templates[0]["preview"];
 
-function MinimalistPreview({ p, accent }: { p: typeof templates[0]["preview"]; accent: string }) {
+function MinimalistPreview({ p, accent }: { p: PreviewData; accent: string }) {
     return (
         <div className="w-full h-full bg-white flex flex-col p-4 text-[4.5px] leading-tight font-sans overflow-hidden">
-            {/* Header */}
             <div className="mb-2 pb-1.5 border-b" style={{ borderColor: accent }}>
                 <div className="font-bold text-[7px] text-zinc-900 tracking-tight">{p.name}</div>
                 <div className="font-semibold text-[5px] mt-0.5" style={{ color: accent }}>{p.title}</div>
@@ -112,12 +265,10 @@ function MinimalistPreview({ p, accent }: { p: typeof templates[0]["preview"]; a
                     <span>{p.email}</span><span>·</span><span>{p.location}</span>
                 </div>
             </div>
-            {/* Summary */}
             <div className="mb-1.5">
                 <div className="font-bold text-[4.5px] uppercase tracking-widest mb-0.5 text-zinc-500">Summary</div>
                 <div className="text-zinc-600 leading-relaxed text-[3.5px]">{p.summary}</div>
             </div>
-            {/* Experience */}
             <div className="mb-1.5 flex-1">
                 <div className="font-bold text-[4.5px] uppercase tracking-widest mb-0.5 text-zinc-500">Experience</div>
                 {p.experience.map((exp, i) => (
@@ -127,13 +278,12 @@ function MinimalistPreview({ p, accent }: { p: typeof templates[0]["preview"]; a
                             <span className="text-zinc-400 text-[3.5px]">{exp.period}</span>
                         </div>
                         <div className="text-zinc-500 text-[3.5px] mb-0.5">{exp.company}</div>
-                        {exp.bullets.slice(0, 2).map((b, j) => (
+                        {exp.bullets.map((b, j) => (
                             <div key={j} className="flex gap-0.5 text-[3.5px] text-zinc-600"><span className="text-zinc-400">•</span>{b}</div>
                         ))}
                     </div>
                 ))}
             </div>
-            {/* Skills */}
             <div>
                 <div className="font-bold text-[4.5px] uppercase tracking-widest mb-0.5 text-zinc-500">Skills</div>
                 <div className="flex flex-wrap gap-0.5">
@@ -146,12 +296,10 @@ function MinimalistPreview({ p, accent }: { p: typeof templates[0]["preview"]; a
     );
 }
 
-function ModernPreview({ p, accent }: { p: typeof templates[0]["preview"]; accent: string }) {
+function ModernPreview({ p, accent }: { p: PreviewData; accent: string }) {
     return (
         <div className="w-full h-full flex overflow-hidden text-[4px] leading-tight font-sans">
-            {/* Sidebar */}
             <div className="w-[36%] flex-shrink-0 flex flex-col p-3 text-white gap-2" style={{ backgroundColor: accent }}>
-                {/* Avatar placeholder */}
                 <div className="w-8 h-8 rounded-full bg-white/20 mx-auto flex items-center justify-center text-[6px] font-bold text-white">
                     {p.name.split(" ").map(n => n[0]).join("")}
                 </div>
@@ -170,7 +318,7 @@ function ModernPreview({ p, accent }: { p: typeof templates[0]["preview"]; accen
                         {p.skills.map(s => (
                             <div key={s} className="flex items-center gap-0.5">
                                 <div className="h-0.5 rounded-full bg-white/30 flex-1">
-                                    <div className="h-0.5 rounded-full bg-white" style={{ width: `${65 + Math.floor(Math.random() * 30)}%` }} />
+                                    <div className="h-0.5 rounded-full bg-white" style={{ width: "70%" }} />
                                 </div>
                                 <span className="text-[3px] text-white/70 w-8 truncate">{s}</span>
                             </div>
@@ -178,14 +326,13 @@ function ModernPreview({ p, accent }: { p: typeof templates[0]["preview"]; accen
                     </div>
                 </div>
             </div>
-            {/* Main */}
             <div className="flex-1 p-3 flex flex-col gap-1.5 bg-white overflow-hidden">
                 <div>
                     <div className="font-bold text-[4px] uppercase tracking-widest text-zinc-400 mb-0.5">Profile</div>
                     <div className="text-[3.5px] text-zinc-600 leading-relaxed">{p.summary}</div>
                 </div>
                 <div className="flex-1">
-                    <div className="font-bold text-[4px] uppercase tracking-widest text-zinc-400 mb-0.5">Work Experience</div>
+                    <div className="font-bold text-[4px] uppercase tracking-widest text-zinc-400 mb-0.5">Experience</div>
                     {p.experience.map((exp, i) => (
                         <div key={i} className="mb-1">
                             <div className="flex justify-between items-baseline">
@@ -193,7 +340,7 @@ function ModernPreview({ p, accent }: { p: typeof templates[0]["preview"]; accen
                                 <span className="text-zinc-400 text-[3px]">{exp.period}</span>
                             </div>
                             <div className="font-semibold text-[3.5px] mb-0.5" style={{ color: accent }}>{exp.company}</div>
-                            {exp.bullets.slice(0, 2).map((b, j) => (
+                            {exp.bullets.map((b, j) => (
                                 <div key={j} className="flex gap-0.5 text-[3.5px] text-zinc-500"><span style={{ color: accent }}>▸</span>{b}</div>
                             ))}
                         </div>
@@ -204,10 +351,9 @@ function ModernPreview({ p, accent }: { p: typeof templates[0]["preview"]; accen
     );
 }
 
-function ExecutivePreview({ p, accent }: { p: typeof templates[0]["preview"]; accent: string }) {
+function ExecutivePreview({ p, accent }: { p: PreviewData; accent: string }) {
     return (
         <div className="w-full h-full bg-white flex flex-col p-4 overflow-hidden" style={{ fontFamily: "Georgia, serif" }}>
-            {/* Monogram header */}
             <div className="text-center mb-2 pb-1.5" style={{ borderBottom: `2px solid ${accent}` }}>
                 <div className="font-bold text-[8px] tracking-widest uppercase text-zinc-900">{p.name}</div>
                 <div className="text-[5px] italic text-zinc-500 mt-0.5">{p.title}</div>
@@ -215,12 +361,10 @@ function ExecutivePreview({ p, accent }: { p: typeof templates[0]["preview"]; ac
                     <span>{p.email}</span><span>·</span><span>{p.location}</span>
                 </div>
             </div>
-            {/* Summary */}
             <div className="mb-2">
                 <div className="text-[4.5px] font-bold uppercase tracking-widest text-center mb-1" style={{ color: accent }}>Executive Summary</div>
                 <div className="text-[3.5px] text-zinc-600 text-center italic leading-relaxed">{p.summary}</div>
             </div>
-            {/* Experience */}
             <div className="flex-1">
                 <div className="text-[4.5px] font-bold uppercase tracking-widest text-center mb-1" style={{ color: accent }}>Professional Experience</div>
                 {p.experience.map((exp, i) => (
@@ -230,13 +374,12 @@ function ExecutivePreview({ p, accent }: { p: typeof templates[0]["preview"]; ac
                             <span className="text-zinc-400 text-[3.5px] italic">{exp.period}</span>
                         </div>
                         <div className="text-zinc-500 text-[3.5px] italic mb-0.5">{exp.company}</div>
-                        {exp.bullets.slice(0, 2).map((b, j) => (
+                        {exp.bullets.map((b, j) => (
                             <div key={j} className="flex gap-0.5 text-[3.5px] text-zinc-600"><span className="text-zinc-400">—</span>{b}</div>
                         ))}
                     </div>
                 ))}
             </div>
-            {/* Core Competencies */}
             <div className="pt-1" style={{ borderTop: `1px solid ${accent}` }}>
                 <div className="text-[4px] font-bold uppercase tracking-widest text-center mb-0.5" style={{ color: accent }}>Core Competencies</div>
                 <div className="flex justify-center flex-wrap gap-1">
@@ -247,10 +390,9 @@ function ExecutivePreview({ p, accent }: { p: typeof templates[0]["preview"]; ac
     );
 }
 
-function CreativePreview({ p, accent }: { p: typeof templates[0]["preview"]; accent: string }) {
+function CreativePreview({ p, accent }: { p: PreviewData; accent: string }) {
     return (
         <div className="w-full h-full overflow-hidden flex flex-col" style={{ background: `linear-gradient(135deg, ${accent}15 0%, white 50%)` }}>
-            {/* Bold top bar */}
             <div className="px-3 py-2 relative" style={{ backgroundColor: accent }}>
                 <div className="font-black text-[8px] text-white tracking-tight leading-none">{p.name}</div>
                 <div className="text-white/70 text-[4px] mt-0.5 font-medium uppercase tracking-widest">{p.title}</div>
@@ -258,9 +400,7 @@ function CreativePreview({ p, accent }: { p: typeof templates[0]["preview"]; acc
                     <span className="text-white text-[5px] font-black">{p.name.charAt(0)}</span>
                 </div>
             </div>
-            {/* Content */}
             <div className="flex-1 p-3 flex gap-2 overflow-hidden">
-                {/* Left: summary + skills */}
                 <div className="w-[38%] flex flex-col gap-1.5">
                     <div>
                         <div className="text-[3.5px] font-black uppercase tracking-widest mb-0.5" style={{ color: accent }}>About</div>
@@ -278,7 +418,6 @@ function CreativePreview({ p, accent }: { p: typeof templates[0]["preview"]; acc
                         </div>
                     </div>
                 </div>
-                {/* Right: experience */}
                 <div className="flex-1 flex flex-col gap-1">
                     <div className="text-[3.5px] font-black uppercase tracking-widest mb-0.5" style={{ color: accent }}>Experience</div>
                     {p.experience.map((exp, i) => (
@@ -288,7 +427,7 @@ function CreativePreview({ p, accent }: { p: typeof templates[0]["preview"]; acc
                                 <span className="text-[3.5px] font-semibold" style={{ color: accent }}>{exp.company}</span>
                                 <span className="text-zinc-400 text-[3px]">{exp.period}</span>
                             </div>
-                            {exp.bullets.slice(0, 2).map((b, j) => (
+                            {exp.bullets.map((b, j) => (
                                 <div key={j} className="flex gap-0.5 text-[3.5px] text-zinc-500 mt-0.5"><span style={{ color: accent }}>✦</span>{b}</div>
                             ))}
                         </div>
@@ -299,7 +438,7 @@ function CreativePreview({ p, accent }: { p: typeof templates[0]["preview"]; acc
     );
 }
 
-const previewMap: Record<string, React.FC<{ p: typeof templates[0]["preview"]; accent: string }>> = {
+const previewMap: Record<string, React.FC<{ p: PreviewData; accent: string }>> = {
     minimalist: MinimalistPreview,
     modern: ModernPreview,
     executive: ExecutivePreview,
@@ -307,9 +446,10 @@ const previewMap: Record<string, React.FC<{ p: typeof templates[0]["preview"]; a
 };
 
 export default function TemplatesPage() {
+    const { isPro, isLoading } = usePro();
+
     return (
         <div className="min-h-screen bg-white text-zinc-900 pt-32 pb-24 px-6 flex flex-col selection:bg-blue-500/30">
-            {/* Header consistent with Landing Page */}
             <header className="fixed top-0 left-0 right-0 z-50 flex items-center h-20 px-6 border-b border-zinc-100 bg-white/80 backdrop-blur-md">
                 <Link className="flex items-center gap-2 group" href="/">
                     <div className="flex items-center justify-center w-9 h-9 rounded-xl bg-blue-600 transition-transform group-hover:scale-110 shadow-lg shadow-blue-600/20">
@@ -335,33 +475,48 @@ export default function TemplatesPage() {
                         The Only <span className="text-blue-600">Templates</span> You&apos;ll Need
                     </h1>
                     <p className="text-lg text-zinc-500 max-w-2xl mx-auto leading-relaxed font-medium">
-                        Industry-tested layouts designed by experts, guaranteed to be 100% ATS-compliant.
+                        10 industry-tested layouts designed by experts. 8 exclusive Pro templates, 2 always free.
                     </p>
                 </div>
 
                 {/* Templates Grid */}
-                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
+                <div className="grid md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6 relative z-10">
                     {templates.map((tpl) => {
                         const PreviewComponent = previewMap[tpl.style];
+                        const isLocked = tpl.isProOnly && !isPro;
                         return (
                             <div key={tpl.id} className="group relative bg-white rounded-3xl overflow-hidden border border-zinc-200 flex flex-col hover:border-blue-400 hover:shadow-2xl transition-all duration-500">
 
+                                {/* PRO badge top-left on gallery card */}
+                                {tpl.isProOnly && (
+                                    <div className="absolute top-3 left-3 z-30 flex items-center gap-1 bg-blue-600 text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full shadow-lg shadow-blue-600/30">
+                                        <Lock className="w-2.5 h-2.5" />
+                                        PRO
+                                    </div>
+                                )}
+
                                 {/* CV Preview area */}
                                 <div className={`aspect-[3/4] ${tpl.color} w-full relative flex items-center justify-center overflow-hidden border-b border-zinc-100`}>
-                                    {/* Actual CV mini-preview */}
                                     <div className="w-[88%] aspect-[1/1.414] bg-white shadow-xl rounded-[2px] overflow-hidden transition-transform duration-700 group-hover:scale-105 group-hover:-rotate-1 relative z-10">
                                         <PreviewComponent p={tpl.preview} accent={tpl.accent} />
                                     </div>
-                                    {/* Subtle gradient glow on hover */}
                                     <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
 
                                     {/* Hover Overlay */}
                                     <div className="absolute inset-0 bg-white/70 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center z-20">
-                                        <Link href="/signup">
-                                            <Button size="lg" className="h-11 px-7 rounded-xl bg-black text-white hover:bg-zinc-800 font-bold shadow-xl transform translate-y-4 group-hover:translate-y-0 transition-all duration-500 text-sm">
-                                                Use {tpl.name}
-                                            </Button>
-                                        </Link>
+                                        {isLocked ? (
+                                            <Link href="/upgrade">
+                                                <Button size="lg" className="h-11 px-7 rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 text-white font-bold shadow-xl transform translate-y-4 group-hover:translate-y-0 transition-all duration-500 text-sm">
+                                                    Upgrade to Get This
+                                                </Button>
+                                            </Link>
+                                        ) : (
+                                            <Link href="/signup">
+                                                <Button size="lg" className="h-11 px-7 rounded-xl bg-black text-white hover:bg-zinc-800 font-bold shadow-xl transform translate-y-4 group-hover:translate-y-0 transition-all duration-500 text-sm">
+                                                    Use {tpl.name}
+                                                </Button>
+                                            </Link>
+                                        )}
                                     </div>
                                 </div>
 
@@ -379,6 +534,11 @@ export default function TemplatesPage() {
                                                 {tag}
                                             </span>
                                         ))}
+                                        {tpl.isProOnly && (
+                                            <span className="text-[10px] font-bold px-2.5 py-1 rounded-full bg-blue-50 text-blue-600 border border-blue-100">
+                                                Pro Only
+                                            </span>
+                                        )}
                                     </div>
                                 </div>
                             </div>
@@ -386,8 +546,23 @@ export default function TemplatesPage() {
                     })}
                 </div>
 
-                {/* Footer note */}
-                <div className="mt-24 text-center py-12">
+                {/* Upgrade CTA for non-Pro users */}
+                {!isLoading && !isPro && (
+                    <div className="mt-16 text-center py-10 px-6 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-3xl border border-blue-100">
+                        <div className="inline-flex items-center gap-2 text-blue-600 font-black text-[11px] uppercase tracking-wider bg-blue-100 px-3 py-1.5 rounded-full mb-4">
+                            <Lock className="w-3 h-3" /> 8 Pro Templates Included
+                        </div>
+                        <h2 className="text-2xl font-extrabold text-zinc-900 mb-2">Unlock Every Premium Template</h2>
+                        <p className="text-zinc-500 font-medium mb-6 max-w-md mx-auto">Get all 10 templates + unlimited CVs, no watermarks, and branded links — for just $2.75/month.</p>
+                        <Link href="/upgrade">
+                            <Button className="h-12 px-8 rounded-full bg-gradient-to-r from-blue-600 to-blue-500 text-white font-bold text-[15px] shadow-xl shadow-blue-500/20 hover:from-blue-500 hover:to-blue-600 transition-all hover:scale-[1.02]">
+                                Upgrade to Pro — $99 once
+                            </Button>
+                        </Link>
+                    </div>
+                )}
+
+                <div className="mt-12 text-center py-8">
                     <div className="inline-flex items-center gap-2 text-zinc-400 font-bold uppercase tracking-widest text-[10px] bg-zinc-50 px-4 py-2 rounded-full border border-zinc-200">
                         <ShieldCheck className="h-3.5 w-3.5 text-blue-500" /> 100% Recruiter Approved
                     </div>

@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
+import { THEMES } from '@/lib/theme-config';
+import { getEffectiveStatus } from '@/lib/subscription';
 
 // ── PATCH — Save CV changes ────────────────────────────────────────────────
 export async function PATCH(
@@ -16,6 +18,17 @@ export async function PATCH(
         }
 
         const body = await request.json();
+
+        // ── Pro template server-side guard ─────────────────────────────────────
+        if (body.theme_id && THEMES[body.theme_id]?.isPremium) {
+            const effectiveStatus = await getEffectiveStatus(user.id);
+            if (effectiveStatus !== 'active') {
+                return NextResponse.json(
+                    { error: 'Pro plan required to save this template.' },
+                    { status: 403 }
+                );
+            }
+        }
 
         // Only update columns that actually exist in the resumes table
         const allowed = [

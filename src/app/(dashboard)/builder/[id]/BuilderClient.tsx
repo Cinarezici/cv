@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import {
     ArrowLeft, Save, Check, Loader2, X,
     User, AlignLeft, Briefcase, GraduationCap, Wrench, LayoutTemplate, List, Pencil,
+    Lock as LockIcon,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -24,6 +25,8 @@ import { ExperienceEditor } from "@/components/resume/editors/ExperienceEditor";
 import { EducationEditor } from "@/components/resume/editors/EducationEditor";
 import { SkillsEditor } from "@/components/resume/editors/SkillsEditor";
 import TemplatePanel from "./TemplatePanel";
+import { ProUpgradeModal } from "@/components/ui/ProUpgradeModal";
+import { THEMES } from "@/lib/theme-config";
 
 // Drag-to-reorder
 import {
@@ -105,6 +108,11 @@ export default function BuilderClient({ data, avatarUrl, isPro }: { data: any; a
     const [hasUnsaved, setHasUnsaved] = useState(false);
     const [saving, setSaving] = useState(false);
     const [savedOk, setSavedOk] = useState(false);
+    const [proModalOpen, setProModalOpen] = useState(false);
+    const [blockedTemplateName, setBlockedTemplateName] = useState<string | undefined>();
+
+    // Determine if current template is Pro-only
+    const isCurrentTemplatePro = !!(themeId && THEMES[themeId]?.isPremium);
 
     // ── Inline title editing ─────────────────────────────────────────
     const [editingTitle, setEditingTitle] = useState(false);
@@ -175,6 +183,15 @@ export default function BuilderClient({ data, avatarUrl, isPro }: { data: any; a
         }
     }, [cvId, saving, resumeJson, themeId, themeCategory, colorPaletteId, sectionOrder, hiddenSections]);
 
+    // Gated save: if non-Pro user has selected a Pro template, show modal instead
+    const handleSaveOrPrompt = useCallback(() => {
+        if (!isPro && isCurrentTemplatePro) {
+            setProModalOpen(true);
+            return;
+        }
+        handleSave();
+    }, [isPro, isCurrentTemplatePro, handleSave]);
+
     // DnD for order panel
     const sensors = useSensors(
         useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
@@ -191,7 +208,12 @@ export default function BuilderClient({ data, avatarUrl, isPro }: { data: any; a
 
     const renderPanel = () => {
         switch (activeTab) {
-            case "template": return <TemplatePanel />;
+            case "template": return (
+                <TemplatePanel
+                    isPro={!!isPro}
+                    onProTemplateBlocked={(name) => setBlockedTemplateName(name)}
+                />
+            );
             case "header": return <HeaderEditor />;
             case "summary": return <SummaryEditor />;
             case "experience": return <ExperienceEditor />;
@@ -283,9 +305,9 @@ export default function BuilderClient({ data, avatarUrl, isPro }: { data: any; a
                     </button>
                 </div>
 
-                {/* Save button */}
+                {/* Save button — header */}
                 <button
-                    onClick={handleSave}
+                    onClick={handleSaveOrPrompt}
                     disabled={saving || !hasUnsaved}
                     className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-bold text-sm transition-all shrink-0
                     ${hasUnsaved && !saving
@@ -342,13 +364,31 @@ export default function BuilderClient({ data, avatarUrl, isPro }: { data: any; a
                         <p className="text-xs text-gray-400 dark:text-zinc-500 mt-0.5">{meta.subtitle}</p>
                     </div>
                     {/* Panel content */}
-                    <div className="flex-1 overflow-y-auto">
+                    <div className="flex-1 overflow-y-auto relative">
                         {renderPanel()}
+                        {/* Read-only overlay for non-Pro users on Pro templates (except template panel itself) */}
+                        {activeTab !== "template" && !isPro && isCurrentTemplatePro && (
+                            <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-white/80 dark:bg-zinc-900/80 backdrop-blur-[3px] text-center p-6 gap-4">
+                                <div className="w-12 h-12 rounded-2xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center">
+                                    <LockIcon className="w-5 h-5 text-blue-400" />
+                                </div>
+                                <div>
+                                    <p className="font-bold text-zinc-900 dark:text-white text-sm mb-1">Pro Template Selected</p>
+                                    <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed max-w-[220px]">Upgrade to Pro to edit, save, and export this template.</p>
+                                </div>
+                                <button
+                                    onClick={() => setProModalOpen(true)}
+                                    className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 text-white font-bold text-sm shadow-lg shadow-blue-900/30 hover:from-blue-500 hover:to-blue-600 transition-all"
+                                >
+                                    Upgrade to Pro
+                                </button>
+                            </div>
+                        )}
                     </div>
                     {/* Bottom Save button */}
                     <div className="p-4 border-t border-gray-100 dark:border-white/5 shrink-0">
                         <button
-                            onClick={handleSave}
+                            onClick={handleSaveOrPrompt}
                             disabled={saving || !hasUnsaved}
                             className={`w-full flex items-center justify-center gap-2 py-2.5 rounded-xl font-bold text-sm transition-all
                 ${hasUnsaved && !saving
@@ -446,6 +486,13 @@ export default function BuilderClient({ data, avatarUrl, isPro }: { data: any; a
 
             {/* Padding for bottom tab bar on mobile */}
             <div className="md:hidden h-[60px] shrink-0" />
+
+            {/* Pro Upgrade Modal */}
+            <ProUpgradeModal
+                isOpen={proModalOpen}
+                onClose={() => setProModalOpen(false)}
+                templateName={blockedTemplateName}
+            />
         </div>
     );
 }

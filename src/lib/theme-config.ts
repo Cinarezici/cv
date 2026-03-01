@@ -128,7 +128,42 @@ export const THEMES: Record<string, ThemeConfig> = {
         allowsIcons: true,
         defaultFontFamily: 'Roboto',
         description: 'Optimized for fitting multiple pages into one.'
-    }
+    },
+
+    // Additional Pro Templates
+    'jake-ats': {
+        id: 'jake-ats',
+        name: "Jake's Resume",
+        category: 'ats_safe',
+        isPremium: true,
+        layout: 'single_column',
+        allowsPhoto: false,
+        allowsIcons: false,
+        defaultFontFamily: 'Charter',
+        description: "Jake Gutstein's legendary single-page LaTeX-inspired ATS format — the most cloned resume template on GitHub."
+    },
+    'deedy-visual': {
+        id: 'deedy-visual',
+        name: 'Deedy',
+        category: 'visual',
+        isPremium: true,
+        layout: 'two_column',
+        allowsPhoto: false,
+        allowsIcons: true,
+        defaultFontFamily: 'Lato',
+        description: 'Two-column powerhouse inspired by Deedy Das. Loved by FAANG engineers worldwide.'
+    },
+    'nordic-minimal': {
+        id: 'nordic-minimal',
+        name: 'Nordic Minimal',
+        category: 'ats_safe',
+        isPremium: true,
+        layout: 'single_column',
+        allowsPhoto: false,
+        allowsIcons: false,
+        defaultFontFamily: 'Inter',
+        description: 'Scandinavian whitespace and typographic precision. Ultra-readable and highly professional.'
+    },
 };
 
 export const COLOR_PALETTES = [
