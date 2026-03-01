@@ -296,6 +296,7 @@ function LockedDashboard() {
         'Unlimited CV creation & editing',
         'Unlimited LinkedIn job searches',
         'Unlimited motivation letters',
+        '6 Premium Resume Templates',
         'PDF export for all letters & CVs',
         'Share links always stay active',
         'AI-powered CV optimization',

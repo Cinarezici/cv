@@ -15,11 +15,11 @@ interface LockedPageViewProps {
 
 const DEFAULT_FEATURES: Feature[] = [
     { text: 'Unlimited CV creation & editing' },
-    { text: 'AI-powered CV optimization' },
+    { text: 'Export CV to PDF & DOCX' },
     { text: 'Unlimited LinkedIn job searches' },
     { text: 'Unlimited cover letters & PDFs' },
-    { text: 'Share links that never expire' },
-    { text: 'ATS-friendly keyword suggestions' },
+    { text: '6 Premium Resume Templates' },
+    { text: 'AI-powered interview prep (Coming soon)' },
 ];
 
 export default function LockedPageView({

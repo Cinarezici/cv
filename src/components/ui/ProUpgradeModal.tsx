@@ -60,7 +60,8 @@ export function ProUpgradeModal({ isOpen, onClose, templateName }: ProUpgradeMod
                         {[
                             "Unlimited CVs & Cover Letters",
                             "No Watermark PDF Exports",
-                            "All 10 Premium Templates",
+                            "LinkedIn Integration",
+                            "6 Premium Resume Templates",
                             "Your own branded shareable links",
                             "Advanced AI Optimization",
                         ].map((feat) => (

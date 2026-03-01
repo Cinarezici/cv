@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { X, Sparkles, FileText, Search, Mail, Link as LinkIcon, Download } from 'lucide-react';
+import { X, Sparkles, FileText, Search, Mail, Link as LinkIcon, Download, Briefcase, LayoutTemplate } from 'lucide-react';
 
 const MONTHLY_COST = (99 / 36).toFixed(2); // $2.75/month
 
@@ -10,6 +10,8 @@ const PRO_FEATURES = [
     { icon: <FileText className="w-4 h-4 text-indigo-400" />, text: 'Unlimited CVs and profiles' },
     { icon: <Search className="w-4 h-4 text-indigo-400" />, text: 'Unlimited LinkedIn job searches' },
     { icon: <Mail className="w-4 h-4 text-indigo-400" />, text: 'Unlimited cover letters' },
+    { icon: <Briefcase className="w-4 h-4 text-indigo-400" />, text: 'Access to Pro-only roles' },
+    { icon: <LayoutTemplate className="w-4 h-4 text-indigo-400" />, text: '6 Premium Resume Templates' },
     { icon: <Download className="w-4 h-4 text-indigo-400" />, text: 'PDF export on all letters & CVs' },
     { icon: <LinkIcon className="w-4 h-4 text-indigo-400" />, text: 'Share links always open — never expire' },
     { icon: <Sparkles className="w-4 h-4 text-indigo-400" />, text: 'AI-powered CV optimization, unlimited' },

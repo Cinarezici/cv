@@ -501,7 +501,7 @@ export default function Home() {
                     "Advanced AI Optimization",
                     "No Watermark PDF Exports",
                     "LinkedIn Integration",
-                    "Premium Templates",
+                    "6 Premium Resume Templates",
                   ].map((feat, i) => (
                     <li key={i} className="flex items-start gap-3 text-[14px]">
                       <CheckCircle2 className="w-[20px] h-[20px] text-[#2563eb] shrink-0 mt-[2px]" strokeWidth={2.5} />

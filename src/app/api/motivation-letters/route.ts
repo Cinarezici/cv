@@ -1,10 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
-import { getOrCreateCompanyProfile } from '@/lib/company-research';
 import { generateMotivationLetter } from '@/lib/letter-generator';
 import { generateLetterPDF } from '@/lib/pdf-generator';
 import crypto from 'crypto';
-import * as cheerio from 'cheerio';
 import { ToneType } from '@/types/motivation-letter';
 import { generateShortSlug } from '@/lib/short-id';
 import { mapToResumeJSON } from '@/lib/resume-mapper';
@@ -198,53 +196,32 @@ async function processLetterGeneration(
     }
 
     try {
-        await updateStatus('researching', 'Web sitesi araştırılıyor...');
+        // Fast Bypass: Create minimal company profile since Job Description is already provided in the UI wizard
+        await updateStatus('generating', 'Mektup yazılıyor...');
 
-        let safeUrl = company.url;
+        let safeUrl = company.url || '';
         if (!safeUrl || safeUrl.trim() === '') {
             const slug = (company.name || 'company').toLowerCase().replace(/[^a-z0-9]/g, '');
             safeUrl = `https://www.${slug}.com`;
         }
 
-        let companyProfile: any;
-        let companyProfileId = '';
-        try {
-            const result = await getOrCreateCompanyProfile(userId, safeUrl, company.name);
-            companyProfile = result.profile;
-            companyProfileId = result.companyProfileId;
-            if (companyProfileId) {
-                await supabase.from('motivation_letters').update({ company_profile_id: companyProfileId }).eq('id', letterId);
-            }
-        } catch (researchErr: any) {
-            console.warn(`Research failed for letter ${letterId}, using fallback profile:`, researchErr.message);
-            companyProfile = {
-                name: company.name, website: safeUrl, industry: 'Unknown',
-                values: [], products: [], recentNews: [], cultureIndicators: [],
-                dataQualityScore: 5, scrapedPages: [], scrapedAt: new Date().toISOString(),
-            };
-        }
+        const companyProfile = {
+            name: company.name,
+            website: safeUrl,
+            industry: 'Unknown',
+            mission: '',
+            values: [],
+            products: [],
+            cultureIndicators: [],
+            recentNews: [],
+            dataQualityScore: 5,
+            scrapedPages: [],
+            scrapedAt: new Date().toISOString(),
+        };
 
-        let finalJobDescription = company.jobDescription;
-        let finalTargetRole = config.targetRole;
+        const finalJobDescription = company.jobDescription || '';
+        const finalTargetRole = config.targetRole || 'Görev';
 
-        if (!finalJobDescription && company.url && company.url.includes('linkedin.com/jobs')) {
-            try {
-                await updateStatus('researching', 'LinkedIn ilanı analiz ediliyor...');
-                const res = await fetch(company.url, { headers: { 'Accept-Language': 'en-US,en;q=0.9' } });
-                if (res.ok) {
-                    const html = await res.text();
-                    const $ = cheerio.load(html);
-                    const title = $('h1').first().text().trim();
-                    const description = $('.show-more-less-html__markup').text().trim() || $('.description__text').text().trim();
-                    if (title && !finalTargetRole) finalTargetRole = title;
-                    if (description) finalJobDescription = description;
-                }
-            } catch (err) {
-                console.error("Failed to scrape linkedin job directly", err);
-            }
-        }
-
-        await updateStatus('generating', 'Mektup yazılıyor...');
         const { letterText, letterHtml } = await generateMotivationLetter(
             companyProfile, resumeJSON, finalTargetRole, config.tone, config.language, finalJobDescription
         );

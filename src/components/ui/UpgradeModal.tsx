@@ -42,6 +42,7 @@ export function UpgradeModal() {
                             "Access to all Premium Visual Themes",
                             "50 AI optimization requests per day",
                             "Remove 'Built with CV Optimizer' watermark",
+                            "6 Premium Resume Templates",
                             "Export to DOCX format"
                         ].map((feature, i) => (
                             <div key={i} className="flex items-center gap-3 text-zinc-700">
