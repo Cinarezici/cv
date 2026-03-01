@@ -7,8 +7,11 @@ import { JobCard, Job } from '@/components/jobs/JobCard';
 import { JobSearchLoader } from '@/components/jobs/JobSearchLoader';
 import LetterCreationWizard from '@/components/motivation-letters/LetterCreationWizard';
 import { Search, Briefcase, TriangleAlert, Info, Sparkles, X } from 'lucide-react';
+import { usePro } from '@/hooks/usePro';
+import LockedPageView from '@/components/LockedPageView';
 
 export default function ScoutPage() {
+    const { status: subStatus, isLoading: subLoading } = usePro();
     const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
     const [jobs, setJobs] = useState<Job[]>([]);
     const [error, setError] = useState<string | null>(null);
@@ -174,6 +177,10 @@ export default function ScoutPage() {
             }
         }
     };
+
+    if (!subLoading && subStatus === 'canceled') {
+        return <LockedPageView featureName="Search Jobs" subtitle="Search LinkedIn job listings in real-time with a Pro subscription." />;
+    }
 
     return (
         <div className="flex flex-col min-h-screen bg-[#F9FAFB] dark:bg-zinc-950">

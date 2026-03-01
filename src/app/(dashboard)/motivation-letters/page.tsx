@@ -1,6 +1,8 @@
 import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 import LetterDashboardClient from '@/components/motivation-letters/LetterDashboardClient';
+import { getEffectiveStatus } from '@/lib/subscription';
+import LockedPageView from '@/components/LockedPageView';
 
 export default async function MotivationLettersPage() {
     const supabase = await createClient();
@@ -8,6 +10,10 @@ export default async function MotivationLettersPage() {
 
     if (!user) {
         redirect('/login');
+    }
+
+    if (await getEffectiveStatus(user.id) === 'canceled') {
+        return <LockedPageView featureName="My Letters" subtitle="Create and manage AI-generated cover letters with a Pro subscription." />;
     }
 
     // Fetch letters on server side initially

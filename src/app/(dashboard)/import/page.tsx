@@ -9,16 +9,21 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Loader2, Linkedin, FileUp, AlertCircle, CheckCircle2, ChevronRight, Keyboard, Sparkles, FileText, Plus } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import { usePro } from '@/hooks/usePro';
+import LockedPageView from '@/components/LockedPageView';
 
 export default function ImportPage() {
+    const { status, isPro, isLoading: proLoading } = usePro();
     const [url, setUrl] = useState('');
     const [file, setFile] = useState<File | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [successProfileId, setSuccessProfileId] = useState<string | null>(null);
     const [cvCount, setCvCount] = useState<number | null>(null);
-    const { isPro, isLoading: proLoading } = usePro();
     const router = useRouter();
+
+    if (!proLoading && status === 'canceled') {
+        return <LockedPageView featureName="Import CV" subtitle="Import your LinkedIn profile or upload a PDF with a Pro subscription." />;
+    }
 
     useEffect(() => {
         const fetchCvCount = async () => {

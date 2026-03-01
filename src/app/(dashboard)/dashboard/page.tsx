@@ -5,7 +5,7 @@ import { Resume } from '@/types';
 import { DeleteButton } from '@/components/DeleteButton';
 import { CvShareLinkButton } from '@/components/CvShareLinkButton';
 import { CvPreviewModal } from '@/components/CvPreviewModal';
-import { FileText, Mail, Plus, Pencil, Clock, LayoutTemplate, Zap, Link as LinkIcon, AlertCircle, Lock } from 'lucide-react';
+import { FileText, Mail, Plus, Pencil, Clock, LayoutTemplate, Zap, Link as LinkIcon, AlertCircle, Lock, Sparkles } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { checkUsageLimits } from '@/lib/limits';
 import { getEffectiveStatus } from '@/lib/subscription';
@@ -87,13 +87,21 @@ export default async function DashboardPage() {
                     <p className="text-zinc-500 dark:text-zinc-400 mt-1 text-sm">Manage your CVs and cover letters.</p>
                 </div>
                 <div className="flex flex-col items-end gap-2">
-                    <Link
-                        href="/upgrade"
-                        className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-5 py-2.5 rounded-xl shadow-sm transition-colors text-sm"
-                    >
-                        <Zap className="w-4 h-4" />
-                        Upgrade Pro
-                    </Link>
+                    {subStatus === 'active' ? (
+                        <div className="inline-flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-bold px-5 py-2.5 rounded-xl shadow-md text-sm cursor-default select-none">
+                            <Sparkles className="w-4 h-4" />
+                            Pro Plan
+                        </div>
+                    ) : (
+                        <Link
+                            href="/upgrade"
+                            className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-5 py-2.5 rounded-xl shadow-sm transition-colors text-sm"
+                        >
+                            <Zap className="w-4 h-4" />
+                            Upgrade Pro
+                        </Link>
+                    )}
+
                     <Link
                         href={isCVLimitReached ? "/upgrade" : "/builder/new"}
                         className={`inline-flex items-center gap-2 font-bold px-5 py-2.5 rounded-xl shadow-sm transition-colors text-sm ${isCVLimitReached

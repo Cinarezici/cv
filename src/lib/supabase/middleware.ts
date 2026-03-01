@@ -1,21 +1,6 @@
 import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
 
-// Routes accessible to canceled users (locked state)
-const CANCELED_ALLOWED = ['/dashboard', '/settings', '/upgrade', '/api/auth', '/auth'];
-
-// Dashboard sub-routes that are fully locked for canceled users
-const LOCK_ROUTES = [
-    '/import',
-    '/my-cvs',
-    '/builder',
-    '/scout',
-    '/saved-jobs',
-    '/motivation-letters',
-    '/resumes',
-    '/cv-preview',
-];
-
 export async function updateSession(request: NextRequest) {
     let supabaseResponse = NextResponse.next({ request });
 
@@ -38,7 +23,7 @@ export async function updateSession(request: NextRequest) {
 
     const { data: { user } } = await supabase.auth.getUser();
 
-    // ── 1. Auth guard: unauthenticated users redirected to login ──────────
+    // Auth guard: unauthenticated users redirected to login
     const protectedPaths = ['/dashboard', '/import', '/resumes', '/my-cvs', '/builder', '/scout', '/saved-jobs', '/motivation-letters', '/settings', '/upgrade', '/cv-preview'];
     const isProtected = protectedPaths.some(p => request.nextUrl.pathname.startsWith(p));
 
@@ -48,41 +33,9 @@ export async function updateSession(request: NextRequest) {
         return NextResponse.redirect(url);
     }
 
-    // ── 2. Subscription guard: canceled users locked to allowed routes ─────
-    if (user) {
-        const isLockedRoute = LOCK_ROUTES.some(r => request.nextUrl.pathname.startsWith(r));
-        if (isLockedRoute) {
-            // Lazy check: fetch subscription status
-            const { data: sub } = await supabase
-                .from('subscriptions')
-                .select('status, trial_end_at, trial_ends_at')
-                .eq('user_id', user.id)
-                .maybeSingle();
-
-            let isCanceled = false;
-            if (sub?.status === 'canceled') {
-                isCanceled = true;
-            } else if (sub?.status === 'trialing') {
-                const rawEnd = sub.trial_end_at ?? sub.trial_ends_at;
-                if (rawEnd && new Date() > new Date(rawEnd)) {
-                    isCanceled = true;
-                    // Fire-and-forget DB flip (best effort in middleware)
-                    supabase
-                        .from('subscriptions')
-                        .update({ status: 'canceled', updated_at: new Date().toISOString() })
-                        .eq('user_id', user.id)
-                        .then(() => { });
-                }
-            }
-
-            if (isCanceled) {
-                const url = request.nextUrl.clone();
-                url.pathname = '/dashboard';
-                url.searchParams.set('locked', '1');
-                return NextResponse.redirect(url);
-            }
-        }
-    }
+    // NOTE: Canceled-user page access is handled at the page level (each page
+    // checks subscription status and shows <LockedPageView /> instead of content).
+    // We do NOT redirect here so users can see the locked page for each route.
 
     return supabaseResponse;
 }

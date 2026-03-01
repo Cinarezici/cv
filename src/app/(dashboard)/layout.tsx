@@ -204,18 +204,6 @@ function NavItems({
     status: string | null;
 }) {
     const { t } = useLang();
-    const isCanceled = status === 'canceled';
-
-    if (isCanceled) {
-        // Locked sidebar: only Dashboard, Upgrade, Settings
-        return (
-            <>
-                <Option Icon={LayoutDashboard} title={t.dashboard} href="/dashboard" selected={pathname === "/dashboard"} open={open} />
-                <UpgradeOption open={open} selected={pathname === "/upgrade"} />
-                <Option Icon={Settings} title={t.settings} href="/settings" selected={pathname === "/settings"} open={open} />
-            </>
-        );
-    }
 
     return (
         <>
@@ -226,6 +214,7 @@ function NavItems({
             <Option Icon={Search} title={t.searchJobs} href="/scout" selected={pathname === "/scout"} open={open} variant="blue" />
             <Option Icon={Star} title={t.savedJobs} href="/saved-jobs" selected={pathname === "/saved-jobs"} open={open} />
             <Option Icon={Sparkles} title={t.myLetters} href="/motivation-letters" selected={pathname === "/motivation-letters"} open={open} />
+            {/* Hide Upgrade Plan only for active subscribers */}
             {status !== "active" && (
                 <UpgradeOption open={open} selected={pathname === "/upgrade"} />
             )}

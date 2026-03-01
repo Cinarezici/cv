@@ -2,6 +2,8 @@ import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 import { checkUsageLimits } from '@/lib/limits';
 import MyCVsClient from './MyCVsClient';
+import { getEffectiveStatus } from '@/lib/subscription';
+import LockedPageView from '@/components/LockedPageView';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -18,6 +20,10 @@ export default async function MyCVsPage() {
     const supabase = await createClient();
     const { data: { user }, error } = await supabase.auth.getUser();
     if (error || !user) redirect('/login');
+
+    if (await getEffectiveStatus(user.id) === 'canceled') {
+        return <LockedPageView featureName="My CVs" subtitle="Manage and edit all your CVs with a Pro subscription." />;
+    }
 
     const limitCheck = await checkUsageLimits(user.id, 'create_cv');
     const isCVLimitReached = !limitCheck.allowed;
