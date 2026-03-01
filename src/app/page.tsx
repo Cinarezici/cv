@@ -14,23 +14,25 @@ import { useLang, type Lang } from "@/lib/i18n";
 import { HeroInteractiveDemo } from "@/components/ui/hero-interactive-demo";
 import { SparklesCore } from "@/components/ui/sparkles";
 
-function AnimatedCounter({ from = 4000, to = 20000 }: { from?: number, to?: number }) {
-  const [val, setVal] = useState(from);
+function AnimatedCounter({ base = 20000 }: { base?: number }) {
+  const [val, setVal] = useState(base);
   const ref = useRef(null);
   const inView = useInView(ref, { once: true });
 
   useEffect(() => {
     if (inView) {
-      const controls = animate(from, to, {
-        duration: 2.5,
-        ease: "easeOut",
-        onUpdate(value) {
-          setVal(Math.round(value));
-        }
-      });
-      return () => controls.stop();
+      // Add 1 to 3 users every 3 to 8 seconds randomly to simulate real-time slow growth
+      const addUsers = () => {
+        setVal(prev => prev + Math.floor(Math.random() * 3) + 1);
+        const nextTick = Math.floor(Math.random() * 5000) + 3000;
+        timeoutId = setTimeout(addUsers, nextTick);
+      };
+
+      let timeoutId = setTimeout(addUsers, 2000); // Start first tick after 2s
+
+      return () => clearTimeout(timeoutId);
     }
-  }, [inView, from, to]);
+  }, [inView]);
 
   return <span ref={ref}>{val.toLocaleString()}</span>;
 }
@@ -350,7 +352,7 @@ export default function Home() {
                           <svg key={i} className="w-4 h-4 fill-[#f59e0b]" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" /></svg>
                         ))}
                       </div>
-                      <p className="text-[14px] font-bold text-zinc-600 tracking-tight whitespace-nowrap">Joined by <AnimatedCounter />+ top professionals</p>
+                      <p className="text-[14px] font-bold text-zinc-600 tracking-tight whitespace-nowrap">Joined by <AnimatedCounter base={20000} />+ top professionals</p>
                     </div>
                   </div>
                 </div>
