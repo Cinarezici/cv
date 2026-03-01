@@ -130,9 +130,20 @@ export const THEMES: Record<string, ThemeConfig> = {
         description: 'Optimized for fitting multiple pages into one.'
     },
 
-    // Additional Pro Templates
-    'jake-ats': {
-        id: 'jake-ats',
+    // ── 6 New Pro Templates (from open-source references) ──────────────────
+    'awesome-cv': {
+        id: 'awesome-cv',
+        name: 'Awesome CV',
+        category: 'visual',
+        isPremium: true,
+        layout: 'two_column',
+        allowsPhoto: true,
+        allowsIcons: true,
+        defaultFontFamily: 'Roboto',
+        description: 'Inspired by posquit0/Awesome-CV — the most starred LaTeX CV template on GitHub with 22k+ stars.'
+    },
+    'jake-resume': {
+        id: 'jake-resume',
         name: "Jake's Resume",
         category: 'ats_safe',
         isPremium: true,
@@ -140,29 +151,51 @@ export const THEMES: Record<string, ThemeConfig> = {
         allowsPhoto: false,
         allowsIcons: false,
         defaultFontFamily: 'Charter',
-        description: "Jake Gutstein's legendary single-page LaTeX-inspired ATS format — the most cloned resume template on GitHub."
+        description: "Jake Gutstein's legendary single-page format. Most cloned resume on GitHub, beloved by FAANG engineers."
     },
-    'deedy-visual': {
-        id: 'deedy-visual',
-        name: 'Deedy',
+    'altacv': {
+        id: 'altacv',
+        name: 'AltaCV',
         category: 'visual',
         isPremium: true,
         layout: 'two_column',
-        allowsPhoto: false,
+        allowsPhoto: true,
         allowsIcons: true,
         defaultFontFamily: 'Lato',
-        description: 'Two-column powerhouse inspired by Deedy Das. Loved by FAANG engineers worldwide.'
+        description: 'Inspired by liantze/AltaCV — a premium two-pane layout with signature colored section dots.'
     },
-    'nordic-minimal': {
-        id: 'nordic-minimal',
-        name: 'Nordic Minimal',
+    'nextjs-resume': {
+        id: 'nextjs-resume',
+        name: 'NextJS Resume',
         category: 'ats_safe',
         isPremium: true,
         layout: 'single_column',
         allowsPhoto: false,
         allowsIcons: false,
         defaultFontFamily: 'Inter',
-        description: 'Scandinavian whitespace and typographic precision. Ultra-readable and highly professional.'
+        description: 'Inspired by ibelick/nextjs-resume — ultra-clean, modern web-native resume aesthetic.'
+    },
+    'rendercv-tech': {
+        id: 'rendercv-tech',
+        name: 'Tech Dense',
+        category: 'ats_safe',
+        isPremium: true,
+        layout: 'single_column',
+        allowsPhoto: false,
+        allowsIcons: false,
+        defaultFontFamily: 'Roboto Mono',
+        description: 'Inspired by RenderCV engineering theme — maximum information density for SWE/ML roles.'
+    },
+    'reactive-resume': {
+        id: 'reactive-resume',
+        name: 'Reactive',
+        category: 'visual',
+        isPremium: true,
+        layout: 'two_column',
+        allowsPhoto: true,
+        allowsIcons: true,
+        defaultFontFamily: 'Inter',
+        description: 'Inspired by amruthpillai/reactive-resume — card-based modern layout with top accent strip.'
     },
 };
 

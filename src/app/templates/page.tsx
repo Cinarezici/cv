@@ -62,9 +62,9 @@ const templates = [
         id: "executive-ats",
         name: "Executive",
         category: "Corporate",
-        isProOnly: true,
-        description: "Sophisticated serif typography for leadership and traditional roles.",
-        tags: ["Elegant", "Management", "Traditional"],
+        isProOnly: false,
+        description: "Sophisticated two-column layout for leadership and senior roles.",
+        tags: ["Elegant", "Management", "Corporate"],
         color: "bg-zinc-50",
         accent: "#18181b",
         preview: {
@@ -73,12 +73,12 @@ const templates = [
             email: "m.sterling@corp.com",
             phone: "+1 (212) 555-8800",
             location: "New York, NY",
-            summary: "20+ years driving operational excellence and P&L ownership across Fortune 500 companies. $2.4B revenue portfolio.",
+            summary: "20+ years driving operational excellence across Fortune 500. $2.4B revenue portfolio.",
             experience: [
                 { role: "COO", company: "Nexgen Capital", period: "2019–Present", bullets: ["$2.4B P&L oversight", "Scaled team 180→420"] },
-                { role: "VP Operations", company: "Goldman Sachs", period: "2013–2019", bullets: ["Global ops transformation", "Risk framework design"] },
+                { role: "VP Operations", company: "Goldman Sachs", period: "2013–2019", bullets: ["Global ops transformation"] },
             ],
-            skills: ["P&L Management", "M&A", "Strategic Planning", "Operations", "Leadership"],
+            skills: ["P&L Management", "M&A", "Strategic Planning", "Leadership"],
         },
         style: "executive",
     },
@@ -86,7 +86,7 @@ const templates = [
         id: "creative-visual",
         name: "Creative",
         category: "Visual",
-        isProOnly: true,
+        isProOnly: false,
         description: "Bold design with unique visual flair for creative industries.",
         tags: ["Standout", "Portfolio", "Dynamic"],
         color: "bg-purple-50",
@@ -97,70 +97,92 @@ const templates = [
             email: "zara@studiozc.co",
             phone: "+44 7911 123456",
             location: "London, UK",
-            summary: "Award-winning creative director blending brand strategy with visual storytelling. Cannes Lions shortlist 2023.",
+            summary: "Award-winning creative director. Cannes Lions shortlist 2023.",
             experience: [
-                { role: "Creative Director", company: "IDEO London", period: "2021–Present", bullets: ["Brand identity for 30+ clients", "Cannes Lions shortlist"] },
-                { role: "Art Director", company: "Wieden+Kennedy", period: "2017–2021", bullets: ["Nike & Airbnb campaigns", "D&AD Yellow Pencil"] },
+                { role: "Creative Director", company: "IDEO London", period: "2021–Present", bullets: ["Brand identity for 30+ clients"] },
+                { role: "Art Director", company: "Wieden+Kennedy", period: "2017–2021", bullets: ["Nike & Airbnb campaigns"] },
             ],
-            skills: ["Brand Strategy", "Art Direction", "Motion Design", "Illustration", "Adobe CC"],
+            skills: ["Brand Strategy", "Art Direction", "Motion Design", "Adobe CC"],
         },
         style: "creative",
     },
+    // ── New 6 Pro Templates (based on open-source links) ──
     {
-        id: "modern-ats",
-        name: "Modern ATS",
-        category: "ATS Safe",
+        id: "awesome-cv",
+        name: "Awesome CV",
+        category: "Visual",
         isProOnly: true,
-        description: "A modern take on ATS formats with clean Inter typography and superior spacing.",
-        tags: ["ATS Optimized", "Modern", "Clean"],
-        color: "bg-blue-50",
-        accent: "#2563eb",
+        description: "Inspired by posquit0/Awesome-CV — 22k+ GitHub stars. Colored sidebar + white right column.",
+        tags: ["22k★ GitHub", "Sidebar", "Colorful"],
+        color: "bg-teal-50",
+        accent: "#0d9488",
         preview: {
-            name: "Kai Nakamura",
-            title: "Engineering Manager",
-            email: "kai@company.io",
-            phone: "+1 (415) 555-7890",
-            location: "Seattle, WA",
-            summary: "Engineering leader with 10+ years in distributed systems. Built and scaled teams from 5 to 50+.",
+            name: "Jordan Hayes",
+            title: "Senior Software Engineer",
+            email: "jordan@email.com",
+            phone: "+1 (555) 012-3456",
+            location: "San Francisco, CA",
+            summary: "8+ years building scalable distributed systems. Reduced latency by 40%.",
             experience: [
-                { role: "Engineering Manager", company: "Stripe", period: "2022–Present", bullets: ["Scaled platform 3x", "Zero-downtime migrations"] },
-                { role: "Staff SWE", company: "Airbnb", period: "2019–2022", bullets: ["Search infra redesign", "2M QPS at peak"] },
+                { role: "Sr. Software Engineer", company: "DataFlow Inc.", period: "2021–Present", bullets: ["Led team of 6 engineers", "42% latency reduction"] },
             ],
-            skills: ["Go", "Rust", "Kubernetes", "gRPC", "Leadership"],
+            skills: ["TypeScript", "Go", "Kubernetes", "PostgreSQL"],
         },
-        style: "minimalist",
+        style: "awesomecv",
     },
     {
-        id: "tech-ats",
-        name: "Tech",
+        id: "jake-resume",
+        name: "Jake's Resume",
         category: "ATS Safe",
         isProOnly: true,
-        description: "Dense, information-rich layout optimized for software engineers.",
-        tags: ["SWE-Focused", "Info-Dense", "ATS"],
-        color: "bg-emerald-50",
-        accent: "#059669",
+        description: "Inspired by jakegut/resume — most-cloned resume on GitHub. FAANG engineers' favorite.",
+        tags: ["FAANG Favorite", "Single Page", "LaTeX-Style"],
+        color: "bg-slate-100",
+        accent: "#18181b",
+        preview: {
+            name: "Alex Johnson",
+            title: "Software Engineer",
+            email: "alex@example.com",
+            phone: "+1 (512) 555-1234",
+            location: "Mountain View, CA",
+            summary: "Full-stack engineer with experience at scale. Google, Meta alumnus.",
+            experience: [
+                { role: "SWE II", company: "Google", period: "2022–Present", bullets: ["Ads serving infra, 20M QPS"] },
+            ],
+            skills: ["C++", "Python", "TypeScript", "React"],
+        },
+        style: "jake",
+    },
+    {
+        id: "altacv",
+        name: "AltaCV",
+        category: "Visual",
+        isProOnly: true,
+        description: "Inspired by liantze/AltaCV — premium two-pane with signature colored dot bullets.",
+        tags: ["Two Pane", "Dot Bullets", "Modern"],
+        color: "bg-amber-50",
+        accent: "#b45309",
         preview: {
             name: "Priya Sharma",
             title: "Senior Backend Engineer",
             email: "priya@dev.co",
             phone: "+1 (650) 555-3344",
             location: "Austin, TX",
-            summary: "Polyglot engineer specializing in high-throughput data pipelines and cloud-native architectures.",
+            summary: "Polyglot engineer specializing in high-throughput data pipelines.",
             experience: [
-                { role: "Sr. Backend Engineer", company: "Databricks", period: "2021–Present", bullets: ["Petabyte-scale data processing", "Reduced latency 65%"] },
-                { role: "Software Engineer", company: "Confluent", period: "2018–2021", bullets: ["Kafka ecosystem tooling", "OSS contributor"] },
+                { role: "Sr. Backend Engineer", company: "Databricks", period: "2021–Present", bullets: ["Petabyte-scale processing"] },
             ],
-            skills: ["Python", "Java", "Spark", "Kafka", "GCP", "Terraform"],
+            skills: ["Python", "Java", "Spark", "Kafka", "GCP"],
         },
-        style: "minimalist",
+        style: "altacv",
     },
     {
-        id: "minimal-visual",
-        name: "Minimal Visual",
-        category: "Visual",
+        id: "nextjs-resume",
+        name: "NextJS Resume",
+        category: "ATS Safe",
         isProOnly: true,
-        description: "High whitespace, no clutter. Modern and refined for senior professionals.",
-        tags: ["Minimalist", "Premium", "Modern"],
+        description: "Inspired by ibelick/nextjs-resume — ultra-clean, modern web-native resume aesthetic.",
+        tags: ["Minimal", "Web-Native", "Modern"],
         color: "bg-gray-50",
         accent: "#374151",
         preview: {
@@ -169,87 +191,61 @@ const templates = [
             email: "sofia@product.se",
             phone: "+46 70 123 4567",
             location: "Stockholm, Sweden",
-            summary: "Strategic product leader with a track record of 0-to-1 launches and $50M+ ARR products.",
+            summary: "Strategic product leader with 0-to-1 launches and $50M+ ARR products.",
             experience: [
                 { role: "VP of Product", company: "Klarna", period: "2022–Present", bullets: ["Launched 4 new markets", "12-person PM org"] },
-                { role: "Product Director", company: "Spotify", period: "2019–2022", bullets: ["Discovery features 200M+ users", "Creator tools monetization"] },
             ],
-            skills: ["Product Strategy", "OKRs", "B2C", "B2B", "Data-Driven Design"],
+            skills: ["Product Strategy", "OKRs", "B2C", "Data-Driven"],
         },
-        style: "executive",
+        style: "nextjs",
     },
     {
-        id: "corporate-visual",
-        name: "Corporate",
+        id: "rendercv-tech",
+        name: "Tech Dense",
+        category: "ATS Safe",
+        isProOnly: true,
+        description: "Inspired by rendercv/rendercv engineering theme — maximum density for SWE/ML roles.",
+        tags: ["Info-Dense", "SWE/ML", "Monospace"],
+        color: "bg-blue-50",
+        accent: "#1d4ed8",
+        preview: {
+            name: "Kai Nakamura",
+            title: "Engineering Manager",
+            email: "kai@company.io",
+            phone: "+1 (415) 555-7890",
+            location: "Seattle, WA",
+            summary: "Engineering leader with 10+ years in distributed systems. Scaled teams 5→50.",
+            experience: [
+                { role: "Engineering Manager", company: "Stripe", period: "2022–Present", bullets: ["Scaled platform 3x", "Zero-downtime migrations"] },
+            ],
+            skills: ["Go", "Rust", "Kubernetes", "gRPC"],
+        },
+        style: "rendercv",
+    },
+    {
+        id: "reactive-resume",
+        name: "Reactive",
         category: "Visual",
         isProOnly: true,
-        description: "Serious, structured multi-column design for corporate professionals.",
-        tags: ["Two Columns", "Corporate", "Photo"],
-        color: "bg-amber-50",
-        accent: "#b45309",
+        description: "Inspired by amruthpillai/reactive-resume — card-based modern layout with top accent strip.",
+        tags: ["Card-Based", "Modern", "Colorful"],
+        color: "bg-violet-50",
+        accent: "#7c3aed",
         preview: {
             name: "James Whitfield",
             title: "Senior Financial Analyst",
             email: "james@finance.com",
             phone: "+1 (312) 555-0099",
             location: "Chicago, IL",
-            summary: "CFA-certified analyst with 8+ years in M&A advisory and financial modeling for mid-cap companies.",
+            summary: "CFA-certified analyst with 8+ years in M&A advisory and financial modeling.",
             experience: [
-                { role: "Sr. Financial Analyst", company: "JP Morgan", period: "2020–Present", bullets: ["$800M M&A advisory", "Valuation modeling"] },
-                { role: "Financial Analyst", company: "Deloitte", period: "2016–2020", bullets: ["Due diligence 15+ deals", "DCF & LBO modeling"] },
+                { role: "Sr. Financial Analyst", company: "JP Morgan", period: "2020–Present", bullets: ["$800M M&A advisory"] },
             ],
             skills: ["Financial Modeling", "M&A", "Excel", "Bloomberg", "CFA"],
         },
-        style: "modern",
+        style: "reactive",
     },
-    {
-        id: "jake-ats",
-        name: "Jake's Resume",
-        category: "ATS Safe",
-        isProOnly: true,
-        description: "The most-cloned resume on GitHub. Single-page LaTeX-inspired ATS format.",
-        tags: ["FAANG Favorite", "Single Page", "LaTeX-Inspired"],
-        color: "bg-slate-50",
-        accent: "#0f172a",
-        preview: {
-            name: "Alex Johnson",
-            title: "Software Engineer",
-            email: "alex@example.com",
-            phone: "+1 (512) 555-1234",
-            location: "Mountain View, CA",
-            summary: "Full-stack engineer with experience at scale. Passionate about open-source and developer tooling.",
-            experience: [
-                { role: "SWE II", company: "Google", period: "2022–Present", bullets: ["Ads serving infrastructure", "20M QPS reliability"] },
-                { role: "SWE I", company: "Meta", period: "2020–2022", bullets: ["React Native performance", "Hermes JS engine"] },
-            ],
-            skills: ["C++", "Python", "TypeScript", "React", "Kubernetes"],
-        },
-        style: "minimalist",
-    },
-    {
-        id: "deedy-visual",
-        name: "Deedy",
-        category: "Visual",
-        isProOnly: true,
-        description: "Two-column powerhouse inspired by Deedy Das. Beloved by FAANG engineers.",
-        tags: ["Two Columns", "FAANG Style", "Bold"],
-        color: "bg-rose-50",
-        accent: "#be123c",
-        preview: {
-            name: "Neha Kapoor",
-            title: "Machine Learning Engineer",
-            email: "neha@ml.ai",
-            phone: "+1 (628) 555-8877",
-            location: "San Francisco, CA",
-            summary: "ML engineer building production-grade recommendation systems serving 500M+ users.",
-            experience: [
-                { role: "ML Engineer", company: "Netflix", period: "2022–Present", bullets: ["Recommendation engine rewrite", "+12% engagement lift"] },
-                { role: "Research Scientist", company: "Stanford AI Lab", period: "2019–2022", bullets: ["NLP research", "2× NeurIPS publications"] },
-            ],
-            skills: ["Python", "PyTorch", "TensorFlow", "Spark", "MLflow"],
-        },
-        style: "creative",
-    },
+
 ];
 
 /* ─── CV Mini-preview components ──────────────────────────────────────── */
@@ -438,12 +434,135 @@ function CreativePreview({ p, accent }: { p: PreviewData; accent: string }) {
     );
 }
 
+function AwesomeCVPreview({ p, accent }: { p: PreviewData; accent: string }) {
+    return (
+        <div className="w-full h-full flex overflow-hidden">
+            <div className="w-[30%] flex flex-col p-2 text-white" style={{ backgroundColor: accent }}>
+                <div className="w-7 h-7 rounded-full bg-white/20 mx-auto mb-1.5 flex items-center justify-center text-[7px] font-black">{p.name.charAt(0)}</div>
+                <div className="text-[2.5px] text-white/50 font-black uppercase tracking-widest mb-0.5">Contact</div>
+                <div className="text-[2.5px] text-white/80 space-y-0.5 mb-1"><div>{p.email}</div><div>{p.location}</div></div>
+                <div className="text-[2.5px] text-white/50 font-black uppercase tracking-widest mb-0.5">Skills</div>
+                {p.skills.slice(0, 5).map(s => <div key={s} className="flex items-center gap-0.5 mb-0.5"><span className="w-0.5 h-0.5 rounded-full bg-white/50 shrink-0" /><span className="text-[2.5px] text-white/80">{s}</span></div>)}
+            </div>
+            <div className="flex-1 bg-white p-2">
+                <div className="border-b-2 pb-1 mb-1" style={{ borderColor: accent }}>
+                    <div className="font-black text-[5.5px] uppercase tracking-widest text-zinc-900">{p.name}</div>
+                    <div className="font-bold text-[3px] uppercase" style={{ color: accent }}>{p.title}</div>
+                </div>
+                <div className="text-[2.5px] font-black uppercase tracking-widest mb-0.5" style={{ color: accent }}>Experience</div>
+                {p.experience.map((exp, i) => (<div key={i} className="mb-0.5"><div className="font-black text-[3px] text-zinc-900">{exp.role}</div><div className="text-[2.5px] font-bold uppercase" style={{ color: accent }}>{exp.company}</div></div>))}
+            </div>
+        </div>
+    );
+}
+
+function JakeResumePreview({ p }: { p: PreviewData; accent: string }) {
+    return (
+        <div className="w-full h-full bg-white p-3 font-serif overflow-hidden">
+            <div className="text-center mb-1">
+                <div className="font-black text-[7px] text-zinc-900">{p.name}</div>
+                <div className="flex justify-center flex-wrap gap-1 text-[3px] text-zinc-600 mt-0.5"><span>{p.email}</span><span>·</span><span>{p.location}</span></div>
+            </div>
+            <div className="border-t border-zinc-900 mb-1.5" />
+            <div className="mb-1"><div className="font-black text-[4px] uppercase text-zinc-900 mb-0.5">Education</div><div className="border-t border-zinc-900 mb-0.5" /></div>
+            <div className="mb-1"><div className="font-black text-[4px] uppercase text-zinc-900 mb-0.5">Experience</div><div className="border-t border-zinc-900 mb-1" />
+                {p.experience.map((exp, i) => (<div key={i} className="mb-0.5"><div className="flex justify-between"><span className="font-bold text-[3.5px] text-zinc-900">{exp.role}</span><span className="text-[3px] text-zinc-600">{exp.period}</span></div><div className="text-[3px] text-zinc-600 italic">{exp.company}</div></div>))}
+            </div>
+            <div><div className="font-black text-[4px] uppercase text-zinc-900 mb-0.5">Technical Skills</div><div className="border-t border-zinc-900 mb-0.5" /><div className="text-[3px] text-zinc-700"><span className="font-bold">Languages:</span> {p.skills.join(', ')}</div></div>
+        </div>
+    );
+}
+
+function AltaCVPreview({ p, accent }: { p: PreviewData; accent: string }) {
+    return (
+        <div className="w-full h-full flex flex-col overflow-hidden">
+            <div className="px-3 py-1.5" style={{ backgroundColor: accent }}>
+                <div className="font-black text-[7px] text-white">{p.name}</div>
+                <div className="text-[3.5px] text-white/75">{p.title}</div>
+            </div>
+            <div className="flex flex-1">
+                <div className="w-[35%] bg-zinc-50 p-2">
+                    <div className="text-[2.5px] font-black uppercase tracking-widest mb-0.5" style={{ color: accent }}>Contact</div>
+                    {[p.email, p.location].map(s => <div key={s} className="flex items-center gap-0.5 mb-0.5"><span className="w-0.5 h-0.5 rounded-full shrink-0" style={{ backgroundColor: accent }} /><span className="text-[2.5px] text-zinc-600">{s}</span></div>)}
+                    <div className="text-[2.5px] font-black uppercase tracking-widest mt-1 mb-0.5" style={{ color: accent }}>Skills</div>
+                    {p.skills.slice(0, 4).map(s => <div key={s} className="flex items-center gap-0.5 mb-0.5"><span className="w-0.5 h-0.5 rounded-full shrink-0" style={{ backgroundColor: accent }} /><span className="text-[2.5px] text-zinc-600">{s}</span></div>)}
+                </div>
+                <div className="flex-1 p-2">
+                    <div className="flex items-center gap-0.5 mb-0.5"><span className="w-2 h-0.5" style={{ backgroundColor: accent }} /><span className="text-[3px] font-black uppercase" style={{ color: accent }}>Experience</span></div>
+                    {p.experience.map((exp, i) => (<div key={i} className="mb-1 pl-1" style={{ borderLeft: `1.5px solid ${accent}33` }}><div className="font-bold text-[3.5px] text-zinc-900">{exp.role}</div><div className="text-[3px]" style={{ color: accent }}>{exp.company}</div></div>))}
+                </div>
+            </div>
+        </div>
+    );
+}
+
+function NextjsResumePreview({ p }: { p: PreviewData; accent: string }) {
+    return (
+        <div className="w-full h-full bg-white p-4 flex flex-col overflow-hidden">
+            <div className="pb-2 mb-2 border-b border-zinc-200">
+                <div className="text-[9px] font-light text-zinc-900">{p.name}</div>
+                <div className="text-[3.5px] text-zinc-500 mt-0.5">{p.title}</div>
+                <div className="flex gap-2 text-[3px] text-zinc-400 mt-0.5">{p.email} · {p.location}</div>
+            </div>
+            <div className="text-[3px] text-zinc-400 uppercase tracking-widest mb-1">Experience</div>
+            {p.experience.map((exp, i) => (<div key={i} className="mb-1.5"><div className="flex justify-between"><span className="text-[3.5px] font-semibold text-zinc-900">{exp.role}</span><span className="text-[3px] text-zinc-400">{exp.period}</span></div><div className="text-[3px] text-zinc-500">{exp.company}</div></div>))}
+            <div className="mt-1"><div className="text-[3px] text-zinc-400 uppercase tracking-widest mb-1">Skills</div><div className="flex flex-wrap gap-0.5">{p.skills.map(s => <span key={s} className="text-[2.5px] px-1 py-0.5 border border-zinc-200 rounded-full text-zinc-700">{s}</span>)}</div></div>
+        </div>
+    );
+}
+
+function RenderCVTechPreview({ p, accent }: { p: PreviewData; accent: string }) {
+    return (
+        <div className="w-full h-full bg-white p-3 overflow-hidden font-mono">
+            <div className="pb-1 mb-1.5 border-b-2" style={{ borderColor: accent }}>
+                <div className="font-black text-[6px] text-zinc-900">{p.name}</div>
+                <div className="font-bold text-[3.5px] mt-0.5" style={{ color: accent }}>{p.title}</div>
+                <div className="text-[3px] text-zinc-500 mt-0.5">{p.email} · {p.location}</div>
+            </div>
+            <div className="text-[3px] font-black uppercase tracking-widest mb-0.5" style={{ color: accent }}>Technical Skills</div>
+            <div className="text-[3px] text-zinc-700 mb-1"><span className="font-bold">Languages:</span> {p.skills.join(' · ')}</div>
+            <div className="text-[3px] font-black uppercase tracking-widest mb-0.5" style={{ color: accent }}>Experience</div>
+            {p.experience.map((exp, i) => (<div key={i} className="mb-0.5"><div className="flex justify-between"><span className="font-black text-[3.5px] text-zinc-900">{exp.role}</span><span className="text-[3px] text-zinc-400 font-mono">{exp.period}</span></div><div className="font-bold text-[3px]" style={{ color: accent }}>{exp.company}</div></div>))}
+        </div>
+    );
+}
+
+function ReactiveResumePreview({ p, accent }: { p: PreviewData; accent: string }) {
+    return (
+        <div className="w-full h-full bg-zinc-50 flex flex-col overflow-hidden">
+            <div className="h-1 w-full" style={{ backgroundColor: accent }} />
+            <div className="bg-white px-3 py-1.5 shadow-sm">
+                <div className="font-black text-[6.5px] text-zinc-900">{p.name}</div>
+                <div className="text-[3.5px] font-medium mt-0.5" style={{ color: accent }}>{p.title}</div>
+                <div className="text-[3px] text-zinc-400 mt-0.5">{p.email} · {p.location}</div>
+            </div>
+            <div className="flex flex-1 gap-1.5 p-1.5">
+                <div className="w-[35%] space-y-1">
+                    <div className="bg-white rounded p-1 shadow-sm"><div className="text-[2.5px] font-black uppercase tracking-widest mb-0.5" style={{ color: accent }}>About</div><div className="text-[2.5px] text-zinc-600">{p.summary}</div></div>
+                    <div className="bg-white rounded p-1 shadow-sm"><div className="text-[2.5px] font-black uppercase tracking-widest mb-0.5" style={{ color: accent }}>Skills</div><div className="flex flex-wrap gap-0.5">{p.skills.slice(0, 4).map(s => <span key={s} className="text-[2px] px-0.5 py-0 text-white rounded" style={{ backgroundColor: accent }}>{s}</span>)}</div></div>
+                </div>
+                <div className="flex-1 bg-white rounded p-1 shadow-sm">
+                    <div className="text-[2.5px] font-black uppercase tracking-widest mb-0.5" style={{ color: accent }}>Experience</div>
+                    {p.experience.map((exp, i) => (<div key={i} className="mb-0.5 pl-0.5" style={{ borderLeft: `1px solid ${accent}` }}><div className="font-black text-[3px] text-zinc-900">{exp.role}</div><div className="text-[2.5px] font-bold" style={{ color: accent }}>{exp.company}</div></div>))}
+                </div>
+            </div>
+        </div>
+    );
+}
+
 const previewMap: Record<string, React.FC<{ p: PreviewData; accent: string }>> = {
     minimalist: MinimalistPreview,
     modern: ModernPreview,
     executive: ExecutivePreview,
     creative: CreativePreview,
+    awesomecv: AwesomeCVPreview,
+    jake: JakeResumePreview,
+    altacv: AltaCVPreview,
+    nextjs: NextjsResumePreview,
+    rendercv: RenderCVTechPreview,
+    reactive: ReactiveResumePreview,
 };
+
 
 export default function TemplatesPage() {
     const { isPro, isLoading } = usePro();

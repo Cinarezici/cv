@@ -40,13 +40,23 @@ export function CVRenderer({ avatarUrl, showPhoto, isPro = true }: CVRendererPro
     const isSingleColumn = currentThemeConfig.layout === 'single_column';
 
     // Groups: which theme IDs use which rendering style branch
-    // «Creative» branch = two-column sidebar + colorful accent bar header
-    const CREATIVE_THEMES = ['creative-visual', 'corporate-visual', 'deedy-visual', 'compact-visual'];
-    // «Executive» branch = centered serif header with double underline
-    const EXECUTIVE_THEMES = ['executive-ats', 'minimal-visual', 'nordic-minimal'];
+    const CREATIVE_THEMES = ['creative-visual', 'corporate-visual', 'compact-visual'];
+    const EXECUTIVE_THEMES = ['executive-ats', 'minimal-visual'];
+    const AWESOME_CV_THEMES = ['awesome-cv'];
+    const JAKE_THEMES = ['jake-resume'];
+    const ALTACV_THEMES = ['altacv'];
+    const NEXTJS_THEMES = ['nextjs-resume'];
+    const RENDERCV_THEMES = ['rendercv-tech'];
+    const REACTIVE_THEMES = ['reactive-resume'];
 
     const isCreative = CREATIVE_THEMES.includes(themeId);
     const isExecutive = EXECUTIVE_THEMES.includes(themeId);
+    const isAwesomeCV = AWESOME_CV_THEMES.includes(themeId);
+    const isJakeResume = JAKE_THEMES.includes(themeId);
+    const isAltaCV = ALTACV_THEMES.includes(themeId);
+    const isNextjsResume = NEXTJS_THEMES.includes(themeId);
+    const isRenderCV = RENDERCV_THEMES.includes(themeId);
+    const isReactive = REACTIVE_THEMES.includes(themeId);
     const showIcons = currentThemeConfig.allowsIcons;
     const showPhotoConfig = currentThemeConfig.allowsPhoto && currentShowPhoto;
 
@@ -660,6 +670,575 @@ export function CVRenderer({ avatarUrl, showPhoto, isPro = true }: CVRendererPro
                                     ))}
                                 </div>
                             </section>
+                        )}
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // AWESOME-CV — Dark teal sidebar + white right column (posquit0/Awesome-CV)
+    // ─────────────────────────────────────────────────────────────────────────
+    if (isAwesomeCV) {
+        const sidebarColor = accentColor;
+        return (
+            <div className="max-w-[210mm] w-full shadow-2xl print:shadow-none flex flex-row shrink-0 relative" style={{ minHeight: '297mm', fontFamily: 'Roboto, sans-serif', WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact' } as any}>
+                {!isPro && <div className="hidden print:block absolute bottom-0 left-0 right-0 py-4 text-center text-[11px] font-bold text-zinc-400 tracking-widest z-50 uppercase">Created with CV Optimizer AI</div>}
+                {/* Left dark sidebar */}
+                <aside className="w-[30%] shrink-0 flex flex-col" style={{ backgroundColor: sidebarColor }}>
+                    {/* Photo */}
+                    <div className="flex justify-center pt-10 pb-6 px-5">
+                        {showPhotoConfig && currentAvatarUrl ? (
+                            <img src={currentAvatarUrl} alt={name} className="w-28 h-28 rounded-full object-cover border-4 border-white/20 shadow-xl" />
+                        ) : (
+                            <div className="w-24 h-24 rounded-full bg-white/20 flex items-center justify-center shadow-xl">
+                                <span className="text-4xl font-black text-white">{name.charAt(0)}</span>
+                            </div>
+                        )}
+                    </div>
+                    {/* Name block */}
+                    <div className="px-5 pb-4 text-center border-b border-white/20">
+                        <p className="text-[11px] font-bold text-white/60 uppercase tracking-widest">{headline}</p>
+                    </div>
+                    {/* Contact */}
+                    <div className="px-5 pt-5 pb-4">
+                        <h2 className="text-[9px] font-black uppercase tracking-[3px] text-white/50 mb-3">Contact</h2>
+                        <div className="space-y-2">
+                            {email && <div className="flex items-start gap-2 text-[11px] text-white/80 break-all"><Mail className="w-3 h-3 mt-0.5 shrink-0 text-white/50" />{email}</div>}
+                            {phone && <div className="flex items-start gap-2 text-[11px] text-white/80"><Phone className="w-3 h-3 mt-0.5 shrink-0 text-white/50" />{phone}</div>}
+                            {location && <div className="flex items-start gap-2 text-[11px] text-white/80"><MapPin className="w-3 h-3 mt-0.5 shrink-0 text-white/50" />{location}</div>}
+                            {linkedin && <div className="flex items-start gap-2 text-[11px] text-white/80 break-all"><LinkedinIcon className="w-3 h-3 mt-0.5 shrink-0 text-white/50" />{linkedin.replace(/^https?:\/\/(www\.)?linkedin\.com\/in\//, '')}</div>}
+                            {github && <div className="flex items-start gap-2 text-[11px] text-white/80 break-all"><Github className="w-3 h-3 mt-0.5 shrink-0 text-white/50" />{github.replace(/^https?:\/\/(www\.)?/, '')}</div>}
+                        </div>
+                    </div>
+                    {/* Skills */}
+                    {(resumeJson?.skills?.core?.length ?? 0) > 0 && (
+                        <div className="px-5 pt-2 pb-4">
+                            <h2 className="text-[9px] font-black uppercase tracking-[3px] text-white/50 mb-3">Skills</h2>
+                            <div className="space-y-1.5">
+                                {[...(resumeJson.skills?.core || []), ...(resumeJson.skills?.tools || [])].slice(0, 10).map((s: string, i: number) => (
+                                    <div key={i} className="flex items-center gap-2">
+                                        <span className="w-1.5 h-1.5 rounded-full bg-white/50 shrink-0" />
+                                        <span className="text-[11px] text-white/80">{s}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+                    {/* Languages */}
+                    {resumeJson?.languages?.length > 0 && (
+                        <div className="px-5 pt-2">
+                            <h2 className="text-[9px] font-black uppercase tracking-[3px] text-white/50 mb-3">Languages</h2>
+                            <div className="space-y-1.5">
+                                {resumeJson.languages.map((l: any, i: number) => (
+                                    <div key={i} className="text-[11px] text-white/80">{l.language} <span className="text-white/40">· {l.level}</span></div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+                </aside>
+                {/* Right white column */}
+                <main className="flex-1 bg-white flex flex-col">
+                    {/* Header */}
+                    <div className="px-8 pt-10 pb-6 border-b-2" style={{ borderColor: sidebarColor }}>
+                        <h1 className="text-[34px] font-black text-zinc-900 uppercase tracking-widest leading-none">{name}</h1>
+                        {headline && <p className="text-[13px] font-bold uppercase tracking-widest mt-2" style={{ color: sidebarColor }}>{headline}</p>}
+                    </div>
+                    <div className="flex-1 px-8 pt-6 space-y-6">
+                        {/* Summary */}
+                        {resumeJson?.summary && (
+                            <section>
+                                <h2 className="text-[11px] font-black uppercase tracking-[3px] mb-3 pb-1 border-b-2" style={{ color: sidebarColor, borderColor: sidebarColor }}>Summary</h2>
+                                <p className="text-[12px] leading-relaxed text-zinc-600">{resumeJson.summary}</p>
+                            </section>
+                        )}
+                        {/* Experience */}
+                        {resumeJson?.experience?.length > 0 && (
+                            <section>
+                                <h2 className="text-[11px] font-black uppercase tracking-[3px] mb-4 pb-1 border-b-2" style={{ color: sidebarColor, borderColor: sidebarColor }}>Experience</h2>
+                                <div className="space-y-5">
+                                    {resumeJson.experience.map((exp: any, i: number) => (
+                                        <div key={i}>
+                                            <div className="flex justify-between items-baseline">
+                                                <h3 className="text-[13px] font-black text-zinc-900">{exp.role}</h3>
+                                                <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">{exp.start_date} – {exp.is_current ? 'Present' : exp.end_date}</span>
+                                            </div>
+                                            <p className="text-[11px] font-bold uppercase tracking-wide mt-0.5" style={{ color: sidebarColor }}>{exp.company}{exp.location ? `, ${exp.location}` : ''}</p>
+                                            <ul className="mt-2 space-y-1">
+                                                {exp.bullets?.map((b: string, j: number) => (
+                                                    <li key={j} className="text-[11.5px] text-zinc-600 leading-relaxed pl-3 relative before:content-['▸'] before:absolute before:left-0 before:font-bold" style={{ '--tw-before-color': sidebarColor } as any}>{b}</li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    ))}
+                                </div>
+                            </section>
+                        )}
+                        {/* Education */}
+                        {resumeJson?.education?.length > 0 && (
+                            <section>
+                                <h2 className="text-[11px] font-black uppercase tracking-[3px] mb-4 pb-1 border-b-2" style={{ color: sidebarColor, borderColor: sidebarColor }}>Education</h2>
+                                <div className="space-y-3">
+                                    {resumeJson.education.map((edu: any, i: number) => (
+                                        <div key={i} className="flex justify-between items-start">
+                                            <div><h3 className="text-[12.5px] font-bold text-zinc-900">{edu.degree}{edu.field ? ` in ${edu.field}` : ''}</h3><p className="text-[11px] text-zinc-500">{edu.school}</p></div>
+                                            <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider shrink-0 ml-4">{edu.start_date} – {edu.is_current ? 'Present' : edu.end_date}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </section>
+                        )}
+                    </div>
+                </main>
+            </div>
+        );
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // JAKE'S RESUME — Ultra-compact single column, horizontal-rule sections
+    // ─────────────────────────────────────────────────────────────────────────
+    if (isJakeResume) {
+        return (
+            <div className="max-w-[210mm] w-full bg-white shadow-2xl print:shadow-none shrink-0 px-11 py-9 relative" style={{ minHeight: '297mm', fontFamily: 'Georgia, Charter, serif', WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact' } as any}>
+                {!isPro && <div className="hidden print:block absolute bottom-0 left-0 right-0 py-4 text-center text-[11px] font-bold text-zinc-400 tracking-widest z-50 uppercase">Created with CV Optimizer AI</div>}
+                {/* Header */}
+                <div className="text-center mb-4">
+                    <h1 className="text-[28px] font-black text-zinc-900 tracking-tight">{name}</h1>
+                    <div className="flex flex-wrap justify-center gap-x-3 gap-y-0.5 text-[11px] text-zinc-600 font-medium mt-1.5">
+                        {phone && <span>{phone}</span>}
+                        {phone && email && <span>·</span>}
+                        {email && <span>{email}</span>}
+                        {email && location && <span>·</span>}
+                        {location && <span>{location}</span>}
+                        {(location || email) && linkedin && <span>·</span>}
+                        {linkedin && <span>{linkedin.replace(/^https?:\/\/(www\.)?linkedin\.com\/in\//, 'linkedin.com/in/')}</span>}
+                        {linkedin && github && <span>·</span>}
+                        {github && <span>{github.replace(/^https?:\/\/(www\.)?github\.com\//, 'github.com/')}</span>}
+                    </div>
+                </div>
+                <hr className="border-t border-zinc-900 mb-4" />
+                {/* Education */}
+                {resumeJson?.education?.length > 0 && (
+                    <section className="mb-3">
+                        <h2 className="text-[12px] font-black uppercase tracking-widest text-zinc-900 mb-1">Education</h2>
+                        <hr className="border-t border-zinc-900 mb-2" />
+                        {resumeJson.education.map((edu: any, i: number) => (
+                            <div key={i} className="flex justify-between items-baseline mb-0.5">
+                                <div><span className="text-[12px] font-bold text-zinc-900">{edu.school}</span> <span className="text-[11px] text-zinc-500">{edu.degree}{edu.field ? ` in ${edu.field}` : ''}{edu.gpa ? ` — GPA: ${edu.gpa}` : ''}</span></div>
+                                <span className="text-[11px] text-zinc-600 shrink-0 ml-4">{edu.start_date} – {edu.is_current ? 'Present' : edu.end_date}</span>
+                            </div>
+                        ))}
+                    </section>
+                )}
+                {/* Experience */}
+                {resumeJson?.experience?.length > 0 && (
+                    <section className="mb-3">
+                        <h2 className="text-[12px] font-black uppercase tracking-widest text-zinc-900 mb-1">Experience</h2>
+                        <hr className="border-t border-zinc-900 mb-2" />
+                        <div className="space-y-2.5">
+                            {resumeJson.experience.map((exp: any, i: number) => (
+                                <div key={i}>
+                                    <div className="flex justify-between items-baseline">
+                                        <span className="text-[12px] font-bold text-zinc-900">{exp.role}</span>
+                                        <span className="text-[11px] text-zinc-600 shrink-0 ml-4">{exp.start_date} – {exp.is_current ? 'Present' : exp.end_date}</span>
+                                    </div>
+                                    <div className="flex justify-between items-baseline">
+                                        <span className="text-[11.5px] font-medium text-zinc-700 italic">{exp.company}{exp.location ? `, ${exp.location}` : ''}</span>
+                                    </div>
+                                    <ul className="mt-1 space-y-0.5">
+                                        {exp.bullets?.map((b: string, j: number) => (
+                                            <li key={j} className="text-[11px] text-zinc-700 leading-snug pl-4 relative before:content-['•'] before:absolute before:left-1.5">{b}</li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            ))}
+                        </div>
+                    </section>
+                )}
+                {/* Projects/Skills */}
+                {(resumeJson?.skills?.core?.length ?? 0) > 0 && (
+                    <section className="mb-3">
+                        <h2 className="text-[12px] font-black uppercase tracking-widest text-zinc-900 mb-1">Technical Skills</h2>
+                        <hr className="border-t border-zinc-900 mb-2" />
+                        <div className="flex flex-wrap gap-y-1">
+                            {(resumeJson.skills?.core?.length ?? 0) > 0 && (
+                                <div className="text-[11px] text-zinc-700 w-full"><span className="font-bold">Languages:</span> {(resumeJson.skills.core ?? []).join(', ')}</div>
+                            )}
+                            {(resumeJson.skills?.tools?.length ?? 0) > 0 && (
+                                <div className="text-[11px] text-zinc-700 w-full"><span className="font-bold">Frameworks & Tools:</span> {(resumeJson.skills.tools ?? []).join(', ')}</div>
+                            )}
+                        </div>
+                    </section>
+                )}
+            </div>
+        );
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // ALTACV — Two-column: narrow left with profile dots, wide right main
+    // ─────────────────────────────────────────────────────────────────────────
+    if (isAltaCV) {
+        return (
+            <div className="max-w-[210mm] w-full bg-white shadow-2xl print:shadow-none flex flex-col shrink-0 relative" style={{ minHeight: '297mm', fontFamily: 'Lato, sans-serif', WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact' } as any}>
+                {!isPro && <div className="hidden print:block absolute bottom-0 left-0 right-0 py-4 text-center text-[11px] font-bold text-zinc-400 tracking-widest z-50 uppercase">Created with CV Optimizer AI</div>}
+                {/* Full-width header */}
+                <div className="px-10 py-7" style={{ backgroundColor: accentColor }}>
+                    <div className="flex items-center justify-between gap-6">
+                        <div className="flex-1">
+                            <h1 className="text-[36px] font-black text-white leading-none tracking-tight">{name}</h1>
+                            {headline && <p className="text-white/75 text-[14px] font-medium mt-1.5">{headline}</p>}
+                        </div>
+                        {showPhotoConfig && currentAvatarUrl && (
+                            <img src={currentAvatarUrl} alt={name} className="w-20 h-20 rounded-full object-cover border-4 border-white/30 shrink-0" />
+                        )}
+                    </div>
+                </div>
+                {/* Body */}
+                <div className="flex flex-1">
+                    {/* Narrow left column */}
+                    <aside className="w-[35%] shrink-0 bg-zinc-50 border-r border-zinc-100 px-6 py-6 space-y-6">
+                        {/* Contact */}
+                        <div>
+                            <h3 className="text-[10px] font-black uppercase tracking-[3px] mb-2" style={{ color: accentColor }}>Contact</h3>
+                            <div className="space-y-1.5">
+                                {email && <div className="flex items-start gap-1.5 text-[11px] text-zinc-600"><span className="w-1.5 h-1.5 rounded-full shrink-0 mt-1" style={{ backgroundColor: accentColor }} />{email}</div>}
+                                {phone && <div className="flex items-start gap-1.5 text-[11px] text-zinc-600"><span className="w-1.5 h-1.5 rounded-full shrink-0 mt-1" style={{ backgroundColor: accentColor }} />{phone}</div>}
+                                {location && <div className="flex items-start gap-1.5 text-[11px] text-zinc-600"><span className="w-1.5 h-1.5 rounded-full shrink-0 mt-1" style={{ backgroundColor: accentColor }} />{location}</div>}
+                                {linkedin && <div className="flex items-start gap-1.5 text-[11px] text-zinc-600 break-all"><span className="w-1.5 h-1.5 rounded-full shrink-0 mt-1" style={{ backgroundColor: accentColor }} />{linkedin.replace(/^https?:\/\/(www\.)?/, '')}</div>}
+                            </div>
+                        </div>
+                        {/* Skills */}
+                        {(resumeJson?.skills?.core?.length ?? 0) > 0 && (
+                            <div>
+                                <h3 className="text-[10px] font-black uppercase tracking-[3px] mb-2" style={{ color: accentColor }}>Skills</h3>
+                                <div className="space-y-1">
+                                    {[...(resumeJson.skills?.core || []), ...(resumeJson.skills?.tools || [])].slice(0, 10).map((s: string, i: number) => (
+                                        <div key={i} className="flex items-center gap-1.5">
+                                            <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: accentColor }} />
+                                            <span className="text-[11px] text-zinc-700">{s}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                        {/* Education */}
+                        {resumeJson?.education?.length > 0 && (
+                            <div>
+                                <h3 className="text-[10px] font-black uppercase tracking-[3px] mb-2" style={{ color: accentColor }}>Education</h3>
+                                {resumeJson.education.map((edu: any, i: number) => (
+                                    <div key={i} className="mb-2">
+                                        <p className="text-[11.5px] font-bold text-zinc-900 leading-snug">{edu.degree}{edu.field ? ` in ${edu.field}` : ''}</p>
+                                        <p className="text-[11px] text-zinc-500">{edu.school}</p>
+                                        <p className="text-[10px] text-zinc-400">{edu.start_date} – {edu.is_current ? 'Present' : edu.end_date}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                        {/* Languages */}
+                        {resumeJson?.languages?.length > 0 && (
+                            <div>
+                                <h3 className="text-[10px] font-black uppercase tracking-[3px] mb-2" style={{ color: accentColor }}>Languages</h3>
+                                {resumeJson.languages.map((l: any, i: number) => (
+                                    <div key={i} className="flex items-center gap-1.5 mb-1">
+                                        <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: accentColor }} />
+                                        <span className="text-[11px] text-zinc-700">{l.language}</span>
+                                        <span className="text-[10px] text-zinc-400">· {l.level}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </aside>
+                    {/* Wide right main */}
+                    <main className="flex-1 px-8 py-6 space-y-6">
+                        {resumeJson?.summary && (
+                            <section>
+                                <h2 className="text-[11px] font-black uppercase tracking-[3px] mb-2 flex items-center gap-2" style={{ color: accentColor }}>
+                                    <span className="w-5 h-0.5" style={{ backgroundColor: accentColor }} />About Me
+                                </h2>
+                                <p className="text-[12px] leading-relaxed text-zinc-600">{resumeJson.summary}</p>
+                            </section>
+                        )}
+                        {resumeJson?.experience?.length > 0 && (
+                            <section>
+                                <h2 className="text-[11px] font-black uppercase tracking-[3px] mb-3 flex items-center gap-2" style={{ color: accentColor }}>
+                                    <span className="w-5 h-0.5" style={{ backgroundColor: accentColor }} />Experience
+                                </h2>
+                                <div className="space-y-5">
+                                    {resumeJson.experience.map((exp: any, i: number) => (
+                                        <div key={i} className="pl-3" style={{ borderLeft: `3px solid ${accentColor}33` }}>
+                                            <div className="flex justify-between items-baseline">
+                                                <h3 className="text-[13px] font-black text-zinc-900">{exp.role}</h3>
+                                                <span className="text-[10px] font-bold text-zinc-400 uppercase shrink-0 ml-3">{exp.start_date} – {exp.is_current ? 'Present' : exp.end_date}</span>
+                                            </div>
+                                            <p className="text-[11.5px] font-bold mt-0.5" style={{ color: accentColor }}>{exp.company}{exp.location ? `, ${exp.location}` : ''}</p>
+                                            <ul className="mt-1.5 space-y-1">
+                                                {exp.bullets?.map((b: string, j: number) => (
+                                                    <li key={j} className="text-[11.5px] text-zinc-600 leading-relaxed pl-2 relative before:content-['·'] before:absolute before:left-0 before:font-black" style={{ '--accent': accentColor } as any}>{b}</li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    ))}
+                                </div>
+                            </section>
+                        )}
+                    </main>
+                </div>
+            </div>
+        );
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // NEXTJS RESUME — Minimal centered, big italic name (ibelick/nextjs-resume)
+    // ─────────────────────────────────────────────────────────────────────────
+    if (isNextjsResume) {
+        return (
+            <div className="max-w-[210mm] w-full bg-white shadow-2xl print:shadow-none px-16 py-14 shrink-0 relative" style={{ minHeight: '297mm', fontFamily: 'Inter, system-ui, sans-serif', WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact' } as any}>
+                {!isPro && <div className="hidden print:block absolute bottom-0 left-0 right-0 py-4 text-center text-[11px] font-bold text-zinc-400 tracking-widest z-50 uppercase">Created with CV Optimizer AI</div>}
+                {/* Header: centered, minimal */}
+                <div className="mb-10 pb-8 border-b border-zinc-200">
+                    <h1 className="text-[40px] font-light text-zinc-900 tracking-tight leading-none mb-2">{name}</h1>
+                    {headline && <p className="text-[15px] text-zinc-500 font-normal mb-4">{headline}</p>}
+                    <div className="flex flex-wrap gap-x-5 gap-y-1 text-[12px] text-zinc-500">
+                        {email && <span>{email}</span>}
+                        {phone && <span>{phone}</span>}
+                        {location && <span>{location}</span>}
+                        {linkedin && <span>{linkedin.replace(/^https?:\/\/(www\.)?/, '')}</span>}
+                        {github && <span>{github.replace(/^https?:\/\/(www\.)?/, '')}</span>}
+                        {portfolio && <span>{portfolio.replace(/^https?:\/\/(www\.)?/, '')}</span>}
+                    </div>
+                </div>
+                {/* Summary */}
+                {resumeJson?.summary && (
+                    <section className="mb-8">
+                        <p className="text-[13px] leading-[1.9] text-zinc-600 font-light">{resumeJson.summary}</p>
+                    </section>
+                )}
+                {/* Experience */}
+                {resumeJson?.experience?.length > 0 && (
+                    <section className="mb-8">
+                        <h2 className="text-[11px] font-semibold uppercase tracking-[4px] text-zinc-400 mb-5">Experience</h2>
+                        <div className="space-y-6">
+                            {resumeJson.experience.map((exp: any, i: number) => (
+                                <div key={i}>
+                                    <div className="flex justify-between items-baseline mb-1">
+                                        <h3 className="text-[14px] font-semibold text-zinc-900">{exp.role}</h3>
+                                        <span className="text-[11px] text-zinc-400">{exp.start_date} — {exp.is_current ? 'Present' : exp.end_date}</span>
+                                    </div>
+                                    <p className="text-[12.5px] text-zinc-500 mb-2">{exp.company}{exp.location ? ` · ${exp.location}` : ''}</p>
+                                    <ul className="space-y-1">
+                                        {exp.bullets?.map((b: string, j: number) => (
+                                            <li key={j} className="text-[12px] text-zinc-600 font-light leading-relaxed flex gap-2"><span className="text-zinc-300 shrink-0">—</span>{b}</li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            ))}
+                        </div>
+                    </section>
+                )}
+                {/* Education */}
+                {resumeJson?.education?.length > 0 && (
+                    <section className="mb-8">
+                        <h2 className="text-[11px] font-semibold uppercase tracking-[4px] text-zinc-400 mb-5">Education</h2>
+                        <div className="space-y-3">
+                            {resumeJson.education.map((edu: any, i: number) => (
+                                <div key={i} className="flex justify-between items-baseline">
+                                    <div><p className="text-[13px] font-semibold text-zinc-900">{edu.degree}{edu.field ? ` in ${edu.field}` : ''}</p><p className="text-[12px] text-zinc-500">{edu.school}</p></div>
+                                    <span className="text-[11px] text-zinc-400 shrink-0 ml-4">{edu.start_date} — {edu.is_current ? 'Present' : edu.end_date}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </section>
+                )}
+                {/* Skills */}
+                {(resumeJson?.skills?.core?.length ?? 0) > 0 && (
+                    <section>
+                        <h2 className="text-[11px] font-semibold uppercase tracking-[4px] text-zinc-400 mb-5">Skills</h2>
+                        <div className="flex flex-wrap gap-2">
+                            {[...(resumeJson.skills?.core || []), ...(resumeJson.skills?.tools || [])].map((s: string, i: number) => (
+                                <span key={i} className="text-[12px] px-3 py-1 border border-zinc-200 rounded-full text-zinc-700 font-light">{s}</span>
+                            ))}
+                        </div>
+                    </section>
+                )}
+            </div>
+        );
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // RENDERCV TECH — Dense single-col engineering format (rendercv/rendercv)
+    // ─────────────────────────────────────────────────────────────────────────
+    if (isRenderCV) {
+        return (
+            <div className="max-w-[210mm] w-full bg-white shadow-2xl print:shadow-none px-10 py-10 shrink-0 relative" style={{ minHeight: '297mm', fontFamily: 'Roboto Mono, monospace', WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact' } as any}>
+                {!isPro && <div className="hidden print:block absolute bottom-0 left-0 right-0 py-4 text-center text-[11px] font-bold text-zinc-400 tracking-widest z-50 uppercase">Created with CV Optimizer AI</div>}
+                {/* Dense header */}
+                <div className="mb-5 pb-4" style={{ borderBottom: `2px solid ${accentColor}` }}>
+                    <h1 className="text-[26px] font-black text-zinc-900 tracking-tight leading-none">{name}</h1>
+                    {headline && <p className="text-[12px] font-bold mt-1" style={{ color: accentColor }}>{headline}</p>}
+                    <div className="mt-2 flex flex-wrap gap-x-4 gap-y-0.5 text-[10.5px] text-zinc-500 font-mono">
+                        {email && <span>{email}</span>}
+                        {phone && <span>{phone}</span>}
+                        {location && <span>{location}</span>}
+                        {linkedin && <span>{linkedin.replace(/^https?:\/\/(www\.)?/, '')}</span>}
+                        {github && <span>{github.replace(/^https?:\/\/(www\.)?/, '')}</span>}
+                    </div>
+                </div>
+                {/* Skills — first for ATS */}
+                {(resumeJson?.skills?.core?.length ?? 0) > 0 && (
+                    <section className="mb-4">
+                        <h2 className="text-[10px] font-black uppercase tracking-[3px] mb-2" style={{ color: accentColor }}>Technical Skills</h2>
+                        <div className="space-y-1">
+                            {(resumeJson.skills?.core?.length ?? 0) > 0 && (
+                                <p className="text-[11px] text-zinc-700 leading-snug"><span className="font-bold">Languages:</span> {(resumeJson.skills.core ?? []).join(' · ')}</p>
+                            )}
+                            {(resumeJson.skills?.tools?.length ?? 0) > 0 && (
+                                <p className="text-[11px] text-zinc-700 leading-snug"><span className="font-bold">Technologies:</span> {(resumeJson.skills.tools ?? []).join(' · ')}</p>
+                            )}
+                        </div>
+                    </section>
+                )}
+                {/* Experience */}
+                {resumeJson?.experience?.length > 0 && (
+                    <section className="mb-4">
+                        <h2 className="text-[10px] font-black uppercase tracking-[3px] mb-2" style={{ color: accentColor }}>Experience</h2>
+                        <div className="space-y-3">
+                            {resumeJson.experience.map((exp: any, i: number) => (
+                                <div key={i}>
+                                    <div className="flex justify-between items-baseline">
+                                        <span className="text-[12px] font-black text-zinc-900">{exp.role}</span>
+                                        <span className="text-[10px] font-mono text-zinc-400 shrink-0 ml-3">{exp.start_date} – {exp.is_current ? 'Present' : exp.end_date}</span>
+                                    </div>
+                                    <p className="text-[11px] font-bold mb-1.5" style={{ color: accentColor }}>{exp.company}{exp.location ? ` | ${exp.location}` : ''}</p>
+                                    <ul className="space-y-0.5">
+                                        {exp.bullets?.map((b: string, j: number) => (
+                                            <li key={j} className="text-[10.5px] text-zinc-700 leading-snug pl-3 relative before:content-['-'] before:absolute before:left-0 before:text-zinc-400">{b}</li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            ))}
+                        </div>
+                    </section>
+                )}
+                {/* Education */}
+                {resumeJson?.education?.length > 0 && (
+                    <section className="mb-4">
+                        <h2 className="text-[10px] font-black uppercase tracking-[3px] mb-2" style={{ color: accentColor }}>Education</h2>
+                        {resumeJson.education.map((edu: any, i: number) => (
+                            <div key={i} className="flex justify-between items-baseline mb-1">
+                                <span className="text-[11.5px] font-bold text-zinc-900">{edu.school} <span className="font-normal text-zinc-600">— {edu.degree}{edu.field ? ` in ${edu.field}` : ''}</span></span>
+                                <span className="text-[10px] font-mono text-zinc-400 shrink-0 ml-3">{edu.start_date} – {edu.is_current ? 'Present' : edu.end_date}</span>
+                            </div>
+                        ))}
+                    </section>
+                )}
+                {/* Summary at bottom (as most FAANG CVs lead with skills/exp) */}
+                {resumeJson?.summary && (
+                    <section>
+                        <h2 className="text-[10px] font-black uppercase tracking-[3px] mb-2" style={{ color: accentColor }}>Summary</h2>
+                        <p className="text-[11px] text-zinc-600 leading-relaxed">{resumeJson.summary}</p>
+                    </section>
+                )}
+            </div>
+        );
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // REACTIVE RESUME — Card-based, top accent strip (amruthpillai/reactive-resume)
+    // ─────────────────────────────────────────────────────────────────────────
+    if (isReactive) {
+        return (
+            <div className="max-w-[210mm] w-full bg-zinc-50 shadow-2xl print:shadow-none flex flex-col shrink-0 relative" style={{ minHeight: '297mm', fontFamily: 'Inter, system-ui, sans-serif', WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact' } as any}>
+                {!isPro && <div className="hidden print:block absolute bottom-0 left-0 right-0 py-4 text-center text-[11px] font-bold text-zinc-400 tracking-widest z-50 uppercase">Created with CV Optimizer AI</div>}
+                {/* Top accent strip */}
+                <div className="h-1.5 w-full" style={{ backgroundColor: accentColor }} />
+                {/* Header */}
+                <div className="bg-white px-10 py-8 shadow-sm">
+                    <div className="flex items-center justify-between gap-6">
+                        <div className="flex-1">
+                            <h1 className="text-[32px] font-black text-zinc-900 tracking-tight leading-none">{name}</h1>
+                            {headline && <p className="text-[13px] mt-2 font-medium" style={{ color: accentColor }}>{headline}</p>}
+                            <div className="flex flex-wrap gap-x-5 gap-y-0.5 mt-3 text-[11px] text-zinc-500">
+                                {email && <span className="flex items-center gap-1"><Mail className="w-3 h-3" />{email}</span>}
+                                {phone && <span className="flex items-center gap-1"><Phone className="w-3 h-3" />{phone}</span>}
+                                {location && <span className="flex items-center gap-1"><MapPin className="w-3 h-3" />{location}</span>}
+                                {linkedin && <span>{linkedin.replace(/^https?:\/\/(www\.)?/, '')}</span>}
+                            </div>
+                        </div>
+                        {showPhotoConfig && currentAvatarUrl && (
+                            <div style={{ borderColor: accentColor }} className="w-20 h-20 rounded-full overflow-hidden border-[3px] shrink-0">
+                                <img src={currentAvatarUrl} alt={name} className="w-full h-full object-cover" />
+                            </div>
+                        )}
+                    </div>
+                </div>
+                {/* Body: two-column cards */}
+                <div className="flex flex-1 gap-4 p-6">
+                    {/* Left narrow column */}
+                    <div className="w-[35%] shrink-0 space-y-4">
+                        {/* Summary */}
+                        {resumeJson?.summary && (
+                            <div className="bg-white rounded-xl p-4 shadow-sm border border-zinc-100">
+                                <h3 className="text-[9px] font-black uppercase tracking-[3px] mb-2" style={{ color: accentColor }}>About</h3>
+                                <p className="text-[11px] text-zinc-600 leading-relaxed">{resumeJson.summary}</p>
+                            </div>
+                        )}
+                        {/* Skills */}
+                        {(resumeJson?.skills?.core?.length ?? 0) > 0 && (
+                            <div className="bg-white rounded-xl p-4 shadow-sm border border-zinc-100">
+                                <h3 className="text-[9px] font-black uppercase tracking-[3px] mb-2" style={{ color: accentColor }}>Skills</h3>
+                                <div className="flex flex-wrap gap-1">
+                                    {[...(resumeJson.skills?.core || []), ...(resumeJson.skills?.tools || [])].slice(0, 12).map((s: string, i: number) => (
+                                        <span key={i} className="text-[9px] font-bold px-1.5 py-0.5 rounded text-white" style={{ backgroundColor: accentColor }}>{s}</span>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                        {/* Education */}
+                        {resumeJson?.education?.length > 0 && (
+                            <div className="bg-white rounded-xl p-4 shadow-sm border border-zinc-100">
+                                <h3 className="text-[9px] font-black uppercase tracking-[3px] mb-2" style={{ color: accentColor }}>Education</h3>
+                                {resumeJson.education.map((edu: any, i: number) => (
+                                    <div key={i} className="mb-2">
+                                        <p className="text-[11px] font-bold text-zinc-900 leading-snug">{edu.degree}{edu.field ? ` in ${edu.field}` : ''}</p>
+                                        <p className="text-[10px] text-zinc-500">{edu.school}</p>
+                                        <p className="text-[9.5px] text-zinc-400">{edu.start_date} – {edu.is_current ? 'Present' : edu.end_date}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                        {/* Languages */}
+                        {resumeJson?.languages?.length > 0 && (
+                            <div className="bg-white rounded-xl p-4 shadow-sm border border-zinc-100">
+                                <h3 className="text-[9px] font-black uppercase tracking-[3px] mb-2" style={{ color: accentColor }}>Languages</h3>
+                                {resumeJson.languages.map((l: any, i: number) => (
+                                    <div key={i} className="flex justify-between text-[10.5px] mb-1"><span className="font-bold text-zinc-700">{l.language}</span><span className="text-zinc-400">{l.level}</span></div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                    {/* Right wide column */}
+                    <div className="flex-1 space-y-4">
+                        {resumeJson?.experience?.length > 0 && (
+                            <div className="bg-white rounded-xl p-4 shadow-sm border border-zinc-100">
+                                <h3 className="text-[9px] font-black uppercase tracking-[3px] mb-3" style={{ color: accentColor }}>Experience</h3>
+                                <div className="space-y-4">
+                                    {resumeJson.experience.map((exp: any, i: number) => (
+                                        <div key={i} className="pl-3" style={{ borderLeft: `3px solid ${accentColor}` }}>
+                                            <div className="flex justify-between items-baseline">
+                                                <h4 className="text-[12px] font-black text-zinc-900">{exp.role}</h4>
+                                                <span className="text-[9.5px] text-zinc-400 shrink-0 ml-2">{exp.start_date} – {exp.is_current ? 'Present' : exp.end_date}</span>
+                                            </div>
+                                            <p className="text-[10.5px] font-bold mb-1" style={{ color: accentColor }}>{exp.company}</p>
+                                            <ul className="space-y-0.5">
+                                                {exp.bullets?.map((b: string, j: number) => (
+                                                    <li key={j} className="text-[10.5px] text-zinc-600 leading-snug pl-2 relative before:content-['·'] before:absolute before:left-0 before:font-black">{b}</li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
                         )}
                     </div>
                 </div>
