@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { JobSearchForm } from '@/components/jobs/JobSearchForm';
 import { JobCard, Job } from '@/components/jobs/JobCard';
-import { SkeletonJobCard } from '@/components/jobs/SkeletonJobCard';
+import { JobSearchLoader } from '@/components/jobs/JobSearchLoader';
 import LetterCreationWizard from '@/components/motivation-letters/LetterCreationWizard';
 import { Search, Briefcase, TriangleAlert, Info, Sparkles, X } from 'lucide-react';
 
@@ -212,21 +212,7 @@ export default function ScoutPage() {
                 )}
 
                 {status === 'loading' && (
-                    <div className="space-y-8">
-                        <div className="flex items-center justify-between">
-                            <div className="h-6 bg-zinc-200 dark:bg-white/10 rounded w-48 animate-pulse" />
-                            <div className="h-4 bg-zinc-100 dark:bg-white/5 rounded w-32 animate-pulse" />
-                        </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {[...Array(6)].map((_, i) => (
-                                <SkeletonJobCard key={i} />
-                            ))}
-                        </div>
-                        <div className="flex items-center justify-center gap-3 py-8 text-zinc-400 dark:text-zinc-500">
-                            <Info className="w-5 h-5" />
-                            <p className="font-medium animate-pulse">This usually takes 20-60 seconds. We're scraping LinkedIn in real-time...</p>
-                        </div>
-                    </div>
+                    <JobSearchLoader keywords={query?.keywords} location={query?.location} />
                 )}
 
                 {status === 'error' && (
