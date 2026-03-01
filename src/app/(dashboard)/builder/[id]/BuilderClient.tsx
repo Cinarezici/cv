@@ -313,7 +313,7 @@ export default function BuilderClient({ data, avatarUrl, isPro }: { data: any; a
             <div className="flex flex-1 overflow-hidden">
 
                 {/* ── Desktop: Narrow icon sidebar ──────────────────────────── */}
-                <aside className="hidden md:flex w-[60px] shrink-0 bg-white dark:bg-zinc-900 border-r border-gray-200 dark:border-white/10 flex-col items-center py-3 gap-1">
+                <aside className="hidden md:flex w-[88px] shrink-0 bg-white dark:bg-zinc-900 border-r border-gray-200 dark:border-white/10 flex-col items-center py-4 gap-2">
                     {TABS.map(({ id, Icon, label }) => {
                         const active = activeTab === id;
                         return (
@@ -321,13 +321,13 @@ export default function BuilderClient({ data, avatarUrl, isPro }: { data: any; a
                                 key={id}
                                 onClick={() => setActiveTab(id)}
                                 title={label}
-                                className={`w-12 h-12 flex flex-col items-center justify-center rounded-xl gap-0.5 transition-all text-[9px] font-semibold leading-tight
+                                className={`w-[72px] h-[72px] flex flex-col items-center justify-center rounded-2xl gap-1 transition-all text-[11px] font-bold leading-tight
                   ${active
-                                        ? "bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400"
+                                        ? "bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 shadow-sm"
                                         : "text-gray-400 dark:text-zinc-500 hover:text-gray-700 dark:hover:text-zinc-300 hover:bg-gray-50 dark:hover:bg-white/5"
                                     }`}
                             >
-                                <Icon className="w-[18px] h-[18px]" strokeWidth={active ? 2.5 : 2} />
+                                <Icon className="w-6 h-6" strokeWidth={active ? 2.5 : 2} />
                                 {label}
                             </button>
                         );
