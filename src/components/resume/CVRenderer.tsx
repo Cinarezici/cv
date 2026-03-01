@@ -38,8 +38,15 @@ export function CVRenderer({ avatarUrl, showPhoto, isPro = true }: CVRendererPro
     const currentShowPhoto = header.show_photo !== undefined ? header.show_photo : showPhoto;
 
     const isSingleColumn = currentThemeConfig.layout === 'single_column';
-    const isCreative = themeId === 'creative-visual';
-    const isExecutive = themeId === 'executive-ats';
+
+    // Groups: which theme IDs use which rendering style branch
+    // «Creative» branch = two-column sidebar + colorful accent bar header
+    const CREATIVE_THEMES = ['creative-visual', 'corporate-visual', 'deedy-visual', 'compact-visual'];
+    // «Executive» branch = centered serif header with double underline
+    const EXECUTIVE_THEMES = ['executive-ats', 'minimal-visual', 'nordic-minimal'];
+
+    const isCreative = CREATIVE_THEMES.includes(themeId);
+    const isExecutive = EXECUTIVE_THEMES.includes(themeId);
     const showIcons = currentThemeConfig.allowsIcons;
     const showPhotoConfig = currentThemeConfig.allowsPhoto && currentShowPhoto;
 

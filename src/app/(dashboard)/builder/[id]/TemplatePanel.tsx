@@ -246,7 +246,7 @@ const TEMPLATES = [
         description: "Sophisticated serif for leadership roles",
         accent: "#18181b",
         bgColor: "bg-zinc-50",
-        isPro: true,
+        isPro: false,   // original free template
         style: "executive" as const,
         preview: {
             name: "Marcus A. Sterling",
@@ -268,7 +268,7 @@ const TEMPLATES = [
         description: "Bold design for creative professionals",
         accent: "#7c3aed",
         bgColor: "bg-purple-50",
-        isPro: true,
+        isPro: false,   // original free template
         style: "creative" as const,
         preview: {
             name: "Zara Chen",
