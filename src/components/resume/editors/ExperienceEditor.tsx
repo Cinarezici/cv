@@ -106,7 +106,7 @@ export function ExperienceEditor() {
                                 <input
                                     value={exp.company}
                                     onChange={(e) => handleChange(expIndex, 'company', e.target.value)}
-                                    className="border border-zinc-300 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                    className="border border-zinc-300 dark:border-zinc-700 rounded-lg px-3 py-2 text-sm bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                     placeholder="e.g. Acme Corp"
                                 />
                             </div>
@@ -115,7 +115,7 @@ export function ExperienceEditor() {
                                 <input
                                     value={exp.role}
                                     onChange={(e) => handleChange(expIndex, 'role', e.target.value)}
-                                    className="border border-zinc-300 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                    className="border border-zinc-300 dark:border-zinc-700 rounded-lg px-3 py-2 text-sm bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                     placeholder="e.g. Software Engineer"
                                 />
                             </div>
@@ -126,7 +126,7 @@ export function ExperienceEditor() {
                             <input
                                 value={exp.location || ''}
                                 onChange={(e) => handleChange(expIndex, 'location', e.target.value)}
-                                className="border border-zinc-300 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                className="border border-zinc-300 dark:border-zinc-700 rounded-lg px-3 py-2 text-sm bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                 placeholder="e.g. San Francisco, CA"
                             />
                         </div>
@@ -138,7 +138,7 @@ export function ExperienceEditor() {
                                     type="month"
                                     value={exp.start_date}
                                     onChange={(e) => handleChange(expIndex, 'start_date', e.target.value)}
-                                    className="border border-zinc-300 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                    className="border border-zinc-300 dark:border-zinc-700 rounded-lg px-3 py-2 text-sm bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                 />
                             </div>
                             <div className="flex flex-col gap-1.5">
@@ -159,7 +159,7 @@ export function ExperienceEditor() {
                                     value={exp.end_date || ''}
                                     disabled={exp.is_current}
                                     onChange={(e) => handleChange(expIndex, 'end_date', e.target.value)}
-                                    className={`border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 ${exp.is_current ? 'bg-zinc-100 border-zinc-200 text-zinc-400' : 'bg-white border-zinc-300'}`}
+                                    className={`border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 ${exp.is_current ? 'bg-zinc-100 dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-400 dark:text-zinc-600' : 'bg-white dark:bg-zinc-800 border-zinc-300 dark:border-zinc-700 text-zinc-900 dark:text-white'}`}
                                 />
                             </div>
                         </div>
@@ -180,7 +180,7 @@ export function ExperienceEditor() {
                                             <textarea
                                                 value={bullet}
                                                 onChange={(e) => handleBulletChange(expIndex, bulletIndex, e.target.value)}
-                                                className="w-full border border-zinc-300 rounded-lg px-3 py-2 pr-16 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-y min-h-[42px]"
+                                                className="w-full border border-zinc-300 dark:border-zinc-700 rounded-lg px-3 py-2 pr-16 text-sm bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-y min-h-[42px]"
                                                 placeholder="Describe what you did and the impact..."
                                                 rows={2}
                                             />

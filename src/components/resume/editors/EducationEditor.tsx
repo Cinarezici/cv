@@ -55,7 +55,7 @@ export function EducationEditor() {
                             <input
                                 value={edu.school}
                                 onChange={(e) => handleChange(eduIndex, 'school', e.target.value)}
-                                className="border border-zinc-300 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                className="border border-zinc-300 dark:border-zinc-700 rounded-lg px-3 py-2 text-sm bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                 placeholder="e.g. Stanford University"
                             />
                         </div>
@@ -66,7 +66,7 @@ export function EducationEditor() {
                                 <input
                                     value={edu.degree}
                                     onChange={(e) => handleChange(eduIndex, 'degree', e.target.value)}
-                                    className="border border-zinc-300 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                    className="border border-zinc-300 dark:border-zinc-700 rounded-lg px-3 py-2 text-sm bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                     placeholder="e.g. Bachelor of Science"
                                 />
                             </div>
@@ -75,7 +75,7 @@ export function EducationEditor() {
                                 <input
                                     value={edu.field || ''}
                                     onChange={(e) => handleChange(eduIndex, 'field', e.target.value)}
-                                    className="border border-zinc-300 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                    className="border border-zinc-300 dark:border-zinc-700 rounded-lg px-3 py-2 text-sm bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                     placeholder="e.g. Computer Science"
                                 />
                             </div>
@@ -88,7 +88,7 @@ export function EducationEditor() {
                                     type="month"
                                     value={edu.start_date}
                                     onChange={(e) => handleChange(eduIndex, 'start_date', e.target.value)}
-                                    className="border border-zinc-300 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                    className="border border-zinc-300 dark:border-zinc-700 rounded-lg px-3 py-2 text-sm bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                 />
                             </div>
                             <div className="flex flex-col gap-1.5">
@@ -109,7 +109,7 @@ export function EducationEditor() {
                                     value={edu.end_date || ''}
                                     disabled={edu.is_current}
                                     onChange={(e) => handleChange(eduIndex, 'end_date', e.target.value)}
-                                    className={`border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 ${edu.is_current ? 'bg-zinc-100 border-zinc-200 text-zinc-400' : 'bg-white border-zinc-300'}`}
+                                    className={`border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 ${edu.is_current ? 'bg-zinc-100 dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-400 dark:text-zinc-600' : 'bg-white dark:bg-zinc-800 border-zinc-300 dark:border-zinc-700 text-zinc-900 dark:text-white'}`}
                                 />
                             </div>
                         </div>
@@ -119,7 +119,7 @@ export function EducationEditor() {
                             <input
                                 value={edu.location || ''}
                                 onChange={(e) => handleChange(eduIndex, 'location', e.target.value)}
-                                className="border border-zinc-300 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                className="border border-zinc-300 dark:border-zinc-700 rounded-lg px-3 py-2 text-sm bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                 placeholder="e.g. California, USA"
                             />
                         </div>
@@ -129,7 +129,7 @@ export function EducationEditor() {
                             <input
                                 value={edu.gpa || ''}
                                 onChange={(e) => handleChange(eduIndex, 'gpa', e.target.value)}
-                                className="border border-zinc-300 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 max-w-[200px]"
+                                className="border border-zinc-300 dark:border-zinc-700 rounded-lg px-3 py-2 text-sm bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 max-w-[200px]"
                                 placeholder="e.g. 3.8/4.0"
                             />
                         </div>
@@ -139,7 +139,7 @@ export function EducationEditor() {
                             <textarea
                                 value={edu.honors || ''}
                                 onChange={(e) => handleChange(eduIndex, 'honors', e.target.value)}
-                                className="w-full border border-zinc-300 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-y min-h-[42px]"
+                                className="w-full border border-zinc-300 dark:border-zinc-700 rounded-lg px-3 py-2 text-sm bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-y min-h-[42px]"
                                 placeholder="e.g. Dean's List, Computer Science Society..."
                                 rows={2}
                             />

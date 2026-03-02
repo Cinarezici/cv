@@ -50,7 +50,7 @@ export function SkillsEditor() {
                 <input
                     type="text"
                     placeholder="Type a skill and press Enter (e.g. Product Strategy)"
-                    className="border border-zinc-300 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="border border-zinc-300 dark:border-zinc-700 rounded-lg px-3 py-2 text-sm bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                     onKeyDown={(e) => {
                         if (e.key === 'Enter') {
                             e.preventDefault();
@@ -82,7 +82,7 @@ export function SkillsEditor() {
                 <input
                     type="text"
                     placeholder="Type a tool and press Enter (e.g. Figma, Python)"
-                    className="border border-zinc-300 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="border border-zinc-300 dark:border-zinc-700 rounded-lg px-3 py-2 text-sm bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                     onKeyDown={(e) => {
                         if (e.key === 'Enter') {
                             e.preventDefault();
