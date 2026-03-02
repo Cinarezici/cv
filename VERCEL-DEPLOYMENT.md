@@ -15,6 +15,7 @@ To ensure the Polar integration works correctly on Vercel, you must add the foll
 | `RESEND_API_KEY` | Your Resend API key for sending emails. |
 | `OPENAI_API_KEY` | Your OpenAI API key for AI features. |
 | `APIFY_API_TOKEN` | Your Apify API token for LinkedIn scraping. |
+| `NEXT_PUBLIC_POLAR_PRODUCT_ID` | Your Polar Product ID (found in the product URL or details). |
 
 ## Important Notes
 

@@ -73,6 +73,11 @@ export async function POST(req: NextRequest) {
 
             if (userId) payload.user_id = userId;
 
+            // Set expiration to 3 years (36 months) from now
+            const expiresAt = new Date();
+            expiresAt.setFullYear(expiresAt.getFullYear() + 3);
+            payload.expires_at = expiresAt.toISOString();
+
             const { error: upsertError } = await supabaseAdmin
                 .from('subscriptions')
                 .upsert(payload, { onConflict: userId ? 'user_id' : 'user_email' });
