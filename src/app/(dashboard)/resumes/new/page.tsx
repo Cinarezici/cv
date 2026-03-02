@@ -87,7 +87,7 @@ function NewResumeForm() {
         return <div className="p-12 flex justify-center"><Loader2 className="animate-spin text-zinc-400 w-7 h-7" /></div>;
     }
 
-    if (status === 'canceled' || !isPro) {
+    if (status === 'canceled') {
         return (
             <LockedPageView
                 featureName="AI CV Optimization"

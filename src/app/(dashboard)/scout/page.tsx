@@ -326,7 +326,7 @@ export default function ScoutPage() {
             {selectedJobs.length > 0 && (
                 <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-4 bg-zinc-900 text-white px-6 py-3.5 rounded-2xl shadow-2xl border border-zinc-700 animate-in slide-in-from-bottom-4 duration-300">
                     <span className="text-sm font-bold">
-                        {selectedJobs.length} ilan seçildi
+                        {selectedJobs.length} {selectedJobs.length === 1 ? 'job' : 'jobs'} selected
                     </span>
                     <div className="w-px h-5 bg-zinc-600" />
                     <button
@@ -334,12 +334,12 @@ export default function ScoutPage() {
                         className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 px-4 py-2 rounded-xl text-sm font-bold transition-colors"
                     >
                         <Sparkles className="w-4 h-4" />
-                        Toplu CV Optimize Et
+                        Bulk Optimize CV
                     </button>
                     <button
                         onClick={() => setSelectedJobs([])}
                         className="p-1.5 rounded-lg hover:bg-zinc-700 transition-colors text-zinc-400 hover:text-white"
-                        title="Seçimi temizle"
+                        title="Clear selection"
                     >
                         <X className="w-4 h-4" />
                     </button>

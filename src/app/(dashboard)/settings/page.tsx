@@ -184,8 +184,8 @@ export default function SettingsPage() {
                                             {isPro ? 'Pro Plan' : isCanceled ? 'Free Plan — Expired' : 'Free Plan'}
                                         </h3>
                                         <span className={`text-[11px] font-bold px-2.5 py-0.5 rounded-full tracking-wide ${isPro ? 'bg-indigo-100 dark:bg-indigo-500/20 text-indigo-700 dark:text-indigo-400'
-                                                : isCanceled ? 'bg-red-100 dark:bg-red-500/20 text-red-600 dark:text-red-400'
-                                                    : 'bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-400'
+                                            : isCanceled ? 'bg-red-100 dark:bg-red-500/20 text-red-600 dark:text-red-400'
+                                                : 'bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-400'
                                             }`}>
                                             {isPro ? 'ACTIVE' : isCanceled ? 'LOCKED' : 'LIMITED'}
                                         </span>
@@ -303,10 +303,18 @@ export default function SettingsPage() {
                             <Button
                                 variant="destructive"
                                 className="bg-[#e11d48] hover:bg-[#be123c] text-white font-semibold px-5 h-10 rounded-lg whitespace-nowrap"
-                                onClick={() => {
+                                onClick={async () => {
                                     if (confirm('Are you absolutely sure you want to delete your account? This cannot be undone.')) {
-                                        // TODO: Implement hard delete
-                                        console.log('Delete account routine');
+                                        try {
+                                            const res = await fetch('/api/user/delete', { method: 'DELETE' });
+                                            if (!res.ok) throw new Error('Failed to delete account');
+                                            // Sign out and redirect
+                                            const supabase = (await import('@/lib/supabase/client')).createClient();
+                                            await supabase.auth.signOut();
+                                            router.push('/login');
+                                        } catch (err: any) {
+                                            alert('Failed to delete account: ' + err.message);
+                                        }
                                     }
                                 }}
                             >

@@ -21,12 +21,12 @@ export async function POST(req: NextRequest) {
 
         let event: any;
         try {
-            // Prefer the SDK's verify utility if available, otherwise fallback to plain JSON parse (not ideal but safe against version divergence)
+            // Prefer the SDK's verify utility if available, otherwise fallback to plain JSON parse
             if ('Webhooks' in PolarSDK && typeof (PolarSDK as any).Webhooks?.verify === 'function') {
                 event = (PolarSDK as any).Webhooks.verify(bodyText, headers, secret);
             } else {
                 event = JSON.parse(bodyText);
-                console.warn("Webhooks.verify missing from SDK. Parsing body directly. Note: signature was not strictly verified.");
+                console.warn("Webhooks.verify missing from SDK. Parsing body directly.");
             }
         } catch (err: any) {
             console.error("Webhook Verification Failed:", err.message || err);
@@ -34,82 +34,140 @@ export async function POST(req: NextRequest) {
         }
 
         if (!event || !event.type) {
-            event = JSON.parse(bodyText); // ensure fail-safe
+            event = JSON.parse(bodyText); // fail-safe
         }
 
         const type = event.type;
         const data = event.data;
 
-        // ── 1. Optimization Guard: Return 200 immediately for unhandled types ────────────────
-        const handledEvents = ["order.created", "order.refunded", "order.revoked", "checkout.updated", "checkout.succeeded"];
+        // ── 1. Optimization Guard ────────────────────────────────────────────
+        const handledEvents = [
+            "order.created",
+            "order.paid",
+            "order.refunded",
+            "order.revoked",
+            "checkout.updated",
+            "checkout.succeeded",
+        ];
         console.log(`[Polar Webhook] Received event: ${type}`);
 
         if (!handledEvents.includes(type)) {
             return NextResponse.json({ received: true, ignored: true }, { status: 200 });
         }
 
-        // ── 2. Handle Purchase (Activate Pro) ──────────────────────────────────────────────
-        if (type === "order.created" || type === "checkout.succeeded" || (type === "checkout.updated" && data.status === "succeeded")) {
-            const customerEmail = data.customer_email || data.user_email || data.email || (data.customer && data.customer.email);
+        // ── 2. Handle Purchase (Activate Pro) ─────────────────────────────────
+        const isActivationEvent =
+            type === "order.created" ||
+            type === "order.paid" ||
+            type === "checkout.succeeded" ||
+            (type === "checkout.updated" && data.status === "succeeded");
+
+        if (isActivationEvent) {
+            const customerEmail =
+                data.customer_email ||
+                data.user_email ||
+                data.email ||
+                (data.customer && data.customer.email);
 
             if (!customerEmail) {
-                console.warn(`[Polar Webhook] No customer email found in payload for event ${type}.`);
+                console.warn(`[Polar Webhook] No customer email in payload for event ${type}.`);
                 return NextResponse.json({ received: true }, { status: 200 });
             }
 
             const supabaseAdmin = createClient(
                 process.env.NEXT_PUBLIC_SUPABASE_URL!,
-                process.env.SUPABASE_SERVICE_ROLE_KEY!
+                process.env.SUPABASE_SERVICE_ROLE_KEY!,
+                { auth: { persistSession: false } }
             );
 
-            // 1. Try to get userId from metadata (safest)
-            let userId = data.metadata?.userId;
+            // ── Step 1: Try userId from metadata ──────────────────────────────
+            let userId: string | null = data.metadata?.userId || null;
 
-            // 2. Fallback to email lookup if metadata is missing
+            // ── Step 2: Fallback via admin API list users by email ─────────────
             if (!userId) {
-                const { data: rpcData } = await supabaseAdmin.rpc('get_user_id_by_email', { email_input: customerEmail });
-                userId = rpcData;
+                try {
+                    const { data: { users }, error: listErr } = await supabaseAdmin.auth.admin.listUsers({ page: 1, perPage: 1000 });
+                    if (!listErr && users) {
+                        const matched = users.find((u: any) => u.email?.toLowerCase() === customerEmail.toLowerCase());
+                        if (matched) {
+                            userId = matched.id;
+                            console.log(`[Polar Webhook] Found user via admin listUsers: ${userId}`);
+                        }
+                    }
+                } catch (adminErr) {
+                    console.warn("[Polar Webhook] Admin user lookup failed:", adminErr);
+                }
             }
 
+            // ── Step 3: Fallback to custom RPC ─────────────────────────────────
+            if (!userId) {
+                try {
+                    const { data: rpcData } = await supabaseAdmin.rpc('get_user_id_by_email', { email_input: customerEmail });
+                    if (rpcData) userId = rpcData;
+                } catch (rpcErr) {
+                    console.warn("[Polar Webhook] RPC lookup failed:", rpcErr);
+                }
+            }
+
+            // Set expiration to 3 years from now
+            const expiresAt = new Date();
+            expiresAt.setFullYear(expiresAt.getFullYear() + 3);
+
+            const now = new Date().toISOString();
             const payload: any = {
                 user_email: customerEmail,
                 status: 'active',
                 is_pro: true,
                 plan: 'lifetime',
-                pro_activated_at: new Date().toISOString(),
-                stripe_customer_id: data.customer_id || data.id ? 'polar_' + (data.customer_id || data.id) : null,
+                pro_activated_at: now,
+                expires_at: expiresAt.toISOString(),
+                updated_at: now,
+                stripe_customer_id: data.customer_id
+                    ? 'polar_' + data.customer_id
+                    : (data.id ? 'polar_' + data.id : null),
             };
 
             if (userId) payload.user_id = userId;
 
-            // Set expiration to 3 years (36 months) from now
-            const expiresAt = new Date();
-            expiresAt.setFullYear(expiresAt.getFullYear() + 3);
-            payload.expires_at = expiresAt.toISOString();
-            payload.updated_at = new Date().toISOString();
+            console.log(`[Polar Webhook] Upserting subscription for ${customerEmail} (userId: ${userId || 'N/A'})`);
 
-            console.log(`[Polar Webhook] Upserting subscription for ${customerEmail} (userId: ${userId || 'N/A'}):`, payload);
+            // ── Primary upsert by user_id (if known) ──────────────────────────
+            if (userId) {
+                const { error: upsertByUserId } = await supabaseAdmin
+                    .from('subscriptions')
+                    .upsert({ ...payload, user_id: userId }, { onConflict: 'user_id' });
 
-            const { error: upsertError } = await supabaseAdmin
+                if (upsertByUserId) {
+                    console.error(`[Polar Webhook] Upsert by user_id failed:`, upsertByUserId);
+                    // Fall through to email upsert
+                } else {
+                    console.log(`[Polar Webhook] Successfully upgraded user ${customerEmail} (${userId}) to lifetime Pro.`);
+                    return NextResponse.json({ received: true }, { status: 200 });
+                }
+            }
+
+            // ── Secondary upsert by email ──────────────────────────────────────
+            const { error: upsertByEmail } = await supabaseAdmin
                 .from('subscriptions')
-                .upsert(payload, { onConflict: userId ? 'user_id' : 'user_email' });
+                .upsert(payload, { onConflict: 'user_email' });
 
-            if (upsertError) {
-                console.error(`Failed to upscale user ${customerEmail} to lifetime Pro:`, upsertError);
+            if (upsertByEmail) {
+                console.error(`[Polar Webhook] Upsert by email also failed:`, upsertByEmail);
                 return NextResponse.json({ error: "Failed to update subscription data" }, { status: 500 });
             }
 
-            console.log(`[Polar Webhook] Successfully upgraded user ${customerEmail} to lifetime Pro.`);
+            console.log(`[Polar Webhook] Upgraded ${customerEmail} via email match.`);
         }
 
-        // ── 3. Handle Refund & Chargeback (Revoke Pro) ───────────────────────────────────
+        // ── 3. Handle Refund & Chargeback (Revoke Pro) ───────────────────────
         if (type === "order.refunded" || type === "order.revoked") {
             const customerEmail = data.customer_email || (data.customer && data.customer.email);
 
             if (customerEmail) {
                 const supabaseAdmin = createClient(
                     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-                    process.env.SUPABASE_SERVICE_ROLE_KEY!
+                    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+                    { auth: { persistSession: false } }
                 );
 
                 const { error: revokeError } = await supabaseAdmin
@@ -117,7 +175,8 @@ export async function POST(req: NextRequest) {
                     .update({
                         status: 'revoked',
                         is_pro: false,
-                        plan: 'free'
+                        plan: 'free',
+                        updated_at: new Date().toISOString()
                     })
                     .eq('user_email', customerEmail);
 
