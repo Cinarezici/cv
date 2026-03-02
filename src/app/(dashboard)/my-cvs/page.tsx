@@ -15,6 +15,7 @@ interface UnifiedDocument {
     subtitle: string;
     updatedAt: string;
     photoUrl?: string;
+    email?: string;
 }
 
 export default async function MyCVsPage() {
@@ -51,7 +52,8 @@ export default async function MyCVsPage() {
             title: p.full_name ? `${p.full_name} — CV'im` : 'LinkedIn Bağlantısı',
             subtitle: p.headline || 'İçe Aktarılan Profil',
             updatedAt: p.updated_at,
-            photoUrl: p.raw_json?.header?.photo_url
+            photoUrl: p.raw_json?.header?.photo_url,
+            email: p.raw_json?.header?.email || ''
         })));
     }
 
@@ -62,7 +64,8 @@ export default async function MyCVsPage() {
             title: r.job_title || 'İsimsiz CV',
             subtitle: r.theme_category ? `Tema: ${r.theme_category}` : 'Standart',
             updatedAt: r.updated_at,
-            photoUrl: r.optimized_json?.header?.photo_url
+            photoUrl: r.optimized_json?.header?.photo_url,
+            email: r.optimized_json?.header?.email || ''
         })));
     }
 
