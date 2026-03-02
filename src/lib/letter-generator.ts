@@ -418,6 +418,7 @@ export function buildPreviewHtml(
 ): string {
     const sections = parsePresentationSections(text);
     const candidateName = resumeJSON?.header?.full_name || resumeJSON?.name || resumeJSON?.full_name || '';
+    const candidatePhoto = resumeJSON?.header?.photo_url || '';
     const NAVY = '#0f172a';
     const GOLD = '#e6a817';
 
@@ -428,8 +429,11 @@ export function buildPreviewHtml(
     const slide = (num: string, title: string, body: string, companyRef?: string) => `
     <div style="display:flex;border-radius:12px;overflow:hidden;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,0,0,0.12);">
       <div style="width:200px;min-width:200px;background:${NAVY};padding:24px 16px;display:flex;flex-direction:column;align-items:center;">
-        <div style="width:56px;height:56px;border-radius:50%;background:${GOLD};display:flex;align-items:center;justify-content:center;margin-bottom:12px;">
-          <span style="font-size:18px;font-weight:900;color:${NAVY};">${initials}</span>
+        <div style="width:56px;height:56px;border-radius:50%;background:${candidatePhoto ? 'transparent' : GOLD};display:flex;align-items:center;justify-content:center;margin-bottom:12px;overflow:hidden;">
+          ${candidatePhoto
+            ? `<img src="${candidatePhoto}" style="width:100%;height:100%;object-fit:cover;" />`
+            : `<span style="font-size:18px;font-weight:900;color:${NAVY};">${initials}</span>`
+        }
         </div>
         <div style="font-size:10px;font-weight:700;color:#fff;text-align:center;margin-bottom:4px;">${candidateName}</div>
         <div style="font-size:8px;color:${GOLD};text-align:center;margin-bottom:auto;">${targetRole}</div>

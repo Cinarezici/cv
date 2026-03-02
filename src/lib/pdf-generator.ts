@@ -7,6 +7,7 @@ import {
   Page,
   Text,
   View,
+  Image,
   StyleSheet,
   renderToBuffer,
 } from '@react-pdf/renderer';
@@ -107,6 +108,7 @@ function buildPresentationDocument(
   targetRole: string,
   template: PDFTemplate,
   currentDate: string,
+  candidatePhoto: string,
   isPro: boolean = true,
 ) {
   const e = React.createElement;
@@ -276,8 +278,10 @@ function buildPresentationDocument(
   const SidebarEl = (sectionLabel: string) => {
     const hasContact = !!(candidateEmail || candidateLinkedIn);
     return e(View, { style: styles.sidebar },
-      e(View, { style: styles.avatarCircle },
-        e(Text, { style: styles.avatarInitials }, initials),
+      e(View, { style: Object.assign({}, styles.avatarCircle, candidatePhoto ? { backgroundColor: 'transparent', padding: 0 } : {}) },
+        candidatePhoto
+          ? e(Image, { src: candidatePhoto, style: { width: 68, height: 68, borderRadius: 34, objectFit: 'cover' } })
+          : e(Text, { style: styles.avatarInitials }, initials)
       ),
       e(Text, { style: styles.sidebarName }, candidateName),
       e(View, { style: styles.sidebarDivider }),
@@ -377,6 +381,7 @@ export async function generateLetterPDF(
   const candidateHeadline = resumeJSON?.headline || '';
   const candidateEmail = resumeJSON?.email || '';
   const candidateLinkedIn = resumeJSON?.linkedin_url || resumeJSON?.linkedin || '';
+  const candidatePhoto = resumeJSON?.header?.photo_url || '';
 
   const now = new Date();
   const currentDate = now.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
@@ -391,6 +396,7 @@ export async function generateLetterPDF(
     targetRole,
     template,
     currentDate,
+    candidatePhoto,
     isPro,
   );
 

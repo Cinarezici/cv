@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { CvShareLinkButton } from '@/components/CvShareLinkButton';
 import { DeleteButton } from '@/components/DeleteButton';
 import { CvPreviewModal } from '@/components/CvPreviewModal';
+import { UploadPhotoButton } from '@/components/UploadPhotoButton';
 import {
     FileText, Plus, Pencil, Clock, LayoutTemplate,
     Link as LinkIcon, AlertCircle, LayoutGrid, ChevronDown, FileEdit, Tag, Check, X, Loader2,
@@ -18,6 +19,7 @@ interface UnifiedDocument {
     title: string;
     subtitle: string;
     updatedAt: string;
+    photoUrl?: string;
 }
 
 type FilterType = 'all' | 'resume' | 'profile';
@@ -362,6 +364,11 @@ export default function MyCVsClient({ documents: initialDocuments, isCVLimitReac
 
                                     {/* Action buttons */}
                                     <div className="flex items-center gap-2 mt-auto">
+                                        <UploadPhotoButton
+                                            docId={doc.id}
+                                            type={doc.type}
+                                            currentPhotoUrl={doc.photoUrl}
+                                        />
                                         <EditSplitButton doc={doc} editHref={editHref} isProfile={isProfile} />
                                         {doc.type === 'resume' && (
                                             <CvPreviewModal resumeId={doc.id} title={doc.title} />
