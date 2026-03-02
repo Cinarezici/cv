@@ -42,6 +42,8 @@ export async function POST(req: NextRequest) {
 
         // ── 1. Optimization Guard: Return 200 immediately for unhandled types ────────────────
         const handledEvents = ["order.created", "order.refunded", "order.revoked", "checkout.updated", "checkout.succeeded"];
+        console.log(`[Polar Webhook] Received event: ${type}`);
+
         if (!handledEvents.includes(type)) {
             return NextResponse.json({ received: true, ignored: true }, { status: 200 });
         }
@@ -60,7 +62,14 @@ export async function POST(req: NextRequest) {
                 process.env.SUPABASE_SERVICE_ROLE_KEY!
             );
 
-            const { data: userId } = await supabaseAdmin.rpc('get_user_id_by_email', { email_input: customerEmail });
+            // 1. Try to get userId from metadata (safest)
+            let userId = data.metadata?.userId;
+
+            // 2. Fallback to email lookup if metadata is missing
+            if (!userId) {
+                const { data: rpcData } = await supabaseAdmin.rpc('get_user_id_by_email', { email_input: customerEmail });
+                userId = rpcData;
+            }
 
             const payload: any = {
                 user_email: customerEmail,
@@ -77,6 +86,9 @@ export async function POST(req: NextRequest) {
             const expiresAt = new Date();
             expiresAt.setFullYear(expiresAt.getFullYear() + 3);
             payload.expires_at = expiresAt.toISOString();
+            payload.updated_at = new Date().toISOString();
+
+            console.log(`[Polar Webhook] Upserting subscription for ${customerEmail} (userId: ${userId || 'N/A'}):`, payload);
 
             const { error: upsertError } = await supabaseAdmin
                 .from('subscriptions')
