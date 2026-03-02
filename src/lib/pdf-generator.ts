@@ -377,11 +377,11 @@ export async function generateLetterPDF(
   const sections = parsePresentationSections(letterText);
 
   // Preserve original name (with special chars) for display
-  const candidateName = resumeJSON?.name || resumeJSON?.full_name || 'Candidate';
-  const candidateHeadline = resumeJSON?.headline || '';
-  const candidateEmail = resumeJSON?.email || '';
-  const candidateLinkedIn = resumeJSON?.linkedin_url || resumeJSON?.linkedin || '';
-  const candidatePhoto = resumeJSON?.header?.photo_url || '';
+  const candidateName = resumeJSON?.header?.full_name || resumeJSON?.name || resumeJSON?.full_name || 'Candidate';
+  const candidateHeadline = resumeJSON?.header?.headline || resumeJSON?.headline || '';
+  const candidateEmail = resumeJSON?.header?.email || resumeJSON?.email || '';
+  const candidateLinkedIn = resumeJSON?.header?.linkedin_url || resumeJSON?.linkedin_url || resumeJSON?.linkedin || '';
+  const candidatePhoto = resumeJSON?.header?.photo_url || resumeJSON?.photo_url || resumeJSON?.avatar_base64 || '';
 
   const now = new Date();
   const currentDate = now.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });

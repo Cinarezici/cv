@@ -27,12 +27,43 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: 'Dosya 5MB limitini aşıyor.' }, { status: 400 });
         }
 
+        // Fetch current document first to delete old photo if exists
+        const tableName = type === 'profile' ? 'profiles' : 'resumes';
+        const jsonColumn = type === 'profile' ? 'raw_json' : 'optimized_json';
+
+        const { data: doc, error: fetchError } = await supabase
+            .from(tableName)
+            .select(jsonColumn)
+            .eq('id', docId)
+            .eq('user_id', user.id)
+            .single();
+
+        if (fetchError || !doc) {
+            throw new Error('Döküman veritabanında bulunamadı.');
+        }
+
+        const currentJson = (doc as any)[jsonColumn] || {};
+
+        // Delete previous photo if it exists
+        if (currentJson?.header?.photo_url) {
+            try {
+                const oldUrlString = currentJson.header.photo_url.split('?')[0]; // remove query params
+                const match = oldUrlString.match(/user-files\/(photos\/.*)$/);
+                if (match && match[1]) {
+                    const oldFilePath = decodeURIComponent(match[1]);
+                    await supabase.storage.from('user-files').remove([oldFilePath]);
+                    console.log('Deleted old photo:', oldFilePath);
+                }
+            } catch (e) {
+                console.error('Failed to parse and delete old photo:', e);
+            }
+        }
+
         // Read file arrayBuffer
         const bytes = await file.arrayBuffer();
         const buffer = Buffer.from(bytes);
 
         // Upload to Supabase Storage
-        // Path: photos/{userId}/{docId}-{timestamp}.{ext}
         const ext = file.name.split('.').pop() || 'png';
         const fileName = `photos/${user.id}/${docId}-${Date.now()}.${ext}`;
 
@@ -48,28 +79,12 @@ export async function POST(request: NextRequest) {
             throw new Error('Görsel depolama alanına yüklenemedi.');
         }
 
-        // Get public URL
+        // Get public URL and append cache buster
         const { data: { publicUrl } } = supabase.storage
             .from('user-files')
             .getPublicUrl(fileName);
 
-        // Update JSON in the database
-        const tableName = type === 'profile' ? 'profiles' : 'resumes';
-        const jsonColumn = type === 'profile' ? 'raw_json' : 'optimized_json';
-
-        // Fetch current document to merge JSON
-        const { data: doc, error: fetchError } = await supabase
-            .from(tableName)
-            .select(jsonColumn)
-            .eq('id', docId)
-            .eq('user_id', user.id)
-            .single();
-
-        if (fetchError || !doc) {
-            throw new Error('Döküman veritabanında bulunamadı.');
-        }
-
-        const currentJson = (doc as any)[jsonColumn] || {};
+        const finalUrl = `${publicUrl}?v=${Date.now()}`;
 
         // Ensure header exists
         if (!currentJson.header) {
@@ -77,7 +92,7 @@ export async function POST(request: NextRequest) {
         }
 
         // Assign public URL to header component
-        currentJson.header.photo_url = publicUrl;
+        currentJson.header.photo_url = finalUrl;
 
         // Perform the update
         const { error: updateError } = await supabase
@@ -91,7 +106,7 @@ export async function POST(request: NextRequest) {
             throw new Error('Görsel adresi dökümana işlenemedi.');
         }
 
-        return NextResponse.json({ success: true, url: publicUrl });
+        return NextResponse.json({ success: true, url: finalUrl });
 
     } catch (err: any) {
         console.error('Fotoğraf yükleme hatası:', err);

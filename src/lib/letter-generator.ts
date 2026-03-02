@@ -418,7 +418,7 @@ export function buildPreviewHtml(
 ): string {
     const sections = parsePresentationSections(text);
     const candidateName = resumeJSON?.header?.full_name || resumeJSON?.name || resumeJSON?.full_name || '';
-    const candidatePhoto = resumeJSON?.header?.photo_url || '';
+    const candidatePhoto = resumeJSON?.header?.photo_url || resumeJSON?.photo_url || resumeJSON?.avatar_base64 || '';
     const NAVY = '#0f172a';
     const GOLD = '#e6a817';
 

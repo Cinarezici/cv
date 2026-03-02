@@ -2,13 +2,12 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
-import { CvShareLinkButton } from '@/components/CvShareLinkButton';
 import { DeleteButton } from '@/components/DeleteButton';
 import { CvPreviewModal } from '@/components/CvPreviewModal';
 import { UploadPhotoButton } from '@/components/UploadPhotoButton';
 import {
     FileText, Plus, Pencil, Clock, LayoutTemplate,
-    Link as LinkIcon, AlertCircle, LayoutGrid, ChevronDown, FileEdit, Tag, Check, X, Loader2,
+    Link as LinkIcon, AlertCircle, LayoutGrid, ChevronDown, FileEdit, Tag, Check, X, Loader2, Download
 } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { toast } from 'sonner';
@@ -374,7 +373,17 @@ export default function MyCVsClient({ documents: initialDocuments, isCVLimitReac
                                             <CvPreviewModal resumeId={doc.id} title={doc.title} />
                                         )}
                                         {doc.type === 'resume' && (
-                                            <CvShareLinkButton resumeId={doc.id} size="sm" variant="outline" />
+                                            <button
+                                                onClick={() => window.open(`/cv-preview/${doc.id}?print=true`, '_blank')}
+                                                className="inline-flex items-center gap-1.5 text-xs font-bold px-2.5 py-1.5 rounded-lg transition-all border shadow-sm
+                                                    text-cyan-600 dark:text-cyan-400 hover:text-cyan-800 dark:hover:text-cyan-300
+                                                    bg-cyan-50 dark:bg-transparent hover:bg-cyan-100 dark:hover:bg-cyan-500/10
+                                                    border-cyan-200 dark:border-cyan-500/30 active:scale-95 hover:-translate-y-0.5"
+                                                title="Download PDF"
+                                            >
+                                                <Download className="w-3.5 h-3.5" />
+                                                Download PDF
+                                            </button>
                                         )}
                                         <DeleteButton id={doc.id} type={doc.type === 'resume' ? 'resumes' : 'profiles'} />
                                     </div>
