@@ -147,19 +147,20 @@ export async function POST(request: NextRequest) {
                 console.log("-> Inserted letter mapping", letter.id);
                 createdLetters.push(letter);
 
-                // Fire and forget, but inside this handler's scope
-                // PASSING keys explicitly to avoid environment loss in background
-                processLetterGeneration(
-                    letter.id,
-                    { ...company, url: company.url || '' },
-                    { ...config, language: config.language || 'en' },
-                    resumeJSON,
-                    user.id,
-                    isPro,
-                    openai_key
-                ).catch(err => {
-                    console.error(`Unhandled error in background generation for letter ${letter.id}:`, err);
-                });
+                // AWAIT the process so Vercel Serverless environment doesn't kill it mid-flight!
+                try {
+                    await processLetterGeneration(
+                        letter.id,
+                        { ...company, url: company.url || '' },
+                        { ...config, language: config.language || 'en' },
+                        resumeJSON,
+                        user.id,
+                        isPro,
+                        openai_key
+                    );
+                } catch (err) {
+                    console.error(`Unhandled error in generation for letter ${letter.id}:`, err);
+                }
             }
         }
 
