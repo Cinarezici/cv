@@ -375,14 +375,14 @@ export default function MyCVsClient({ documents: initialDocuments, isCVLimitReac
                                         {doc.type === 'resume' && (
                                             <button
                                                 onClick={() => window.open(`/cv-preview/${doc.id}?print=true`, '_blank')}
-                                                className="inline-flex items-center gap-1.5 text-xs font-bold px-2.5 py-1.5 rounded-lg transition-all border shadow-sm
+                                                className="inline-flex items-center justify-center p-2 rounded-lg transition-all border shadow-sm
                                                     text-cyan-600 dark:text-cyan-400 hover:text-cyan-800 dark:hover:text-cyan-300
                                                     bg-cyan-50 dark:bg-transparent hover:bg-cyan-100 dark:hover:bg-cyan-500/10
                                                     border-cyan-200 dark:border-cyan-500/30 active:scale-95 hover:-translate-y-0.5"
                                                 title="Download PDF"
+                                                aria-label="Download PDF"
                                             >
-                                                <Download className="w-3.5 h-3.5" />
-                                                Download PDF
+                                                <Download className="w-4 h-4" />
                                             </button>
                                         )}
                                         <DeleteButton id={doc.id} type={doc.type === 'resume' ? 'resumes' : 'profiles'} />
