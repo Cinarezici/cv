@@ -284,7 +284,10 @@ const UpgradeOption = ({ open, selected }: { open: boolean; selected: boolean })
 /* ─── Title section ───────────────────────────────────────────── */
 const TitleSection = ({ open }: { open: boolean }) => (
     <div className="mb-6 border-b border-zinc-200 dark:border-white/10 pb-4">
-        <div className="flex cursor-pointer items-center justify-between rounded-md p-2 transition-colors hover:bg-zinc-100 dark:hover:bg-white/5">
+        <Link
+            href="/dashboard"
+            className="flex items-center justify-between rounded-md p-2 transition-colors hover:bg-zinc-100 dark:hover:bg-white/5"
+        >
             <div className="flex items-center gap-3">
                 <Logo />
                 {open && (
@@ -298,7 +301,7 @@ const TitleSection = ({ open }: { open: boolean }) => (
                     </div>
                 )}
             </div>
-        </div>
+        </Link>
     </div>
 );
 
