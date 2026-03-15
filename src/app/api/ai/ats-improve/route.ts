@@ -68,13 +68,31 @@ Evaluate strictly and accurately — this is the re-scored version of an AI-opti
 Return ONLY valid JSON: {"overall_score": <number>}`;
 
 
-function extractJson(text: string): any {
-    const start = text.indexOf('{');
-    const end = text.lastIndexOf('}');
-    if (start !== -1 && end !== -1 && end >= start) {
-        try { return JSON.parse(text.substring(start, end + 1)); } catch { return null; }
+function extractJson(rawText: string): any {
+    let jsonStr = rawText;
+    const jsonStart = rawText.indexOf('<json>');
+    const jsonEnd = rawText.lastIndexOf('</json>');
+    
+    if (jsonStart !== -1 && jsonEnd !== -1 && jsonEnd > jsonStart) {
+        jsonStr = rawText.substring(jsonStart + 6, jsonEnd);
+    } else {
+        const startIdx = rawText.indexOf('{');
+        const endIdx = rawText.lastIndexOf('}');
+        if (startIdx !== -1 && endIdx !== -1 && endIdx >= startIdx) {
+            jsonStr = rawText.substring(startIdx, endIdx + 1);
+        }
     }
-    return null;
+
+    try {
+        let cleanedText = jsonStr.replace(/\\n/g, '\\\\n').replace(/\n/g, ' ').replace(/\r/g, '');
+        return JSON.parse(cleanedText);
+    } catch (e) {
+        try {
+            return new Function('return ' + jsonStr.trim())();
+        } catch (e2) {
+            return null;
+        }
+    }
 }
 
 function generateId(): string {

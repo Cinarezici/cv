@@ -232,20 +232,44 @@ export async function POST(request: NextRequest) {
         const textBlock = message.content.find((b: any) => b.type === 'text');
         let rawText = textBlock ? (textBlock as any).text : '{}';
 
-        // Extract JSON even if Claude adds conversational preamble
-        const startIdx = rawText.indexOf('{');
-        const endIdx = rawText.lastIndexOf('}');
-        if (startIdx !== -1 && endIdx !== -1 && endIdx >= startIdx) {
-            rawText = rawText.substring(startIdx, endIdx + 1);
+        // Extract JSON specifically from within <json> tags if available
+        const jsonStart = rawText.indexOf('<json>');
+        const jsonEnd = rawText.lastIndexOf('</json>');
+        
+        if (jsonStart !== -1 && jsonEnd !== -1 && jsonEnd > jsonStart) {
+            rawText = rawText.substring(jsonStart + 6, jsonEnd);
+        } else {
+            // Fallback: Extract from first { to last }
+            const startIdx = rawText.indexOf('{');
+            const endIdx = rawText.lastIndexOf('}');
+            if (startIdx !== -1 && endIdx !== -1 && endIdx >= startIdx) {
+                rawText = rawText.substring(startIdx, endIdx + 1);
+            }
+        }
+
+        // Clean up common Claude JSON formatting errors before parsing
+        // Replace unescaped newlines within strings with a space to prevent JSON.parse from failing
+        let cleanedText = rawText;
+        try {
+            // A simple regex to replace newlines that are inside the JSON block but aren't escaped
+            // This is a naive cleanup; JSON.parse might still fail if there are unescaped quotes
+            cleanedText = rawText.replace(/\\n/g, '\\\\n').replace(/\n/g, ' ').replace(/\r/g, '');
+        } catch (e) {
+            // ignore cleanup errors
         }
 
         let result;
         try {
-            result = JSON.parse(rawText);
+            result = JSON.parse(cleanedText);
         } catch (parseError) {
-            console.error('Failed to parse Claude ATS response. Raw Text was:\n', rawText);
-            console.error('Parse error:', parseError);
-            return NextResponse.json({ error: 'AI returned an invalid response. Please try again.' }, { status: 500 });
+            // Ultimate fallback to evaluate as JS object if JSON.parse still fails due to trailing commas or quotes
+            try {
+                result = new Function('return ' + rawText.trim())();
+            } catch (jsError) {
+                console.error('Failed to parse Claude ATS response. Raw Text was:\n', rawText);
+                console.error('Parse error:', parseError);
+                return NextResponse.json({ error: 'AI returned an invalid response. Please try again.' }, { status: 500 });
+            }
         }
 
         // Save scan to DB
