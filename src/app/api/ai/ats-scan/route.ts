@@ -77,7 +77,14 @@ function extractTextFromPdfJson(pdfData: any): string {
     for (const page of (pdfData.Pages || [])) {
         const pageLines: string[] = [];
         for (const text of (page.Texts || [])) {
-            const decoded = text.R?.map((r: any) => decodeURIComponent(r.T || '')).join('') || '';
+            const decoded = text.R?.map((r: any) => {
+                const token = r.T || '';
+                try {
+                    return decodeURIComponent(token);
+                } catch (e) {
+                    return token; // fallback to raw token if improperly encoded
+                }
+            }).join('') || '';
             if (decoded.trim()) pageLines.push(decoded.trim());
         }
         if (pageLines.length) lines.push(pageLines.join(' '));
