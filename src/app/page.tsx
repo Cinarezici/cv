@@ -231,49 +231,16 @@ function JobSearchPreview() {
 }
 
 const WaveDivider = () => (
-  <div className="w-full relative" style={{ isolation: 'isolate' }}>
-    {/* Top cap — white bg fades into dark */}
-    <svg viewBox="0 0 1440 48" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" className="w-full block" style={{ height: '48px', display: 'block' }}>
-      <path d="M0,48 L0,32 Q180,0 360,32 Q540,60 720,32 Q900,0 1080,32 Q1260,60 1440,32 L1440,48 Z" fill="#0f1728" />
-    </svg>
-
-    {/* Ribbon body with grid */}
-    <div
-      className="w-full flex items-center justify-center"
-      style={{
-        background: 'linear-gradient(135deg, #0f1728 0%, #1a2744 50%, #0f1728 100%)',
-        backgroundImage: `
-          linear-gradient(135deg, #0f1728 0%, #1a2744 50%, #0f1728 100%),
-          linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px),
-          linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px)
-        `,
-        backgroundSize: 'cover, 3rem 3rem, 3rem 3rem',
-        backgroundBlendMode: 'normal',
-        padding: '20px 0',
-        position: 'relative',
-      }}
-    >
-      {/* Subtle grid overlay */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          backgroundImage: 'linear-gradient(to right,rgba(255,255,255,0.04) 1px,transparent 1px),linear-gradient(to bottom,rgba(255,255,255,0.04) 1px,transparent 1px)',
-          backgroundSize: '3rem 3rem',
-        }}
-      />
-      {/* Decorative pill */}
-      <div className="relative z-10 flex items-center gap-3 px-6 py-2 border border-white/10 rounded-full bg-white/5 backdrop-blur-sm select-none">
-        <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
-        <span className="text-[12px] font-black tracking-widest uppercase text-zinc-400">CV Optimizer AI</span>
-        <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
-      </div>
-    </div>
-
-    {/* Bottom cap — dark fades back into white */}
-    <svg viewBox="0 0 1440 48" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" className="w-full block" style={{ height: '48px', display: 'block' }}>
-      <path d="M0,0 L0,16 Q180,48 360,16 Q540,-16 720,16 Q900,48 1080,16 Q1260,-16 1440,16 L1440,0 Z" fill="#0f1728" />
-    </svg>
-  </div>
+  <div
+    className="w-full"
+    style={{
+      height: '20px',
+      background: '#111827',
+      backgroundImage:
+        'linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px)',
+      backgroundSize: '2.5rem 2.5rem',
+    }}
+  />
 );
 
 export default function Home() {
