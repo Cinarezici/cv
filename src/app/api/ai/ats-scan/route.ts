@@ -120,10 +120,13 @@ export async function POST(request: NextRequest) {
         const apiKey = process.env.ANTHROPIC_API_KEY;
         if (!apiKey) {
             console.error('ANTHROPIC_API_KEY is not set');
-            return NextResponse.json({ error: 'Server configuration error.' }, { status: 500 });
+            return NextResponse.json({ error: 'Anthropic API key is missing. Please add ANTHROPIC_API_KEY to your env.' }, { status: 500 });
         }
 
-        const anthropic = new Anthropic({ apiKey });
+        const anthropic = new Anthropic({
+            apiKey,
+            defaultHeaders: { 'anthropic-beta': 'prompt-caching-2024-07-31' },
+        });
 
         let userMessage = `Here is the resume to analyze:\n\n${cvText}`;
         if (jobDescription && jobDescription.trim().length > 0) {
@@ -133,10 +136,17 @@ export async function POST(request: NextRequest) {
         }
 
         const message = await anthropic.messages.create({
-            model: 'claude-sonnet-4-20250514',
+            model: 'claude-haiku-4-5-20251001',
             max_tokens: 4096,
+            // @ts-ignore — cache_control is valid when the prompt-caching beta header is set
+            system: [
+                {
+                    type: 'text',
+                    text: ATS_ANALYSIS_PROMPT,
+                    cache_control: { type: 'ephemeral' },
+                },
+            ],
             messages: [{ role: 'user', content: userMessage }],
-            system: ATS_ANALYSIS_PROMPT,
         });
 
         const textBlock = message.content.find((b: any) => b.type === 'text');
