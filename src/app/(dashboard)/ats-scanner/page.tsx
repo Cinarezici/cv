@@ -555,18 +555,31 @@ export default function ATSScannerPage() {
                             <div className="space-y-2">
                                 {recentScans.map(scan => {
                                     const sc = scoreColor(scan.overall_score);
+                                    const scOpt = scan.optimized_score != null ? scoreColor(scan.optimized_score) : null;
                                     const date = new Date(scan.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                                    const displaySc = scOpt || sc; // badge label uses optimized score if available
                                     return (
                                         <button key={scan.id} onClick={() => handleLoadRecent(scan)}
                                             className="w-full flex items-center gap-4 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 rounded-xl px-4 py-3 hover:border-indigo-300 dark:hover:border-indigo-500/40 hover:shadow-sm transition-all text-left group">
-                                            <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${sc.bg}`}>
-                                                <span className={`text-lg font-black ${sc.text}`}>{scan.overall_score}</span>
+                                            {/* Score(s) */}
+                                            <div className="flex items-center gap-1.5 shrink-0">
+                                                <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${sc.bg}`}>
+                                                    <span className={`text-lg font-black ${sc.text}`}>{scan.overall_score}</span>
+                                                </div>
+                                                {scan.optimized_score != null && scOpt && (
+                                                    <>
+                                                        <ArrowRight className="w-3.5 h-3.5 text-zinc-400 dark:text-zinc-600 shrink-0" />
+                                                        <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${scOpt.bg}`} style={{ outline: `2px solid ${scOpt.ring}`, outlineOffset: '2px' }}>
+                                                            <span className={`text-lg font-black ${scOpt.text}`}>{scan.optimized_score}</span>
+                                                        </div>
+                                                    </>
+                                                )}
                                             </div>
                                             <div className="flex-1 min-w-0">
                                                 <p className="text-sm font-bold text-zinc-900 dark:text-white truncate">{scan.file_name || 'Pasted Text'}</p>
-                                                <p className="text-xs text-zinc-400 dark:text-zinc-500">{date} {scan.improved_cv ? '· Optimized' : ''}</p>
+                                                <p className="text-xs text-zinc-400 dark:text-zinc-500">{date}{scan.improved_cv ? ' · Optimized' : ''}</p>
                                             </div>
-                                            <div className={`text-xs font-bold px-2.5 py-1 rounded-full shrink-0 ${sc.bg} ${sc.text}`}>{sc.label}</div>
+                                            <div className={`text-xs font-bold px-2.5 py-1 rounded-full shrink-0 ${displaySc.bg} ${displaySc.text}`}>{displaySc.label}</div>
                                             <ArrowRight className="w-4 h-4 text-zinc-300 dark:text-zinc-600 group-hover:text-indigo-500 transition-colors shrink-0" />
                                         </button>
                                     );

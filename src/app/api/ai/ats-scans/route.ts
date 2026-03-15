@@ -11,7 +11,7 @@ export async function GET(request: NextRequest) {
 
         const { data: scans, error } = await supabase
             .from('ats_scans')
-            .select('id, file_name, overall_score, result, cv_text, improved_cv, structured_cv, job_description, created_at')
+            .select('id, file_name, overall_score, optimized_score, result, cv_text, improved_cv, structured_cv, job_description, created_at')
             .eq('user_id', user.id)
             .order('created_at', { ascending: false })
             .limit(10);
