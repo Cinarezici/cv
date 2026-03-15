@@ -138,7 +138,7 @@ export async function POST(request: NextRequest) {
 
         // Step 1: Generate improved CV text
         const improveMsg = await anthropic.messages.create({
-            model: 'claude-3-5-sonnet-20241022',
+            model: 'claude-haiku-4-5-20251001',
             max_tokens: 4096,
             messages: [{ role: 'user', content: userMessage }],
             system: ATS_IMPROVE_PROMPT,
@@ -152,7 +152,7 @@ export async function POST(request: NextRequest) {
         
         try {
             const parseResult = await anthropic.messages.create({
-                model: 'claude-3-5-sonnet-20241022',
+                model: 'claude-haiku-4-5-20251001',
                 max_tokens: 3000,
                 messages: [{ role: 'user', content: `Convert this CV to JSON:\n\n${improvedCV}` }],
                 system: PARSE_TO_JSON_PROMPT,
