@@ -9,6 +9,9 @@ const ATS_ANALYSIS_PROMPT = `You are an expert ATS (Applicant Tracking System) a
 
 {
   "overall_score": <number 0-100>,
+  "optimization_ready": <true/false>,
+  "best_practices_compliant": <true/false>,
+  "application_ready": <true/false>,
   "categories": {
     "formatting": { "score": <0-20>, "max": 20, "summary": "<string>", "issues": [] },
     "keywords": { "score": <0-20>, "max": 20, "summary": "<string>", "issues": [] },
@@ -25,6 +28,17 @@ const ATS_ANALYSIS_PROMPT = `You are an expert ATS (Applicant Tracking System) a
       "priority": "high" | "medium" | "low",
       "category": "<string>"
     }
+  ],
+  "strengths": [
+    "<string>",
+    "<string>",
+    "<string>"
+  ],
+  "missing_keywords": [
+    {
+      "keyword": "<string>",
+      "importance": "critical" | "important" | "nice-to-have"
+    }
   ]
 }
 
@@ -35,7 +49,24 @@ EXPERIENCE QUALITY (20pts): action verb strength, quantified achievements, resul
 CONTENT & LANGUAGE (20pts): no personal pronouns, no buzzwords/filler, professional tone, grammar signals, conciseness
 SECTION COMPLETENESS (20pts): contact info, professional summary, work experience, education, skills, optional but valuable sections
 
-If a Job Description is provided, also evaluate keyword alignment against that specific JD and adjust keyword scores accordingly.
+ADDITIONAL SCORING RULES:
+
+CAR METHOD CHECK: Evaluate every bullet point for Challenge-Action-Result structure. Flag bullets missing quantified results (numbers, %, $, time saved) as HIGH impact issues. Flag weak action verbs (made, did, helped, worked, used) and suggest stronger alternatives.
+
+PUNCTUATION CONSISTENCY: Every bullet point must start with a capital letter and end with a period. Flag violations as MEDIUM impact issues.
+
+EXPERIENCE LEVEL ADAPTATION: Detect the candidate seniority from their CV (Intern / Entry / Junior / Mid-Senior / Director / Executive) and adjust scoring thresholds:
+- Entry level: 1-page strict, 3-6 bullets per role
+- Mid-Senior: up to 2 pages acceptable, 4-8 bullets per role
+- Director+: 2 pages recommended, executive summary required
+
+STRENGTHS SECTION: Populate the strengths array with 3-5 specific things the resume does well.
+
+KEYWORD GAP ANALYSIS: If a job description is provided, populate the missing_keywords array with the top 10 missing keywords, each tagged with importance level. If no JD is provided, return an empty array for missing_keywords.
+
+Set optimization_ready to true if overall_score >= 70.
+Set best_practices_compliant to true if there are no HIGH impact formatting issues.
+Set application_ready to true if overall_score >= 60 and at least contact info + experience + education are present.
 
 Return ONLY valid JSON, no markdown, no explanation.`;
 
@@ -51,7 +82,6 @@ export async function POST(request: NextRequest) {
         let jobDescription = '';
 
         if (contentType.includes('multipart/form-data')) {
-            // Handle file upload
             const formData = await request.formData();
             const file = formData.get('file') as File | null;
             jobDescription = (formData.get('jobDescription') as string) || '';
@@ -74,12 +104,10 @@ export async function POST(request: NextRequest) {
                     const result = await mammoth.extractRawText({ buffer: Buffer.from(bytes) });
                     cvText = result.value;
                 } else {
-                    // Plain text
                     cvText = new TextDecoder().decode(bytes);
                 }
             }
         } else {
-            // JSON body
             const body = await request.json();
             cvText = body.cvText || '';
             jobDescription = body.jobDescription || '';
@@ -100,14 +128,14 @@ export async function POST(request: NextRequest) {
         let userMessage = `Here is the resume to analyze:\n\n${cvText}`;
         if (jobDescription && jobDescription.trim().length > 0) {
             userMessage += `\n\n---\n\nTarget Job Description:\n${jobDescription}`;
+        } else {
+            userMessage += `\n\n---\n\nNo job description provided. Return an empty array for missing_keywords.`;
         }
 
         const message = await anthropic.messages.create({
             model: 'claude-sonnet-4-20250514',
             max_tokens: 4096,
-            messages: [
-                { role: 'user', content: userMessage }
-            ],
+            messages: [{ role: 'user', content: userMessage }],
             system: ATS_ANALYSIS_PROMPT,
         });
 
@@ -122,7 +150,6 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: 'AI returned an invalid response. Please try again.' }, { status: 500 });
         }
 
-        // Return both the result and the extracted cvText so the client can use it for improvement
         return NextResponse.json({ result, cvText });
     } catch (error: any) {
         console.error('ATS Scan error:', error);

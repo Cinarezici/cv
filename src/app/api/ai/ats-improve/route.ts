@@ -7,9 +7,7 @@ export const maxDuration = 60;
 
 const ATS_IMPROVE_PROMPT = `You are an expert resume writer and ATS optimization specialist.
 
-Your task: Rewrite this CV to be fully ATS-optimized. Fix ALL the issues identified in the analysis. Improve keyword density, strengthen action verbs, add quantification where possible, fix formatting signals, and remove filler words. Keep all factual information accurate — do not invent experience or credentials.
-
-Return the improved CV as clean, structured text with clear section headers (CONTACT, SUMMARY, EXPERIENCE, EDUCATION, SKILLS). Use bullet points for achievements. Make it scannable and concise.`;
+Your task: Rewrite this CV to be fully ATS-optimized. Fix ALL the issues identified in the analysis. Improve keyword density, strengthen action verbs, add quantification where possible, fix formatting signals, and remove filler words. Apply the CAR method (Challenge, Action, Result) to every bullet point — each bullet should describe a challenge or context, the action taken, and the measurable result (use numbers, %, $, time saved wherever reasonable). Ensure punctuation consistency: every bullet must start with a capital letter and end with a period. Keep all factual information accurate — do not invent experience or credentials. Return the improved CV as clean, structured text with clear section headers (CONTACT, SUMMARY, EXPERIENCE, EDUCATION, SKILLS). Use bullet points prefixed with "•" for achievements.`;
 
 export async function POST(request: NextRequest) {
     try {
@@ -45,7 +43,7 @@ export async function POST(request: NextRequest) {
 
         const anthropic = new Anthropic({ apiKey });
 
-        let userMessage = `Here is the user's current CV:\n\n${cvText}\n\n---\n\nHere is the ATS analysis result:\n\nOverall Score: ${atsResult.overall_score}/100\n\nIssues found:\n`;
+        let userMessage = `Here is the user's current CV:\n\n${cvText}\n\n---\n\nHere is the ATS analysis result:\n\nOverall Score: ${atsResult.overall_score}/100\n\nIssues to fix:\n`;
 
         if (atsResult.all_issues) {
             for (const issue of atsResult.all_issues) {
@@ -55,14 +53,15 @@ export async function POST(request: NextRequest) {
 
         if (jobDescription && jobDescription.trim().length > 0) {
             userMessage += `\n---\n\nTarget Job Description:\n${jobDescription}`;
+            if (atsResult.missing_keywords && atsResult.missing_keywords.length > 0) {
+                userMessage += `\n\nMissing keywords to incorporate: ${atsResult.missing_keywords.map((k: any) => k.keyword).join(', ')}`;
+            }
         }
 
         const message = await anthropic.messages.create({
             model: 'claude-sonnet-4-20250514',
             max_tokens: 4096,
-            messages: [
-                { role: 'user', content: userMessage }
-            ],
+            messages: [{ role: 'user', content: userMessage }],
             system: ATS_IMPROVE_PROMPT,
         });
 
