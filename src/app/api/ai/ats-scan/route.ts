@@ -150,13 +150,21 @@ export async function POST(request: NextRequest) {
         });
 
         const textBlock = message.content.find((b: any) => b.type === 'text');
-        const rawText = textBlock ? (textBlock as any).text : '{}';
+        let rawText = textBlock ? (textBlock as any).text : '{}';
+
+        // Extract JSON specifically in case Claude adds preamble/postamble
+        const startIdx = rawText.indexOf('{');
+        const endIdx = rawText.lastIndexOf('}');
+        if (startIdx !== -1 && endIdx !== -1 && endIdx >= startIdx) {
+            rawText = rawText.substring(startIdx, endIdx + 1);
+        }
 
         let result;
         try {
             result = JSON.parse(rawText);
-        } catch {
-            console.error('Failed to parse Claude ATS response:', rawText);
+        } catch (parseError) {
+            console.error('Failed to parse Claude ATS response. Raw Text was:\n', rawText);
+            console.error('Parse error:', parseError);
             return NextResponse.json({ error: 'AI returned an invalid response. Please try again.' }, { status: 500 });
         }
 
