@@ -231,12 +231,14 @@ function JobSearchPreview() {
 }
 
 const WaveDivider = () => (
-  <div className="w-full flex justify-center items-center py-8 opacity-70">
-    <div className="w-24 h-px bg-gradient-to-r from-transparent to-blue-300/60"></div>
-    <svg width="40" height="12" viewBox="0 0 40 12" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-blue-400 mx-3">
-      <path d="M4 6c3 0 5-4 8-4s5 8 8 8 5-4 8-4 5 4 8 4" />
+  <div className="w-full overflow-hidden leading-none" style={{ marginTop: '-2px', marginBottom: '-2px' }}>
+    <svg viewBox="0 0 1440 40" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" className="w-full block" style={{ height: '40px' }}>
+      <path
+        d="M0,20 C180,0 360,40 540,20 C720,0 900,40 1080,20 C1260,0 1440,30 1440,20 L1440,40 L0,40 Z"
+        fill="#2563eb"
+        opacity="0.85"
+      />
     </svg>
-    <div className="w-24 h-px bg-gradient-to-r from-blue-300/60 to-transparent"></div>
   </div>
 );
 
@@ -400,7 +402,7 @@ export default function Home() {
         <LandingATSScanner />
 
         {/* --- D) Horizontal Testimonials --- */}
-        <div className="bg-white border-b border-zinc-100/80">
+        <div className="bg-white">
           <TestimonialsSection
             title="Real professionals. Real results."
             description="See how CV Optimizer AI is helping candidates secure interviews at the world's top companies."
@@ -409,9 +411,7 @@ export default function Home() {
         </div>
 
         {/* Subtle separator */}
-        <div className="bg-gradient-to-b from-white to-[#fbfcfd]">
-          <WaveDivider />
-        </div>
+        <WaveDivider />
 
         {/* --- E) Feature Grid — 6 cards --- */}
         <section className="w-full bg-[#fbfcfd] py-28 border-y border-zinc-100/80">
@@ -448,9 +448,7 @@ export default function Home() {
         <JobSearchPreview />
 
         {/* Subtle separator */}
-        <div className="bg-[#fafafa]">
-          <WaveDivider />
-        </div>
+        <WaveDivider />
 
         {/* --- H) Vertical Testimonials --- */}
         <LandingTestimonials />
