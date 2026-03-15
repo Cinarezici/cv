@@ -87,7 +87,8 @@ export const LandingTestimonials = () => {
           </div>
 
           <h2 className="text-4xl md:text-6xl font-extrabold tracking-tighter text-zinc-900 mb-6 leading-tight">
-            See it to believe it.
+            Loved by people who
+            <span className="bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent"> got the job.</span>
           </h2>
           <p className="text-lg md:text-xl text-zinc-500 font-medium">
             Join thousands of professionals who are already landing interviews at top companies with CV Optimizer AI.

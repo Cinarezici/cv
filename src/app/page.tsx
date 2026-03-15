@@ -566,7 +566,8 @@ export default function Home() {
         </section>
 
         {/* --- G) Final CTA with Sparkles --- */}
-        <section ref={ctaRef} className="relative w-full h-[550px] border-t border-zinc-100 bg-[#fafafa] flex flex-col items-center justify-center overflow-hidden">
+        <WaveDivider />
+        <section ref={ctaRef} className="relative w-full h-[550px] bg-[#fafafa] flex flex-col items-center justify-center overflow-hidden">
           <div className="relative z-20 flex flex-col items-center w-full">
             <p className="text-3xl md:text-5xl font-extrabold tracking-tighter text-zinc-900 text-center px-4 drop-shadow-sm relative z-30">
               Stop Applying. <span className="text-[#2563eb]">Start Getting Offers.</span>
