@@ -175,7 +175,7 @@ export function LandingATSScanner() {
         <section
             id="ats-scanner"
             ref={ref}
-            className="w-full py-28 relative overflow-hidden"
+            className="w-full py-16 md:py-24 relative overflow-hidden"
             style={{ background: 'linear-gradient(135deg, #0f1728 0%, #1a2744 50%, #0f1728 100%)' }}
         >
             {/* Subtle grid bg */}
@@ -190,7 +190,7 @@ export function LandingATSScanner() {
                     initial={{ opacity: 0, y: 24 }}
                     animate={inView ? { opacity: 1, y: 0 } : {}}
                     transition={{ duration: 0.55, ease: 'easeOut' }}
-                    className="text-center mb-16"
+                    className="text-center mb-10 md:mb-12"
                 >
                     <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-full text-[12px] font-black tracking-widest uppercase mb-6">
                         <span className="text-yellow-400">✦</span>
@@ -207,7 +207,7 @@ export function LandingATSScanner() {
                 </motion.div>
 
                 {/* 3-Step Flow */}
-                <div className="grid md:grid-cols-3 gap-6 mb-16 relative">
+                <div className="grid md:grid-cols-3 gap-4 md:gap-6 mb-12 relative">
                     {/* Connector line on desktop */}
                     <div className="hidden md:block absolute top-10 left-[calc(16.666%+1rem)] right-[calc(16.666%+1rem)] h-px bg-gradient-to-r from-transparent via-emerald-500/30 to-transparent z-0" />
 
@@ -219,7 +219,7 @@ export function LandingATSScanner() {
                                 initial={{ opacity: 0, y: 32 }}
                                 animate={inView ? { opacity: 1, y: 0 } : {}}
                                 transition={{ duration: 0.5, delay: 0.15 + i * 0.12, ease: 'easeOut' }}
-                                className={`relative flex flex-col gap-4 p-7 rounded-2xl border transition-all z-10
+                                className={`relative flex flex-col gap-3 p-5 md:p-6 rounded-2xl border transition-all z-10
                   ${step.highlight
                                         ? 'bg-emerald-600/10 border-emerald-500/40 shadow-[0_0_40px_-8px_rgba(16,185,129,0.4)]'
                                         : 'bg-white/5 border-white/10'}`}
@@ -254,7 +254,7 @@ export function LandingATSScanner() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={inView ? { opacity: 1, y: 0 } : {}}
                     transition={{ duration: 0.5, delay: 0.45, ease: 'easeOut' }}
-                    className="max-w-2xl mx-auto mb-14"
+                    className="max-w-2xl mx-auto mb-10 md:mb-12"
                 >
                     <BeforeAfterPanel inView={inView} />
                 </motion.div>

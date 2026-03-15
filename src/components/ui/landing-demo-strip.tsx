@@ -293,7 +293,7 @@ export function LandingDemoStrip() {
                         From import to hired — in minutes.
                     </h2>
                     <p className="text-lg text-zinc-500 font-medium max-w-2xl mx-auto">
-                        See exactly how CV Optimizer turns your background into a job-winning package.
+                        See exactly how CV Optimizer AI turns your background into a job-winning package.
                     </p>
                 </div>
 

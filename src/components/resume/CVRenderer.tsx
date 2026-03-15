@@ -519,7 +519,7 @@ export function CVRenderer({ avatarUrl, showPhoto, isPro = true }: CVRendererPro
 
                 {/* Footer */}
                 <div className="text-center py-4 text-[10px] text-zinc-300 border-t border-zinc-100 mt-4">
-                    Created with CV Optimizer
+                    Created with CV Optimizer AI
                 </div>
             </div>
         );

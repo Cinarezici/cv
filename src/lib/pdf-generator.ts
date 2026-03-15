@@ -327,7 +327,7 @@ function buildPresentationDocument(
         e(Text, { style: styles.coverPrepared }, `Prepared for ${companyName}`),
       ),
       e(Text, { style: styles.coverDate }, currentDate),
-      e(Text, { style: styles.coverBrand }, 'Powered by CV Optimizer'),
+      e(Text, { style: styles.coverBrand }, 'Powered by CV Optimizer AI'),
     ),
 
     // Page 2: Introduction

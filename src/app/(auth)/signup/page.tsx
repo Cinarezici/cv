@@ -75,7 +75,7 @@ function CheckEmailScreen({ email }: { email: string }) {
             {/* Instructions */}
             <div className="w-full bg-white/5 border border-white/10 rounded-2xl p-6 mb-8 text-left space-y-4">
                 {[
-                    { step: "1", text: "Open your email inbox and look for a message from CV Optimizer." },
+                    { step: "1", text: "Open your email inbox and look for a message from CV Optimizer AI." },
                     { step: "2", text: "Click the \"Confirm your account\" button in the email." },
                     { step: "3", text: "You'll be redirected back here and signed in automatically." },
                 ].map(item => (
@@ -158,7 +158,7 @@ export default function SignupPage() {
                     <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center shadow-lg shadow-blue-600/30 group-hover:scale-110 transition-transform">
                         <Zap className="w-4 h-4 text-white fill-white" />
                     </div>
-                    <span className="font-extrabold text-[17px] tracking-tight text-white">CV Optimizer</span>
+                    <span className="font-extrabold text-[17px] tracking-tight text-white">CV Optimizer AI</span>
                 </Link>
                 <Link href="/login">
                     <button className="text-[13px] font-bold text-zinc-400 hover:text-white transition-colors flex items-center gap-1.5 group">

@@ -111,7 +111,7 @@ export default function LoginPage() {
                     <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center shadow-lg shadow-blue-600/30 group-hover:scale-110 transition-transform">
                         <Zap className="w-4 h-4 text-white fill-white" />
                     </div>
-                    <span className="font-extrabold text-[17px] tracking-tight text-white">CV Optimizer</span>
+                    <span className="font-extrabold text-[17px] tracking-tight text-white">CV Optimizer AI</span>
                 </Link>
                 <Link href="/signup">
                     <button className="text-[13px] font-bold text-zinc-400 hover:text-white transition-colors flex items-center gap-1.5 group">

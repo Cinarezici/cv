@@ -41,7 +41,7 @@ export function UpgradeModal() {
                             "Unlimited CV creations",
                             "Access to all Premium Visual Themes",
                             "50 AI optimization requests per day",
-                            "Remove 'Built with CV Optimizer' watermark",
+                            "Remove 'Built with CV Optimizer AI' watermark",
                             "6 Premium Resume Templates",
                             "Export to DOCX format"
                         ].map((feature, i) => (

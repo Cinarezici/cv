@@ -115,7 +115,7 @@ const en: Translations = {
     dashboard: "Dashboard",
     importCV: "Import CV",
     myCVs: "My CVs",
-    cvOptimizer: "CV Optimizer",
+    cvOptimizer: "CV Optimizer AI",
     searchJobs: "Search Jobs",
     savedJobs: "Saved Jobs ⭐",
     myLetters: "My Letters",

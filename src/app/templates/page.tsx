@@ -574,7 +574,7 @@ export default function TemplatesPage() {
                     <div className="flex items-center justify-center w-9 h-9 rounded-xl bg-blue-600 transition-transform group-hover:scale-110 shadow-lg shadow-blue-600/20">
                         <Zap className="h-5 w-5 text-white fill-white" />
                     </div>
-                    <span className="text-xl font-bold tracking-tight text-zinc-900">CV Optimizer</span>
+                    <span className="text-xl font-bold tracking-tight text-zinc-900">CV Optimizer AI</span>
                 </Link>
                 <nav className="ml-auto hidden md:flex gap-8 items-center text-sm font-bold text-zinc-500">
                     <Link className="hover:text-blue-600 transition-colors" href="/templates">Templates</Link>

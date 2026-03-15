@@ -63,7 +63,7 @@ const testimonials = [
       handle: "@emma_career",
       avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop&crop=face"
     },
-    text: "CV Optimizer transformed my job search. The AI-tailored suggestions for my professional summary were spot on, and I landed an interview at a top tech firm within a week!",
+    text: "CV Optimizer AI transformed my job search. The AI-tailored suggestions for my professional summary were spot on, and I landed an interview at a top tech firm within a week!",
     href: "#"
   },
   {
@@ -244,13 +244,13 @@ export default function Home() {
             <div className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-600 transition-transform group-hover:scale-110 shadow-md shadow-blue-600/20 flex-shrink-0">
               <Zap className="h-4 w-4 text-white fill-white" />
             </div>
-            <span className="text-lg font-extrabold tracking-tight text-zinc-900 truncate">CV Optimizer</span>
+            <span className="text-lg font-extrabold tracking-tight text-zinc-900 truncate">CV Optimizer AI</span>
           </Link>
 
           {/* Desktop Nav */}
           <nav className="hidden md:flex gap-8 items-center text-[15px] font-bold text-zinc-500">
             <Link className="hover:text-zinc-900 transition-colors" href="/templates">Templates</Link>
-            <Link className="hover:text-zinc-900 transition-colors cursor-pointer" href="/#pricing">Pricing</Link>
+            <Link className="hover:text-zinc-900 transition-colors cursor-pointer" href="#pricing">Pricing</Link>
             <Link className="hover:text-zinc-900 transition-colors" href="/login">Login</Link>
             <Link href="/signup">
               <Button className="bg-zinc-900 text-white hover:bg-zinc-800 font-bold rounded-full px-6 h-10 shadow-sm transition-all hover:scale-105 active:scale-95">
@@ -427,7 +427,7 @@ export default function Home() {
         <div className="bg-white border-t border-zinc-100">
           <TestimonialsSection
             title="Trusted by professionals worldwide"
-            description="Join thousands of professionals who are already landing interviews at top companies with CV Optimizer."
+            description="Join thousands of professionals who are already landing interviews at top companies with CV Optimizer AI."
             testimonials={testimonials}
           />
         </div>
@@ -588,17 +588,17 @@ export default function Home() {
               <div className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-600">
                 <Zap className="h-4 w-4 text-white fill-white" />
               </div>
-              <span className="font-extrabold text-xl tracking-tight text-zinc-900">CV Optimizer</span>
+              <span className="font-extrabold text-xl tracking-tight text-zinc-900">CV Optimizer AI</span>
             </Link>
             <p className="text-sm text-zinc-500 leading-relaxed font-medium">Handcrafted with precision to help candidates land their dream jobs at top companies worldwide.</p>
-            <p className="text-xs text-zinc-400 font-bold uppercase tracking-widest mt-4">© {new Date().getFullYear()} CV Optimizer. AI-Powered.</p>
+            <p className="text-xs text-zinc-400 font-bold uppercase tracking-widest mt-4">© {new Date().getFullYear()} CV Optimizer AI. AI-Powered.</p>
           </div>
           <div className="grid grid-cols-2 gap-16 md:gap-24">
             <div className="space-y-6">
               <p className="text-xs font-black uppercase tracking-widest text-[#2563eb]">Product</p>
               <nav className="flex flex-col gap-4 text-sm font-bold text-zinc-600">
                 <Link className="hover:text-zinc-900 transition-colors" href="/templates">Templates</Link>
-                <Link className="hover:text-zinc-900 transition-colors" href="/#pricing">Pricing</Link>
+                <Link className="hover:text-zinc-900 transition-colors" href="#pricing">Pricing</Link>
                 <Link className="hover:text-zinc-900 transition-colors" href="/login">Login</Link>
               </nav>
             </div>
