@@ -230,6 +230,16 @@ function JobSearchPreview() {
   );
 }
 
+const WaveDivider = () => (
+  <div className="w-full flex justify-center items-center py-8 opacity-70">
+    <div className="w-24 h-px bg-gradient-to-r from-transparent to-blue-300/60"></div>
+    <svg width="40" height="12" viewBox="0 0 40 12" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-blue-400 mx-3">
+      <path d="M4 6c3 0 5-4 8-4s5 8 8 8 5-4 8-4 5 4 8 4" />
+    </svg>
+    <div className="w-24 h-px bg-gradient-to-r from-blue-300/60 to-transparent"></div>
+  </div>
+);
+
 export default function Home() {
   const ctaRef = useRef<HTMLDivElement>(null);
   const isCtaInView = useInView(ctaRef, { once: true, margin: "-100px" });
@@ -398,6 +408,11 @@ export default function Home() {
           />
         </div>
 
+        {/* Subtle separator */}
+        <div className="bg-gradient-to-b from-white to-[#fbfcfd]">
+          <WaveDivider />
+        </div>
+
         {/* --- E) Feature Grid — 6 cards --- */}
         <section className="w-full bg-[#fbfcfd] py-28 border-y border-zinc-100/80">
           <div className="container px-6 mx-auto max-w-6xl">
@@ -431,6 +446,11 @@ export default function Home() {
 
         {/* --- G) Job Search Flow Preview --- */}
         <JobSearchPreview />
+
+        {/* Subtle separator */}
+        <div className="bg-[#fafafa]">
+          <WaveDivider />
+        </div>
 
         {/* --- H) Vertical Testimonials --- */}
         <LandingTestimonials />
