@@ -5,8 +5,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from "@/components/ui/button";
 import { ArrowRight, CheckCircle2, FileText, Download, Share2, Zap, MessageSquare, ShieldCheck, X, Star, Search, Bookmark } from "lucide-react";
+import { TestimonialsSection } from "@/components/ui/testimonials-with-marquee";
 import { LandingTestimonials } from "@/components/ui/landing-testimonials";
-import { SpiralAnimation } from "@/components/ui/spiral-animation";
 import { motion, AnimatePresence, useInView, animate } from 'framer-motion';
 import { LandingDemoStrip } from "@/components/ui/landing-demo-strip";
 import { LandingCopyLinkSpotlight } from "@/components/ui/landing-copy-link-spotlight";
@@ -389,8 +389,14 @@ export default function Home() {
         {/* --- C) ATS Scanner Feature Section --- */}
         <LandingATSScanner />
 
-        {/* --- D) Testimonials --- */}
-        <LandingTestimonials />
+        {/* --- D) Horizontal Testimonials --- */}
+        <div className="bg-white border-b border-zinc-100/80">
+          <TestimonialsSection
+            title="Real professionals. Real results."
+            description="See how CV Optimizer AI is helping candidates secure interviews at the world's top companies."
+            testimonials={testimonials}
+          />
+        </div>
 
         {/* --- E) Feature Grid — 6 cards --- */}
         <section className="w-full bg-[#fbfcfd] py-28 border-y border-zinc-100/80">
@@ -426,7 +432,10 @@ export default function Home() {
         {/* --- G) Job Search Flow Preview --- */}
         <JobSearchPreview />
 
-        {/* --- H) Pricing / Trial --- */}
+        {/* --- H) Vertical Testimonials --- */}
+        <LandingTestimonials />
+
+        {/* --- I) Pricing / Trial --- */}
         <section id="pricing" className="w-full py-28 bg-[#fafafa] border-t border-zinc-100 relative overflow-hidden">
           <div className="absolute inset-x-0 bottom-0 h-96 bg-gradient-to-t from-blue-50/50 to-transparent pointer-events-none" />
 

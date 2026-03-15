@@ -68,16 +68,10 @@ const thirdColumn = testimonials.slice(6, 9);
 
 export const LandingTestimonials = () => {
   return (
-    <section className="w-full relative overflow-hidden py-24 md:py-32" style={{ background: 'linear-gradient(135deg, #0f1728 0%, #1a2744 50%, #0f1728 100%)' }}>
+    <section className="w-full relative overflow-hidden py-24 md:py-32 bg-[#fafafa]">
       
-      {/* Subtle grid bg */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:4rem_4rem] pointer-events-none" />
-
-      {/* Blue glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] bg-blue-600/10 rounded-full blur-[120px] pointer-events-none" />
-
-      {/* Top Divider Gradient */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+      {/* Top Divider */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-zinc-200" />
 
       <div className="container z-10 mx-auto px-6 relative">
         <motion.div
@@ -87,23 +81,23 @@ export const LandingTestimonials = () => {
           viewport={{ once: true }}
           className="flex flex-col items-center justify-center max-w-[600px] mx-auto text-center"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 border border-blue-500/20 text-blue-400 rounded-full text-[12px] font-black tracking-widest uppercase mb-6">
-            <span className="text-yellow-400">✦</span>
-            Trusted by professionals
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 border border-blue-100 text-blue-600 rounded-full text-[12px] font-black tracking-widest uppercase mb-6">
+            <span className="text-yellow-500">✦</span>
+            What our users say
           </div>
 
-          <h2 className="text-4xl md:text-6xl font-extrabold tracking-tighter text-white mb-6 leading-tight">
-            What our users say.
+          <h2 className="text-4xl md:text-6xl font-extrabold tracking-tighter text-zinc-900 mb-6 leading-tight">
+            See it to believe it.
           </h2>
-          <p className="text-lg md:text-xl text-zinc-400 font-medium">
+          <p className="text-lg md:text-xl text-zinc-500 font-medium">
             Join thousands of professionals who are already landing interviews at top companies with CV Optimizer AI.
           </p>
         </motion.div>
 
         <div className="flex justify-center gap-6 mt-16 [mask-image:linear-gradient(to_bottom,transparent,black_15%,black_85%,transparent)] h-[740px] overflow-hidden">
-          <TestimonialsColumn testimonials={firstColumn} duration={25} />
-          <TestimonialsColumn testimonials={secondColumn} className="hidden md:block" duration={30} />
-          <TestimonialsColumn testimonials={thirdColumn} className="hidden lg:block" duration={27} />
+          <TestimonialsColumn testimonials={firstColumn} duration={35} />
+          <TestimonialsColumn testimonials={secondColumn} className="hidden md:block" duration={45} />
+          <TestimonialsColumn testimonials={thirdColumn} className="hidden lg:block" duration={40} />
         </div>
       </div>
     </section>
