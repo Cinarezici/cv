@@ -28,6 +28,7 @@ export default function SettingsPage() {
     const [cvCount, setCvCount] = useState(0);
     const [letterCount, setLetterCount] = useState(0);
     const [searchCount, setSearchCount] = useState(0);
+    const [atsCount, setAtsCount] = useState(0);
 
     useEffect(() => {
         const fetchSettingsData = async () => {
@@ -73,6 +74,18 @@ export default function SettingsPage() {
                 const { count: searches } = await supabase.from('scout_logs').select('*', { count: 'exact', head: true }).eq('user_id', user.id).gte('created_at', startOfDay.toISOString());
                 setSearchCount(searches || 0);
 
+                // ATS Scan count (weekly for Pro, total for others)
+                if (isPro) {
+                    const startOfWeek = new Date();
+                    startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay());
+                    startOfWeek.setHours(0, 0, 0, 0);
+                    const { count: ats } = await supabase.from('ats_scans').select('*', { count: 'exact', head: true }).eq('user_id', user.id).gte('created_at', startOfWeek.toISOString());
+                    setAtsCount(ats || 0);
+                } else {
+                    const { count: ats } = await supabase.from('ats_scans').select('*', { count: 'exact', head: true }).eq('user_id', user.id);
+                    setAtsCount(ats || 0);
+                }
+
             } catch (err: any) {
                 console.error(err);
                 setError("Failed to load settings data.");
@@ -108,7 +121,10 @@ export default function SettingsPage() {
 
     const rawEnd = subscription?.trial_end_at ?? subscription?.trial_ends_at;
     const isPro = ['active'].includes(subscription?.status as string);
+    const isTrialing = subscription?.status === 'trialing';
     const isCanceled = !isPro && rawEnd ? new Date() > new Date(rawEnd) : subscription?.status === 'canceled';
+    const atsMax = isPro ? LIMITS.ATS_SCANS_PRO_WEEKLY : LIMITS.ATS_SCANS_TRIAL;
+    const atsLabel = isPro ? 'ATS SCANS (weekly)' : 'ATS SCANS (trial)';
 
     return (
         <div className="max-w-4xl mx-auto py-12 px-4 bg-[#fafafa] dark:bg-zinc-950 min-h-[calc(100vh-100px)] text-zinc-900 font-sans">
@@ -229,27 +245,35 @@ export default function SettingsPage() {
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
                             <UsageWidget
                                 title="CV PROJECTS"
                                 current={cvCount}
                                 max={LIMITS.MAX_CVS_FREE}
-                                barColor="bg-[#2563eb]" // Blue
+                                barColor="bg-[#2563eb]"
                                 isPro={isPro}
                             />
                             <UsageWidget
                                 title="COVER LETTERS"
                                 current={letterCount}
                                 max={LIMITS.MAX_LETTERS_FREE}
-                                barColor="bg-[#9333ea]" // Purple
+                                barColor="bg-[#9333ea]"
                                 isPro={isPro}
                             />
                             <UsageWidget
                                 title="DAILY SEARCHES"
                                 current={searchCount}
                                 max={LIMITS.MAX_JOB_SEARCHES_DAILY}
-                                barColor="bg-[#16a34a]" // Green
+                                barColor="bg-[#16a34a]"
                                 isPro={isPro}
+                            />
+                            <UsageWidget
+                                title={atsLabel}
+                                current={atsCount}
+                                max={atsMax}
+                                barColor="bg-[#e11d48]"
+                                isPro={false}
+                                blocked={isCanceled}
                             />
                         </div>
                     </CardContent>
@@ -329,9 +353,9 @@ export default function SettingsPage() {
     );
 }
 
-function UsageWidget({ title, current, max, barColor, isPro }: { title: string, current: number, max: number, barColor: string, isPro: boolean }) {
-    const isOver = !isPro && current >= max;
-    const progress = isPro ? 100 : Math.min((current / max) * 100, 100);
+function UsageWidget({ title, current, max, barColor, isPro, blocked }: { title: string, current: number, max: number, barColor: string, isPro: boolean, blocked?: boolean }) {
+    const isOver = !isPro && !blocked && current >= max;
+    const progress = isPro ? 100 : blocked ? 0 : Math.min((current / max) * 100, 100);
 
     return (
         <div className="border border-zinc-200 dark:border-white/10 rounded-xl p-5 bg-white dark:bg-zinc-900">

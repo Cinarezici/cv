@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Anthropic from '@anthropic-ai/sdk';
 import { createClient } from '@/lib/supabase/server';
+import { LIMITS } from '@/lib/limits-config';
 
 export const dynamic = 'force-dynamic';
 export const maxDuration = 60;
@@ -70,36 +71,116 @@ Set application_ready to true if overall_score >= 60 and at least contact info +
 
 Return ONLY valid JSON, no markdown, no explanation.`;
 
+/** Decode pdf2json URL-encoded tokens from page data */
+function extractTextFromPdfJson(pdfData: any): string {
+    const lines: string[] = [];
+    for (const page of (pdfData.Pages || [])) {
+        const pageLines: string[] = [];
+        for (const text of (page.Texts || [])) {
+            const decoded = text.R?.map((r: any) => decodeURIComponent(r.T || '')).join('') || '';
+            if (decoded.trim()) pageLines.push(decoded.trim());
+        }
+        if (pageLines.length) lines.push(pageLines.join(' '));
+    }
+    return lines.join('\n');
+}
+
+/** Check ATS scan limits based on subscription status */
+async function checkAtsLimit(userId: string, supabase: any): Promise<{ allowed: boolean; reason?: string; code?: string }> {
+    const { data: sub } = await supabase
+        .from('subscriptions')
+        .select('status')
+        .eq('user_id', userId)
+        .maybeSingle();
+
+    const status = sub?.status as string | undefined;
+    const isPro = status === 'active';
+    const isTrialing = status === 'trialing';
+    const isCanceled = status === 'canceled';
+
+    // Canceled — no access
+    if (isCanceled || (!isPro && !isTrialing && status)) {
+        return { allowed: false, code: 'ATS_BLOCKED', reason: 'ATS Scanner is not available on your current plan. Please upgrade to Pro.' };
+    }
+
+    if (isPro) {
+        // Weekly limit for Pro
+        const startOfWeek = new Date();
+        startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay()); // Sunday
+        startOfWeek.setHours(0, 0, 0, 0);
+        const { count } = await supabase
+            .from('ats_scans')
+            .select('*', { count: 'exact', head: true })
+            .eq('user_id', userId)
+            .gte('created_at', startOfWeek.toISOString());
+        if ((count || 0) >= LIMITS.ATS_SCANS_PRO_WEEKLY) {
+            return { allowed: false, code: 'ATS_WEEKLY_LIMIT', reason: `You've used all ${LIMITS.ATS_SCANS_PRO_WEEKLY} weekly ATS scans. Your limit resets every Sunday. Upgrade includes higher limits.` };
+        }
+        return { allowed: true };
+    }
+
+    if (isTrialing) {
+        // Total lifetime limit for trial
+        const { count } = await supabase
+            .from('ats_scans')
+            .select('*', { count: 'exact', head: true })
+            .eq('user_id', userId);
+        if ((count || 0) >= LIMITS.ATS_SCANS_TRIAL) {
+            return { allowed: false, code: 'ATS_TRIAL_LIMIT', reason: `Trial plan includes ${LIMITS.ATS_SCANS_TRIAL} ATS scans. Upgrade to Pro for 10 scans/week.` };
+        }
+        return { allowed: true };
+    }
+
+    // No subscription row — treat as trialing (grace)
+    const { count } = await supabase
+        .from('ats_scans')
+        .select('*', { count: 'exact', head: true })
+        .eq('user_id', userId);
+    if ((count || 0) >= LIMITS.ATS_SCANS_TRIAL) {
+        return { allowed: false, code: 'ATS_TRIAL_LIMIT', reason: `Trial plan includes ${LIMITS.ATS_SCANS_TRIAL} ATS scans. Upgrade to Pro for 10 scans/week.` };
+    }
+    return { allowed: true };
+}
+
 export async function POST(request: NextRequest) {
     try {
         const supabase = await createClient();
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-        const contentType = request.headers.get('content-type') || '';
+        // Check usage limits first
+        const limitCheck = await checkAtsLimit(user.id, supabase);
+        if (!limitCheck.allowed) {
+            return NextResponse.json({ error: limitCheck.reason, code: limitCheck.code }, { status: 403 });
+        }
 
+        const contentType = request.headers.get('content-type') || '';
         let cvText = '';
         let jobDescription = '';
+        let fileName = '';
 
         if (contentType.includes('multipart/form-data')) {
             const formData = await request.formData();
             const file = formData.get('file') as File | null;
             jobDescription = (formData.get('jobDescription') as string) || '';
             cvText = (formData.get('cvText') as string) || '';
+            fileName = file?.name || '';
 
             if (file && file.size > 0) {
                 const bytes = await file.arrayBuffer();
 
                 if (file.type === 'application/pdf' || file.name.endsWith('.pdf')) {
+                    // Use token-by-token extraction to avoid URL-encoded garbage from getRawTextContent()
                     const PDFParser = (await import('pdf2json')).default;
-                    cvText = await new Promise<string>((resolve, reject) => {
+                    const pdfData = await new Promise<any>((resolve, reject) => {
                         // @ts-ignore
                         const parser = new PDFParser(null, 1);
                         parser.on('pdfParser_dataError', (e: any) => reject(e.parserError));
-                        parser.on('pdfParser_dataReady', () => resolve(parser.getRawTextContent()));
+                        parser.on('pdfParser_dataReady', (data: any) => resolve(data));
                         parser.parseBuffer(Buffer.from(bytes));
                     });
-                } else if (file.name.endsWith('.docx')) {
+                    cvText = extractTextFromPdfJson(pdfData);
+                } else if (file.name.endsWith('.docx') || file.name.endsWith('.doc')) {
                     const mammoth = await import('mammoth');
                     const result = await mammoth.extractRawText({ buffer: Buffer.from(bytes) });
                     cvText = result.value;
@@ -119,7 +200,6 @@ export async function POST(request: NextRequest) {
 
         const apiKey = process.env.ANTHROPIC_API_KEY;
         if (!apiKey) {
-            console.error('ANTHROPIC_API_KEY is not set');
             return NextResponse.json({ error: 'Anthropic API key is missing. Please add ANTHROPIC_API_KEY to your env.' }, { status: 500 });
         }
 
@@ -152,7 +232,7 @@ export async function POST(request: NextRequest) {
         const textBlock = message.content.find((b: any) => b.type === 'text');
         let rawText = textBlock ? (textBlock as any).text : '{}';
 
-        // Extract JSON specifically in case Claude adds preamble/postamble
+        // Extract JSON even if Claude adds conversational preamble
         const startIdx = rawText.indexOf('{');
         const endIdx = rawText.lastIndexOf('}');
         if (startIdx !== -1 && endIdx !== -1 && endIdx >= startIdx) {
@@ -168,7 +248,21 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: 'AI returned an invalid response. Please try again.' }, { status: 500 });
         }
 
-        return NextResponse.json({ result, cvText });
+        // Save scan to DB
+        const { data: savedScan } = await supabase
+            .from('ats_scans')
+            .insert({
+                user_id: user.id,
+                file_name: fileName || 'Pasted Text',
+                overall_score: result.overall_score,
+                result,
+                cv_text: cvText,
+                job_description: jobDescription || null,
+            })
+            .select('id')
+            .single();
+
+        return NextResponse.json({ result, cvText, scanId: savedScan?.id });
     } catch (error: any) {
         console.error('ATS Scan error:', error);
         return NextResponse.json({ error: error.message || 'Failed to analyze CV' }, { status: 500 });
