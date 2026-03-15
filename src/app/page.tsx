@@ -386,7 +386,10 @@ export default function Home() {
         {/* --- B) Interactive Demo Strip --- */}
         <LandingDemoStrip />
 
-        {/* --- C) Feature Grid — 6 cards --- */}
+        {/* --- C) ATS Scanner Feature Section --- */}
+        <LandingATSScanner />
+
+        {/* --- D) Feature Grid — 6 cards --- */}
         <section className="w-full bg-[#fbfcfd] py-28 border-y border-zinc-100/80">
           <div className="container px-6 mx-auto max-w-6xl">
             <div className="max-w-3xl mb-16 text-center mx-auto">
@@ -414,13 +417,10 @@ export default function Home() {
           </div>
         </section>
 
-        {/* --- D) "Copy Link" Spotlight --- */}
+        {/* --- F) "Copy Link" Spotlight --- */}
         <LandingCopyLinkSpotlight />
 
-        {/* --- E) ATS Scanner Feature Section --- */}
-        <LandingATSScanner />
-
-        {/* --- F) Job Search Flow Preview --- */}
+        {/* --- G) Job Search Flow Preview --- */}
         <JobSearchPreview />
 
         {/* Testimonials */}
