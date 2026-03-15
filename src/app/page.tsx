@@ -13,6 +13,7 @@ import { LandingCopyLinkSpotlight } from "@/components/ui/landing-copy-link-spot
 import { useLang, type Lang } from "@/lib/i18n";
 import { HeroInteractiveDemo } from "@/components/ui/hero-interactive-demo";
 import { SparklesCore } from "@/components/ui/sparkles";
+import { LandingATSScanner } from "@/components/ui/landing-ats-scanner";
 
 function AnimatedCounter({ base = 20000 }: { base?: number }) {
   const [val, setVal] = useState(base);
@@ -324,8 +325,8 @@ export default function Home() {
                 </div>
 
                 {/* ATS Scanner Callout */}
-                <Link href="/ats-scanner" className="inline-flex mb-6">
-                  <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-[13px] font-semibold shadow-sm hover:shadow-md hover:border-emerald-300 transition-all cursor-pointer group">
+                <Link href="#ats-scanner">
+                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-[13px] font-semibold mb-8 shadow-sm hover:shadow-md transition-all cursor-pointer hover:border-emerald-300 group">
                     <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
                     ✦ New — ATS Scanner is live. Find out why your CV gets rejected.
                     <ArrowRight className="h-3.5 w-3.5 text-emerald-400 group-hover:text-emerald-600 transition-colors group-hover:translate-x-0.5" />
@@ -416,7 +417,10 @@ export default function Home() {
         {/* --- D) "Copy Link" Spotlight --- */}
         <LandingCopyLinkSpotlight />
 
-        {/* --- E) Job Search Flow Preview --- */}
+        {/* --- E) ATS Scanner Feature Section --- */}
+        <LandingATSScanner />
+
+        {/* --- F) Job Search Flow Preview --- */}
         <JobSearchPreview />
 
         {/* Testimonials */}
