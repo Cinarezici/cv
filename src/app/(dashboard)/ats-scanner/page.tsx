@@ -32,7 +32,8 @@ interface ATSResult {
 interface RecentScan {
     id: string; file_name: string; overall_score: number;
     result: ATSResult; cv_text: string; improved_cv: string | null;
-    structured_cv: any | null; job_description: string | null; created_at: string;
+    structured_cv: any | null; job_description: string | null;
+    optimized_score?: number | null; created_at: string;
 }
 
 /* ════════════════════════════════════════════════════════════════════════
@@ -149,11 +150,11 @@ function IssueItem({ issue }: { issue: Issue }) {
 /* Full score report rendered from atsResult */
 function ScoreReport({
     atsResult, fileName, jobDescription, cvText, scanId,
-    improvedCV, structuredCV,
+    improvedCV, structuredCV, optimizedScore,
     onImprove, improving, error, onReset, onOpenBuilder,
 }: {
     atsResult: ATSResult; fileName?: string; jobDescription?: string; cvText: string; scanId?: string;
-    improvedCV?: string; structuredCV?: any;
+    improvedCV?: string; structuredCV?: any; optimizedScore?: number | null;
     onImprove: () => void; improving: boolean; error?: string;
     onReset: () => void; onOpenBuilder: () => void;
 }) {
@@ -166,7 +167,27 @@ function ScoreReport({
         <div className="max-w-4xl mx-auto p-6 md:p-12 space-y-10">
             {/* Gauge + Meta */}
             <div className="flex flex-col items-center gap-6">
-                <ScoreGauge score={atsResult.overall_score} />
+                {/* Before/After score comparison when optimized */}
+                {optimizedScore != null ? (
+                    <div className="flex items-center gap-6">
+                        <div className="flex flex-col items-center gap-2">
+                            <span className="text-xs font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-widest">Original</span>
+                            <ScoreGauge score={atsResult.overall_score} />
+                        </div>
+                        <div className="flex flex-col items-center gap-1">
+                            <ArrowRight className="w-8 h-8 text-indigo-400" />
+                            {optimizedScore > atsResult.overall_score && (
+                                <span className="text-xs font-bold text-green-500">+{optimizedScore - atsResult.overall_score} pts</span>
+                            )}
+                        </div>
+                        <div className="flex flex-col items-center gap-2">
+                            <span className="text-xs font-bold text-indigo-500 dark:text-indigo-400 uppercase tracking-widest">Optimized</span>
+                            <ScoreGauge score={optimizedScore} />
+                        </div>
+                    </div>
+                ) : (
+                    <ScoreGauge score={atsResult.overall_score} />
+                )}
                 <div className="flex flex-wrap justify-center gap-3">
                     <MetaBadge icon={Zap} label="Optimization Ready" active={!!atsResult.optimization_ready} />
                     <MetaBadge icon={ShieldCheck} label="Best Practices Compliant" active={!!atsResult.best_practices_compliant} />
@@ -292,6 +313,7 @@ export default function ATSScannerPage() {
     const [atsResult, setAtsResult] = useState<ATSResult | null>(null);
     const [improvedCV, setImprovedCV] = useState("");
     const [structuredCV, setStructuredCV] = useState<any>(null);
+    const [optimizedScore, setOptimizedScore] = useState<number | null>(null);
     const [scanId, setScanId] = useState<string | undefined>();
     const [error, setError] = useState("");
     const [dragActive, setDragActive] = useState(false);
@@ -313,7 +335,7 @@ export default function ATSScannerPage() {
     }, []);
     const resetAll = () => {
         setStep("upload"); setAtsResult(null); setCvText(""); setFileName(""); setFile(null);
-        setJobDescription(""); setError(""); setImprovedCV(""); setStructuredCV(null); setScanId(undefined);
+        setJobDescription(""); setError(""); setImprovedCV(""); setStructuredCV(null); setScanId(undefined); setOptimizedScore(null);
         // Refresh recent scans
         fetch("/api/ai/ats-scans").then(r => r.json()).then(d => setRecentScans(d.scans || [])).catch(() => { });
     };
@@ -365,6 +387,7 @@ export default function ATSScannerPage() {
             }
             setImprovedCV(data.improvedCV || "");
             setStructuredCV(data.structuredCV || null);
+            setOptimizedScore(data.optimizedScore ?? null);
             setStep("report");
         } catch (err: any) { setError(err.message); setStep("report"); }
     };
@@ -373,12 +396,45 @@ export default function ATSScannerPage() {
     const handleOpenBuilder = async () => {
         if (!structuredCV) return;
         try {
+            // Normalize the structuredCV so the builder store populates correctly
+            // Claude may return institution/title/school with different field names
+            const normalized = {
+                ...structuredCV,
+                // Education: ensure `school` field (mapper uses school)
+                education: (structuredCV.education || []).map((e: any) => ({
+                    ...e,
+                    school: e.school || e.institution || '',
+                    degree: e.degree || e.title || '',
+                    field: e.field || e.major || '',
+                    start_date: e.start_date || e.startDate || '',
+                    end_date: e.end_date || e.endDate || '',
+                    id: e.id || Math.random().toString(36).slice(2),
+                })),
+                // Experience: ensure bullets array
+                experience: (structuredCV.experience || []).map((e: any) => ({
+                    ...e,
+                    role: e.role || e.title || e.position || '',
+                    bullets: Array.isArray(e.bullets) ? e.bullets : (e.description ? [e.description] : []),
+                    id: e.id || Math.random().toString(36).slice(2),
+                })),
+                // Skills: normalize flat array to { core, tools }
+                skills: structuredCV.skills && !Array.isArray(structuredCV.skills)
+                    ? structuredCV.skills
+                    : { core: Array.isArray(structuredCV.skills) ? structuredCV.skills : [], tools: [] },
+                // Header: normalize common field variants
+                header: {
+                    ...structuredCV.header,
+                    linkedin_url: structuredCV.header?.linkedin_url || structuredCV.header?.linkedin || '',
+                    phone: structuredCV.header?.phone || structuredCV.header?.phone_number || '',
+                },
+            };
+
             const res = await fetch("/api/resumes", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    title: `ATS-Optimized — ${fileName || "CV"}`,
-                    resume_json: structuredCV,
+                    job_title: `ATS-Optimized — ${fileName || "CV"}`,
+                    optimized_json: normalized,  // correct field name for /api/resumes
                 }),
             });
             const data = await res.json();
@@ -398,6 +454,7 @@ export default function ATSScannerPage() {
         setScanId(scan.id);
         setImprovedCV(scan.improved_cv || "");
         setStructuredCV(scan.structured_cv || null);
+        setOptimizedScore(scan.optimized_score ?? null);
         setStep("report");
     };
 
@@ -546,6 +603,7 @@ export default function ATSScannerPage() {
                     scanId={scanId}
                     improvedCV={improvedCV}
                     structuredCV={structuredCV}
+                    optimizedScore={optimizedScore}
                     onImprove={handleImprove}
                     improving={step === "improving"}
                     error={error}

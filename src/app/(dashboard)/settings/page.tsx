@@ -75,7 +75,9 @@ export default function SettingsPage() {
                 setSearchCount(searches || 0);
 
                 // ATS Scan count (weekly for Pro, total for others)
-                if (isPro) {
+                // Use a local variable — the outer `isPro` const is not yet initialized here
+                const isProLocal = ['active'].includes(sub?.status as string);
+                if (isProLocal) {
                     const startOfWeek = new Date();
                     startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay());
                     startOfWeek.setHours(0, 0, 0, 0);

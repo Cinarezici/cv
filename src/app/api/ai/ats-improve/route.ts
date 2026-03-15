@@ -3,7 +3,7 @@ import Anthropic from '@anthropic-ai/sdk';
 import { createClient } from '@/lib/supabase/server';
 
 export const dynamic = 'force-dynamic';
-export const maxDuration = 90;
+export const maxDuration = 120;
 
 const ATS_IMPROVE_PROMPT = `You are an expert resume writer and ATS optimization specialist.
 
@@ -18,7 +18,7 @@ const PARSE_TO_JSON_PROMPT = `You are a resume parser. Convert the provided CV t
     "email": "<string>",
     "phone": "<string>",
     "location": "<string>",
-    "linkedin": "<string>",
+    "linkedin_url": "<string>",
     "website": "<string>",
     "show_photo": false
   },
@@ -37,7 +37,7 @@ const PARSE_TO_JSON_PROMPT = `You are a resume parser. Convert the provided CV t
   "education": [
     {
       "id": "<uuid string>",
-      "institution": "<string>",
+      "school": "<string - institution name>",
       "degree": "<string>",
       "field": "<string>",
       "start_date": "<string>",
@@ -52,6 +52,8 @@ const PARSE_TO_JSON_PROMPT = `You are a resume parser. Convert the provided CV t
 }
 
 Return ONLY valid JSON, no markdown, no explanation.`;
+
+const ATS_RESCORE_PROMPT = `You are an expert ATS (Applicant Tracking System) analyst. Score this resume and return a JSON object with ONLY the overall_score field (0-100). Be accurate and fair. Return ONLY: {"overall_score": <number>}`;
 
 function extractJson(text: string): any {
     const start = text.indexOf('{');
@@ -125,42 +127,76 @@ export async function POST(request: NextRequest) {
         const improveTxtBlock = improveMsg.content.find((b: any) => b.type === 'text');
         const improvedCV = improveTxtBlock ? (improveTxtBlock as any).text : '';
 
-        // Step 2: Parse improved CV into ResumeJSON for CV Builder pre-fill
+        // Steps 2 & 3 in parallel: parse to ResumeJSON + rescore the optimized CV
         let structuredCV = null;
-        try {
-            const parseMsg = await anthropic.messages.create({
+        let optimizedScore: number | null = null;
+
+        const [parseResult, rescoreResult] = await Promise.allSettled([
+            anthropic.messages.create({
                 model: 'claude-haiku-4-5-20251001',
                 max_tokens: 3000,
                 messages: [{ role: 'user', content: `Convert this CV to JSON:\n\n${improvedCV}` }],
                 system: PARSE_TO_JSON_PROMPT,
-            });
-            const parseTxtBlock = parseMsg.content.find((b: any) => b.type === 'text');
-            const parsedRaw = parseTxtBlock ? (parseTxtBlock as any).text : '';
-            const parsed = extractJson(parsedRaw);
+            }),
+            anthropic.messages.create({
+                model: 'claude-haiku-4-5-20251001',
+                max_tokens: 100,
+                messages: [{ role: 'user', content: `Score this optimized resume:\n\n${improvedCV}` }],
+                system: ATS_RESCORE_PROMPT,
+            }),
+        ]);
+
+        // Handle parse result
+        if (parseResult.status === 'fulfilled') {
+            const parseTxtBlock = parseResult.value.content.find((b: any) => b.type === 'text');
+            const parsed = extractJson(parseTxtBlock ? (parseTxtBlock as any).text : '');
             if (parsed) {
-                // Ensure IDs exist on array items
                 if (parsed.experience) {
-                    parsed.experience = parsed.experience.map((e: any) => ({ ...e, id: e.id || generateId(), bullets: e.bullets || [] }));
+                    parsed.experience = parsed.experience.map((e: any) => ({
+                        ...e,
+                        id: e.id || generateId(),
+                        bullets: e.bullets || [],
+                        role: e.role || e.title || e.position || '',
+                    }));
                 }
                 if (parsed.education) {
-                    parsed.education = parsed.education.map((e: any) => ({ ...e, id: e.id || generateId() }));
+                    parsed.education = parsed.education.map((e: any) => ({
+                        ...e,
+                        id: e.id || generateId(),
+                        school: e.school || e.institution || '',
+                    }));
                 }
                 structuredCV = parsed;
             }
-        } catch (parseErr) {
-            console.warn('Failed to parse improved CV to JSON, continuing without structured data:', parseErr);
+        } else {
+            console.warn('Parse step failed:', (parseResult as PromiseRejectedResult).reason);
         }
 
-        // Save improved_cv and structuredCV back to the DB row
+        // Handle rescore result
+        if (rescoreResult.status === 'fulfilled') {
+            const rescoreTxtBlock = rescoreResult.value.content.find((b: any) => b.type === 'text');
+            const rescored = extractJson(rescoreTxtBlock ? (rescoreTxtBlock as any).text : '');
+            if (rescored && typeof rescored.overall_score === 'number') {
+                optimizedScore = rescored.overall_score;
+            }
+        } else {
+            console.warn('Rescore step failed:', (rescoreResult as PromiseRejectedResult).reason);
+        }
+
+        // Save all results back to the DB row
         if (scanId) {
             await supabase
                 .from('ats_scans')
-                .update({ improved_cv: improvedCV, structured_cv: structuredCV })
+                .update({
+                    improved_cv: improvedCV,
+                    structured_cv: structuredCV,
+                    optimized_score: optimizedScore,
+                })
                 .eq('id', scanId)
                 .eq('user_id', user.id);
         }
 
-        return NextResponse.json({ improvedCV, structuredCV });
+        return NextResponse.json({ improvedCV, structuredCV, optimizedScore });
     } catch (error: any) {
         console.error('ATS Improve error:', error);
         return NextResponse.json({ error: error.message || 'Failed to improve CV' }, { status: 500 });
