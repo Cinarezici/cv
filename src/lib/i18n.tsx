@@ -16,6 +16,7 @@ export type Translations = {
     myLetters: string;
     upgradePlan: string;
     settings: string;
+    atsScanner: string;
     collapse: string;
     back: string;
     backToDashboard: string;
@@ -120,6 +121,7 @@ const en: Translations = {
     myLetters: "My Letters",
     upgradePlan: "Upgrade Plan",
     settings: "Settings",
+    atsScanner: "ATS Scanner",
     collapse: "Collapse",
     back: "Back",
     backToDashboard: "Back to Dashboard",
@@ -224,6 +226,7 @@ const tr: Translations = {
     myLetters: "Mektuplarım",
     upgradePlan: "Planı Yükselt",
     settings: "Ayarlar",
+    atsScanner: "ATS Tarayıcı",
     collapse: "Küçült",
     back: "Geri",
     backToDashboard: "Panele Dön",

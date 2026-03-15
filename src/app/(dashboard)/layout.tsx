@@ -15,6 +15,7 @@ import {
     Sparkles,
     LayoutGrid,
     Zap,
+    ScanLine,
     Menu,
     Sun,
     Moon,
@@ -209,6 +210,7 @@ function NavItems({
         <>
             <Option Icon={LayoutDashboard} title={t.dashboard} href="/dashboard" selected={pathname === "/dashboard"} open={open} />
             <Option Icon={Import} title={t.importCV} href="/import" selected={pathname === "/import"} open={open} />
+            <Option Icon={ScanLine} title={t.atsScanner} href="/ats-scanner" selected={pathname === "/ats-scanner"} open={open} />
             <Option Icon={LayoutGrid} title={t.myCVs} href="/my-cvs" selected={pathname === "/my-cvs"} open={open} />
             <Option Icon={FileText} title={t.cvOptimizer} href="/resumes/new" selected={pathname === "/resumes/new"} open={open} />
             <Option Icon={Search} title={t.searchJobs} href="/scout" selected={pathname === "/scout"} open={open} variant="blue" />
