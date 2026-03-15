@@ -53,7 +53,20 @@ const PARSE_TO_JSON_PROMPT = `You are a resume parser. Convert the provided CV t
 
 Return ONLY valid JSON, no markdown, no explanation.`;
 
-const ATS_RESCORE_PROMPT = `You are an expert ATS (Applicant Tracking System) analyst. Score this resume and return a JSON object with ONLY the overall_score field (0-100). Be accurate and fair. Return ONLY: {"overall_score": <number>}`;
+const ATS_RESCORE_PROMPT = `You are an expert ATS (Applicant Tracking System) analyst. Analyze the provided resume using the same 23 ATS checkpoints (formatting, keywords, experience quality, content language, section completeness) and return ONLY a JSON object with this exact structure:
+
+{"overall_score": <number 0-100>}
+
+Evaluate strictly and accurately — this is the re-scored version of an AI-optimized resume. Consider:
+- CAR method application in bullets (Challenge, Action, Result with quantified outcomes)
+- Strong action verbs and professional tone  
+- ATS-safe formatting (no tables, no columns, standard headers)
+- Keyword density and relevance
+- Section completeness (contact, summary, experience, education, skills)
+- Punctuation consistency
+
+Return ONLY valid JSON: {"overall_score": <number>}`;
+
 
 function extractJson(text: string): any {
     const start = text.indexOf('{');
@@ -140,8 +153,8 @@ export async function POST(request: NextRequest) {
             }),
             anthropic.messages.create({
                 model: 'claude-haiku-4-5-20251001',
-                max_tokens: 100,
-                messages: [{ role: 'user', content: `Score this optimized resume:\n\n${improvedCV}` }],
+                max_tokens: 200,
+                messages: [{ role: 'user', content: `Score this ATS-optimized resume. Return only {"overall_score": <number>}:\n\n${improvedCV}` }],
                 system: ATS_RESCORE_PROMPT,
             }),
         ]);
