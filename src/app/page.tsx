@@ -235,9 +235,9 @@ const WaveDivider = () => (
     className="w-full"
     style={{
       height: '20px',
-      background: 'rgba(30, 58, 138, 0.12)',
+      background: 'rgba(15, 35, 90, 0.85)',
       backgroundImage:
-        'linear-gradient(to right, rgba(37,99,235,0.08) 1px, transparent 1px), linear-gradient(to bottom, rgba(37,99,235,0.08) 1px, transparent 1px)',
+        'linear-gradient(to right, rgba(255,255,255,0.07) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.07) 1px, transparent 1px)',
       backgroundSize: '2.5rem 2.5rem',
     }}
   />
