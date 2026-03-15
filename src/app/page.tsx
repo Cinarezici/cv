@@ -95,9 +95,9 @@ const testimonials = [
 ];
 
 const proofChips = [
-  "✦ Premium Templates + AI Optimizer",
-  "✦ LinkedIn Job Search + Saved Jobs",
-  "✦ Copy Link Cover Letter — your unfair advantage",
+  "✦ ATS Scanner + Score",
+  "✦ AI-Powered CV Rewrite",
+  "✦ LinkedIn Import + PDF Upload",
 ];
 
 const features = [
@@ -299,21 +299,21 @@ export default function Home() {
                 </Link>
 
                 <h1 className="font-extrabold tracking-tighter leading-[0.95] text-zinc-900 mb-6 text-5xl md:text-[64px] lg:text-[72px]">
-                  Build, tailor, and share<br />
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2563eb] to-[#3b82f6]">job-winning CVs</span> — fast.
+                  Get more interviews.<br />
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2563eb] to-[#3b82f6]">Start with your CV score.</span>
                 </h1>
 
                 <p className="text-lg md:text-xl text-zinc-500 leading-relaxed font-medium tracking-tight mb-8 w-full max-w-xl">
-                  Create stunning CVs, import from LinkedIn, PDF, or plain text, optimize for any role, and share a professional letter link directly in your LinkedIn invite.
+                  AI analyzes your CV, gives you an ATS score, and rewrites it for the job you want — in seconds.
                 </p>
 
-                {/* Proof Chips */}
-                <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2 mb-10">
+                {/* Feature Badges */}
+                <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2 mb-4">
                   {proofChips.map((chip, i) => (
                     <div
                       key={chip}
                       className={`inline-flex items-center px-3 py-1.5 rounded-full text-[12px] font-bold border
-                        ${i === 2
+                        ${i === 0
                           ? 'bg-blue-50 border-blue-200 text-blue-700'
                           : 'bg-white border-zinc-200 text-zinc-600'
                         }`}
@@ -323,11 +323,20 @@ export default function Home() {
                   ))}
                 </div>
 
+                {/* ATS Scanner Callout */}
+                <Link href="/ats-scanner" className="inline-flex mb-6">
+                  <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-[13px] font-semibold shadow-sm hover:shadow-md hover:border-emerald-300 transition-all cursor-pointer group">
+                    <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    ✦ New — ATS Scanner is live. Find out why your CV gets rejected.
+                    <ArrowRight className="h-3.5 w-3.5 text-emerald-400 group-hover:text-emerald-600 transition-colors group-hover:translate-x-0.5" />
+                  </div>
+                </Link>
+
                 <div className="flex flex-col lg:flex-row items-center justify-center lg:justify-start gap-4 lg:gap-8 w-full z-30 relative mt-2">
                   <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
                     <Link href="/signup" className="w-full sm:w-auto">
                       <Button size="lg" className="w-full sm:w-auto h-14 px-8 rounded-full bg-gradient-to-r from-[#2563eb] to-[#3b82f6] hover:from-[#1d4ed8] hover:to-[#2563eb] text-white font-bold text-[15px] shadow-[0_0_24px_rgba(59,130,246,0.3)] hover:shadow-[0_0_32px_rgba(59,130,246,0.5)] transition-all hover:scale-[1.02] active:scale-95 border border-blue-400/20">
-                        Get Started Free <ArrowRight className="ml-2 h-4 w-4" />
+                        Analyze My CV Free <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
                     </Link>
                     <a href="#demo" className="w-full sm:w-auto">
@@ -352,7 +361,7 @@ export default function Home() {
                           <svg key={i} className="w-4 h-4 fill-[#f59e0b]" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" /></svg>
                         ))}
                       </div>
-                      <p className="text-[14px] font-bold text-zinc-600 tracking-tight whitespace-nowrap">Joined by <AnimatedCounter base={20310} />+ top professionals</p>
+                      <p className="text-[14px] font-bold text-zinc-600 tracking-tight whitespace-nowrap">Joined by 20,313+ top professionals</p>
                     </div>
                   </div>
                 </div>
