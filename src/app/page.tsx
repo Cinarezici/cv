@@ -341,7 +341,7 @@ export default function Home() {
                       </Button>
                     </Link>
                     <a href="#demo" className="w-full sm:w-auto">
-                      <Button size="lg" variant="outline" className="w-full sm:w-auto h-14 px-8 rounded-full bg-white border-zinc-200 text-zinc-700 font-bold text-[15px] hover:bg-zinc-50 hover:border-zinc-300 transition-all shadow-sm hover:shadow-md">
+                      <Button size="lg" variant="outline" className="w-full sm:w-auto h-14 px-8 rounded-full bg-white border-zinc-200 text-zinc-700 font-bold text-[15px] hover:bg-white hover:text-blue-600 hover:border-blue-200 transition-all shadow-sm hover:shadow-md">
                         See how it works
                       </Button>
                     </a>
