@@ -39,36 +39,12 @@ export function LandingPricing() {
             Simple, honest pricing.
           </h2>
           <p className="text-lg text-zinc-500 font-medium max-w-xl mx-auto">
-            Try all Professional features free for 14 days. Then choose the plan that fits your career goals.
+            Choose the perfect plan to accelerate your career. All premium features included during your 14-day trial.
           </p>
         </div>
 
-        {/* Free Trial Banner */}
-        <div className="w-full max-w-4xl mx-auto bg-gradient-to-r from-blue-600 to-indigo-600 rounded-3xl p-8 md:p-10 text-white flex flex-col md:flex-row items-center justify-between gap-8 mb-16 shadow-2xl shadow-blue-500/20">
-          <div className="text-left flex-1">
-            <h3 className="text-2xl font-extrabold mb-2 flex items-center gap-2">
-              <Sparkles className="w-6 h-6 text-blue-200" /> Start Free for 14 Days
-            </h3>
-            <p className="text-blue-100 font-medium mb-4">No credit card required • Full Professional access</p>
-            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm font-medium text-blue-50">
-              <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-blue-300" /> Unlimited CVs & Letters</li>
-              <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-blue-300" /> Advanced AI Integration</li>
-              <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-blue-300" /> Premium Templates</li>
-              <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-blue-300" /> Zero Watermarks</li>
-            </ul>
-          </div>
-          <div className="w-full md:w-auto shrink-0 md:min-w-[200px]">
-            <Link href="/signup">
-              <Button className="w-full h-14 bg-white text-blue-600 hover:bg-blue-50 font-bold text-lg rounded-full shadow-lg transition-transform hover:scale-105">
-                Start Free Trial
-              </Button>
-            </Link>
-            <p className="text-center text-xs text-blue-200 mt-3 font-medium">Takes 30 seconds</p>
-          </div>
-        </div>
-
         {/* 3 Pricing Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 max-w-5xl mx-auto mb-20 items-stretch">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 max-w-5xl mx-auto items-stretch">
           
           {/* Starter */}
           <div className="bg-white rounded-3xl shadow-lg border border-zinc-200 p-8 flex flex-col hover:shadow-xl transition-shadow">
@@ -148,6 +124,11 @@ export function LandingPricing() {
             </ul>
           </div>
           
+        </div>
+
+        {/* Subtle Trial Note */}
+        <div className="mt-12 text-center text-zinc-400 font-medium text-sm">
+          Want to explore first? Start with a <Link href="/signup" className="text-zinc-900 underline decoration-zinc-300 underline-offset-4 hover:decoration-blue-400 transition-colors">14-day free trial</Link>. No credit card required.
         </div>
 
         {/* FAQ Section */}
