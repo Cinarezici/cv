@@ -39,8 +39,24 @@ export function LandingPricing() {
             Simple, honest pricing.
           </h2>
           <p className="text-lg text-zinc-500 font-medium max-w-xl mx-auto">
-            Choose the perfect plan to accelerate your career. All premium features included during your 14-day trial.
+            Experience the full power of CV Optimizer AI. Choose a plan that fits your career goals.
           </p>
+        </div>
+
+        {/* Re-designed, non-overwhelming but visible Trial Banner */}
+        <div className="flex justify-center mb-12">
+          <div className="inline-flex items-center gap-3 bg-white border border-blue-100 px-6 py-2.5 rounded-full shadow-sm shadow-blue-500/5">
+            <div className="flex items-center justify-center w-6 h-6 rounded-full bg-blue-50 text-blue-600">
+              <Sparkles className="w-3.5 h-3.5" />
+            </div>
+            <p className="text-[14px] font-bold text-zinc-900">
+              Risk-free 14-day trial <span className="text-zinc-400 font-medium ml-1">on all Professional features</span>
+            </p>
+            <div className="w-px h-4 bg-zinc-200 mx-1" />
+            <Link href="/signup" className="text-[13px] font-bold text-blue-600 hover:text-blue-700 transition-colors">
+              Start now →
+            </Link>
+          </div>
         </div>
 
         {/* 3 Pricing Cards */}
@@ -124,11 +140,6 @@ export function LandingPricing() {
             </ul>
           </div>
           
-        </div>
-
-        {/* Subtle Trial Note */}
-        <div className="mt-12 text-center text-zinc-400 font-medium text-sm">
-          Want to explore first? Start with a <Link href="/signup" className="text-zinc-900 underline decoration-zinc-300 underline-offset-4 hover:decoration-blue-400 transition-colors">14-day free trial</Link>. No credit card required.
         </div>
 
         {/* FAQ Section */}
