@@ -36,43 +36,107 @@ export async function generateMetadata({
 }
 
 // ── Content Renderer ─────────────────────────────────────────────────
-function renderContent(blocks: BlogContentBlock[]) {
+function renderContent(blocks: BlogContentBlock[], accentColor: string) {
   return blocks.map((block, i) => {
     switch (block.type) {
       case 'h2':
         return (
-          <h2 key={i} className="text-2xl font-extrabold text-zinc-900 tracking-tight mt-10 mb-4">
+          <h2 key={i} className="text-2xl font-extrabold text-zinc-900 tracking-tight mt-12 mb-6">
             {block.text}
           </h2>
         );
       case 'h3':
         return (
-          <h3 key={i} className="text-lg font-bold text-zinc-800 tracking-tight mt-7 mb-3">
+          <h3 key={i} className="text-lg font-bold text-zinc-800 tracking-tight mt-8 mb-4">
             {block.text}
           </h3>
         );
       case 'p':
         return (
-          <p key={i} className="text-zinc-600 leading-[1.85] text-[16px] font-medium mb-5">
+          <p key={i} className="text-zinc-600 leading-[1.85] text-[16px] font-medium mb-6">
             {block.text}
           </p>
         );
       case 'bold_p':
         return (
-          <p key={i} className="text-zinc-800 leading-[1.85] text-[16px] font-bold mb-5 border-l-4 border-blue-400 pl-4 italic">
+          <p key={i} className="text-zinc-800 leading-[1.85] text-[16px] font-bold mb-6 border-l-4 pl-4 italic" style={{ borderColor: accentColor }}>
             {block.text}
           </p>
         );
       case 'ul':
         return (
-          <ul key={i} className="space-y-2.5 mb-6 ml-1">
+          <ul key={i} className="space-y-3 mb-8 ml-1">
             {block.items?.map((item, j) => (
               <li key={j} className="flex items-start gap-3 text-zinc-600 text-[15px] font-medium leading-relaxed">
-                <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-blue-500 flex-shrink-0" />
+                <span className="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: accentColor }} />
                 {item}
               </li>
             ))}
           </ul>
+        );
+      case 'stat':
+        return (
+          <div key={i} className="bg-zinc-950 text-white p-8 md:p-10 my-10 rounded-2xl flex items-center gap-8 flex-wrap md:flex-nowrap border-l-4" style={{ borderLeftColor: accentColor }}>
+            <div className="text-5xl md:text-6xl font-black leading-none" style={{ color: accentColor }}>
+              {block.num}
+            </div>
+            <div className="text-[14px] md:text-[15px] text-zinc-400 font-medium leading-relaxed">
+              {block.text}
+            </div>
+          </div>
+        );
+      case 'pullquote':
+        return (
+          <div key={i} className="border-t-2 border-b-2 py-8 my-10" style={{ borderTopColor: accentColor, borderBottomColor: 'rgba(0,0,0,0.1)' }}>
+            <p className="text-xl md:text-2xl font-serif italic text-zinc-900 leading-relaxed text-center">
+              "{block.text}"
+            </p>
+          </div>
+        );
+      case 'before_after':
+        return (
+          <div key={i} className="grid grid-cols-1 md:grid-cols-2 gap-4 my-10">
+            <div className="p-6 rounded-xl bg-red-50/50 border border-red-100">
+              <span className="block text-[10px] font-bold uppercase tracking-widest text-red-500 mb-3">{block.beforeLabel}</span>
+              <p className="text-[14px] text-zinc-700 italic font-medium leading-relaxed m-0">
+                {block.before}
+              </p>
+            </div>
+            <div className="p-6 rounded-xl bg-emerald-50/50 border border-emerald-100">
+              <span className="block text-[10px] font-bold uppercase tracking-widest text-emerald-600 mb-3">{block.afterLabel}</span>
+              <p className="text-[14px] text-zinc-700 italic font-medium leading-relaxed m-0">
+                {block.after}
+              </p>
+            </div>
+          </div>
+        );
+      case 'checklist':
+        return (
+          <div key={i} className="bg-zinc-50 border border-zinc-200 p-8 my-10 rounded-2xl">
+            <h3 className="text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-400 mb-6">{block.listTitle}</h3>
+            <ul className="space-y-4">
+              {block.items?.map((item, j) => (
+                <li key={j} className="flex items-start gap-3 text-[15px] font-semibold text-zinc-800 leading-relaxed">
+                  <span className="mt-1 font-black text-lg leading-none" style={{ color: accentColor }}>→</span>
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        );
+      case 'faq':
+        return (
+          <div key={i} className="mt-16 pt-12 border-t border-zinc-200">
+            <h2 className="text-2xl font-extrabold text-zinc-900 tracking-tight mb-8">Frequently Asked Questions</h2>
+            <div className="space-y-0">
+              {block.faqItems?.map((item, j) => (
+                <div key={j} className="py-6 border-b border-zinc-100 last:border-0">
+                  <p className="text-[16px] font-bold text-zinc-900 mb-2">{item.q}</p>
+                  <p className="text-[14px] text-zinc-500 font-medium leading-relaxed">{item.a}</p>
+                </div>
+              ))}
+            </div>
+          </div>
         );
       default:
         return null;
@@ -143,7 +207,10 @@ export default async function BlogPostPage({
           {/* ── Article Header ─────────────────────────────── */}
           <header className="mb-10">
             <div className="flex items-center gap-3 mb-5">
-              <span className={`text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full border ${tagStyle} inline-flex items-center gap-1.5`}>
+              <span 
+                className="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full border inline-flex items-center gap-1.5"
+                style={{ color: post.accentColor, borderColor: `${post.accentColor}33`, backgroundColor: `${post.accentColor}08` }}
+              >
                 <Tag className="w-2.5 h-2.5" />
                 {post.tag}
               </span>
@@ -164,7 +231,7 @@ export default async function BlogPostPage({
 
           {/* ── Article Body ───────────────────────────────── */}
           <article>
-            {renderContent(post.content)}
+            {renderContent(post.content, post.accentColor)}
           </article>
 
           {/* ── CTA ────────────────────────────────────────── */}

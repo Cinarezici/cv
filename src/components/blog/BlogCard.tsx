@@ -9,18 +9,26 @@ const tagColors: Record<string, string> = {
 };
 
 export function BlogCard({ post }: { post: BlogPost }) {
-  const tagStyle = tagColors[post.tag] || 'bg-zinc-50 text-zinc-600 border-zinc-200';
+  const accentStyle = {
+    color: post.accentColor,
+    borderColor: `${post.accentColor}33`, // 20% opacity
+    backgroundColor: `${post.accentColor}08`, // 3% opacity
+  };
 
   return (
     <Link
       href={`/blog/${post.slug}`}
       className="group block bg-white p-8 rounded-[24px] border border-zinc-200 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+      style={{ borderTop: `4px solid ${post.accentColor}` }}
     >
       <div className="flex items-center justify-between mb-5">
-        <span className={`text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full border ${tagStyle}`}>
+        <span 
+          className="text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full border"
+          style={accentStyle}
+        >
           {post.tag}
         </span>
-        <span className="text-xs text-zinc-400 font-medium">{post.date}</span>
+        <span className="text-[10px] text-zinc-400 font-bold uppercase tracking-widest">{post.readingTime}</span>
       </div>
 
       <h2 className="text-xl font-extrabold text-zinc-900 tracking-tight leading-snug mb-3 group-hover:text-blue-600 transition-colors">
@@ -31,9 +39,12 @@ export function BlogCard({ post }: { post: BlogPost }) {
         {post.description}
       </p>
 
-      <div className="flex items-center gap-1.5 text-[13px] font-bold text-blue-600 group-hover:gap-2.5 transition-all">
-        Read article
-        <ArrowRight className="w-3.5 h-3.5" />
+      <div className="flex items-center justify-between mt-auto pt-4 border-t border-zinc-50">
+        <div className="flex items-center gap-1.5 text-[13px] font-bold text-blue-600 group-hover:gap-2.5 transition-all">
+          Read article
+          <ArrowRight className="w-3.5 h-3.5" />
+        </div>
+        <span className="text-[11px] text-zinc-400 font-medium">{post.date}</span>
       </div>
     </Link>
   );
