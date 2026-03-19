@@ -10,10 +10,10 @@ import { createClient } from '@/lib/supabase/client';
 import { format } from 'date-fns';
 import { useLang, type Lang } from '@/lib/i18n';
 import { 
-    getEffectivePlan, 
-    isTrialActive, 
-    getDailyKeywordLimit, 
-    TRIAL_LIMITS 
+    // getEffectivePlan, 
+    // isTrialActive, 
+    // getDailyKeywordLimit, 
+    // TRIAL_LIMITS 
 } from '@/lib/permissions';
 import Link from 'next/link';
 
@@ -28,35 +28,32 @@ export default function SettingsPage() {
     const [email, setEmail] = useState('');
     const [subscription, setSubscription] = useState<any>(null);
 
-    // Usage State
-    const [cvCount, setCvCount] = useState(0);
-    const [letterCount, setLetterCount] = useState(0);
-    const [keywordCount, setKeywordCount] = useState(0);
+    // Usage & License State
+    const [usageData, setUsageData] = useState<any>(null);
 
     useEffect(() => {
         const fetchSettingsData = async () => {
             try {
+                // Fetch usage & plan data from unified API
+                const res = await fetch('/api/user/usage');
+                if (!res.ok) throw new Error("Failed to load usage data");
+                const data = await res.json();
+                
+                setUsageData(data);
+                setEmail(data.email || ''); // Assuming we might add email to the API, or keep separate
+                setSubscription({
+                    plan: data.plan,
+                    status: data.status,
+                    is_trial: data.trialActive,
+                    trial_expiry: data.trialExpiry,
+                    current_period_start: data.period.start,
+                    current_period_end: data.period.end
+                });
+
+                // For email if not in usage API:
                 const supabase = createClient();
-                const { data: { user }, error: authErr } = await supabase.auth.getUser();
-                if (authErr || !user) {
-                    router.push('/login');
-                    return;
-                }
-
-                setEmail(user.email || 'No email associated');
-
-                // Fetch subscription
-                const { data: sub } = await supabase.from('subscriptions').select('*').eq('user_id', user.id).single();
-                setSubscription(sub || null);
-
-                // Fetch usage stats directly from tables (can be enhanced with usage columns later)
-                const { count: cvs } = await supabase.from('resumes').select('*', { count: 'exact', head: true }).eq('user_id', user.id);
-                setCvCount(cvs || 0);
-
-                const { count: letters } = await supabase.from('motivation_letters').select('*', { count: 'exact', head: true }).eq('user_id', user.id);
-                setLetterCount(letters || 0);
-
-                setKeywordCount(sub?.usage_keywords_today || 0);
+                const { data: { user } } = await supabase.auth.getUser();
+                if (user) setEmail(user.email || '');
 
             } catch (err: any) {
                 console.error(err);
@@ -67,7 +64,7 @@ export default function SettingsPage() {
         };
 
         fetchSettingsData();
-    }, [router]);
+    }, []);
 
     const handleSignOut = async () => {
         try {
@@ -91,13 +88,10 @@ export default function SettingsPage() {
         );
     }
 
-    const plan = getEffectivePlan(subscription);
-    const trialActive = isTrialActive(subscription);
+    const plan = subscription?.plan || 'free';
+    const trialActive = subscription?.is_trial || false;
     
-    // Limits
-    const cvMax = plan === 'free' ? (trialActive ? TRIAL_LIMITS.maxCvs : 1) : null; // null = unlimited
-    const letterMax = plan === 'free' ? (trialActive ? TRIAL_LIMITS.maxLetters : 0) : null;
-    const keywordMax = getDailyKeywordLimit(subscription);
+    // Limits are now handled dynamically via usageData in the JSX
 
     const getPlanDisplay = () => {
         if (plan === 'lifetime_onetime') return { name: 'Lifetime', color: 'bg-purple-100 text-purple-700' };
@@ -211,24 +205,36 @@ export default function SettingsPage() {
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
                             <UsageWidget
                                 title="CV PROJECTS"
-                                current={cvCount}
-                                max={cvMax}
+                                current={usageData?.usage.cv || 0}
+                                max={usageData?.limits.cv === 999 ? null : usageData?.limits.cv}
                                 barColor="bg-[#2563eb]"
                             />
                             <UsageWidget
                                 title="COVER LETTERS"
-                                current={letterCount}
-                                max={letterMax}
+                                current={usageData?.usage.letter || 0}
+                                max={usageData?.limits.letter === 999 ? null : usageData?.limits.letter}
                                 barColor="bg-[#9333ea]"
                             />
                             <UsageWidget
-                                title="DAILY KEYWORDS"
-                                current={keywordCount}
-                                max={keywordMax === 999999 ? null : keywordMax}
+                                title="AI USAGE"
+                                current={usageData?.usage.ai || 0}
+                                max={usageData?.limits.ai === 999 ? null : usageData?.limits.ai}
                                 barColor="bg-[#16a34a]"
+                            />
+                            <UsageWidget
+                                title="JOB SEARCHES"
+                                current={usageData?.usage.search || 0}
+                                max={usageData?.limits.search === 999 ? null : usageData?.limits.search}
+                                barColor="bg-orange-500"
+                            />
+                            <UsageWidget
+                                title="ATS SCANS"
+                                current={usageData?.usage.ats || 0}
+                                max={usageData?.limits.ats === 999 ? null : usageData?.limits.ats}
+                                barColor="bg-rose-500"
                             />
                         </div>
                     </CardContent>

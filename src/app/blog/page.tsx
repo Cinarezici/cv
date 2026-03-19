@@ -1,0 +1,103 @@
+import type { Metadata } from 'next';
+import Link from 'next/link';
+import { Zap, ArrowRight } from 'lucide-react';
+import { blogPosts } from '@/data/blog-posts';
+import { BlogCard } from '@/components/blog/BlogCard';
+
+export const metadata: Metadata = {
+  title: 'Blog',
+  description:
+    'Career tips, ATS guides, and AI insights. Learn how to land more interviews and write a resume that gets noticed.',
+  openGraph: {
+    title: 'Blog | CV Optimizer AI',
+    description:
+      'Career tips, ATS guides, and AI insights from the CV Optimizer AI team.',
+    type: 'website',
+  },
+};
+
+export default function BlogPage() {
+  return (
+    <div className="flex flex-col min-h-screen bg-[#fafafa] text-zinc-900">
+
+      {/* ── Floating Navbar ─────────────────────────────── */}
+      <div className="fixed top-4 left-4 right-4 md:left-1/2 md:-translate-x-1/2 md:w-full md:max-w-5xl z-50 flex justify-center pointer-events-none">
+        <header className="flex items-center justify-between w-full h-16 px-4 md:px-6 border border-zinc-200/80 bg-white/70 backdrop-blur-xl rounded-full shadow-[0_8px_32px_-8px_rgba(0,0,0,0.08)] pointer-events-auto transition-all">
+          <Link className="flex items-center gap-2 group" href="/">
+            <div className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-600 transition-transform group-hover:scale-110 shadow-md shadow-blue-600/20 flex-shrink-0">
+              <Zap className="h-4 w-4 text-white fill-white" />
+            </div>
+            <span className="text-lg font-extrabold tracking-tight text-zinc-900 truncate">CV Optimizer AI</span>
+          </Link>
+          <nav className="hidden md:flex gap-8 items-center text-[15px] font-bold text-zinc-500">
+            <Link className="hover:text-zinc-900 transition-colors" href="/templates">Templates</Link>
+            <Link className="hover:text-zinc-900 transition-colors" href="/#pricing">Pricing</Link>
+            <Link className="text-blue-600" href="/blog">Blog</Link>
+            <Link className="hover:text-zinc-900 transition-colors" href="/login">Login</Link>
+            <Link href="/signup" className="bg-zinc-900 text-white hover:bg-zinc-800 font-bold rounded-full px-6 h-10 flex items-center text-[14px] shadow-sm transition-all hover:scale-105 active:scale-95">
+              Get Started Free
+            </Link>
+          </nav>
+          <div className="flex md:hidden items-center gap-2">
+            <Link href="/login" className="text-[13px] font-bold text-zinc-600 hover:text-zinc-900">Login</Link>
+            <Link href="/signup" className="bg-zinc-900 text-white hover:bg-zinc-800 font-bold rounded-full px-4 h-8 flex items-center text-[13px]">
+              Get Started
+            </Link>
+          </div>
+        </header>
+      </div>
+
+      <main className="flex-1 pt-36 pb-24">
+        <div className="container px-6 mx-auto max-w-5xl">
+
+          {/* ── Header ─────────────────────────────────────── */}
+          <div className="text-center mb-14">
+            <p className="text-[12px] font-black uppercase tracking-[0.15em] text-blue-600 mb-4">Insights</p>
+            <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-zinc-900 mb-5">
+              Career Advice & Resume Tips
+            </h1>
+            <p className="text-lg text-zinc-500 font-medium max-w-xl mx-auto leading-relaxed">
+              Practical guides to help you write a better resume, pass ATS filters, and land more interviews.
+            </p>
+          </div>
+
+          {/* ── Blog Grid ──────────────────────────────────── */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {blogPosts.map((post) => (
+              <BlogCard key={post.id} post={post} />
+            ))}
+          </div>
+
+          {/* ── Newsletter strip ───────────────────────────── */}
+          <div className="mt-20 text-center">
+            <p className="text-sm text-zinc-400 font-medium">
+              More posts coming soon.{' '}
+              <Link href="/signup" className="text-blue-600 font-bold hover:underline inline-flex items-center gap-1">
+                Start optimising your CV now <ArrowRight className="w-3 h-3" />
+              </Link>
+            </p>
+          </div>
+
+        </div>
+      </main>
+
+      {/* ── Footer ─────────────────────────────────────────── */}
+      <footer className="py-12 px-6 border-t border-zinc-100 bg-[#fafafa]">
+        <div className="container mx-auto max-w-5xl flex flex-col md:flex-row justify-between items-center gap-4">
+          <Link className="flex items-center gap-2" href="/">
+            <div className="flex items-center justify-center w-7 h-7 rounded-full bg-blue-600">
+              <Zap className="h-3.5 w-3.5 text-white fill-white" />
+            </div>
+            <span className="font-extrabold text-base tracking-tight text-zinc-900">CV Optimizer AI</span>
+          </Link>
+          <nav className="flex items-center gap-6 text-sm font-bold text-zinc-500">
+            <Link className="hover:text-zinc-900 transition-colors" href="/templates">Templates</Link>
+            <Link className="hover:text-zinc-900 transition-colors" href="/blog">Blog</Link>
+            <Link className="hover:text-zinc-900 transition-colors" href="/login">Login</Link>
+          </nav>
+          <p className="text-xs text-zinc-400 font-bold uppercase tracking-widest">© {new Date().getFullYear()} CV Optimizer AI</p>
+        </div>
+      </footer>
+    </div>
+  );
+}

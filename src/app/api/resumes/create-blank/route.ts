@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import crypto from 'crypto';
-import { checkUsageLimits } from '@/lib/limits';
+import { checkUsage, incrementUsage } from '@/lib/usage-enforcement';
 
 export const dynamic = 'force-dynamic';
 
@@ -34,9 +34,14 @@ export async function POST(request: NextRequest) {
         const { profileId } = body;
 
         // --- CHECK LIMITS BEFORE CREATING CV ---
-        const { allowed, reason } = await checkUsageLimits(user.id, 'create_cv');
-        if (!allowed) {
-            return NextResponse.json({ error: reason, code: 'LIMIT_REACHED' }, { status: 403 });
+        const usageCheck = await checkUsage(user.id, 'cv_generation');
+        if (!usageCheck.allowed) {
+            return NextResponse.json({ 
+                error: usageCheck.reason === 'limit_exceeded' 
+                    ? 'CV creation limit reached for your current plan. Please upgrade to create more.'
+                    : 'A subscription is required to use this feature.', 
+                code: 'LIMIT_REACHED' 
+            }, { status: 403 });
         }
 
         // Fetch specified profile or newest one
@@ -104,6 +109,11 @@ export async function POST(request: NextRequest) {
             .single();
 
         if (error) throw error;
+
+        // Increment usage atomically
+        if (usageCheck.periodStart) {
+            await incrementUsage(user.id, 'cv_generation', usageCheck.periodStart);
+        }
 
         return NextResponse.json({ id: resume.id });
     } catch (error: any) {

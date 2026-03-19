@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
-import { requireNotCanceled } from '@/lib/auth-middleware';
+import { checkUsage, incrementUsage } from '@/lib/usage-enforcement';
 import crypto from 'crypto';
 
 const DEFAULT_CV_JSON = {
@@ -25,13 +25,20 @@ const DEFAULT_CV_JSON = {
 // POST — Create a blank/new CV and return its ID
 export async function POST(request: NextRequest) {
     try {
-        const guard = await requireNotCanceled();
-        if (guard.error) {
-            return NextResponse.json({ error: guard.error, message: (guard as any).message }, { status: guard.status ?? 401 });
-        }
-        const user = guard.user!;
-
         const supabase = await createClient();
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
+        // --- CHECK LIMITS BEFORE CREATING CV ---
+        const usageCheck = await checkUsage(user.id, 'cv_generation');
+        if (!usageCheck.allowed) {
+            return NextResponse.json({ 
+                error: usageCheck.reason === 'limit_exceeded' 
+                    ? 'CV creation limit reached for your current plan. Please upgrade to create more.'
+                    : 'A subscription is required to use this feature.', 
+                code: 'LIMIT_REACHED' 
+            }, { status: 403 });
+        }
 
         // Read optional body for profile_id / initial overrides
         let body: any = {};
@@ -56,6 +63,11 @@ export async function POST(request: NextRequest) {
             .single();
 
         if (error) throw error;
+
+        // Increment usage atomically
+        if (usageCheck.periodStart) {
+            await incrementUsage(user.id, 'cv_generation', usageCheck.periodStart);
+        }
 
         return NextResponse.json({ id: resume.id }, { status: 201 });
     } catch (error: any) {

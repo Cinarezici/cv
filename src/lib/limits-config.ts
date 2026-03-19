@@ -1,7 +1,0 @@
-export const LIMITS = {
-    MAX_CVS_FREE: 2,
-    MAX_LETTERS_FREE: 2,
-    MAX_JOB_SEARCHES_DAILY: 2,
-    ATS_SCANS_TRIAL: 2,
-    ATS_SCANS_PRO_WEEKLY: 10,
-};

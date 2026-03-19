@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
-import { checkUsageLimits, logJobSearch } from '@/lib/limits';
+import { checkUsage, incrementUsage } from '@/lib/usage-enforcement';
 import { requireNotCanceled } from '@/lib/auth-middleware';
 
 export const dynamic = 'force-dynamic';
@@ -20,9 +20,14 @@ export async function POST(request: NextRequest) {
         const { keywords, location } = await request.json();
 
         // Check search limits
-        const { allowed, reason } = await checkUsageLimits(user.id, 'search_jobs');
-        if (!allowed) {
-            return NextResponse.json({ error: reason, code: 'LIMIT_REACHED' }, { status: 403 });
+        const usageCheck = await checkUsage(user.id, 'job_search');
+        if (!usageCheck.allowed) {
+            return NextResponse.json({ 
+                error: usageCheck.reason === 'limit_exceeded' 
+                    ? 'Job search limit reached. Please upgrade to Pro for unlimited searches.'
+                    : 'A subscription is required for job search.', 
+                code: 'LIMIT_REACHED' 
+            }, { status: 403 });
         }
 
         if (!keywords || keywords.trim().length < 2) {
@@ -59,7 +64,10 @@ export async function POST(request: NextRequest) {
         const apifyData = await response.json();
         const run = apifyData.data;
 
-        await logJobSearch(user.id, `${keywords} in ${searchLocation}`);
+        // Increment usage
+        if (usageCheck.periodStart) {
+            await incrementUsage(user.id, 'job_search', usageCheck.periodStart);
+        }
 
         return NextResponse.json({
             success: true,

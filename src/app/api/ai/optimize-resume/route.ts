@@ -5,7 +5,8 @@ export const dynamic = 'force-dynamic';
 export const maxDuration = 60; // Allow 1 minute on Vercel
 import { createClient } from '@/lib/supabase/server';
 import { generateSlug } from '@/lib/utils';
-import { getDailyKeywordLimit, canUseAdvancedAi } from '@/lib/permissions';
+import { checkUsage, incrementUsage } from '@/lib/usage-enforcement';
+import { getLimitsForPlan } from '@/config/plans';
 
 
 const OPTIMIZE_PROMPT = `You are a world-class executive resume writer and career coach. Rewrite the candidate's experience bullet points and professional summary to perfectly match the provided Job Description.
@@ -32,28 +33,23 @@ export async function POST(request: NextRequest) {
     try {
         const openai = getOpenAI();
         const supabase = await createClient();
+        // 1. Subscription & Usage check
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-        // Subscription check
-        const { data: sub } = await supabase
-            .from('subscriptions')
-            .select('*')
-            .eq('user_id', user.id)
-            .maybeSingle();
-
-        const dailyKeywordLimit = getDailyKeywordLimit(sub);
-        const currentUsage = sub?.usage_keywords_today || 0;
-
-        if (currentUsage >= dailyKeywordLimit) {
+        const usageCheck = await checkUsage(user.id, 'ai_optimization');
+        
+        if (!usageCheck.allowed) {
             return NextResponse.json({
-                error: 'Daily Keyword Optimization limit reached. Please upgrade to unlock unlimited keywords or try again tomorrow.',
+                error: usageCheck.reason === 'limit_exceeded' 
+                    ? 'AI Optimization limit reached for your current plan. Please upgrade to unlock more optimizations.'
+                    : 'A subscription is required to use this feature.',
                 code: 'LIMIT_REACHED'
             }, { status: 403 });
         }
 
-        const useAdvancedAi = canUseAdvancedAi(sub);
-        const modelToUse = useAdvancedAi ? 'gpt-4o' : 'gpt-4o-mini';
+        const planLimits = getLimitsForPlan(usageCheck.plan || 'free');
+        const modelToUse = planLimits.advanced_ai ? 'gpt-4o' : 'gpt-4o-mini';
 
         const { documentId, documentType, jobDescription, profileId: legacyProfileId } = await request.json();
 
@@ -173,22 +169,16 @@ export async function POST(request: NextRequest) {
         }
         // ---------------------------------------------------- //
 
-        // Increment daily keyword usage
-        if (sub) {
-            await supabase.rpc('increment_keyword_usage', { target_user_id: user.id })
-                .then(({ error: rpcErr }) => {
-                    if (rpcErr) console.error("RPC increment error, falling back to basic increment", rpcErr);
-                    // Fallback to basic update if RPC doesn't exist yet
-                    if (rpcErr && sub.id) {
-                        supabase.from('subscriptions')
-                            .update({ usage_keywords_today: currentUsage + 1, usage_keywords_last_reset: new Date().toISOString() })
-                            .eq('id', sub.id)
-                            .then();
-                    }
-                });
+        // Increment usage atomically
+        if (usageCheck.periodStart) {
+            await incrementUsage(user.id, 'ai_optimization', usageCheck.periodStart);
         }
 
-        return NextResponse.json({ resume });
+        return NextResponse.json({ 
+            success: true, 
+            resume: optimizedData,
+            resumeId: resume.id
+        });
     } catch (error) {
         console.error('Optimize error:', error);
         return NextResponse.json({ error: 'Failed to optimize resume' }, { status: 500 });

@@ -51,11 +51,14 @@ export async function POST(request: NextRequest) {
                             status: sub.status === 'active' || sub.status === 'trialing' ? 'active' : sub.status,
                             plan: planId || 'starter_monthly',
                             is_pro: true,
+                            is_trial: sub.status === 'trialing',
                             polar_subscription_id: sub.id,
                             polar_customer_id: sub.customerId,
                             trial_active: sub.status === 'trialing',
-                            trial_start: sub.trialStart || null,
-                            trial_expiry: sub.trialEnd || null,
+                            trial_start: sub.trialStart?.toISOString() || null,
+                            trial_expiry: sub.trialEnd?.toISOString() || null,
+                            current_period_start: sub.currentPeriodStart?.toISOString() || null,
+                            current_period_end: sub.currentPeriodEnd?.toISOString() || null,
                         }, { onConflict: 'user_id' });
                 }
                 break;
@@ -72,7 +75,7 @@ export async function POST(request: NextRequest) {
 
                 await supabase
                     .from('subscriptions')
-                    .update({ status: 'expired', is_pro: false, plan: 'free' })
+                    .update({ status: 'expired', is_pro: false, is_trial: false, plan: 'free' })
                     .eq('polar_subscription_id', sub.id);
 
                 // Send Downgrade Email
@@ -110,8 +113,11 @@ export async function POST(request: NextRequest) {
                             status: 'active',
                             plan: 'lifetime_onetime',
                             is_pro: true,
+                            is_trial: false,
                             polar_customer_id: order.customerId,
                             trial_active: false,
+                            // CRITICAL: Initialize period start so usage tracking works!
+                            current_period_start: order.createdAt.toISOString(),
                         }, { onConflict: 'user_id' });
                 }
                 break;

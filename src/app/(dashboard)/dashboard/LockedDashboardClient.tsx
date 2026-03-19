@@ -96,7 +96,7 @@ export default function LockedDashboardClient({
                 <div className="flex-1 text-center sm:text-left">
                     <h2 className="font-extrabold text-zinc-900 dark:text-white text-lg mb-1">Your free trial has ended</h2>
                     <p className="text-zinc-500 dark:text-zinc-400 text-sm">Your CVs and letters are safe. Upgrade to Pro to access them again.</p>
-                    <p className="text-indigo-600 dark:text-indigo-400 font-bold text-xs mt-1">≈ $2.75/month · $99 for 3 years · one-time payment</p>
+                    <p className="text-indigo-600 dark:text-indigo-400 font-bold text-xs mt-1">Starting from $24/month · Professional & Lifetime available</p>
                 </div>
                 <Link
                     href="/upgrade"

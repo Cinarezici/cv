@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Anthropic from '@anthropic-ai/sdk';
 import { createClient } from '@/lib/supabase/server';
-import { LIMITS } from '@/lib/limits-config';
+import { checkUsage, incrementUsage } from '@/lib/usage-enforcement';
 
 export const dynamic = 'force-dynamic';
 export const maxDuration = 60;
@@ -92,62 +92,6 @@ function extractTextFromPdfJson(pdfData: any): string {
     return lines.join('\n');
 }
 
-/** Check ATS scan limits based on subscription status */
-async function checkAtsLimit(userId: string, supabase: any): Promise<{ allowed: boolean; reason?: string; code?: string }> {
-    const { data: sub } = await supabase
-        .from('subscriptions')
-        .select('status')
-        .eq('user_id', userId)
-        .maybeSingle();
-
-    const status = sub?.status as string | undefined;
-    const isPro = status === 'active';
-    const isTrialing = status === 'trialing';
-    const isCanceled = status === 'canceled';
-
-    // Canceled — no access
-    if (isCanceled || (!isPro && !isTrialing && status)) {
-        return { allowed: false, code: 'ATS_BLOCKED', reason: 'ATS Scanner is not available on your current plan. Please upgrade to Pro.' };
-    }
-
-    if (isPro) {
-        // Weekly limit for Pro
-        const startOfWeek = new Date();
-        startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay()); // Sunday
-        startOfWeek.setHours(0, 0, 0, 0);
-        const { count } = await supabase
-            .from('ats_scans')
-            .select('*', { count: 'exact', head: true })
-            .eq('user_id', userId)
-            .gte('created_at', startOfWeek.toISOString());
-        if ((count || 0) >= LIMITS.ATS_SCANS_PRO_WEEKLY) {
-            return { allowed: false, code: 'ATS_WEEKLY_LIMIT', reason: `You've used all ${LIMITS.ATS_SCANS_PRO_WEEKLY} weekly ATS scans. Your limit resets every Sunday. Upgrade includes higher limits.` };
-        }
-        return { allowed: true };
-    }
-
-    if (isTrialing) {
-        // Total lifetime limit for trial
-        const { count } = await supabase
-            .from('ats_scans')
-            .select('*', { count: 'exact', head: true })
-            .eq('user_id', userId);
-        if ((count || 0) >= LIMITS.ATS_SCANS_TRIAL) {
-            return { allowed: false, code: 'ATS_TRIAL_LIMIT', reason: `Trial plan includes ${LIMITS.ATS_SCANS_TRIAL} ATS scans. Upgrade to Pro for 10 scans/week.` };
-        }
-        return { allowed: true };
-    }
-
-    // No subscription row — treat as trialing (grace)
-    const { count } = await supabase
-        .from('ats_scans')
-        .select('*', { count: 'exact', head: true })
-        .eq('user_id', userId);
-    if ((count || 0) >= LIMITS.ATS_SCANS_TRIAL) {
-        return { allowed: false, code: 'ATS_TRIAL_LIMIT', reason: `Trial plan includes ${LIMITS.ATS_SCANS_TRIAL} ATS scans. Upgrade to Pro for 10 scans/week.` };
-    }
-    return { allowed: true };
-}
 
 export async function POST(request: NextRequest) {
     try {
@@ -156,9 +100,14 @@ export async function POST(request: NextRequest) {
         if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
         // Check usage limits first
-        const limitCheck = await checkAtsLimit(user.id, supabase);
-        if (!limitCheck.allowed) {
-            return NextResponse.json({ error: limitCheck.reason, code: limitCheck.code }, { status: 403 });
+        const usageCheck = await checkUsage(user.id, 'ats_scan');
+        if (!usageCheck.allowed) {
+            return NextResponse.json({ 
+                error: usageCheck.reason === 'limit_exceeded'
+                    ? 'ATS Scan limit reached for your current plan. Please upgrade to continue.'
+                    : 'A subscription is required for ATS Scanning.',
+                code: 'LIMIT_REACHED' 
+            }, { status: 403 });
         }
 
         const contentType = request.headers.get('content-type') || '';
@@ -292,6 +241,11 @@ export async function POST(request: NextRequest) {
             })
             .select('id')
             .single();
+
+        // Increment usage
+        if (usageCheck.periodStart) {
+            await incrementUsage(user.id, 'ats_scan', usageCheck.periodStart);
+        }
 
         return NextResponse.json({ result, cvText, scanId: savedScan?.id });
     } catch (error: any) {

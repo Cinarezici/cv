@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
-import { checkUsageLimits, logJobSearch } from '@/lib/limits';
+import { checkUsage, incrementUsage } from '@/lib/usage-enforcement';
 
 export const dynamic = 'force-dynamic';
 
@@ -51,9 +51,14 @@ export async function POST(request: NextRequest) {
         let results: any[] = [];
 
         // Check search limits
-        const { allowed, reason } = await checkUsageLimits(user.id, 'search_jobs');
-        if (!allowed) {
-            return NextResponse.json({ error: 'limit_reached', message: reason }, { status: 403 });
+        const usageCheck = await checkUsage(user.id, 'job_search');
+        if (!usageCheck.allowed) {
+            return NextResponse.json({ 
+                error: 'limit_reached', 
+                message: usageCheck.reason === 'limit_exceeded'
+                    ? 'Daily job search limit reached. Please upgrade to Pro for unlimited searches.'
+                    : 'A subscription is required for job search.'
+            }, { status: 403 });
         }
 
         const mapJobs = (items: any[]) => items.map((j: any) => ({
@@ -73,7 +78,9 @@ export async function POST(request: NextRequest) {
         }));
 
         if (type === 'jobs') {
-            await logJobSearch(user.id, query);
+            if (usageCheck.periodStart) {
+                await incrementUsage(user.id, 'job_search', usageCheck.periodStart);
+            }
             const searchLocation = location || 'Worldwide';
             const items = await callApifyActor('curious_coder/linkedin-jobs-scraper', {
                 urls: [`https://www.linkedin.com/jobs/search/?keywords=${encodeURIComponent(query)}&location=${encodeURIComponent(searchLocation)}`],

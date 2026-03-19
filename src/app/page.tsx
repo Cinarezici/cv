@@ -265,6 +265,7 @@ export default function Home() {
           <nav className="hidden md:flex gap-8 items-center text-[15px] font-bold text-zinc-500">
             <Link className="hover:text-zinc-900 transition-colors" href="/templates">Templates</Link>
             <Link className="hover:text-zinc-900 transition-colors cursor-pointer" href="#pricing">Pricing</Link>
+            <Link className="hover:text-zinc-900 transition-colors" href="/blog">Blog</Link>
             <Link className="hover:text-zinc-900 transition-colors" href="/login">Login</Link>
             <Link href="/signup">
               <Button className="bg-zinc-900 text-white hover:bg-zinc-800 font-bold rounded-full px-6 h-10 shadow-sm transition-all hover:scale-105 active:scale-95">
@@ -515,6 +516,7 @@ export default function Home() {
               <nav className="flex flex-col gap-4 text-sm font-bold text-zinc-600">
                 <Link className="hover:text-zinc-900 transition-colors" href="/templates">Templates</Link>
                 <Link className="hover:text-zinc-900 transition-colors" href="#pricing">Pricing</Link>
+                <Link className="hover:text-zinc-900 transition-colors" href="/blog">Blog</Link>
                 <Link className="hover:text-zinc-900 transition-colors" href="/login">Login</Link>
               </nav>
             </div>

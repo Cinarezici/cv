@@ -7,7 +7,7 @@ import { CvShareLinkButton } from '@/components/CvShareLinkButton';
 import { CvPreviewModal } from '@/components/CvPreviewModal';
 import { FileText, Mail, Plus, Pencil, Clock, LayoutTemplate, Zap, Link as LinkIcon, AlertCircle, Lock, Sparkles } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
-import { checkUsageLimits } from '@/lib/limits';
+import { checkUsage } from '@/lib/usage-enforcement';
 import { getEffectiveStatus } from '@/lib/subscription';
 import LockedDashboardClient from './LockedDashboardClient';
 
@@ -74,8 +74,8 @@ export default async function DashboardPage() {
         );
     }
 
-    const limitCheck = await checkUsageLimits(user.id, 'create_cv');
-    const isCVLimitReached = !limitCheck.allowed;
+    const { allowed } = await checkUsage(user.id, 'cv_generation');
+    const isCVLimitReached = !allowed;
 
     return (
         <div className="max-w-5xl mx-auto py-8 space-y-8">
@@ -336,9 +336,9 @@ function LockedDashboard() {
 
             {/* Pricing */}
             <div className="bg-zinc-50 dark:bg-white/5 border border-zinc-200 dark:border-white/10 rounded-2xl px-8 py-5 max-w-sm w-full">
-                <p className="text-xs font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-widest mb-1">Pro Plan</p>
-                <p className="text-3xl font-extrabold text-zinc-900 dark:text-white">$99 <span className="text-base font-semibold text-zinc-400">/ 3 years</span></p>
-                <p className="text-indigo-600 dark:text-indigo-400 text-sm font-bold mt-1">≈ $2.75/month — less than a coffee</p>
+                <p className="text-xs font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-widest mb-1">Subscriptions</p>
+                <p className="text-3xl font-extrabold text-zinc-900 dark:text-white">$24 <span className="text-base font-semibold text-zinc-400">/ month</span></p>
+                <p className="text-indigo-600 dark:text-indigo-400 text-sm font-bold mt-1">Starting from $24/mo — Cancel anytime</p>
             </div>
 
             {/* CTA */}

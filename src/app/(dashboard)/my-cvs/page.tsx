@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
-import { checkUsageLimits } from '@/lib/limits';
+import { checkUsage } from '@/lib/usage-enforcement';
 import MyCVsClient from './MyCVsClient';
 import { getEffectiveStatus } from '@/lib/subscription';
 import LockedPageView from '@/components/LockedPageView';
@@ -27,8 +27,8 @@ export default async function MyCVsPage() {
         return <LockedPageView featureName="My CVs" subtitle="Manage and edit all your CVs with a Pro subscription." />;
     }
 
-    const limitCheck = await checkUsageLimits(user.id, 'create_cv');
-    const isCVLimitReached = !limitCheck.allowed;
+    const { allowed } = await checkUsage(user.id, 'cv_generation');
+    const isCVLimitReached = !allowed;
 
     const [{ data: resumes }, { data: profiles }] = await Promise.all([
         supabase

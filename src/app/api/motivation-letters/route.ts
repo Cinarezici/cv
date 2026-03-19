@@ -101,16 +101,25 @@ export async function POST(request: NextRequest) {
         const isPro = ['active'].includes(sub?.status as string);
         console.log("-> isPro?", isPro);
 
-        if (!isPro && companies.length > 1) {
-            return NextResponse.json({ error: 'upgrade_required', message: 'Toplu mektup oluşturma sadece Pro planda geçerlidir.' }, { status: 403 });
+        const { checkUsage, incrementUsage } = await import('@/lib/usage-enforcement');
+        const usageCheck = await checkUsage(user.id, 'letter_generation');
+        
+        if (!usageCheck.allowed) {
+            return NextResponse.json({ 
+                error: 'limit_reached', 
+                message: usageCheck.reason === 'limit_exceeded'
+                    ? 'Cover letter limit reached. Please upgrade to Pro for unlimited letters.'
+                    : 'A subscription is required to create cover letters.'
+            }, { status: 403 });
         }
 
-        console.log("-> Checking usage limits...");
-        const { checkUsageLimits } = await import('@/lib/limits');
-        const { allowed, reason } = await checkUsageLimits(user.id, 'create_letter');
-        console.log("-> Usage limit result:", { allowed, reason });
-        if (!allowed) {
-            return NextResponse.json({ error: 'limit_reached', message: reason }, { status: 403 });
+        // Check if batch size exceeds remaining quota
+        const remaining = (usageCheck.limit || 0) - (usageCheck.usage || 0);
+        if (companies.length > remaining && usageCheck.limit !== 999) {
+            return NextResponse.json({ 
+                error: 'limit_reached', 
+                message: `You only have ${remaining} letters left in your current plan. Please reduce your batch size or upgrade.` 
+            }, { status: 403 });
         }
 
         const batchId = crypto.randomUUID();
@@ -128,7 +137,7 @@ export async function POST(request: NextRequest) {
 
             const { data: letter, error: insertError } = await supabase.from('motivation_letters').insert({
                 user_id: user.id,
-                cv_id: isResume ? cvId : null, // Fix: Profiles are not compatible with the cv_id foreign key check
+                cv_id: isResume ? cvId : null, 
                 company_name: company.name || 'Unknown',
                 job_title: config.targetRole || '',
                 tone: config.tone || 'corporate',
@@ -144,10 +153,13 @@ export async function POST(request: NextRequest) {
             }
 
             if (letter) {
-                console.log("-> Inserted letter mapping", letter.id);
                 createdLetters.push(letter);
+                
+                // Increment usage atomically for each letter in the batch
+                if (usageCheck.periodStart) {
+                    await incrementUsage(user.id, 'letter_generation', usageCheck.periodStart);
+                }
 
-                // AWAIT the process so Vercel Serverless environment doesn't kill it mid-flight!
                 try {
                     await processLetterGeneration(
                         letter.id,

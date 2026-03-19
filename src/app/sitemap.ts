@@ -1,8 +1,16 @@
 import { MetadataRoute } from 'next'
+import { blogPosts } from '@/data/blog-posts'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://cvoptimizerai.com'
-  
+
+  const blogEntries: MetadataRoute.Sitemap = blogPosts.map((post) => ({
+    url: `${baseUrl}/blog/${post.slug}`,
+    lastModified: new Date(post.date),
+    changeFrequency: 'weekly',
+    priority: 0.8,
+  }))
+
   return [
     {
       url: baseUrl,
@@ -16,6 +24,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'weekly',
       priority: 0.8,
     },
+    {
+      url: `${baseUrl}/blog`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+    ...blogEntries,
     {
       url: `${baseUrl}/login`,
       lastModified: new Date(),
