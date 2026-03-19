@@ -6,5 +6,11 @@
     "src/app/api/scout/route.ts": {
       "maxDuration": 300
     }
-  }
+  },
+  "crons": [
+    {
+      "path": "/api/cron/emails",
+      "schedule": "0 9 * * *"
+    }
+  ]
 }
