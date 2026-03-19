@@ -4,12 +4,18 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Loader2, User, CreditCard, AlertTriangle, Trash2, LogOut, Globe } from 'lucide-react';
+import { Loader2, User, CreditCard, AlertTriangle, Trash2, LogOut, Globe, Sparkles } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
-import { LIMITS } from '@/lib/limits-config';
-import { format, addDays } from 'date-fns';
+import { format } from 'date-fns';
 import { useLang, type Lang } from '@/lib/i18n';
+import { 
+    getEffectivePlan, 
+    isTrialActive, 
+    getDailyKeywordLimit, 
+    TRIAL_LIMITS 
+} from '@/lib/permissions';
+import Link from 'next/link';
 
 export default function SettingsPage() {
     const [loading, setLoading] = useState(true);
@@ -21,14 +27,11 @@ export default function SettingsPage() {
     // Auth state
     const [email, setEmail] = useState('');
     const [subscription, setSubscription] = useState<any>(null);
-    const [trialDaysLeft, setTrialDaysLeft] = useState<number>(0);
-    const [nextResetDate, setNextResetDate] = useState<Date>(new Date());
 
     // Usage State
     const [cvCount, setCvCount] = useState(0);
     const [letterCount, setLetterCount] = useState(0);
-    const [searchCount, setSearchCount] = useState(0);
-    const [atsCount, setAtsCount] = useState(0);
+    const [keywordCount, setKeywordCount] = useState(0);
 
     useEffect(() => {
         const fetchSettingsData = async () => {
@@ -44,49 +47,16 @@ export default function SettingsPage() {
 
                 // Fetch subscription
                 const { data: sub } = await supabase.from('subscriptions').select('*').eq('user_id', user.id).single();
-                if (sub) setSubscription(sub);
+                setSubscription(sub || null);
 
-                // Calculate Trial / Reset Dates from subscription row (prefer trial_end_at)
-                const rawEnd = sub?.trial_end_at ?? sub?.trial_ends_at;
-                if (rawEnd) {
-                    const _trialEndDate = new Date(rawEnd);
-                    const diffDays = Math.ceil((_trialEndDate.getTime() - new Date().getTime()) / (1000 * 3600 * 24));
-                    setTrialDaysLeft(diffDays > 0 ? diffDays : 0);
-                    setNextResetDate(_trialEndDate);
-                } else {
-                    // Fallback: 14 days from account creation
-                    const creationDate = new Date(user.created_at || new Date());
-                    const _trialEndDate = new Date(creationDate.getTime() + 14 * 24 * 60 * 60 * 1000);
-                    const diffDays = Math.ceil((_trialEndDate.getTime() - new Date().getTime()) / (1000 * 3600 * 24));
-                    setTrialDaysLeft(diffDays > 0 ? diffDays : 0);
-                    setNextResetDate(_trialEndDate);
-                }
-
-                // Fetch Usage Stats
+                // Fetch usage stats directly from tables (can be enhanced with usage columns later)
                 const { count: cvs } = await supabase.from('resumes').select('*', { count: 'exact', head: true }).eq('user_id', user.id);
                 setCvCount(cvs || 0);
 
                 const { count: letters } = await supabase.from('motivation_letters').select('*', { count: 'exact', head: true }).eq('user_id', user.id);
                 setLetterCount(letters || 0);
 
-                let startOfDay = new Date();
-                startOfDay.setHours(0, 0, 0, 0);
-                const { count: searches } = await supabase.from('scout_logs').select('*', { count: 'exact', head: true }).eq('user_id', user.id).gte('created_at', startOfDay.toISOString());
-                setSearchCount(searches || 0);
-
-                // ATS Scan count (weekly for Pro, total for others)
-                // Use a local variable — the outer `isPro` const is not yet initialized here
-                const isProLocal = ['active'].includes(sub?.status as string);
-                if (isProLocal) {
-                    const startOfWeek = new Date();
-                    startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay());
-                    startOfWeek.setHours(0, 0, 0, 0);
-                    const { count: ats } = await supabase.from('ats_scans').select('*', { count: 'exact', head: true }).eq('user_id', user.id).gte('created_at', startOfWeek.toISOString());
-                    setAtsCount(ats || 0);
-                } else {
-                    const { count: ats } = await supabase.from('ats_scans').select('*', { count: 'exact', head: true }).eq('user_id', user.id);
-                    setAtsCount(ats || 0);
-                }
+                setKeywordCount(sub?.usage_keywords_today || 0);
 
             } catch (err: any) {
                 console.error(err);
@@ -97,7 +67,7 @@ export default function SettingsPage() {
         };
 
         fetchSettingsData();
-    }, []);
+    }, [router]);
 
     const handleSignOut = async () => {
         try {
@@ -121,12 +91,23 @@ export default function SettingsPage() {
         );
     }
 
-    const rawEnd = subscription?.trial_end_at ?? subscription?.trial_ends_at;
-    const isPro = ['active'].includes(subscription?.status as string);
-    const isTrialing = subscription?.status === 'trialing';
-    const isCanceled = !isPro && rawEnd ? new Date() > new Date(rawEnd) : subscription?.status === 'canceled';
-    const atsMax = isPro ? LIMITS.ATS_SCANS_PRO_WEEKLY : LIMITS.ATS_SCANS_TRIAL;
-    const atsLabel = isPro ? 'ATS SCANS (weekly)' : 'ATS SCANS (trial)';
+    const plan = getEffectivePlan(subscription);
+    const trialActive = isTrialActive(subscription);
+    
+    // Limits
+    const cvMax = plan === 'free' ? (trialActive ? TRIAL_LIMITS.maxCvs : 1) : null; // null = unlimited
+    const letterMax = plan === 'free' ? (trialActive ? TRIAL_LIMITS.maxLetters : 0) : null;
+    const keywordMax = getDailyKeywordLimit(subscription);
+
+    const getPlanDisplay = () => {
+        if (plan === 'lifetime_onetime') return { name: 'Lifetime', color: 'bg-purple-100 text-purple-700' };
+        if (plan === 'professional_yearly') return { name: 'Professional', color: 'bg-blue-100 text-blue-700' };
+        if (plan === 'starter_monthly') return { name: 'Starter', color: 'bg-indigo-100 text-indigo-700' };
+        if (trialActive) return { name: 'Free Trial', color: 'bg-emerald-100 text-emerald-700' };
+        return { name: 'Free Plan', color: 'bg-zinc-200 text-zinc-700' };
+    };
+
+    const planInfo = getPlanDisplay();
 
     return (
         <div className="max-w-4xl mx-auto py-12 px-4 bg-[#fafafa] dark:bg-zinc-950 min-h-[calc(100vh-100px)] text-zinc-900 font-sans">
@@ -199,83 +180,55 @@ export default function SettingsPage() {
                                 <div>
                                     <div className="flex items-center gap-3 mb-1.5">
                                         <h3 className="text-[18px] font-bold text-zinc-900 dark:text-white">
-                                            {isPro ? 'Pro Plan' : isCanceled ? 'Free Plan — Expired' : 'Free Plan'}
+                                            {planInfo.name}
                                         </h3>
-                                        <span className={`text-[11px] font-bold px-2.5 py-0.5 rounded-full tracking-wide ${isPro ? 'bg-indigo-100 dark:bg-indigo-500/20 text-indigo-700 dark:text-indigo-400'
-                                            : isCanceled ? 'bg-red-100 dark:bg-red-500/20 text-red-600 dark:text-red-400'
-                                                : 'bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-400'
-                                            }`}>
-                                            {isPro ? 'ACTIVE' : isCanceled ? 'LOCKED' : 'LIMITED'}
+                                        <span className={`text-[11px] font-bold px-2.5 py-0.5 rounded-full tracking-wide ${planInfo.color}`}>
+                                            {subscription?.status === 'active' ? 'ACTIVE' : trialActive ? 'TRIALING' : 'FREE'}
                                         </span>
                                     </div>
                                     <p className="text-[14px] text-zinc-500 dark:text-zinc-400 font-medium mb-3">
-                                        {isPro ? 'Enjoy unlimited access to all features.'
-                                            : isCanceled ? 'Your trial ended. Upgrade to regain full access.'
-                                                : 'Your free limits reset every 14 days.'}
+                                        {plan === 'free' 
+                                          ? (trialActive ? "You're enjoying full Professional access during your trial." : "Your trial has expired. Please upgrade.")
+                                          : `You have an active ${planInfo.name} subscription.`
+                                        }
                                     </p>
 
-                                    {!isPro && !isCanceled && (
+                                    {trialActive && subscription?.trial_expiry && (
                                         <div className="inline-flex items-center bg-orange-50 dark:bg-orange-500/10 px-3 py-1.5 rounded-md border border-orange-100 dark:border-orange-500/20">
                                             <span className="text-[13px] font-semibold text-orange-600 dark:text-orange-400">
-                                                Next Reset: {format(nextResetDate, 'M/d/yyyy')} ({trialDaysLeft} days left)
-                                            </span>
-                                        </div>
-                                    )}
-                                    {isCanceled && (
-                                        <div className="inline-flex items-center bg-red-50 dark:bg-red-500/10 px-3 py-1.5 rounded-md border border-red-100 dark:border-red-500/20">
-                                            <span className="text-[13px] font-semibold text-red-600 dark:text-red-400">
-                                                Locked — Upgrade to continue
-                                            </span>
-                                        </div>
-                                    )}
-                                    {isPro && (
-                                        <div className="inline-flex items-center bg-indigo-50 dark:bg-indigo-500/10 px-3 py-1.5 rounded-md border border-indigo-100 dark:border-indigo-500/20">
-                                            <span className="text-[13px] font-semibold text-indigo-600 dark:text-indigo-400">
-                                                Status: Lifetime Access
+                                                Trial ends: {format(new Date(subscription.trial_expiry), 'MMM dd, yyyy')}
                                             </span>
                                         </div>
                                     )}
                                 </div>
-                                {!isPro && (
-                                    <Button
-                                        onClick={() => window.location.href = process.env.NEXT_PUBLIC_POLAR_CHECKOUT_URL!}
-                                        className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-semibold px-6 h-10 rounded-lg shadow-sm w-full sm:w-auto"
-                                    >
-                                        {isCanceled ? 'Upgrade to Pro — $99' : 'Upgrade to Pro'}
-                                    </Button>
+                                {plan !== 'lifetime_onetime' && (
+                                    <Link href="/upgrade">
+                                        <Button className="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-semibold px-6 h-10 rounded-lg shadow-sm w-full sm:w-auto">
+                                            <Sparkles className="w-4 h-4 mr-2" /> Upgrade Plan
+                                        </Button>
+                                    </Link>
                                 )}
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
                             <UsageWidget
                                 title="CV PROJECTS"
                                 current={cvCount}
-                                max={LIMITS.MAX_CVS_FREE}
+                                max={cvMax}
                                 barColor="bg-[#2563eb]"
-                                isPro={isPro}
                             />
                             <UsageWidget
                                 title="COVER LETTERS"
                                 current={letterCount}
-                                max={LIMITS.MAX_LETTERS_FREE}
+                                max={letterMax}
                                 barColor="bg-[#9333ea]"
-                                isPro={isPro}
                             />
                             <UsageWidget
-                                title="DAILY SEARCHES"
-                                current={searchCount}
-                                max={LIMITS.MAX_JOB_SEARCHES_DAILY}
+                                title="DAILY KEYWORDS"
+                                current={keywordCount}
+                                max={keywordMax === 999999 ? null : keywordMax}
                                 barColor="bg-[#16a34a]"
-                                isPro={isPro}
-                            />
-                            <UsageWidget
-                                title={atsLabel}
-                                current={atsCount}
-                                max={atsMax}
-                                barColor="bg-[#e11d48]"
-                                isPro={false}
-                                blocked={isCanceled}
                             />
                         </div>
                     </CardContent>
@@ -355,21 +308,22 @@ export default function SettingsPage() {
     );
 }
 
-function UsageWidget({ title, current, max, barColor, isPro, blocked }: { title: string, current: number, max: number, barColor: string, isPro: boolean, blocked?: boolean }) {
-    const isOver = !isPro && !blocked && current >= max;
-    const progress = isPro ? 100 : blocked ? 0 : Math.min((current / max) * 100, 100);
+function UsageWidget({ title, current, max, barColor }: { title: string, current: number, max: number | null, barColor: string }) {
+    const isUnlimited = max === null;
+    const isOver = !isUnlimited && current >= max;
+    const progress = isUnlimited ? 100 : Math.min((current / max) * 100, 100);
 
     return (
         <div className="border border-zinc-200 dark:border-white/10 rounded-xl p-5 bg-white dark:bg-zinc-900">
             <h4 className="text-[11px] font-bold text-zinc-400 dark:text-zinc-500 tracking-widest mb-4">{title}</h4>
             <div className="flex items-end justify-between mb-3">
                 <span className="text-3xl font-bold text-zinc-900 dark:text-white leading-none">{current}</span>
-                {!isPro && <span className="text-sm font-semibold text-zinc-400 dark:text-zinc-600 leading-none mb-1">/ {max}</span>}
-                {isPro && <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-500/20 px-2 py-1 rounded leading-none mb-0.5 uppercase tracking-wide">Unlimited</span>}
+                {!isUnlimited && <span className="text-sm font-semibold text-zinc-400 dark:text-zinc-600 leading-none mb-1">/ {max}</span>}
+                {isUnlimited && <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-500/20 px-2 py-1 rounded leading-none mb-0.5 uppercase tracking-wide">Unlimited</span>}
             </div>
             <div className="h-2.5 w-full bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden">
                 <div
-                    className={`h-full rounded-full transition-all duration-500 ease-in-out ${isOver ? 'bg-red-500' : (isPro ? 'bg-indigo-600' : barColor)}`}
+                    className={`h-full rounded-full transition-all duration-500 ease-in-out ${isOver ? 'bg-red-500' : (isUnlimited ? 'bg-indigo-600' : barColor)}`}
                     style={{ width: `${progress}%` }}
                 />
             </div>

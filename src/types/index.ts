@@ -51,8 +51,20 @@ export interface Resume {
 export interface Subscription {
   user_id: string;
   stripe_customer_id: string;
-  status: 'active' | 'trialing' | 'expired' | 'canceled';
+  status: 'active' | 'trialing' | 'expired' | 'canceled' | 'revoked';
   trial_end: string | null;
+  
+  // New pricing & trial tracking fields
+  plan?: string; // e.g., 'starter_monthly', 'professional_yearly', 'lifetime', 'free'
+  is_pro?: boolean;
+  trial_active?: boolean;
+  trial_start?: string | null;
+  trial_expiry?: string | null;
+  usage_cv_count?: number;
+  usage_letter_count?: number;
+  usage_keywords_today?: number;
+  usage_keywords_last_reset?: string;
+  grandfathered?: boolean;
 }
 
 export type SectionKey =

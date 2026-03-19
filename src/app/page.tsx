@@ -9,6 +9,7 @@ import { TestimonialsSection } from "@/components/ui/testimonials-with-marquee";
 import { LandingTestimonials } from "@/components/ui/landing-testimonials";
 import { motion, AnimatePresence, useInView, animate } from 'framer-motion';
 import { LandingDemoStrip } from "@/components/ui/landing-demo-strip";
+import { LandingPricing } from "@/components/landing/LandingPricing";
 import { LandingCopyLinkSpotlight } from "@/components/ui/landing-copy-link-spotlight";
 import { useLang, type Lang } from "@/lib/i18n";
 import { HeroInteractiveDemo } from "@/components/ui/hero-interactive-demo";
@@ -455,115 +456,7 @@ export default function Home() {
         <LandingTestimonials />
 
         {/* --- I) Pricing / Trial --- */}
-        <section id="pricing" className="w-full py-28 bg-[#fafafa] border-t border-zinc-100 relative overflow-hidden">
-          <div className="absolute inset-x-0 bottom-0 h-96 bg-gradient-to-t from-blue-50/50 to-transparent pointer-events-none" />
-
-          <div className="container px-6 mx-auto text-center relative z-10 max-w-5xl">
-            <p className="text-[12px] font-black uppercase tracking-[0.15em] text-blue-600 mb-4">Pricing</p>
-            <h2 className="text-4xl md:text-5xl font-extrabold text-zinc-900 mb-5 tracking-tight">
-              Simple, transparent pricing.
-            </h2>
-            <p className="text-lg text-zinc-500 font-medium mb-16 max-w-xl mx-auto">
-              Start free for 14 days. Upgrade once when you&apos;re ready — no subscription, ever.
-            </p>
-
-            <div className="flex flex-col md:flex-row gap-8 mx-auto mb-16 items-stretch justify-center">
-              {/* Trial Plan */}
-              <div className="flex-1 max-w-[400px] w-full bg-white rounded-[32px] shadow-[0_4px_24px_-4px_rgba(0,0,0,0.06)] p-10 flex flex-col border border-zinc-200 hover:shadow-xl transition-shadow text-left">
-                <div className="mb-6">
-                  <h3 className="text-[28px] font-extrabold text-black leading-tight tracking-tight">14-Day Trial</h3>
-                  <p className="text-zinc-500 text-[15px] mt-2 font-medium">Try everything free. No credit card.</p>
-                </div>
-                <div className="flex items-baseline gap-1.5 mb-8">
-                  <span className="text-[48px] font-extrabold tracking-tighter text-zinc-900 leading-none">$0</span>
-                  <span className="text-zinc-500 text-[15px] font-bold">/ 14 days</span>
-                </div>
-
-                <ul className="space-y-4 mb-10 flex-1">
-                  {[
-                    { text: "2 CVs", included: true },
-                    { text: "4 Custom Cover Letters", included: true },
-                    { text: "2 LinkedIn Job Searches / day", included: true },
-                    { text: "Shareable links → cvoptimizerai.com after trial", included: true },
-                    { text: "Branded shareable links", included: false },
-                    { text: "Unlimited everything", included: false },
-                  ].map((item, i) => (
-                    <li key={i} className="flex items-start gap-3 text-[14px]">
-                      {item.included ? (
-                        <CheckCircle2 className="w-[20px] h-[20px] text-[#2563eb] shrink-0 mt-[2px]" strokeWidth={2.5} />
-                      ) : (
-                        <X className="w-[20px] h-[20px] text-zinc-300 shrink-0 mt-[2px]" strokeWidth={2.5} />
-                      )}
-                      <span className={item.included ? "text-zinc-700 font-bold" : "text-zinc-400 font-medium"}>{item.text}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <Link href="/signup" className="w-full">
-                  <Button variant="outline" className="w-full h-14 rounded-full border-zinc-200 text-zinc-900 font-bold text-[15px] hover:bg-zinc-50 hover:border-zinc-300 transition-all shadow-sm shadow-zinc-200/50">
-                    Start Free Trial
-                  </Button>
-                </Link>
-              </div>
-
-              {/* Pro Plan */}
-              <div className="flex-1 max-w-[400px] w-full relative bg-white rounded-[32px] shadow-[0_12px_40px_-4px_rgba(37,99,235,0.15)] border-[2.5px] border-[#2563eb] p-10 flex flex-col hover:scale-[1.02] transition-transform text-left">
-                <div className="absolute top-0 right-10 -translate-y-1/2 bg-gradient-to-r from-[#2563eb] to-[#3b82f6] text-white text-[11px] font-extrabold tracking-wider px-4 py-1.5 rounded-full uppercase shadow-lg shadow-blue-600/20 z-20">
-                  Most Popular
-                </div>
-
-                <div className="mb-6">
-                  <h3 className="text-[28px] font-extrabold text-black leading-tight tracking-tight">Pro Plan</h3>
-                  <p className="text-zinc-500 text-[15px] mt-2 font-medium">One-time payment. 3 years of access.</p>
-                </div>
-
-                <div className="flex flex-col mb-8">
-                  <div className="flex items-baseline gap-1.5">
-                    <span className="text-[48px] font-extrabold tracking-tighter text-zinc-900 leading-none">$99</span>
-                    <span className="text-zinc-600 text-[15px] font-bold">one-time · 3 years</span>
-                  </div>
-                  <p className="text-[11px] text-[#2563eb] font-black mt-3 uppercase tracking-wider bg-blue-50 border border-blue-100 w-fit px-2.5 py-1 rounded-md">
-                    ≈ $2.75 / month for 3 years
-                  </p>
-                </div>
-
-                <ul className="space-y-4 mb-10 flex-1">
-                  {[
-                    "Unlimited CVs",
-                    "Unlimited Cover Letters",
-                    "Unlimited Job Searches",
-                    "Your own branded shareable letter links",
-                    "Advanced AI Optimization",
-                    "No Watermark PDF Exports",
-                    "LinkedIn Integration",
-                    "6 Premium Resume Templates",
-                  ].map((feat, i) => (
-                    <li key={i} className="flex items-start gap-3 text-[14px]">
-                      <CheckCircle2 className="w-[20px] h-[20px] text-[#2563eb] shrink-0 mt-[2px]" strokeWidth={2.5} />
-                      <span className="text-zinc-900 font-bold">{feat}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <Link href="/signup" className="w-full">
-                  <Button className="w-full h-14 rounded-full bg-gradient-to-r from-[#2563eb] to-[#3b82f6] hover:from-[#1d4ed8] hover:to-[#2563eb] text-white font-bold text-[15px] shadow-xl shadow-blue-500/20 transition-all">
-                    Upgrade to Pro <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </Link>
-              </div>
-            </div>
-
-            <div className="flex flex-col items-center gap-6 pb-4">
-              <p className="text-zinc-400 text-sm font-bold tracking-tight uppercase">Trusted by candidates hired at</p>
-              <div className="flex items-center justify-center gap-8 md:gap-16 opacity-30 grayscale pointer-events-none flex-wrap">
-                <p className="font-extrabold text-2xl tracking-tighter">Google</p>
-                <p className="font-extrabold text-2xl tracking-tighter">Microsoft</p>
-                <p className="font-extrabold text-2xl tracking-tighter">Meta</p>
-                <p className="font-extrabold text-2xl tracking-tighter">Amazon</p>
-              </div>
-            </div>
-          </div>
-        </section>
+        <LandingPricing />
 
         {/* --- G) Final CTA with Sparkles --- */}
         <WaveDivider />

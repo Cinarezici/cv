@@ -5,6 +5,7 @@ export const dynamic = 'force-dynamic';
 export const maxDuration = 60; // Allow 1 minute on Vercel
 import { createClient } from '@/lib/supabase/server';
 import { generateSlug } from '@/lib/utils';
+import { getDailyKeywordLimit, canUseAdvancedAi } from '@/lib/permissions';
 
 
 const OPTIMIZE_PROMPT = `You are a world-class executive resume writer and career coach. Rewrite the candidate's experience bullet points and professional summary to perfectly match the provided Job Description.
@@ -41,13 +42,18 @@ export async function POST(request: NextRequest) {
             .eq('user_id', user.id)
             .maybeSingle();
 
-        const isPro = ['active'].includes(sub?.status as string);
-        if (!isPro) {
+        const dailyKeywordLimit = getDailyKeywordLimit(sub);
+        const currentUsage = sub?.usage_keywords_today || 0;
+
+        if (currentUsage >= dailyKeywordLimit) {
             return NextResponse.json({
-                error: 'AI Optimization is a Pro feature. Please upgrade to use this tool.',
-                code: 'PRO_REQUIRED'
+                error: 'Daily Keyword Optimization limit reached. Please upgrade to unlock unlimited keywords or try again tomorrow.',
+                code: 'LIMIT_REACHED'
             }, { status: 403 });
         }
+
+        const useAdvancedAi = canUseAdvancedAi(sub);
+        const modelToUse = useAdvancedAi ? 'gpt-4o' : 'gpt-4o-mini';
 
         const { documentId, documentType, jobDescription, profileId: legacyProfileId } = await request.json();
 
@@ -83,7 +89,7 @@ export async function POST(request: NextRequest) {
         }
 
         const completion = await openai.chat.completions.create({
-            model: 'gpt-4o',
+            model: modelToUse,
             messages: [
                 { role: 'system', content: OPTIMIZE_PROMPT },
                 {
@@ -166,6 +172,21 @@ export async function POST(request: NextRequest) {
             });
         }
         // ---------------------------------------------------- //
+
+        // Increment daily keyword usage
+        if (sub) {
+            await supabase.rpc('increment_keyword_usage', { target_user_id: user.id })
+                .then(({ error: rpcErr }) => {
+                    if (rpcErr) console.error("RPC increment error, falling back to basic increment", rpcErr);
+                    // Fallback to basic update if RPC doesn't exist yet
+                    if (rpcErr && sub.id) {
+                        supabase.from('subscriptions')
+                            .update({ usage_keywords_today: currentUsage + 1, usage_keywords_last_reset: new Date().toISOString() })
+                            .eq('id', sub.id)
+                            .then();
+                    }
+                });
+        }
 
         return NextResponse.json({ resume });
     } catch (error) {

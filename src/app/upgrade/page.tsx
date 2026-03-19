@@ -7,31 +7,37 @@ import Link from "next/link";
 import { toast } from "sonner";
 
 export default function UpgradePage() {
-    const [loading, setLoading] = useState(false);
+    const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
 
-    const handleCheckout = async (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-        setLoading(true);
+    const handleCheckout = async (planId: string) => {
+        setLoadingPlan(planId);
 
-        const url = process.env.NEXT_PUBLIC_POLAR_CHECKOUT_URL;
-        if (!url) {
-            console.error("Missing NEXT_PUBLIC_POLAR_CHECKOUT_URL");
-            toast.error("Payment link is not configured. Please contact support.");
-            setLoading(false);
-            return;
+        try {
+            const res = await fetch('/api/checkout', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ planId })
+            });
+            const data = await res.json();
+
+            if (data.url) {
+                window.location.assign(data.url);
+            } else {
+                toast.error(data.error || "Failed to start checkout");
+            }
+        } catch (error) {
+            console.error("Checkout error:", error);
+            toast.error("Something went wrong. Please try again.");
+        } finally {
+            setLoadingPlan(null);
         }
-
-        window.location.assign(url);
     };
 
     return (
-        <div className="min-h-screen bg-[#fafafa] dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50 relative overflow-hidden">
-            {/* Subtle background glow */}
+        <div className="min-h-screen bg-[#fafafa] dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50 relative overflow-hidden pb-20">
             <div className="absolute inset-x-0 bottom-0 h-96 bg-gradient-to-t from-blue-50/50 dark:from-blue-950/20 to-transparent pointer-events-none" />
 
             <div className="container px-6 mx-auto text-center relative z-10 max-w-5xl py-4 md:py-8">
-
-                {/* Back link */}
                 <div className="flex justify-start mb-6">
                     <Link
                         href="/dashboard"
@@ -42,123 +48,98 @@ export default function UpgradePage() {
                     </Link>
                 </div>
 
-                {/* Compact header */}
-                <div className="mb-8 text-center">
-                    <p className="text-[12px] font-black uppercase tracking-[0.15em] text-blue-600 mb-2">Pricing</p>
-                    <h1 className="text-2xl md:text-3xl font-extrabold text-zinc-900 dark:text-white tracking-tight">
-                        Simple, transparent pricing.
+                <div className="mb-12 text-center">
+                    <p className="text-[12px] font-black uppercase tracking-[0.15em] text-blue-600 mb-2">Upgrade Account</p>
+                    <h1 className="text-3xl md:text-4xl font-extrabold text-zinc-900 dark:text-white tracking-tight">
+                        Choose your career power-up.
                     </h1>
                 </div>
 
-                {/* Plan Cards */}
-                <div className="flex flex-col md:flex-row gap-6 mx-auto mb-10 items-stretch justify-center">
-
-                    {/* Trial Plan */}
-                    <div className="flex-1 max-w-[400px] w-full bg-white dark:bg-zinc-900 rounded-[32px] shadow-[0_4px_24px_-4px_rgba(0,0,0,0.06)] dark:shadow-none p-6 md:p-8 flex flex-col border border-zinc-200 dark:border-white/8 hover:shadow-xl dark:hover:border-white/12 transition-all text-left">
-                        <div className="mb-4">
-                            <h3 className="text-[28px] font-extrabold text-black dark:text-white leading-tight tracking-tight">14-Day Trial</h3>
-                            <p className="text-zinc-500 dark:text-zinc-400 text-[14px] mt-1 font-medium">Try everything free. No credit card.</p>
-                        </div>
-                        <div className="flex items-baseline gap-1.5 mb-6">
-                            <span className="text-[48px] font-extrabold tracking-tighter text-zinc-900 dark:text-white leading-none">$0</span>
-                            <span className="text-zinc-500 dark:text-zinc-400 text-[14px] font-bold">/ 14 days</span>
-                        </div>
-
-                        <ul className="space-y-3 mb-8 flex-1">
-                            {[
-                                { text: "2 CVs", included: true },
-                                { text: "4 Custom Cover Letters", included: true },
-                                { text: "2 LinkedIn Job Searches / day", included: true },
-                                { text: "Shareable links → cvoptimizerai.com after trial", included: true },
-                                { text: "Branded shareable links", included: false },
-                                { text: "Unlimited everything", included: false },
-                            ].map((item, i) => (
-                                <li key={i} className="flex items-start gap-3 text-[14px]">
-                                    {item.included ? (
-                                        <CheckCircle2 className="w-[20px] h-[20px] text-[#2563eb] shrink-0 mt-[2px]" strokeWidth={2.5} />
-                                    ) : (
-                                        <X className="w-[20px] h-[20px] text-zinc-300 dark:text-zinc-600 shrink-0 mt-[2px]" strokeWidth={2.5} />
-                                    )}
-                                    <span className={item.included ? "text-zinc-700 dark:text-zinc-300 font-bold" : "text-zinc-400 dark:text-zinc-500 font-medium"}>{item.text}</span>
-                                </li>
-                            ))}
-                        </ul>
-
-                        <Link href="/dashboard" className="w-full">
-                            <Button
-                                variant="outline"
-                                className="w-full h-14 rounded-full border-zinc-200 dark:border-white/10 text-zinc-900 dark:text-zinc-100 font-bold text-[15px] hover:bg-zinc-50 dark:hover:bg-white/5 hover:border-zinc-300 dark:hover:border-white/20 transition-all shadow-sm"
-                            >
-                                Continue with Trial
-                            </Button>
-                        </Link>
+                {/* 3 Pricing Cards */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-stretch text-left">
+                  
+                  {/* Starter */}
+                  <div className="bg-white dark:bg-zinc-900 rounded-3xl shadow-lg border border-zinc-200 dark:border-white/10 p-8 flex flex-col hover:shadow-xl transition-shadow">
+                    <h3 className="text-xl font-extrabold">Starter 🚀</h3>
+                    <p className="text-sm text-zinc-500 mt-1 mb-6">Perfect for getting started</p>
+                    <div className="mb-6">
+                      <span className="text-4xl font-extrabold leading-none">$24</span>
+                      <span className="text-zinc-500 font-bold">/month</span>
                     </div>
+                    <Button 
+                        variant="outline" 
+                        onClick={() => handleCheckout('starter_monthly')}
+                        disabled={loadingPlan !== null}
+                        className="w-full h-12 rounded-full border-blue-200 text-blue-700 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/30 font-bold mb-8"
+                    >
+                      {loadingPlan === 'starter_monthly' ? <Loader2 className="w-5 h-5 animate-spin" /> : "Get Started"}
+                    </Button>
+                    <ul className="space-y-4 text-sm flex-1">
+                      <li className="flex items-start gap-3"><CheckCircle2 className="w-5 h-5 text-blue-600 shrink-0" /><span className="font-semibold">Unlimited CVs & Letters</span></li>
+                      <li className="flex items-start gap-3"><CheckCircle2 className="w-5 h-5 text-blue-600 shrink-0" /><span className="font-semibold">5 Basic Templates</span></li>
+                      <li className="flex items-start gap-3"><CheckCircle2 className="w-5 h-5 text-blue-600 shrink-0" /><span className="font-semibold">10 Keyword scans / day</span></li>
+                    </ul>
+                  </div>
 
-                    {/* Pro Plan */}
-                    <div className="flex-1 max-w-[400px] w-full relative bg-white dark:bg-zinc-900 rounded-[32px] shadow-[0_12px_40px_-4px_rgba(37,99,235,0.15)] dark:shadow-[0_12px_40px_-4px_rgba(37,99,235,0.08)] border-[2.5px] border-[#2563eb] p-6 md:p-8 flex flex-col hover:scale-[1.02] transition-transform text-left">
-                        {/* Most Popular badge */}
-                        <div className="absolute top-0 right-10 -translate-y-1/2 bg-gradient-to-r from-[#2563eb] to-[#3b82f6] text-white text-[11px] font-extrabold tracking-wider px-4 py-1.5 rounded-full uppercase shadow-lg shadow-blue-600/20 z-20">
-                            Most Popular
-                        </div>
-
-                        <div className="mb-4">
-                            <h3 className="text-[28px] font-extrabold text-black dark:text-white leading-tight tracking-tight">Pro Plan</h3>
-                            <p className="text-zinc-500 dark:text-zinc-400 text-[14px] mt-1 font-medium">One-time payment. 3 years of access.</p>
-                        </div>
-
-                        <div className="flex flex-col mb-6">
-                            <div className="flex items-baseline gap-1.5">
-                                <span className="text-[48px] font-extrabold tracking-tighter text-zinc-900 dark:text-white leading-none">$99</span>
-                                <span className="text-zinc-600 dark:text-zinc-400 text-[14px] font-bold">one-time · 3 years</span>
-                            </div>
-                            <p className="text-[10px] text-[#2563eb] font-black mt-2 uppercase tracking-wider bg-blue-50 dark:bg-blue-500/10 border border-blue-100 dark:border-blue-500/20 w-fit px-2.5 py-1 rounded-md">
-                                ≈ $2.75 / month for 3 years
-                            </p>
-                        </div>
-
-                        <ul className="space-y-3 mb-8 flex-1">
-                            {[
-                                "Unlimited CVs",
-                                "Unlimited Cover Letters",
-                                "Unlimited Job Searches",
-                                "Your own branded shareable letter links",
-                                "Advanced AI Optimization",
-                                "No Watermark PDF Exports",
-                                "LinkedIn Integration",
-                                "6 Premium Resume Templates",
-                            ].map((feat, i) => (
-                                <li key={i} className="flex items-start gap-3 text-[14px]">
-                                    <CheckCircle2 className="w-[20px] h-[20px] text-[#2563eb] shrink-0 mt-[2px]" strokeWidth={2.5} />
-                                    <span className="text-zinc-900 dark:text-zinc-100 font-bold">{feat}</span>
-                                </li>
-                            ))}
-                        </ul>
-
-                        <button
-                            type="button"
-                            onClick={handleCheckout}
-                            disabled={loading}
-                            className="w-full h-14 rounded-full bg-gradient-to-r from-[#2563eb] to-[#3b82f6] hover:from-[#1d4ed8] hover:to-[#2563eb] text-white font-bold text-[15px] shadow-xl shadow-blue-500/20 transition-all flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
-                        >
-                            {loading ? (
-                                <><Loader2 className="h-5 w-5 animate-spin" /> Processing...</>
-                            ) : (
-                                <>Upgrade to Pro <ArrowRight className="h-4 w-4" /></>
-                            )}
-                        </button>
+                  {/* Professional */}
+                  <div className="bg-white dark:bg-zinc-900 rounded-3xl shadow-[0_20px_40px_-15px_rgba(37,99,235,0.2)] border-2 border-blue-600 p-8 flex flex-col relative transform md:-translate-y-4">
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-blue-600 to-blue-500 text-white text-[11px] font-extrabold tracking-widest px-4 py-1.5 rounded-full uppercase shadow-lg select-none whitespace-nowrap">
+                      RECOMMENDED
                     </div>
+                    <h3 className="text-xl font-extrabold">Professional ⭐</h3>
+                    <p className="text-sm text-zinc-500 mt-1 mb-4">Best for active job seekers</p>
+                    <div className="mb-2">
+                      <span className="text-4xl font-extrabold leading-none">$89</span>
+                      <span className="text-zinc-500 font-bold">/year</span>
+                    </div>
+                    <p className="text-[12px] bg-emerald-50 text-emerald-700 font-bold px-2.5 py-1 rounded w-fit mb-6 uppercase tracking-tight">Only $7.42/mo — Save 69%</p>
+                    
+                    <Button 
+                        onClick={() => handleCheckout('professional_yearly')}
+                        disabled={loadingPlan !== null}
+                        className="w-full h-12 rounded-full bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-500/25 font-bold mb-8"
+                    >
+                      {loadingPlan === 'professional_yearly' ? <Loader2 className="w-5 h-5 animate-spin" /> : "Get Professional"}
+                    </Button>
+                    <ul className="space-y-4 text-sm flex-1">
+                      <li className="flex items-start gap-3"><CheckCircle2 className="w-5 h-5 text-blue-600 shrink-0" /><span className="font-bold">Everything in Starter, plus:</span></li>
+                      <li className="flex items-start gap-3"><CheckCircle2 className="w-5 h-5 text-blue-600 shrink-0" /><span className="font-semibold">12 Premium Templates</span></li>
+                      <li className="flex items-start gap-3"><CheckCircle2 className="w-5 h-5 text-blue-600 shrink-0" /><span className="font-semibold">Deep ATS Gap Analysis</span></li>
+                      <li className="flex items-start gap-3"><CheckCircle2 className="w-5 h-5 text-blue-600 shrink-0" /><span className="font-semibold">No Watermark on Exports</span></li>
+                      <li className="flex items-start gap-3"><CheckCircle2 className="w-5 h-5 text-blue-600 shrink-0" /><span className="font-semibold">Advanced GPT-4 AI</span></li>
+                    </ul>
+                  </div>
+
+                  {/* Lifetime */}
+                  <div className="bg-white dark:bg-zinc-900 rounded-3xl shadow-lg border border-purple-200 dark:border-purple-900 p-8 flex flex-col hover:shadow-xl transition-shadow relative overflow-hidden">
+                    <div className="absolute top-0 right-0 bg-purple-100 dark:bg-purple-900/50 text-purple-800 dark:text-purple-300 text-[10px] font-black tracking-widest px-3 py-1 rounded-bl-xl uppercase">
+                      BEST VALUE
+                    </div>
+                    <h3 className="text-xl font-extrabold">Lifetime 🏆</h3>
+                    <p className="text-sm text-zinc-500 mt-1 mb-6">Own it forever. Best ROI.</p>
+                    <div className="mb-6 flex flex-col">
+                      <div>
+                        <span className="text-4xl font-extrabold leading-none">$139</span>
+                        <span className="text-zinc-500 font-bold ml-1">once</span>
+                      </div>
+                    </div>
+                    <Button 
+                        variant="outline"
+                        onClick={() => handleCheckout('lifetime_onetime')}
+                        disabled={loadingPlan !== null}
+                        className="w-full h-12 rounded-full border-purple-300 text-purple-700 hover:bg-purple-50 dark:hover:bg-purple-900/20 font-bold mb-8"
+                    >
+                      {loadingPlan === 'lifetime_onetime' ? <Loader2 className="w-5 h-5 animate-spin" /> : "Get Lifetime Access"}
+                    </Button>
+                    <ul className="space-y-4 text-sm flex-1">
+                      <li className="flex items-start gap-3"><CheckCircle2 className="w-5 h-5 text-purple-600 shrink-0" /><span className="font-bold">Everything in Professional</span></li>
+                      <li className="flex items-start gap-3"><CheckCircle2 className="w-5 h-5 text-purple-600 shrink-0" /><span className="font-semibold">Pay once, use forever</span></li>
+                      <li className="flex items-start gap-3"><CheckCircle2 className="w-5 h-5 text-purple-600 shrink-0" /><span className="font-semibold">AI Priority Queue</span></li>
+                    </ul>
+                  </div>
+                  
                 </div>
 
-                {/* Trust logos */}
-                <div className="flex flex-col items-center gap-6 pb-4">
-                    <p className="text-zinc-400 dark:text-zinc-500 text-sm font-bold tracking-tight uppercase">Trusted by candidates hired at</p>
-                    <div className="flex items-center justify-center gap-8 md:gap-16 opacity-30 grayscale pointer-events-none flex-wrap">
-                        <p className="font-extrabold text-2xl tracking-tighter">Google</p>
-                        <p className="font-extrabold text-2xl tracking-tighter">Microsoft</p>
-                        <p className="font-extrabold text-2xl tracking-tighter">Meta</p>
-                        <p className="font-extrabold text-2xl tracking-tighter">Amazon</p>
-                    </div>
-                </div>
             </div>
         </div>
     );
