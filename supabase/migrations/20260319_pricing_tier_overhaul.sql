@@ -9,7 +9,9 @@ ADD COLUMN IF NOT EXISTS usage_cv_count integer DEFAULT 0,
 ADD COLUMN IF NOT EXISTS usage_letter_count integer DEFAULT 0,
 ADD COLUMN IF NOT EXISTS usage_keywords_today integer DEFAULT 0,
 ADD COLUMN IF NOT EXISTS usage_keywords_last_reset timestamp with time zone DEFAULT now(),
-ADD COLUMN IF NOT EXISTS grandfathered boolean DEFAULT false;
+ADD COLUMN IF NOT EXISTS grandfathered boolean DEFAULT false,
+ADD COLUMN IF NOT EXISTS polar_subscription_id text,
+ADD COLUMN IF NOT EXISTS polar_customer_id text;
 
 -- 2. Create a function to auto-reset keywords based on local date change (optional usage)
 CREATE OR REPLACE FUNCTION check_and_reset_daily_keywords()

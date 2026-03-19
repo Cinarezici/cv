@@ -1,11 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
-import Stripe from "stripe";
+import { Polar } from "@polar-sh/sdk";
 import { createClient } from "@/lib/supabase/server";
+
 export const dynamic = "force-dynamic";
+
+const polar = new Polar({
+    accessToken: process.env.POLAR_ACCESS_TOKEN || "",
+});
 
 export async function POST(req: NextRequest) {
     try {
-        const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {} as any);
         const supabase = await createClient();
         const { data: { user } } = await supabase.auth.getUser();
 
@@ -16,49 +20,38 @@ export async function POST(req: NextRequest) {
         const body = await req.json();
         const { planId } = body;
 
-        let priceId = '';
+        let productId = '';
         
-        // Map abstract plan IDs to Stripe Price IDs from env
+        // Map abstract plan IDs to Polar Product IDs from env
         if (planId === 'starter_monthly') {
-            priceId = process.env.STRIPE_PRICE_STARTER!;
+            productId = process.env.POLAR_PRODUCT_ID_STARTER!;
         } else if (planId === 'professional_yearly') {
-            priceId = process.env.STRIPE_PRICE_PROFESSIONAL!;
+            productId = process.env.POLAR_PRODUCT_ID_PROFESSIONAL!;
         } else if (planId === 'lifetime_onetime') {
-            priceId = process.env.STRIPE_PRICE_LIFETIME!;
+            productId = process.env.POLAR_PRODUCT_ID_LIFETIME!;
         }
 
-        if (!priceId) {
+        if (!productId) {
             return NextResponse.json(
-                { error: "Invalid planId or missing Stripe Price ID in env" },
+                { error: "Invalid planId or missing Polar Product ID in env" },
                 { status: 400 }
             );
         }
 
-        const isRecurring = planId !== 'lifetime_onetime';
-
-        // Custom checkout flow
-        const session = await stripe.checkout.sessions.create({
-            payment_method_types: ['card'],
-            mode: isRecurring ? 'subscription' : 'payment',
-            line_items: [
-                {
-                    price: priceId,
-                    quantity: 1,
-                },
-            ],
-            success_url: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/dashboard?checkout_success=true`,
-            cancel_url: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/pricing`,
-            customer_email: user.email,
-            client_reference_id: user.id,
+        // Generate checkout URL using Polar SDK
+        const result = await polar.checkouts.create({
+            products: [productId],
+            successUrl: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/dashboard?checkout_success=true`,
+            customerEmail: user.email!,
             metadata: {
                 userId: user.id,
                 planId: planId
             }
         });
 
-        return NextResponse.json({ url: session.url });
+        return NextResponse.json({ url: result.url });
     } catch (error: any) {
-        console.error("Stripe checkout error:", error);
+        console.error("Polar checkout error:", error);
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }
