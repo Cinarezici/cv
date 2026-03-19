@@ -5,7 +5,7 @@ import { Resend } from "resend";
 
 export const dynamic = "force-dynamic";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+
 
 export async function POST(request: NextRequest) {
     const body = await request.text();
@@ -78,6 +78,7 @@ export async function POST(request: NextRequest) {
                 // Send Downgrade Email
                 const userEmail = existingSub?.user_email;
                 if (userEmail && process.env.RESEND_API_KEY) {
+                    const resend = new Resend(process.env.RESEND_API_KEY);
                     await resend.emails.send({
                         from: 'Support <onboarding@resend.dev>',
                         to: userEmail,

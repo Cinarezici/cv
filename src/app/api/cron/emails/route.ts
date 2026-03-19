@@ -4,7 +4,7 @@ import { createClient } from '@supabase/supabase-js';
 
 export const dynamic = 'force-dynamic';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+
 
 export async function GET(request: NextRequest) {
     // Basic auth check for Vercel Cron
@@ -83,6 +83,7 @@ export async function GET(request: NextRequest) {
 async function sendTemplate(to: string, subject: string, htmlContent: string) {
     if (!process.env.RESEND_API_KEY) return;
     
+    const resend = new Resend(process.env.RESEND_API_KEY);
     await resend.emails.send({
         from: 'Support <onboarding@resend.dev>',
         to,

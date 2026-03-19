@@ -4,9 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
 
-const polar = new Polar({
-    accessToken: process.env.POLAR_ACCESS_TOKEN || "",
-});
+
 
 export async function POST(req: NextRequest) {
     try {
@@ -37,6 +35,10 @@ export async function POST(req: NextRequest) {
                 { status: 400 }
             );
         }
+
+        const polar = new Polar({
+            accessToken: process.env.POLAR_ACCESS_TOKEN || "",
+        });
 
         // Generate checkout URL using Polar SDK
         const result = await polar.checkouts.create({
