@@ -6,6 +6,7 @@ import { DeleteButton } from '@/components/DeleteButton';
 import { CvShareLinkButton } from '@/components/CvShareLinkButton';
 import { CvPreviewModal } from '@/components/CvPreviewModal';
 import { FileText, Mail, Plus, Pencil, Clock, LayoutTemplate, Zap, Link as LinkIcon, AlertCircle, Lock, Sparkles } from 'lucide-react';
+import { OnboardingUpgradeModal } from '@/components/ui/OnboardingUpgradeModal';
 import { formatDistanceToNow } from 'date-fns';
 import { checkUsage } from '@/lib/usage-enforcement';
 import { getEffectiveStatus } from '@/lib/subscription';
@@ -79,6 +80,8 @@ export default async function DashboardPage() {
 
     return (
         <div className="max-w-5xl mx-auto py-8 space-y-8">
+            {/* ─── Onboarding upgrade modal (shows for 48h after signup) ── */}
+            <OnboardingUpgradeModal />
 
             {/* ─── Header ────────────────────────────────────────────── */}
             <div className="flex items-start justify-between">
