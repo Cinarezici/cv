@@ -1,5 +1,5 @@
 export interface BlogContentBlock {
-  type: 'p' | 'h2' | 'h3' | 'ul' | 'bold_p' | 'stat' | 'before_after' | 'pullquote' | 'checklist' | 'faq';
+  type: 'p' | 'h2' | 'h3' | 'ul' | 'bold_p' | 'stat' | 'before_after' | 'pullquote' | 'checklist' | 'faq' | 'stat_row' | 'scenario';
   text?: string;
   num?: string; // For stat
   before?: string; // For before_after
@@ -9,6 +9,9 @@ export interface BlogContentBlock {
   items?: string[]; // For ul, checklist
   listTitle?: string; // For checklist
   faqItems?: { q: string; a: string }[]; // For faq
+  statItems?: { num: string; label: string }[]; // For stat_row
+  scenarioLabel?: string; // For scenario
+  scenarioTexts?: string[]; // For scenario
 }
 
 export interface BlogPost {
@@ -185,6 +188,84 @@ export const blogPosts: BlogPost[] = [
           { q: 'Should I tailor my resume for every single application?', a: 'For roles you genuinely want: yes, always. Create 2–3 strong base versions for different role types, then spend 15–20 minutes customizing each before submitting. Volume without tailoring has a very low return rate.' },
           { q: 'How do I find the right keywords for my industry?', a: 'The most reliable method is reading 10–15 job postings for your target role and tracking repeated terminology. You can also use an AI-powered ATS checker that compares your resume against a specific job description and highlights the gaps.' },
           { q: 'Does LinkedIn keyword optimization help my resume too?', a: 'They serve different systems but reinforce each other. Strong LinkedIn keyword optimization increases your discoverability to recruiters searching the platform. Strong resume keyword optimization increases your ATS score when you apply. Align both to the same target role vocabulary for maximum impact.' }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'investigation-4',
+    title: "You Just Got an Unexpected Meeting Request from HR. Here's What's Actually Happening.",
+    slug: 'hr-meeting-unexpected-guide',
+    description: 'A short email. A Friday afternoon time slot. No agenda. Thousands of people share this exact experience every week — and most of them are catastrophising unnecessarily.',
+    date: 'March 20, 2026',
+    tag: 'Job Security · Career',
+    readingTime: '4 min read',
+    accentColor: '#e8341c',
+    content: [
+      { type: 'h2', text: 'The Scenario Everyone Recognises' },
+      { type: 'p', text: 'It arrives in your inbox without warning. "Please plan to meet with me and [name] on Friday at 3:30pm online. I will send you a meeting invite. If you have any scheduling conflicts, please let me know."' },
+      { type: 'p', text: 'No subject line that gives anything away. No agenda. Just a time, a date, and two people whose names trigger immediate pattern-matching in your brain: HR. Senior manager. Friday afternoon.' },
+      { type: 'p', text: 'Within minutes, most people have already mentally written their termination script, calculated how many weeks of rent they have covered, and started drafting the LinkedIn post they\'ll never actually send. This is a documented psychological response — and it\'s almost always disproportionate to what\'s actually happening.' },
+      { type: 'pullquote', text: 'The meeting you\'re dreading is statistically more likely to be about someone else\'s behaviour than your own performance.' },
+      { type: 'h2', text: 'What HR Meetings Are Actually Called For' },
+      { type: 'p', text: 'Based on patterns reported across thousands of workplace experiences, unexpected HR meetings called with short notice fall into several categories — and termination is not the most common one.' },
+      {
+        type: 'stat_row',
+        statItems: [
+          { num: '~35%', label: 'Workplace investigation — you\'re a witness, not the subject' },
+          { num: '~28%', label: 'Accommodation, benefits, or policy follow-up' },
+          { num: '~22%', label: 'Performance conversation, PIP, or restructure' }
+        ]
+      },
+      { type: 'p', text: 'The termination scenario — the one your brain defaults to — accounts for a smaller share than most people assume, and when it does happen, there are usually preceding signals: performance reviews with formal documentation, warnings, or a noticeable shift in how your manager communicates with you.' },
+      { type: 'p', text: 'A meeting scheduled the day before, with a polite note about scheduling conflicts, is not how most organisations handle terminations. It\'s also not how most organisations handle urgent performance issues. What it does resemble is an administrative or investigative follow-up — something that requires your presence but isn\'t necessarily about you at all.' },
+      { type: 'h2', text: 'The Signals That Actually Matter' },
+      { type: 'p', text: 'If you\'re trying to read the situation accurately rather than catastrophically, these are the details worth paying attention to:' },
+      {
+        type: 'checklist',
+        listTitle: 'Lower-risk signals',
+        items: [
+          'Meeting scheduled in advance with a specific time — not same-morning with "mandatory" in the subject line',
+          'Polite language asking about scheduling conflicts — organisations don\'t ask this when urgency is genuine',
+          'Recent approval of accommodation requests or policy changes — follow-ups are common',
+          'No preceding performance documentation, written warnings, or formal feedback process',
+          'Afternoon timing — most terminations happen early in the day to allow system access to be revoked'
+        ]
+      },
+      {
+        type: 'checklist',
+        listTitle: 'Higher-risk signals',
+        items: [
+          'Same-morning meeting request with mandatory attendance noted',
+          'Recent formal performance improvement plan or documented written warning',
+          'Noticeable shift in communication from your direct manager in preceding weeks',
+          'Access to systems or files has already been quietly restricted',
+          'Meeting request comes from HR alone, with no direct manager included'
+        ]
+      },
+      { type: 'h2', text: 'How to Walk Into the Room' },
+      { type: 'p', text: 'Whatever the meeting turns out to be, the approach is the same. Listen significantly more than you speak in the first five minutes. Avoid defensive responses to things that haven\'t been said yet. If something surprises you, it\'s acceptable to say "I\'d like a moment to think about that before responding." You are not required to have immediate answers to things you weren\'t prepared for.' },
+      { type: 'p', text: 'If it turns out to be nothing — a witness interview, an accommodation follow-up, an organisational update — you\'ll leave having conducted yourself well. If it turns out to be something more serious, the same applies. How you handle unexpected pressure is remembered.' },
+      {
+        type: 'scenario',
+        scenarioLabel: 'The part nobody talks about',
+        scenarioTexts: [
+          'Even when the meeting is completely routine, the experience of receiving that email does something useful: it forces you to confront how prepared you actually are if your employment situation changed tomorrow.',
+          'Most people haven\'t updated their CV in the time since they started their current role. Their LinkedIn is out of date. They haven\'t thought about what they\'d do next, or how long it would take them to get there.',
+          'The anxiety of that email isn\'t always about the meeting itself. Sometimes it\'s about realising you don\'t have a plan B — and that\'s actually the more useful thing to address.'
+        ]
+      },
+      { type: 'h2', text: 'After the Meeting: The Part That Actually Matters' },
+      { type: 'p', text: 'If the meeting turns out to be fine, most people close their laptop, exhale, and move on without doing anything with the experience. That\'s understandable. It\'s also a missed opportunity.' },
+      { type: 'p', text: 'The window between "I might need to job search soon" and "I definitely need to job search" is the best time to update your CV, check whether it would pass ATS screening for the roles you\'d actually target, and understand what the gap looks like between where your resume is now and where it needs to be.' },
+      { type: 'p', text: 'Doing this from a position of stability — when you have time and aren\'t under pressure — produces a significantly better outcome than doing it in a panic after something has already gone wrong.' },
+      {
+        type: 'faq',
+        faqItems: [
+          { q: 'Should I ask HR what the meeting is about beforehand?', a: 'You can. Most HR professionals won\'t give you the full picture before the meeting, but asking "is there anything I should prepare or bring?" is a reasonable question that sometimes yields useful information. If they say no preparation is needed, that\'s itself a data point.' },
+          { q: 'Can I bring someone with me to an HR meeting?', a: 'In most jurisdictions, you have the right to bring a support person or union representative to a formal disciplinary meeting. For routine meetings, this isn\'t typically applicable — but if you believe the meeting may involve formal action, it\'s worth knowing your rights before you go in.' },
+          { q: 'How quickly should I update my CV after a situation like this?', a: 'The honest answer is: immediately. Not because anything bad happened, but because the experience reminded you that employment situations change. An updated, ATS-optimised CV takes a few hours to produce when you\'re calm. It takes significantly longer when you\'re under pressure and the stakes feel higher.' },
+          { q: 'What\'s the biggest mistake people make when they do have to job search quickly?', a: 'Sending a CV that hasn\'t been checked for ATS compatibility. Most applications now go through automated screening before a human sees them. A CV that would impress a recruiter can score poorly against an ATS if the keywords don\'t match the specific job description — and you\'d never know from the rejection email.' }
         ]
       }
     ]

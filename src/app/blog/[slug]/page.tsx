@@ -138,6 +138,28 @@ function renderContent(blocks: BlogContentBlock[], accentColor: string) {
             </div>
           </div>
         );
+      case 'stat_row':
+        return (
+          <div key={i} className="grid grid-cols-1 md:grid-cols-3 gap-4 my-10">
+            {block.statItems?.map((item, j) => (
+              <div key={j} className="bg-white border border-zinc-200 p-6 text-center rounded-xl shadow-sm">
+                <span className="block text-4xl font-black mb-2" style={{ color: accentColor }}>{item.num}</span>
+                <span className="text-[12px] text-zinc-500 font-medium leading-tight block">{item.label}</span>
+              </div>
+            ))}
+          </div>
+        );
+      case 'scenario':
+        return (
+          <div key={i} className="bg-zinc-950 text-white p-8 md:p-10 my-10 rounded-2xl border-l-4 shadow-xl" style={{ borderLeftColor: accentColor }}>
+            <span className="block text-[10px] font-bold uppercase tracking-[0.3em] mb-6" style={{ color: accentColor }}>{block.scenarioLabel}</span>
+            {block.scenarioTexts?.map((text, j) => (
+              <p key={j} className="text-[15px] text-zinc-300 font-medium leading-relaxed mb-4 last:mb-0">
+                {text}
+              </p>
+            ))}
+          </div>
+        );
       default:
         return null;
     }
