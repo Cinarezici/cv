@@ -197,7 +197,7 @@ export const blogPosts: BlogPost[] = [
     title: "You Just Got an Unexpected Meeting Request from HR. Here's What's Actually Happening.",
     slug: 'hr-meeting-unexpected-guide',
     description: 'A short email. A Friday afternoon time slot. No agenda. Thousands of people share this exact experience every week — and most of them are catastrophising unnecessarily.',
-    date: 'March 20, 2026',
+    date: 'January 14, 2026',
     tag: 'Job Security · Career',
     readingTime: '4 min read',
     accentColor: '#e8341c',
