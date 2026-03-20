@@ -1,16 +1,12 @@
-import { createClient } from "@supabase/supabase-js";
+import { createServiceRoleClient } from "@/lib/supabase/service";
 import { getLimitsForPlan, PlanFeature } from "@/config/plans";
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
 
 /**
  * Checks if a user has sufficient quota to perform a feature-specific action.
  * Returns { allowed: boolean, reason?: string, usage?: number, limit?: number }
  */
 export async function checkUsage(userId: string, feature: PlanFeature) {
+  const supabase = createServiceRoleClient();
   // 1. Fetch Subscription State
   const { data: sub, error: subError } = await supabase
     .from('subscriptions')
@@ -65,6 +61,7 @@ export async function checkUsage(userId: string, feature: PlanFeature) {
  * Atomically increments usage for a feature.
  */
 export async function incrementUsage(userId: string, feature: PlanFeature, periodStart: string) {
+  const supabase = createServiceRoleClient();
   const { error } = await supabase.rpc('increment_usage', {
     target_user_id: userId,
     target_feature: feature,
