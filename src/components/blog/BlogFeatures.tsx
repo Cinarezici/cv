@@ -263,10 +263,15 @@ export function BlogFeatures() {
           </div>
         </div>
 
-        {/* Footer */}
-        <p className="text-center text-[13px] text-zinc-400 font-medium mt-14">
-          Joined by 20,313+ professionals \u00b7 14-day free trial \u00b7 No credit card required
-        </p>
+        {/* Footer — quiet, inline */}
+        <div className="flex flex-wrap items-center justify-center gap-2 mt-14">
+          {['Joined by 20,313+ professionals', '14-day free trial', 'No credit card required'].map((item, i, arr) => (
+            <span key={i} className="flex items-center gap-2">
+              <span className="text-[12px] text-zinc-400 font-medium">{item}</span>
+              {i < arr.length - 1 && <span className="w-1 h-1 rounded-full bg-zinc-300 shrink-0 inline-block" />}
+            </span>
+          ))}
+        </div>
       </div>
     </section>
   );
