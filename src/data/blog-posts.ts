@@ -336,7 +336,7 @@ export const blogPosts: BlogPost[] = [
     title: "That Unexpected HR Meeting — What's Actually Happening",
     slug: 'hr-meeting-unexpected-guide',
     description: 'It arrives in your inbox without warning: a meeting with HR and a senior manager on a Friday afternoon. Before you panic, understand the data on what these meetings actually represent.',
-    date: 'March 20, 2026',
+    date: 'December 24, 2025',
     tag: 'Job Security · Career',
     readingTime: '4 min read',
     accentColor: '#f97316',
