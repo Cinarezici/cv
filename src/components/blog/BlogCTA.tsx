@@ -13,18 +13,18 @@ export function BlogCTA() {
         Ready to optimize your CV?
       </h2>
       
-      <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 mb-8 text-zinc-600 text-[14px] font-semibold px-4">
-        <div className="flex items-center gap-2">
-          <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />
-          <span>Instant ATS Scoring</span>
+      <div className="flex flex-col items-start md:items-center gap-y-3 mb-8 text-zinc-600 text-[15px] font-semibold px-4 max-w-xl mx-auto">
+        <div className="flex items-center gap-3 text-left md:text-center">
+          <span className="text-blue-500 shrink-0">✦</span>
+          <span>Your CV scored against the real job description — in seconds</span>
         </div>
-        <div className="flex items-center gap-2">
-          <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />
-          <span>AI-Powered Rewrites</span>
+        <div className="flex items-center gap-3 text-left md:text-center">
+          <span className="text-blue-500 shrink-0">✦</span>
+          <span>AI rewrites weak bullet points before any recruiter sees them</span>
         </div>
-        <div className="flex items-center gap-2">
-          <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />
-          <span>Increase Interview Invitations</span>
+        <div className="flex items-center gap-3 text-left md:text-center">
+          <span className="text-blue-500 shrink-0">✦</span>
+          <span>Most users receive interview callbacks within 2 weeks</span>
         </div>
       </div>
 
