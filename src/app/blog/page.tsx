@@ -50,14 +50,16 @@ export default function BlogPage() {
       <main className="flex-1 pt-36 pb-24">
         <div className="container px-6 mx-auto max-w-5xl">
 
-          {/* ── Header ─────────────────────────────────────── */}
-          <div className="text-center mb-14">
-            <p className="text-[12px] font-black uppercase tracking-[0.15em] text-blue-600 mb-4">Insights</p>
-            <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-zinc-900 mb-5">
-              Career Advice & Resume Tips
+          {/* ── Editorial Masthead ─────────────────────────── */}
+          <div className="mb-20 text-center border-b-2 border-zinc-900 pb-16">
+            <p className="font-mono text-[11px] font-bold uppercase tracking-[0.4em] text-zinc-400 mb-6">CVOptimizerAI · Editorial</p>
+            <h1 className="font-serif text-5xl md:text-7xl font-black tracking-tight text-zinc-950 leading-[1.05] mb-8">
+              What Nobody Tells You<br />About <span className="italic text-[#f97316]">Getting Hired</span>
             </h1>
-            <p className="text-lg text-zinc-500 font-medium max-w-xl mx-auto leading-relaxed">
-              Practical guides to help you write a better resume, pass ATS filters, and land more interviews.
+            <p className="font-mono text-[11px] text-zinc-400 uppercase tracking-[0.1em] flex items-center justify-center gap-4">
+              <span>Investigations</span>
+              <span className="w-1 h-1 rounded-full bg-zinc-300" />
+              <span>cvoptimizerai.com</span>
             </p>
           </div>
 

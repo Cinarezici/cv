@@ -23,15 +23,15 @@ export function BlogCard({ post }: { post: BlogPost }) {
     >
       <div className="flex items-center justify-between mb-5">
         <span 
-          className="text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full border"
+          className="font-mono text-[9px] font-bold uppercase tracking-[0.2em] px-3 py-1 rounded-sm border"
           style={accentStyle}
         >
           {post.tag}
         </span>
-        <span className="text-[10px] text-zinc-400 font-bold uppercase tracking-widest">{post.readingTime}</span>
+        <span className="font-mono text-[9px] text-zinc-400 font-bold uppercase tracking-[0.2em]">{post.readingTime}</span>
       </div>
 
-      <h2 className="text-xl font-extrabold text-zinc-900 tracking-tight leading-snug mb-3 group-hover:text-blue-600 transition-colors">
+      <h2 className="font-serif text-xl font-extrabold text-zinc-900 tracking-tight leading-snug mb-3 group-hover:opacity-70 transition-opacity">
         {post.title}
       </h2>
 
@@ -40,11 +40,14 @@ export function BlogCard({ post }: { post: BlogPost }) {
       </p>
 
       <div className="flex items-center justify-between mt-auto pt-4 border-t border-zinc-50">
-        <div className="flex items-center gap-1.5 text-[13px] font-bold text-blue-600 group-hover:gap-2.5 transition-all">
+        <div 
+          className="flex items-center gap-1.5 text-[11px] font-mono font-bold uppercase tracking-widest group-hover:gap-2.5 transition-all"
+          style={{ color: post.accentColor }}
+        >
           Read article
           <ArrowRight className="w-3.5 h-3.5" />
         </div>
-        <span className="text-[11px] text-zinc-400 font-medium">{post.date}</span>
+        <span className="font-mono text-[10px] text-zinc-400 font-medium uppercase tracking-widest">{post.date}</span>
       </div>
     </Link>
   );

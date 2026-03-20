@@ -41,34 +41,34 @@ function renderContent(blocks: BlogContentBlock[], accentColor: string) {
     switch (block.type) {
       case 'h2':
         return (
-          <h2 key={i} className="text-2xl font-extrabold text-zinc-900 tracking-tight mt-12 mb-6">
+          <h2 key={i} className="font-serif text-2xl md:text-3xl font-bold text-zinc-950 tracking-tight mt-16 mb-6">
             {block.text}
           </h2>
         );
       case 'h3':
         return (
-          <h3 key={i} className="text-lg font-bold text-zinc-800 tracking-tight mt-8 mb-4">
+          <h3 key={i} className="font-serif text-xl font-bold text-zinc-900 tracking-tight mt-10 mb-4">
             {block.text}
           </h3>
         );
       case 'p':
         return (
-          <p key={i} className="text-zinc-600 leading-[1.85] text-[16px] font-medium mb-6">
+          <p key={i} className="text-zinc-700 leading-[1.8] text-[17px] font-medium mb-6">
             {block.text}
           </p>
         );
       case 'bold_p':
         return (
-          <p key={i} className="text-zinc-800 leading-[1.85] text-[16px] font-bold mb-6 border-l-4 pl-4 italic" style={{ borderColor: accentColor }}>
+          <p key={i} className="text-zinc-900 leading-[1.8] text-[17px] font-bold mb-8 border-l-4 pl-6 italic" style={{ borderColor: accentColor }}>
             {block.text}
           </p>
         );
       case 'ul':
         return (
-          <ul key={i} className="space-y-3 mb-8 ml-1">
+          <ul key={i} className="space-y-3 mb-10 ml-2">
             {block.items?.map((item, j) => (
-              <li key={j} className="flex items-start gap-3 text-zinc-600 text-[15px] font-medium leading-relaxed">
-                <span className="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: accentColor }} />
+              <li key={j} className="flex items-start gap-3 text-zinc-700 text-[16px] font-medium leading-relaxed">
+                <span className="mt-2.5 w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: accentColor }} />
                 {item}
               </li>
             ))}
@@ -76,35 +76,35 @@ function renderContent(blocks: BlogContentBlock[], accentColor: string) {
         );
       case 'stat':
         return (
-          <div key={i} className="bg-zinc-950 text-white p-8 md:p-10 my-10 rounded-2xl flex items-center gap-8 flex-wrap md:flex-nowrap border-l-4" style={{ borderLeftColor: accentColor }}>
-            <div className="text-5xl md:text-6xl font-black leading-none" style={{ color: accentColor }}>
+          <div key={i} className="bg-zinc-950 text-white p-8 md:p-10 my-12 rounded-sm flex items-center gap-10 flex-wrap md:flex-nowrap border-l-4 shadow-2xl" style={{ borderLeftColor: accentColor }}>
+            <div className="font-serif text-5xl md:text-6xl font-black leading-none" style={{ color: accentColor }}>
               {block.num}
             </div>
-            <div className="text-[14px] md:text-[15px] text-zinc-400 font-medium leading-relaxed">
+            <div className="text-[15px] text-zinc-400 font-medium leading-relaxed">
               {block.text}
             </div>
           </div>
         );
       case 'pullquote':
         return (
-          <div key={i} className="border-t-2 border-b-2 py-8 my-10" style={{ borderTopColor: accentColor, borderBottomColor: 'rgba(0,0,0,0.1)' }}>
-            <p className="text-xl md:text-2xl font-serif italic text-zinc-900 leading-relaxed text-center">
+          <div key={i} className="border-t-2 border-b-2 py-10 my-14" style={{ borderTopColor: accentColor, borderBottomColor: 'zinc-950' }}>
+            <p className="font-serif text-2xl md:text-3xl italic text-zinc-950 leading-relaxed text-center px-4">
               "{block.text}"
             </p>
           </div>
         );
       case 'before_after':
         return (
-          <div key={i} className="grid grid-cols-1 md:grid-cols-2 gap-4 my-10">
-            <div className="p-6 rounded-xl bg-red-50/50 border border-red-100">
-              <span className="block text-[10px] font-bold uppercase tracking-widest text-red-500 mb-3">{block.beforeLabel}</span>
-              <p className="text-[14px] text-zinc-700 italic font-medium leading-relaxed m-0">
+          <div key={i} className="grid grid-cols-1 md:grid-cols-2 gap-6 my-12">
+            <div className="p-8 rounded-sm bg-red-50 border border-red-100">
+              <span className="font-mono block text-[10px] font-bold uppercase tracking-[0.3em] text-red-500 mb-4">{block.beforeLabel}</span>
+              <p className="text-[15px] text-zinc-700 italic font-medium leading-relaxed m-0">
                 {block.before}
               </p>
             </div>
-            <div className="p-6 rounded-xl bg-emerald-50/50 border border-emerald-100">
-              <span className="block text-[10px] font-bold uppercase tracking-widest text-emerald-600 mb-3">{block.afterLabel}</span>
-              <p className="text-[14px] text-zinc-700 italic font-medium leading-relaxed m-0">
+            <div className="p-8 rounded-sm bg-emerald-50 border border-emerald-100">
+              <span className="font-mono block text-[10px] font-bold uppercase tracking-[0.3em] text-emerald-600 mb-4">{block.afterLabel}</span>
+              <p className="text-[15px] text-zinc-700 italic font-medium leading-relaxed m-0">
                 {block.after}
               </p>
             </div>
@@ -112,12 +112,12 @@ function renderContent(blocks: BlogContentBlock[], accentColor: string) {
         );
       case 'checklist':
         return (
-          <div key={i} className="bg-zinc-50 border border-zinc-200 p-8 my-10 rounded-2xl">
-            <h3 className="text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-400 mb-6">{block.listTitle}</h3>
-            <ul className="space-y-4">
+          <div key={i} className="bg-[#f5f2eb] border border-[#e2ddd5] p-10 my-12 rounded-sm shadow-sm">
+            <h3 className="font-mono text-[11px] font-bold uppercase tracking-[0.4em] text-zinc-500 mb-8">{block.listTitle}</h3>
+            <ul className="space-y-5">
               {block.items?.map((item, j) => (
-                <li key={j} className="flex items-start gap-3 text-[15px] font-semibold text-zinc-800 leading-relaxed">
-                  <span className="mt-1 font-black text-lg leading-none" style={{ color: accentColor }}>→</span>
+                <li key={j} className="flex items-start gap-4 text-[16px] font-semibold text-zinc-800 leading-relaxed">
+                  <span className="font-bold text-lg leading-none mt-0.5" style={{ color: accentColor }}>→</span>
                   {item}
                 </li>
               ))}
@@ -126,13 +126,13 @@ function renderContent(blocks: BlogContentBlock[], accentColor: string) {
         );
       case 'faq':
         return (
-          <div key={i} className="mt-16 pt-12 border-t border-zinc-200">
-            <h2 className="text-2xl font-extrabold text-zinc-900 tracking-tight mb-8">Frequently Asked Questions</h2>
+          <div key={i} className="mt-20 pt-16 border-t border-zinc-200">
+            <h2 className="font-serif text-3xl font-bold text-zinc-950 tracking-tight mb-10">Frequently Asked Questions</h2>
             <div className="space-y-0">
               {block.faqItems?.map((item, j) => (
-                <div key={j} className="py-6 border-b border-zinc-100 last:border-0">
-                  <p className="text-[16px] font-bold text-zinc-900 mb-2">{item.q}</p>
-                  <p className="text-[14px] text-zinc-500 font-medium leading-relaxed">{item.a}</p>
+                <div key={j} className="py-8 border-b border-zinc-100 last:border-0 grow">
+                  <p className="text-[17px] font-bold text-zinc-900 mb-3">{item.q}</p>
+                  <p className="text-[15px] text-zinc-500 font-medium leading-[1.8]">{item.a}</p>
                 </div>
               ))}
             </div>
@@ -227,32 +227,34 @@ export default async function BlogPostPage({
           </Link>
 
           {/* ── Article Header ─────────────────────────────── */}
-          <header className="mb-10">
-            <div className="flex items-center gap-3 mb-5">
+          <header className="mb-14 border-b border-zinc-100 pb-12">
+            <div className="flex items-center gap-4 mb-8">
               <span 
-                className="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full border inline-flex items-center gap-1.5"
+                className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] px-3 py-1 rounded-sm border inline-flex items-center gap-1.5"
                 style={{ color: post.accentColor, borderColor: `${post.accentColor}33`, backgroundColor: `${post.accentColor}08` }}
               >
-                <Tag className="w-2.5 h-2.5" />
                 {post.tag}
               </span>
-              <span className="flex items-center gap-1.5 text-xs text-zinc-400 font-medium">
-                <Calendar className="w-3 h-3" />
+              <span className="font-mono text-[10px] text-zinc-400 font-bold uppercase tracking-[0.2em]">
                 {post.date}
+              </span>
+              <span className="w-1 h-1 rounded-full bg-zinc-200" />
+              <span className="font-mono text-[10px] text-zinc-400 font-bold uppercase tracking-[0.2em]">
+                {post.readingTime}
               </span>
             </div>
 
-            <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-zinc-900 leading-[1.15] mb-5">
+            <h1 className="font-serif text-4xl md:text-5xl font-black tracking-tight text-zinc-950 leading-[1.1] mb-8">
               {post.title}
             </h1>
 
-            <p className="text-zinc-500 text-[17px] font-medium leading-relaxed border-b border-zinc-100 pb-8">
+            <p className="text-zinc-500 text-[18px] font-medium leading-[1.6] max-w-2xl">
               {post.description}
             </p>
           </header>
 
           {/* ── Article Body ───────────────────────────────── */}
-          <article>
+          <article className="prose prose-zinc prose-lg max-w-none">
             {renderContent(post.content, post.accentColor)}
           </article>
 
