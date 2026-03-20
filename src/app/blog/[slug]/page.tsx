@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Zap, ArrowLeft, Calendar, Tag } from 'lucide-react';
 import { blogPosts, getPostBySlug, BlogContentBlock } from '@/data/blog-posts';
 import { BlogCTA } from '@/components/blog/BlogCTA';
+import { BlogFeatures } from '@/components/blog/BlogFeatures';
 
 // ── Static Params / SEO ──────────────────────────────────────────────
 export async function generateStaticParams() {
@@ -263,6 +264,9 @@ export default async function BlogPostPage({
 
         </div>
       </main>
+
+      {/* ── Feature Showcase ─────────────────────────────── */}
+      <BlogFeatures />
 
       {/* ── Footer ─────────────────────────────────────────── */}
       <footer className="py-12 px-6 border-t border-zinc-100 bg-[#fafafa]">
