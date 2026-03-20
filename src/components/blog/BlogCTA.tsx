@@ -13,18 +13,20 @@ export function BlogCTA() {
         Ready to optimize your CV?
       </h2>
       
-      <div className="flex flex-col items-start md:items-center gap-y-3 mb-8 text-zinc-600 text-[15px] font-semibold px-4 max-w-xl mx-auto">
-        <div className="flex items-center gap-3 text-left md:text-center">
-          <span className="text-blue-500 shrink-0">✦</span>
-          <span>Your CV scored against the real job description — in seconds</span>
+      <div className="flex flex-wrap justify-center gap-x-8 gap-y-4 mb-8 px-4">
+        <div className="text-center">
+          <div className="text-2xl font-black text-zinc-900">61%</div>
+          <div className="text-[12px] text-zinc-400 font-medium mt-0.5">of CVs filtered before a human reads them</div>
         </div>
-        <div className="flex items-center gap-3 text-left md:text-center">
-          <span className="text-blue-500 shrink-0">✦</span>
-          <span>AI rewrites weak bullet points before any recruiter sees them</span>
+        <div className="hidden md:block w-px bg-zinc-100 self-stretch" />
+        <div className="text-center">
+          <div className="text-2xl font-black text-zinc-900">94%</div>
+          <div className="text-[12px] text-zinc-400 font-medium mt-0.5">higher ATS score after one AI rewrite pass</div>
         </div>
-        <div className="flex items-center gap-3 text-left md:text-center">
-          <span className="text-blue-500 shrink-0">✦</span>
-          <span>Most users receive interview callbacks within 2 weeks</span>
+        <div className="hidden md:block w-px bg-zinc-100 self-stretch" />
+        <div className="text-center">
+          <div className="text-2xl font-black text-zinc-900">71%</div>
+          <div className="text-[12px] text-zinc-400 font-medium mt-0.5">keyword match in CVs that landed interviews</div>
         </div>
       </div>
 
