@@ -1,8 +1,22 @@
+import type { Metadata } from 'next';
 import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 import { getEffectiveStatus } from '@/lib/subscription';
 import LockedPageView from '@/components/LockedPageView';
 import ATSScannerClient from './ATSScannerClient';
+
+export const metadata: Metadata = {
+  title: 'Free ATS Score Checker — Test Your Resume Instantly',
+  description:
+    'Check your resume\'s ATS score for free. See exactly what\'s wrong and fix it with one click. Upload PDF or paste text.',
+  openGraph: {
+    title: 'Free ATS Score Checker — Test Your Resume Instantly',
+    description:
+      'Check your resume\'s ATS score for free. See exactly what\'s wrong and fix it with one click.',
+    type: 'website',
+    url: 'https://cvoptimizerai.com/ats-scanner',
+  },
+};
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;

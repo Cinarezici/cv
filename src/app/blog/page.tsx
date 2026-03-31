@@ -5,14 +5,20 @@ import { blogPosts } from '@/data/blog-posts';
 import { BlogCard } from '@/components/blog/BlogCard';
 
 export const metadata: Metadata = {
-  title: 'Blog',
+  title: 'Resume & CV Tips 2026 | CVOptimizerAI Blog',
   description:
     'Career tips, ATS guides, and AI insights. Learn how to land more interviews and write a resume that gets noticed.',
   openGraph: {
-    title: 'Blog | CV Optimizer AI',
+    title: 'Resume & CV Tips 2026 | CVOptimizerAI Blog',
     description:
-      'Career tips, ATS guides, and AI insights from the CV Optimizer AI team.',
+      'Career tips, ATS guides, and AI insights from the CVOptimizerAI team.',
     type: 'website',
+    url: 'https://cvoptimizerai.com/blog',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Resume & CV Tips 2026 | CVOptimizerAI Blog',
+    description: 'Career tips, ATS guides, and AI insights.',
   },
 };
 
