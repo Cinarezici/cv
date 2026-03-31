@@ -3,19 +3,21 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import dynamic from 'next/dynamic';
 import { Button } from "@/components/ui/button";
 import { ArrowRight, CheckCircle2, FileText, Download, Share2, Zap, MessageSquare, ShieldCheck, X, Star, Search, Bookmark } from "lucide-react";
-import { TestimonialsSection } from "@/components/ui/testimonials-with-marquee";
-import { LandingTestimonials } from "@/components/ui/landing-testimonials";
 import { motion, AnimatePresence, useInView, animate } from 'framer-motion';
-import { LandingDemoStrip } from "@/components/ui/landing-demo-strip";
-import { LandingPricing } from "@/components/landing/LandingPricing";
-import { LandingCopyLinkSpotlight } from "@/components/ui/landing-copy-link-spotlight";
 import { useLang, type Lang } from "@/lib/i18n";
 import { HeroInteractiveDemo } from "@/components/ui/hero-interactive-demo";
-import { SparklesCore } from "@/components/ui/sparkles";
-import { LandingATSScanner } from "@/components/ui/landing-ats-scanner";
-import { OnboardingUpgradeModal } from "@/components/ui/OnboardingUpgradeModal";
+
+// Dynamic imports — below-fold sections deferred from initial bundle
+const TestimonialsSection = dynamic(() => import("@/components/ui/testimonials-with-marquee").then(m => ({ default: m.TestimonialsSection })), { ssr: false });
+const LandingTestimonials = dynamic(() => import("@/components/ui/landing-testimonials").then(m => ({ default: m.LandingTestimonials })), { ssr: false });
+const LandingDemoStrip = dynamic(() => import("@/components/ui/landing-demo-strip").then(m => ({ default: m.LandingDemoStrip })), { ssr: false });
+const LandingPricing = dynamic(() => import("@/components/landing/LandingPricing").then(m => ({ default: m.LandingPricing })), { ssr: false });
+const LandingCopyLinkSpotlight = dynamic(() => import("@/components/ui/landing-copy-link-spotlight").then(m => ({ default: m.LandingCopyLinkSpotlight })), { ssr: false });
+const LandingATSScanner = dynamic(() => import("@/components/ui/landing-ats-scanner").then(m => ({ default: m.LandingATSScanner })), { ssr: false });
+const SparklesCore = dynamic(() => import("@/components/ui/sparkles").then(m => ({ default: m.SparklesCore })), { ssr: false });
 
 function AnimatedCounter({ base = 20000 }: { base?: number }) {
   const [val, setVal] = useState(base);
@@ -63,7 +65,7 @@ const testimonials = [
     author: {
       name: "Emma Thompson",
       handle: "@emma_career",
-      avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop&crop=face"
+      avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=64&h=64&fit=crop&crop=face"
     },
     text: "CV Optimizer AI transformed my job search. The AI-tailored suggestions for my professional summary were spot on, and I landed an interview at a top tech firm within a week!",
     href: "#"
@@ -72,7 +74,7 @@ const testimonials = [
     author: {
       name: "David Park",
       handle: "@dpark_tech",
-      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face"
+      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=64&h=64&fit=crop&crop=face"
     },
     text: "The precision and speed are incredible. Integrating my LinkedIn profile was seamless, and the resulting CV looked more professional than anything I could have designed myself.",
     href: "#"
@@ -81,7 +83,7 @@ const testimonials = [
     author: {
       name: "Sofia Rodriguez",
       handle: "@sofia_leads",
-      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop&crop=face"
+      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=64&h=64&fit=crop&crop=face"
     },
     text: "Finally, a tool that understands the nuances of different industries. The executive template helped me highlight my leadership experience effectively. Highly recommended!",
     href: "#"
@@ -90,7 +92,7 @@ const testimonials = [
     author: {
       name: "James Wilson",
       handle: "@jwilson_eng",
-      avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face"
+      avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=64&h=64&fit=crop&crop=face"
     },
     text: "I was skeptical about AI writers, but the quality of the bullet points generated for my roles was top-tier. It's like having a career coach in your pocket.",
     href: "#"
@@ -252,7 +254,6 @@ export default function Home() {
 
   return (
     <div className="flex flex-col min-h-screen bg-[#fafafa] text-zinc-900 overflow-x-hidden selection:bg-blue-500/30">
-      <OnboardingUpgradeModal />
 
       {/* Floating Modern Navbar */}
       <div className="fixed top-4 left-4 right-4 md:left-1/2 md:-translate-x-1/2 md:w-full md:max-w-5xl z-50 flex justify-center pointer-events-none">
@@ -294,7 +295,7 @@ export default function Home() {
       <main className="flex-1">
 
         {/* --- Hero Section (A) --- */}
-        <section className="relative w-full overflow-hidden bg-[#fafafa] min-h-[85vh] flex flex-col items-center justify-center pt-24 pb-12">
+        <section className="relative w-full overflow-hidden bg-[#fafafa] min-h-[700px] flex flex-col items-center justify-center pt-24 pb-12">
 
           {/* Background Grid */}
           <div className="absolute inset-0 bg-[linear-gradient(to_right,#e5e7eb_1px,transparent_1px),linear-gradient(to_bottom,#e5e7eb_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_80%_at_50%_0%,#000_80%,transparent_100%)] opacity-30 pointer-events-none" />
@@ -302,7 +303,7 @@ export default function Home() {
             <div className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#2563eb] to-[#93c5fd] opacity-20 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]" style={{ clipPath: 'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)' }}></div>
           </div>
 
-          <div className="container px-6 mx-auto relative z-20 mt-6 mb-8 h-auto min-h-[400px] flex flex-col justify-center">
+          <div className="container px-6 mx-auto relative z-20 mt-6 mb-8 min-h-[550px] flex flex-col justify-center">
 
             <div className="flex w-full justify-between items-center gap-12">
 

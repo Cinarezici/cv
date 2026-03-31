@@ -272,7 +272,7 @@ export function OnboardingUpgradeModal() {
           <hr style={{ border: 'none', borderTop: '1px solid #2a2a32', margin: '0 -24px 20px' }} />
 
           {/* Section label */}
-          <div style={{ fontSize: 11, fontWeight: 700, color: '#555', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
+          <div style={{ fontSize: 11, fontWeight: 700, color: '#999', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
             What you unlock with Pro
           </div>
 
@@ -301,7 +301,7 @@ export function OnboardingUpgradeModal() {
           <hr style={{ border: 'none', borderTop: '1px solid #2a2a32', margin: '0 -24px 20px' }} />
 
           {/* Section label */}
-          <div style={{ fontSize: 11, fontWeight: 700, color: '#555', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
+          <div style={{ fontSize: 11, fontWeight: 700, color: '#999', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
             Choose your plan
           </div>
 
@@ -354,9 +354,9 @@ export function OnboardingUpgradeModal() {
                       {plan.badge}
                     </div>
                   )}
-                  <div style={{ fontSize: 11, color: '#888', fontWeight: 600, marginBottom: 4 }}>{plan.label}</div>
+                  <div style={{ fontSize: 11, color: '#aaa', fontWeight: 600, marginBottom: 4 }}>{plan.label}</div>
                   <div style={{ fontSize: 20, fontWeight: 800, color: '#fff', lineHeight: 1 }}>{plan.price}</div>
-                  <div style={{ fontSize: 10, color: '#666', marginTop: 2 }}>{plan.period}</div>
+                  <div style={{ fontSize: 10, color: '#999', marginTop: 2 }}>{plan.period}</div>
                   {isSelected && (
                     <div style={{ fontSize: 10, color: '#6C63FF', marginTop: 5, fontWeight: 500 }}>{plan.description}</div>
                   )}
@@ -388,7 +388,7 @@ export function OnboardingUpgradeModal() {
           </div>
 
           {/* Trial info */}
-          <div style={{ textAlign: 'center', fontSize: 12, color: '#555', marginBottom: 14 }}>
+          <div style={{ textAlign: 'center', fontSize: 12, color: '#999', marginBottom: 14 }}>
             Your trial ends in <span style={{ color: '#6C63FF', fontWeight: 600 }}>14 days</span>. No charge until then.
           </div>
 
@@ -433,21 +433,21 @@ export function OnboardingUpgradeModal() {
               width: '100%',
               textAlign: 'center',
               fontSize: 13,
-              color: '#555',
+              color: '#999',
               background: 'none',
               border: 'none',
               cursor: 'pointer',
               padding: 6,
               transition: 'color 0.2s',
             }}
-            onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = '#888'; }}
-            onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = '#555'; }}
+            onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = '#ccc'; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = '#999'; }}
           >
             Maybe later
           </button>
 
           {/* Guarantee */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5, fontSize: 11.5, color: '#555', marginTop: 10 }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5, fontSize: 11.5, color: '#999', marginTop: 10 }}>
             🔒 Secure payment · Cancel anytime
           </div>
         </div>
