@@ -100,6 +100,8 @@ export default function BlogPage() {
           </Link>
           <nav className="flex items-center gap-6 text-sm font-bold text-zinc-500">
             <Link className="hover:text-zinc-900 transition-colors" href="/templates">Templates</Link>
+            <Link className="hover:text-zinc-900 transition-colors" href="/free-ats-checker">Free ATS Checker</Link>
+            <Link className="hover:text-zinc-900 transition-colors" href="/resume-score-checker">Resume Score Checker</Link>
             <Link className="hover:text-zinc-900 transition-colors" href="/about">About</Link>
             <Link className="hover:text-zinc-900 transition-colors" href="/blog">Blog</Link>
             <Link className="hover:text-zinc-900 transition-colors" href="/login">Login</Link>

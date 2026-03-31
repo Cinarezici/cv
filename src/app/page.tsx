@@ -20,6 +20,23 @@ export const metadata: Metadata = {
   },
 };
 
+const softwareApplicationSchema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "CVOptimizerAI",
+  description: "AI-powered ATS resume checker and CV optimizer",
+  applicationCategory: "BusinessApplication",
+  operatingSystem: "Web",
+};
+
 export default function Home() {
-  return <HomeClient />;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareApplicationSchema) }}
+      />
+      <HomeClient />
+    </>
+  );
 }
