@@ -340,6 +340,7 @@ export default function ScoutPage() {
                         onClick={() => setSelectedJobs([])}
                         className="p-1.5 rounded-lg hover:bg-zinc-700 transition-colors text-zinc-400 hover:text-white"
                         title="Clear selection"
+                        aria-label="Clear selection"
                     >
                         <X className="w-4 h-4" />
                     </button>

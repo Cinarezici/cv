@@ -30,7 +30,7 @@ function BuildVisual() {
                 {/* CV Editor card */}
                 <div className="bg-white rounded-xl border border-zinc-200 p-4 shadow-sm">
                     <div className="flex items-center justify-between mb-3">
-                        <span className="text-[11px] font-black uppercase tracking-widest text-zinc-400">Professional Summary</span>
+                        <span className="text-[11px] font-black uppercase tracking-widest text-zinc-500">Professional Summary</span>
                         <motion.div
                             animate={{ scale: [1, 1.1, 1] }}
                             transition={{ duration: 2, repeat: Infinity, repeatDelay: 1 }}
@@ -49,7 +49,7 @@ function BuildVisual() {
 
                 <div className="bg-white rounded-xl border border-zinc-200 p-4 shadow-sm">
                     <div className="flex items-center justify-between mb-3">
-                        <span className="text-[11px] font-black uppercase tracking-widest text-zinc-400">Experience</span>
+                        <span className="text-[11px] font-black uppercase tracking-widest text-zinc-500">Experience</span>
                         <motion.div
                             animate={{ scale: [1, 1.1, 1] }}
                             transition={{ duration: 2, repeat: Infinity, repeatDelay: 2.5 }}
@@ -318,7 +318,7 @@ export function LandingDemoStrip() {
                                 <Icon className="w-3.5 h-3.5" />
                                 {tab.label}
                                 {tab.highlight && !isActive && (
-                                    <span className="ml-1 text-[10px] font-black text-blue-600 bg-blue-100 px-1.5 py-0.5 rounded">USP</span>
+                                    <span className="ml-1 text-[10px] font-black text-blue-700 bg-blue-100 px-1.5 py-0.5 rounded">USP</span>
                                 )}
                             </motion.button>
                         );

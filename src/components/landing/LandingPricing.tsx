@@ -50,7 +50,7 @@ export function LandingPricing() {
               <Sparkles className="w-3.5 h-3.5" />
             </div>
             <p className="text-[14px] font-bold text-zinc-900">
-              Risk-free 14-day trial <span className="text-zinc-400 font-medium ml-1">on all Professional features</span>
+              Risk-free 14-day trial <span className="text-zinc-500 font-medium ml-1">on all Professional features</span>
             </p>
             <div className="w-px h-4 bg-zinc-200 mx-1" />
             <Link href="/signup" className="text-[13px] font-bold text-blue-600 hover:text-blue-700 transition-colors">
@@ -79,8 +79,8 @@ export function LandingPricing() {
               <li className="flex items-start gap-3"><CheckCircle2 className="w-5 h-5 text-blue-600 shrink-0" /><span className="text-zinc-700 font-semibold">Unlimited CVs & Letters</span></li>
               <li className="flex items-start gap-3"><CheckCircle2 className="w-5 h-5 text-blue-600 shrink-0" /><span className="text-zinc-700 font-semibold">5 Basic Templates</span></li>
               <li className="flex items-start gap-3"><CheckCircle2 className="w-5 h-5 text-blue-600 shrink-0" /><span className="text-zinc-700 font-semibold">10 Keyword scans / day</span></li>
-              <li className="flex items-start gap-3 opacity-50"><X className="w-5 h-5 text-zinc-400 shrink-0" /><span>Basic AI (Standard)</span></li>
-              <li className="flex items-start gap-3 opacity-50"><X className="w-5 h-5 text-zinc-400 shrink-0" /><span>Watermark on PDF</span></li>
+              <li className="flex items-start gap-3"><X className="w-5 h-5 text-zinc-400 shrink-0" /><span className="text-zinc-500">Basic AI (Standard)</span></li>
+              <li className="flex items-start gap-3"><X className="w-5 h-5 text-zinc-400 shrink-0" /><span className="text-zinc-500">Watermark on PDF</span></li>
             </ul>
           </div>
 

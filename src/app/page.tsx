@@ -15,6 +15,7 @@ import { useLang, type Lang } from "@/lib/i18n";
 import { HeroInteractiveDemo } from "@/components/ui/hero-interactive-demo";
 import { SparklesCore } from "@/components/ui/sparkles";
 import { LandingATSScanner } from "@/components/ui/landing-ats-scanner";
+import { OnboardingUpgradeModal } from "@/components/ui/OnboardingUpgradeModal";
 
 function AnimatedCounter({ base = 20000 }: { base?: number }) {
   const [val, setVal] = useState(base);
@@ -208,6 +209,7 @@ function JobSearchPreview() {
                 <button
                   onClick={() => setSaved(prev => { const n = [...prev]; n[i] = !n[i]; return n; })}
                   className="p-1.5 rounded-lg hover:bg-zinc-50 transition-colors"
+                  aria-label="Save job"
                 >
                   <Star
                     className={`w-4 h-4 transition-all ${saved[i] ? 'text-amber-400 fill-amber-400' : 'text-zinc-300'}`}
@@ -250,6 +252,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col min-h-screen bg-[#fafafa] text-zinc-900 overflow-x-hidden selection:bg-blue-500/30">
+      <OnboardingUpgradeModal />
 
       {/* Floating Modern Navbar */}
       <div className="fixed top-4 left-4 right-4 md:left-1/2 md:-translate-x-1/2 md:w-full md:max-w-5xl z-50 flex justify-center pointer-events-none">
@@ -507,8 +510,8 @@ export default function Home() {
               </div>
               <span className="font-extrabold text-xl tracking-tight text-zinc-900">CV Optimizer AI</span>
             </Link>
-            <p className="text-sm text-zinc-500 leading-relaxed font-medium">Handcrafted with precision to help candidates land their dream jobs at top companies worldwide.</p>
-            <p className="text-xs text-zinc-400 font-bold uppercase tracking-widest mt-4">© {new Date().getFullYear()} CV Optimizer AI. AI-Powered.</p>
+            <p className="text-sm text-zinc-600 leading-relaxed font-medium">Handcrafted with precision to help candidates land their dream jobs at top companies worldwide.</p>
+            <p className="text-xs text-zinc-500 font-bold uppercase tracking-widest mt-4">© {new Date().getFullYear()} CV Optimizer AI. AI-Powered.</p>
           </div>
           <div className="grid grid-cols-2 gap-16 md:gap-24">
             <div className="space-y-6">

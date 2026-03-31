@@ -32,14 +32,14 @@ export function GoogleAnalytics() {
     <>
       {/* Load the Google Analytics script asynchronously */}
       <Script
-        strategy="afterInteractive"
+        strategy="lazyOnload"
         src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
       />
       
       {/* Initialize Google Analytics with the standard default configuration */}
       <Script
         id="google-analytics"
-        strategy="afterInteractive"
+        strategy="lazyOnload"
         dangerouslySetInnerHTML={{
           __html: `
             window.dataLayer = window.dataLayer || [];
