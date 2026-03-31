@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Zap, CheckCircle2, XCircle, ChevronRight, Star } from 'lucide-react';
+import { BlogFeatures } from '@/components/blog/BlogFeatures';
 
 export const metadata: Metadata = {
   title: 'Best ATS Resume Checker in 2026 — Which Tool Should You Use?',
@@ -280,23 +281,23 @@ export default function BestAtsCheckerPage() {
                   CVOptimizerAI
                 </h3>
                 <p className="text-lg text-zinc-600 font-medium leading-relaxed max-w-2xl mx-auto mb-10">
-                  Join candidates successfully landing interviews at Fortune 500 tech companies. Optimize your layout, rewrite your bullet points, and maximize your score entirely in the browser.
+                  Get your ATS score in seconds and instantly improve your resume with AI.
                 </p>
 
                 <Link href="/free-ats-checker">
                   <Button size="lg" className="rounded-full bg-blue-600 hover:bg-blue-700 text-white h-14 px-10 text-[16px] font-bold shadow-xl shadow-blue-600/20 transition-all hover:scale-[1.03] active:scale-95">
-                    Test Your ATS Score Free <ArrowRight className="ml-2 h-5 w-5" />
+                    Check Your ATS Score Free <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
                 </Link>
-                <p className="mt-4 text-[13px] font-bold text-zinc-500">
-                  Zero commitment. Paste text or upload a PDF instantly.
-                </p>
               </div>
             </div>
           </div>
         </section>
 
       </main>
+
+      {/* ── Feature Showcase ─────────────────────────────── */}
+      <BlogFeatures />
 
       {/* ── Footer ── */}
       <footer className="py-20 px-6 border-t border-zinc-100 bg-[#fafafa]">

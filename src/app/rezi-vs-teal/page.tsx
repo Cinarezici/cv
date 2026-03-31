@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Zap, CheckCircle2, XCircle, ChevronRight } from 'lucide-react';
+import { BlogFeatures } from '@/components/blog/BlogFeatures';
 
 export const metadata: Metadata = {
   title: 'Rezi vs Teal — Which Resume Tool Is Better in 2026?',
@@ -208,23 +209,23 @@ export default function ReziVsTealPage() {
                   CVOptimizerAI
                 </h3>
                 <p className="text-lg text-zinc-600 font-medium leading-relaxed max-w-2xl mx-auto mb-10">
-                  CVOptimizerAI combines the best of both worlds. You get a deep, structural ATS scanner that detects exactly why parsers reject you, plus state-of-the-art AI that rewrites your resume contextually entirely for the job description.
+                  Get your ATS score in seconds and instantly improve your resume with AI.
                 </p>
 
                 <Link href="/free-ats-checker">
                   <Button size="lg" className="rounded-full bg-blue-600 hover:bg-blue-700 text-white h-14 px-10 text-[16px] font-bold shadow-xl shadow-blue-600/20 transition-all hover:scale-[1.03] active:scale-95">
-                    Compare Your ATS Score Free <ArrowRight className="ml-2 h-5 w-5" />
+                    Check Your ATS Score Free <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
                 </Link>
-                <p className="mt-4 text-[13px] font-bold text-zinc-500">
-                  Get your score in 30 seconds. No credit card required.
-                </p>
               </div>
             </div>
           </div>
         </section>
 
       </main>
+
+      {/* ── Feature Showcase ─────────────────────────────── */}
+      <BlogFeatures />
 
       {/* ── Footer ── */}
       <footer className="py-20 px-6 border-t border-zinc-100 bg-[#fafafa]">

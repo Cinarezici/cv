@@ -5,34 +5,34 @@ import { ArrowRight, Zap, CheckCircle2, XCircle, ChevronRight } from 'lucide-rea
 import { BlogFeatures } from '@/components/blog/BlogFeatures';
 
 export const metadata: Metadata = {
-  title: 'Jobscan vs Resume.io — Which Resume Tool Is Better in 2026?',
+  title: 'Rezi vs Jobscan — Which Resume Tool Is Better in 2026?',
   description:
-    'Compare Jobscan and Resume.io side by side. See features, pricing, and which resume tool is best for ATS optimization in 2026.',
+    'Compare Rezi and Jobscan side by side. See features, pricing, and which ATS resume tool is best in 2026.',
   openGraph: {
-    title: 'Jobscan vs Resume.io — Which Resume Tool Is Better in 2026?',
+    title: 'Rezi vs Jobscan — Which Resume Tool Is Better in 2026?',
     description:
-      'Compare Jobscan and Resume.io side by side. See features, pricing, and which resume tool is best for ATS optimization in 2026.',
+      'Compare Rezi and Jobscan side by side. See features, pricing, and which ATS resume tool is best in 2026.',
     type: 'website',
-    url: 'https://cvoptimizerai.com/jobscan-vs-resume-io',
+    url: 'https://cvoptimizerai.com/rezi-vs-jobscan',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Jobscan vs Resume.io — Which Resume Tool Is Better in 2026?',
+    title: 'Rezi vs Jobscan — Which Resume Tool Is Better in 2026?',
     description:
-      'Compare Jobscan and Resume.io side by side. See features, pricing, and which resume tool is best for ATS optimization in 2026.',
+      'Compare Rezi and Jobscan side by side. See features, pricing, and which ATS resume tool is best in 2026.',
   },
-  alternates: { canonical: 'https://cvoptimizerai.com/jobscan-vs-resume-io' },
+  alternates: { canonical: 'https://cvoptimizerai.com/rezi-vs-jobscan' },
 };
 
 const comparisonData = [
-  { feature: 'Primary Focus', jobscan: 'ATS Optimization (Matching)', resumeio: 'Visual Template Builder', cvo: 'ATS Scoring & AI Rewrite' },
-  { feature: 'ATS Analysis', jobscan: 'High (Word frequency)', resumeio: 'None', cvo: 'Deep Parser & Formatting Check' },
-  { feature: 'Resume Building', jobscan: 'Basic text editor', resumeio: 'Excellent (Drag-and-drop)', cvo: 'Exceptional (Role-Targeted AI)' },
-  { feature: 'Pricing (Monthly)', jobscan: '$49.95 / mo', resumeio: '$24.95 / mo', cvo: 'Free Tools + Pro Options' },
-  { feature: 'Ease of Use', jobscan: 'Moderate (complex UI)', resumeio: 'High (very intuitive)', cvo: 'High (Upload & Fix in 1 click)' },
+  { feature: 'Primary Focus', rezi: 'AI Content Generation', jobscan: 'ATS Keyword Matching', cvo: 'ATS Scoring & AI Rewrite' },
+  { feature: 'ATS Analysis', rezi: 'Basic checks', jobscan: 'High (Frequency count)', cvo: 'Deep Parser & Formatting Check' },
+  { feature: 'AI Writing', rezi: 'Excellent', jobscan: 'Basic tools', cvo: 'Exceptional (Role-Targeted)' },
+  { feature: 'Pricing (Monthly)', rezi: '$29.00 / mo', jobscan: '$49.95 / mo', cvo: 'Free Tools + Pro Options' },
+  { feature: 'Ease of Use', rezi: 'Moderate (Form-based)', jobscan: 'Moderate (Complex UI)', cvo: 'High (Upload & Fix in 1 click)' },
 ];
 
-export default function JobscanVsResumeIoPage() {
+export default function ReziVsJobscanPage() {
   return (
     <div className="flex flex-col min-h-screen bg-[#fafafa] text-zinc-900 overflow-x-hidden selection:bg-blue-500/30">
 
@@ -75,14 +75,14 @@ export default function JobscanVsResumeIoPage() {
             </div>
 
             <h1 className="font-extrabold tracking-tighter leading-[0.95] text-zinc-900 mb-6 text-5xl md:text-[64px]">
-              Jobscan vs Resume.io<br />
+              Rezi vs Jobscan<br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2563eb] to-[#3b82f6]">
-                Which Resume Tool Is Better?
+                Which Tool Is Better in 2026?
               </span>
             </h1>
 
             <p className="text-lg md:text-xl text-zinc-500 leading-relaxed font-medium tracking-tight mb-10 max-w-3xl mx-auto">
-              You want to land more interviews, but you are stuck choosing between Jobscan's deep ATS matching and Resume.io's beautiful templates. Which tool should you use in 2026, and is there a third option that combines the best of both worlds?
+              Rezi and Jobscan are two heavyweights in the resume optimization market. Rezi relies heavily on generative AI, while Jobscan focuses strictly on matching exact ATS keywords. Which approach yields more interviews this year? Let's compare them.
             </p>
           </div>
         </section>
@@ -99,8 +99,8 @@ export default function JobscanVsResumeIoPage() {
                 <thead>
                   <tr className="bg-[#fafafa] border-b border-neutral-200">
                     <th className="p-5 font-bold text-zinc-600 w-1/4">Feature</th>
+                    <th className="p-5 font-extrabold text-zinc-900 text-lg w-1/4">Rezi</th>
                     <th className="p-5 font-extrabold text-zinc-900 text-lg w-1/4">Jobscan</th>
-                    <th className="p-5 font-extrabold text-zinc-900 text-lg w-1/4">Resume.io</th>
                     <th className="p-5 font-extrabold text-blue-600 text-lg w-1/4 bg-blue-50/30">CVOptimizerAI</th>
                   </tr>
                 </thead>
@@ -108,8 +108,8 @@ export default function JobscanVsResumeIoPage() {
                   {comparisonData.map((row) => (
                     <tr key={row.feature} className="hover:bg-zinc-50/50 transition-colors">
                       <td className="p-5 font-bold text-zinc-700">{row.feature}</td>
+                      <td className="p-5 font-medium text-zinc-600">{row.rezi}</td>
                       <td className="p-5 font-medium text-zinc-600">{row.jobscan}</td>
-                      <td className="p-5 font-medium text-zinc-600">{row.resumeio}</td>
                       <td className="p-5 font-bold text-blue-700 bg-blue-50/30">{row.cvo}</td>
                     </tr>
                   ))}
@@ -123,6 +123,36 @@ export default function JobscanVsResumeIoPage() {
         <section className="w-full bg-[#fbfcfd] py-24">
           <div className="container px-6 mx-auto max-w-4xl space-y-16">
             
+            {/* Rezi */}
+            <div className="bg-white p-8 md:p-10 rounded-[24px] border border-neutral-200 shadow-sm">
+              <h3 className="text-3xl font-extrabold tracking-tight text-zinc-900 mb-4">Rezi Overview</h3>
+              <p className="text-zinc-600 font-medium leading-relaxed mb-6">
+                Rezi made its name by focusing strictly on AI resume generation. It uses AI language models to auto-write bullets based on standard job titles and provides a checklist of missing keywords to ensure you pass basic filters.
+              </p>
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="space-y-3">
+                  <h4 className="font-bold text-emerald-600 flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4" /> Pros
+                  </h4>
+                  <ul className="space-y-2 text-zinc-600 text-sm font-medium">
+                    <li className="flex gap-2 items-start"><ChevronRight className="w-4 h-4 text-zinc-400 mt-0.5 shrink-0"/> Excellent AI writer capability.</li>
+                    <li className="flex gap-2 items-start"><ChevronRight className="w-4 h-4 text-zinc-400 mt-0.5 shrink-0"/> Quick bullet point composition.</li>
+                    <li className="flex gap-2 items-start"><ChevronRight className="w-4 h-4 text-zinc-400 mt-0.5 shrink-0"/> Easy cover letter generation.</li>
+                  </ul>
+                </div>
+                <div className="space-y-3">
+                  <h4 className="font-bold text-red-600 flex items-center gap-2">
+                    <XCircle className="w-4 h-4" /> Cons
+                  </h4>
+                  <ul className="space-y-2 text-zinc-600 text-sm font-medium">
+                    <li className="flex gap-2 items-start"><ChevronRight className="w-4 h-4 text-zinc-400 mt-0.5 shrink-0"/> Over-reliance on basic ATS check formulas.</li>
+                    <li className="flex gap-2 items-start"><ChevronRight className="w-4 h-4 text-zinc-400 mt-0.5 shrink-0"/> Lacks deep visual structural scanning.</li>
+                    <li className="flex gap-2 items-start"><ChevronRight className="w-4 h-4 text-zinc-400 mt-0.5 shrink-0"/> Very expensive lifetime plan tier.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
             {/* Jobscan */}
             <div className="bg-white p-8 md:p-10 rounded-[24px] border border-neutral-200 shadow-sm">
               <h3 className="text-3xl font-extrabold tracking-tight text-zinc-900 mb-4">Jobscan Overview</h3>
@@ -135,9 +165,9 @@ export default function JobscanVsResumeIoPage() {
                     <CheckCircle2 className="w-4 h-4" /> Pros
                   </h4>
                   <ul className="space-y-2 text-zinc-600 text-sm font-medium">
-                    <li className="flex gap-2 items-start"><ChevronRight className="w-4 h-4 text-zinc-400 mt-0.5 shrink-0"/> The most thorough keyword matching engine available.</li>
+                    <li className="flex gap-2 items-start"><ChevronRight className="w-4 h-4 text-zinc-400 mt-0.5 shrink-0"/> The most explicit keyword matching engine.</li>
                     <li className="flex gap-2 items-start"><ChevronRight className="w-4 h-4 text-zinc-400 mt-0.5 shrink-0"/> Gives concrete feedback on hard and soft skills.</li>
-                    <li className="flex gap-2 items-start"><ChevronRight className="w-4 h-4 text-zinc-400 mt-0.5 shrink-0"/> Useful LinkedIn profile optimization tool included.</li>
+                    <li className="flex gap-2 items-start"><ChevronRight className="w-4 h-4 text-zinc-400 mt-0.5 shrink-0"/> Useful LinkedIn profile optimization tool.</li>
                   </ul>
                 </div>
                 <div className="space-y-3">
@@ -146,38 +176,8 @@ export default function JobscanVsResumeIoPage() {
                   </h4>
                   <ul className="space-y-2 text-zinc-600 text-sm font-medium">
                     <li className="flex gap-2 items-start"><ChevronRight className="w-4 h-4 text-zinc-400 mt-0.5 shrink-0"/> Extremely expensive at almost $50/month.</li>
-                    <li className="flex gap-2 items-start"><ChevronRight className="w-4 h-4 text-zinc-400 mt-0.5 shrink-0"/> The interface is clunky and feels outdated.</li>
+                    <li className="flex gap-2 items-start"><ChevronRight className="w-4 h-4 text-zinc-400 mt-0.5 shrink-0"/> Interface is clunky and form-heavy.</li>
                     <li className="flex gap-2 items-start"><ChevronRight className="w-4 h-4 text-zinc-400 mt-0.5 shrink-0"/> The generated resumes look very plain.</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-
-            {/* Resume.io */}
-            <div className="bg-white p-8 md:p-10 rounded-[24px] border border-neutral-200 shadow-sm">
-              <h3 className="text-3xl font-extrabold tracking-tight text-zinc-900 mb-4">Resume.io Overview</h3>
-              <p className="text-zinc-600 font-medium leading-relaxed mb-6">
-                Resume.io is built for speed and aesthetics. It provides a massive library of gorgeous, modern templates and a smooth drag-and-drop editor that lets you build a beautiful CV with zero prior design experience. 
-              </p>
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="space-y-3">
-                  <h4 className="font-bold text-emerald-600 flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4" /> Pros
-                  </h4>
-                  <ul className="space-y-2 text-zinc-600 text-sm font-medium">
-                    <li className="flex gap-2 items-start"><ChevronRight className="w-4 h-4 text-zinc-400 mt-0.5 shrink-0"/> One of the best template libraries on the market.</li>
-                    <li className="flex gap-2 items-start"><ChevronRight className="w-4 h-4 text-zinc-400 mt-0.5 shrink-0"/> Incredibly smooth and fast user experience.</li>
-                    <li className="flex gap-2 items-start"><ChevronRight className="w-4 h-4 text-zinc-400 mt-0.5 shrink-0"/> Auto-generates summary statements easily.</li>
-                  </ul>
-                </div>
-                <div className="space-y-3">
-                  <h4 className="font-bold text-red-600 flex items-center gap-2">
-                    <XCircle className="w-4 h-4" /> Cons
-                  </h4>
-                  <ul className="space-y-2 text-zinc-600 text-sm font-medium">
-                    <li className="flex gap-2 items-start"><ChevronRight className="w-4 h-4 text-zinc-400 mt-0.5 shrink-0"/> No true ATS scanning or keyword comparison.</li>
-                    <li className="flex gap-2 items-start"><ChevronRight className="w-4 h-4 text-zinc-400 mt-0.5 shrink-0"/> Some visually complex templates fail ATS parsers.</li>
-                    <li className="flex gap-2 items-start"><ChevronRight className="w-4 h-4 text-zinc-400 mt-0.5 shrink-0"/> Very difficult to export for free.</li>
                   </ul>
                 </div>
               </div>
@@ -187,16 +187,16 @@ export default function JobscanVsResumeIoPage() {
         </section>
 
         {/* ── Conclusion / The Better Alternative ── */}
-        <section className="w-full bg-[#fafafa] py-24 border-t border-zinc-100">
+        <section className="w-full bg-[#fafafa] pt-24 pb-16 border-t border-zinc-100">
           <div className="container px-6 mx-auto max-w-4xl text-center">
             <h2 className="text-4xl font-extrabold tracking-tight text-zinc-900 mb-6">
               Which one should you choose?
             </h2>
             <p className="text-lg text-zinc-600 font-medium leading-relaxed mb-6">
-              If you just want your resume to <strong>look beautiful and modern</strong> quickly, use Resume.io. If you have the budget and need to <strong>painstakingly match keywords</strong> to a job description, use Jobscan.
+              If you lack writing skills and need heavy AI assistance, use <strong>Rezi</strong>. If you have the budget and need to <strong>painstakingly match keywords</strong> to a job description, use Jobscan.
             </p>
             <p className="text-lg text-zinc-900 font-bold leading-relaxed mb-12">
-              But what if you want a beautiful, ATS-safe template AND advanced AI scanning that automatically rewrites your bullet points to match the job description?
+              But what if you want deep, structural applicant tracking parsing alongside state-of-the-art AI generation?
             </p>
 
             <div className="bg-gradient-to-br from-blue-50 to-indigo-50/30 border border-blue-200/60 p-10 rounded-[32px] shadow-lg shadow-blue-900/5 relative overflow-hidden">
@@ -214,7 +214,7 @@ export default function JobscanVsResumeIoPage() {
 
                 <Link href="/free-ats-checker">
                   <Button size="lg" className="rounded-full bg-blue-600 hover:bg-blue-700 text-white h-14 px-10 text-[16px] font-bold shadow-xl shadow-blue-600/20 transition-all hover:scale-[1.03] active:scale-95">
-                    Check Your ATS Score Free <ArrowRight className="ml-2 h-5 w-5" />
+                    Check Your ATS Score Free
                   </Button>
                 </Link>
               </div>
