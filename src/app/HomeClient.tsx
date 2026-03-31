@@ -269,6 +269,7 @@ export default function HomeClient() {
           <nav className="hidden md:flex gap-8 items-center text-[15px] font-bold text-zinc-500">
             <Link className="hover:text-zinc-900 transition-colors" href="/templates">Templates</Link>
             <Link className="hover:text-zinc-900 transition-colors cursor-pointer" href="#pricing">Pricing</Link>
+            <Link className="hover:text-zinc-900 transition-colors" href="/about">About</Link>
             <Link className="hover:text-zinc-900 transition-colors" href="/blog">Blog</Link>
             <Link className="hover:text-zinc-900 transition-colors" href="/login">Login</Link>
             <Link href="/signup">
@@ -520,6 +521,7 @@ export default function HomeClient() {
               <nav className="flex flex-col gap-4 text-sm font-bold text-zinc-600">
                 <Link className="hover:text-zinc-900 transition-colors" href="/templates">Templates</Link>
                 <Link className="hover:text-zinc-900 transition-colors" href="#pricing">Pricing</Link>
+                <Link className="hover:text-zinc-900 transition-colors" href="/about">About</Link>
                 <Link className="hover:text-zinc-900 transition-colors" href="/blog">Blog</Link>
                 <Link className="hover:text-zinc-900 transition-colors" href="/login">Login</Link>
               </nav>
