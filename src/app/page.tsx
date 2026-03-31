@@ -10,13 +10,13 @@ import { motion, AnimatePresence, useInView, animate } from 'framer-motion';
 import { useLang, type Lang } from "@/lib/i18n";
 import { HeroInteractiveDemo } from "@/components/ui/hero-interactive-demo";
 
-// Dynamic imports — below-fold sections deferred from initial bundle
-const TestimonialsSection = dynamic(() => import("@/components/ui/testimonials-with-marquee").then(m => ({ default: m.TestimonialsSection })), { ssr: false });
-const LandingTestimonials = dynamic(() => import("@/components/ui/landing-testimonials").then(m => ({ default: m.LandingTestimonials })), { ssr: false });
-const LandingDemoStrip = dynamic(() => import("@/components/ui/landing-demo-strip").then(m => ({ default: m.LandingDemoStrip })), { ssr: false });
-const LandingPricing = dynamic(() => import("@/components/landing/LandingPricing").then(m => ({ default: m.LandingPricing })), { ssr: false });
-const LandingCopyLinkSpotlight = dynamic(() => import("@/components/ui/landing-copy-link-spotlight").then(m => ({ default: m.LandingCopyLinkSpotlight })), { ssr: false });
-const LandingATSScanner = dynamic(() => import("@/components/ui/landing-ats-scanner").then(m => ({ default: m.LandingATSScanner })), { ssr: false });
+// Dynamic imports — below-fold sections code-split but SSR-rendered for stable layout
+const TestimonialsSection = dynamic(() => import("@/components/ui/testimonials-with-marquee").then(m => ({ default: m.TestimonialsSection })));
+const LandingTestimonials = dynamic(() => import("@/components/ui/landing-testimonials").then(m => ({ default: m.LandingTestimonials })));
+const LandingDemoStrip = dynamic(() => import("@/components/ui/landing-demo-strip").then(m => ({ default: m.LandingDemoStrip })));
+const LandingPricing = dynamic(() => import("@/components/landing/LandingPricing").then(m => ({ default: m.LandingPricing })));
+const LandingCopyLinkSpotlight = dynamic(() => import("@/components/ui/landing-copy-link-spotlight").then(m => ({ default: m.LandingCopyLinkSpotlight })));
+const LandingATSScanner = dynamic(() => import("@/components/ui/landing-ats-scanner").then(m => ({ default: m.LandingATSScanner })));
 const SparklesCore = dynamic(() => import("@/components/ui/sparkles").then(m => ({ default: m.SparklesCore })), { ssr: false });
 
 function AnimatedCounter({ base = 20000 }: { base?: number }) {

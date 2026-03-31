@@ -126,7 +126,7 @@ function ImportVisualMock() {
                     </div>
                     <div className="flex-1 min-w-0">
                         <p className={`text-[12px] font-bold mb-0.5 ${active === i ? 'text-zinc-900' : 'text-zinc-600'}`}>{opt.label}</p>
-                        <p className="text-[10px] text-zinc-400 truncate">{opt.placeholder}</p>
+                        <p className="text-[10px] text-zinc-500 truncate">{opt.placeholder}</p>
                     </div>
                     {active === i && (
                         <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="w-4 h-4 rounded-full bg-blue-600 flex items-center justify-center flex-shrink-0">
@@ -167,7 +167,7 @@ function OptimizeVisualMock() {
     return (
         <div className="w-full max-w-[340px] space-y-3 relative z-10">
             <div className="bg-white rounded-xl border border-zinc-200 p-3.5 shadow-sm">
-                <p className="text-[10px] font-black uppercase tracking-widest text-zinc-400 mb-2">Target Role</p>
+                <p className="text-[10px] font-black uppercase tracking-widest text-zinc-500 mb-2">Target Role</p>
                 <div className="h-8 bg-zinc-50 rounded-md border border-zinc-200 flex items-center px-3">
                     <span className="text-[12px] text-zinc-500 font-bold">Senior Product Manager @ Meta</span>
                 </div>
@@ -219,8 +219,8 @@ function ShareVisualMock() {
             {/* Letter preview card */}
             <div className="bg-white rounded-xl border border-zinc-200 shadow-sm p-4 relative overflow-hidden">
                 <div className="flex items-center justify-between mb-3">
-                    <span className="text-[10px] font-black uppercase tracking-widest text-zinc-400 flex items-center gap-1.5">
-                        <FileText className="w-3.5 h-3.5 text-zinc-300" /> Presentation
+                    <span className="text-[10px] font-black uppercase tracking-widest text-zinc-500 flex items-center gap-1.5">
+                        <FileText className="w-3.5 h-3.5 text-zinc-400" /> Presentation
                     </span>
                     <span className="text-[9px] bg-emerald-50 text-emerald-700 border border-emerald-200 font-bold px-2 py-0.5 rounded-full">Ready</span>
                 </div>
