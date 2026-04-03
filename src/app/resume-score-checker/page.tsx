@@ -396,7 +396,7 @@ export default function ResumeScoreCheckerPage() {
               <p className="text-xs font-black uppercase tracking-widest text-[#2563eb]">Product</p>
               <nav className="flex flex-col gap-4 text-sm font-bold text-zinc-600">
                 <Link className="hover:text-zinc-900 transition-colors" href="/templates">Templates</Link>
-                <Link className="hover:text-zinc-900 transition-colors" href="/#pricing">Pricing</Link>
+                <Link className="hover:text-zinc-900 transition-colors" href="/pricing">Pricing</Link>
                 <Link className="hover:text-zinc-900 transition-colors" href="/free-ats-checker">Free ATS Checker</Link>
                 <Link className="hover:text-zinc-900 transition-colors" href="/resume-score-checker">Resume Score Checker</Link>
                 <Link className="hover:text-zinc-900 transition-colors" href="/about">About</Link>

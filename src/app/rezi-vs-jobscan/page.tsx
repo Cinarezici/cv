@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Zap, CheckCircle2, XCircle, ChevronRight } from 'lucide-react';
 import { BlogFeatures } from '@/components/blog/BlogFeatures';
+import { ComparisonFAQ } from '@/components/ui/comparison-faq';
+import { RelatedComparisons } from '@/components/ui/related-comparisons';
 
 export const metadata: Metadata = {
   title: 'Rezi vs Jobscan — Which Resume Tool Is Better in 2026?',
@@ -30,6 +32,12 @@ const comparisonData = [
   { feature: 'AI Writing', rezi: 'Excellent', jobscan: 'Basic tools', cvo: 'Exceptional (Role-Targeted)' },
   { feature: 'Pricing (Monthly)', rezi: '$29.00 / mo', jobscan: '$49.95 / mo', cvo: 'Free Tools + Pro Options' },
   { feature: 'Ease of Use', rezi: 'Moderate (Form-based)', jobscan: 'Moderate (Complex UI)', cvo: 'High (Upload & Fix in 1 click)' },
+];
+
+const faqs = [
+  { q: "Is Rezi better than Jobscan?", a: "Rezi is better if you want AI to write your resume for you from scratch. Jobscan is better if you already have a resume and just want to perfectly match keywords to a job description." },
+  { q: "Is there a free alternative to Jobscan?", a: "CV Optimizer AI provides a free ATS checker that gives you a baseline score so you know if your resume will be rejected." },
+  { q: "Does Jobscan use AI?", a: "Jobscan has introduced basic AI writing tools recently, but its core engine relies on comparing word frequency between your resume and a job description." }
 ];
 
 export default function ReziVsJobscanPage() {
@@ -217,6 +225,9 @@ export default function ReziVsJobscanPage() {
                     Check Your ATS Score Free
                   </Button>
                 </Link>
+                <p className="text-[13px] text-blue-200/70 font-medium mt-4">
+                  No credit card required · Cancel anytime
+                </p>
               </div>
             </div>
           </div>
@@ -226,6 +237,9 @@ export default function ReziVsJobscanPage() {
 
       {/* ── Feature Showcase ─────────────────────────────── */}
       <BlogFeatures />
+
+      <ComparisonFAQ faqs={faqs} />
+      <RelatedComparisons currentPath="/rezi-vs-jobscan" />
 
       {/* ── Footer ── */}
       <footer className="py-20 px-6 border-t border-zinc-100 bg-[#fafafa]">
@@ -245,7 +259,7 @@ export default function ReziVsJobscanPage() {
               <p className="text-xs font-black uppercase tracking-widest text-[#2563eb]">Product</p>
               <nav className="flex flex-col gap-4 text-sm font-bold text-zinc-600">
                 <Link className="hover:text-zinc-900 transition-colors" href="/templates">Templates</Link>
-                <Link className="hover:text-zinc-900 transition-colors" href="/#pricing">Pricing</Link>
+                <Link className="hover:text-zinc-900 transition-colors" href="/pricing">Pricing</Link>
                 <Link className="hover:text-zinc-900 transition-colors" href="/free-ats-checker">Free ATS Checker</Link>
                 <Link className="hover:text-zinc-900 transition-colors" href="/resume-score-checker">Resume Score Checker</Link>
                 <Link className="hover:text-zinc-900 transition-colors" href="/about">About</Link>
@@ -256,8 +270,8 @@ export default function ReziVsJobscanPage() {
             <div className="space-y-6">
               <p className="text-xs font-black uppercase tracking-widest text-[#2563eb]">Legal</p>
               <nav className="flex flex-col gap-4 text-sm font-bold text-zinc-600">
-                <Link className="hover:text-zinc-900 transition-colors" href="#">Privacy</Link>
-                <Link className="hover:text-zinc-900 transition-colors" href="#">Terms</Link>
+                <Link className="hover:text-zinc-900 transition-colors" href="/privacy">Privacy Policy</Link>
+                <Link className="hover:text-zinc-900 transition-colors" href="/terms">Terms of Service</Link>
               </nav>
             </div>
           </div>

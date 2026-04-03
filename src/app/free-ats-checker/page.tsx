@@ -71,7 +71,7 @@ const faqs = [
   },
   {
     q: 'Do I need to create an account?',
-    a: 'You can see your ATS score immediately after signing up for a free 14-day trial. No credit card required — just your email.',
+    a: 'Sign up with your email to access your ATS score and full report — it takes 30 seconds. All Pro features (AI rewriting, premium templates) are included free for 14 days. No credit card required.',
   },
   {
     q: 'Can I upload a PDF?',
@@ -137,7 +137,7 @@ export default function FreeATSCheckerPage() {
             {/* Badge — matches homepage proof chips */}
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-zinc-200/80 text-zinc-600 text-[13px] font-semibold mb-8 shadow-sm">
               <span className="flex h-2 w-2 rounded-full bg-blue-500 animate-pulse" />
-              Free — No credit card required
+              Free ATS score · Pro features: 14-day free trial
             </div>
 
             <h1 className="font-extrabold tracking-tighter leading-[0.95] text-zinc-900 mb-6 text-5xl md:text-[68px]">
@@ -165,8 +165,20 @@ export default function FreeATSCheckerPage() {
               </a>
             </div>
 
-            <p className="mt-8 text-[14px] font-bold text-zinc-600 tracking-tight">
-              Joined by <span className="text-zinc-900">20,313+</span> professionals · 14-day free trial · No card required
+            <div className="flex flex-col items-center mt-4 gap-1">
+              <p className="text-[13px] text-zinc-400 font-medium">
+                No credit card required · Takes 30 seconds
+              </p>
+              <div className="flex items-center gap-2">
+                <Shield className="w-3.5 h-3.5 text-zinc-400" />
+                <p className="text-[12px] text-zinc-400 font-medium">
+                  Your CV is encrypted and never shared with third parties
+                </p>
+              </div>
+            </div>
+
+            <p className="mt-6 text-[14px] font-bold text-zinc-600 tracking-tight">
+              Joined by <span className="text-zinc-900">20,313+</span> professionals · No credit card required
             </p>
           </div>
         </section>
@@ -375,7 +387,7 @@ export default function FreeATSCheckerPage() {
               </Button>
             </Link>
             <p className="text-[13px] text-zinc-400 font-medium mt-4">
-              14-day free trial · No credit card required · Cancel anytime
+              No credit card required · Cancel anytime
             </p>
           </div>
         </section>
@@ -400,7 +412,7 @@ export default function FreeATSCheckerPage() {
               <p className="text-xs font-black uppercase tracking-widest text-[#2563eb]">Product</p>
               <nav className="flex flex-col gap-4 text-sm font-bold text-zinc-600">
                 <Link className="hover:text-zinc-900 transition-colors" href="/templates">Templates</Link>
-                <Link className="hover:text-zinc-900 transition-colors" href="/#pricing">Pricing</Link>
+                <Link className="hover:text-zinc-900 transition-colors" href="/pricing">Pricing</Link>
                 <Link className="hover:text-zinc-900 transition-colors" href="/free-ats-checker">Free ATS Checker</Link>
                 <Link className="hover:text-zinc-900 transition-colors" href="/resume-score-checker">Resume Score Checker</Link>
                 <Link className="hover:text-zinc-900 transition-colors" href="/about">About</Link>
@@ -411,8 +423,8 @@ export default function FreeATSCheckerPage() {
             <div className="space-y-6">
               <p className="text-xs font-black uppercase tracking-widest text-[#2563eb]">Legal</p>
               <nav className="flex flex-col gap-4 text-sm font-bold text-zinc-600">
-                <Link className="hover:text-zinc-900 transition-colors" href="#">Privacy</Link>
-                <Link className="hover:text-zinc-900 transition-colors" href="#">Terms</Link>
+                <Link className="hover:text-zinc-900 transition-colors" href="/privacy">Privacy Policy</Link>
+                <Link className="hover:text-zinc-900 transition-colors" href="/terms">Terms of Service</Link>
               </nav>
             </div>
           </div>

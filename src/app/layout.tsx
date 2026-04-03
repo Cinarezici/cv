@@ -17,8 +17,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Interview Ready CV — AI-Powered Resume Optimizer",
-    template: "%s | Interview Ready CV",
+    default: "CV Optimizer AI — Free ATS Resume Checker & AI CV Optimizer",
+    template: "%s | CV Optimizer AI",
   },
   description:
     "Build, optimize, and share your resume with AI. Get a tailored CV that passes ATS systems and lands you interviews — in minutes.",
@@ -31,8 +31,8 @@ export const metadata: Metadata = {
     "cover letter",
     "job search",
   ],
-  authors: [{ name: "Interview Ready CV" }],
-  creator: "Interview Ready CV",
+  authors: [{ name: "CV Optimizer AI" }],
+  creator: "CV Optimizer AI",
   icons: {
     icon: [
       { url: "/favicon.ico" },
@@ -46,14 +46,14 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    title: "Interview Ready CV — AI-Powered Resume Optimizer",
+    title: "CV Optimizer AI — Free ATS Resume Checker & AI CV Optimizer",
     description:
       "Build, optimize, and share your resume with AI. Get a tailored CV that passes ATS systems and lands you interviews — in minutes.",
-    siteName: "Interview Ready CV",
+    siteName: "CV Optimizer AI",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Interview Ready CV — AI-Powered Resume Optimizer",
+    title: "CV Optimizer AI — Free ATS Resume Checker & AI CV Optimizer",
     description:
       "Build, optimize, and share your resume with AI. Get a tailored CV that passes ATS systems and lands you interviews — in minutes.",
   },

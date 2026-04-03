@@ -1,10 +1,12 @@
 import { cn } from "@/lib/utils"
-import { Avatar, AvatarImage } from "@/components/ui/avatar"
 
 export interface TestimonialAuthor {
     name: string
     handle: string
-    avatar: string
+    avatar?: string
+    initials?: string
+    color?: string
+    companyLogo?: string
 }
 
 export interface TestimonialCardProps {
@@ -36,16 +38,39 @@ export function TestimonialCard({
             )}
         >
             <div className="flex items-center gap-3">
-                <Avatar className="h-12 w-12 border border-zinc-100 shadow-sm">
-                    <AvatarImage src={author.avatar} alt={author.name} />
-                </Avatar>
+                {author.initials ? (
+                    <div
+                        className="h-10 w-10 rounded-full flex items-center justify-center text-white text-sm font-bold shrink-0"
+                        style={{ backgroundColor: author.color || "#3b82f6" }}
+                    >
+                        {author.initials}
+                    </div>
+                ) : author.avatar ? (
+                    <img
+                        src={author.avatar}
+                        alt={author.name}
+                        className="h-10 w-10 rounded-full object-cover border border-zinc-100 shadow-sm"
+                    />
+                ) : (
+                    <div className="h-10 w-10 rounded-full bg-zinc-200 flex items-center justify-center text-zinc-600 text-sm font-bold shrink-0">
+                        {author.name.split(" ").map(n => n[0]).join("")}
+                    </div>
+                )}
                 <div className="flex flex-col items-start">
                     <h3 className="text-md font-semibold font-sans leading-none text-zinc-900">
                         {author.name}
                     </h3>
-                    <p className="text-sm text-zinc-500 font-medium">
-                        {author.handle}
-                    </p>
+                    <div className="flex items-center gap-1.5 mt-1">
+                        <p className="text-sm text-zinc-500 font-medium">
+                            {author.handle}
+                        </p>
+                        {author.companyLogo && (
+                            <>
+                                <span className="text-zinc-300 text-xs">•</span>
+                                <img src={author.companyLogo} alt="Company logo" className="h-3.5 object-contain opacity-75" />
+                            </>
+                        )}
+                    </div>
                 </div>
             </div>
             <p className="sm:text-md mt-4 text-sm text-zinc-600 font-medium leading-relaxed">

@@ -142,8 +142,19 @@ export function LandingPricing() {
           
         </div>
 
+        {/* Compare Plans Link */}
+        <div className="flex justify-center mt-12 mb-4">
+          <Link href="/pricing">
+            <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-purple-50 border border-purple-200 text-purple-700 text-[14px] font-bold shadow-sm hover:shadow-md transition-all cursor-pointer hover:border-purple-300 group">
+              <span className="flex h-2 w-2 rounded-full bg-purple-500 animate-pulse duration-1000"></span>
+              ✦ Compare plans in detail
+              <ArrowRight className="h-4 w-4 text-purple-500 group-hover:text-purple-700 transition-colors group-hover:translate-x-0.5" />
+            </div>
+          </Link>
+        </div>
+
         {/* FAQ Section */}
-        <div className="max-w-3xl mx-auto mt-32">
+        <div className="max-w-3xl mx-auto mt-24">
           <h3 className="text-3xl font-extrabold text-center mb-10 tracking-tight text-zinc-900">Frequently Asked Questions</h3>
           <div className="space-y-4">
             {faqs.map((faq, i) => (

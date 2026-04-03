@@ -5,58 +5,67 @@ import { motion } from "motion/react";
 
 const testimonials = [
   {
-    text: "CV Optimizer AI transformed my job search. The AI-tailored suggestions for my professional summary were spot on, and I landed an interview at a top tech firm within a week!",
-    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop&crop=face",
-    name: "Emma Thompson",
+    text: "Went from a 42 to a 91 ATS score. Got my first callback in 3 days after months of silence.",
+    name: "Emma T.",
     role: "Product Manager",
+    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=128&h=128&fit=crop&crop=face",
+    companyLogo: "https://upload.wikimedia.org/wikipedia/commons/b/ba/Stripe_Logo%2C_revised_2016.svg",
   },
   {
-    text: "I was skeptical about AI writers, but the quality of the bullet points generated for my roles was top-tier. It's like having a career coach in your pocket.",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
-    name: "James Wilson",
+    text: "The AI rewrote my bullet points better than I could in an hour. Exported a clean PDF and applied the same day.",
+    name: "James W.",
     role: "Senior Engineer",
+    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=128&h=128&fit=crop&crop=face",
+    companyLogo: "https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.png",
   },
   {
-    text: "Finally, a tool that understands the nuances of different industries. The executive template helped me highlight my leadership experience effectively. Highly recommended!",
-    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
-    name: "Sofia Rodriguez",
+    text: "I had no idea my formatting was breaking the ATS. Fixed the issues in one scan and got two interview calls that week.",
+    name: "Sofia R.",
     role: "Sales Director",
+    image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=128&h=128&fit=crop&crop=face",
+    companyLogo: "https://upload.wikimedia.org/wikipedia/commons/f/f9/Salesforce.com_logo.svg",
   },
   {
-    text: "The precision and speed are unmatched. Integrating my LinkedIn profile was seamless, and the resulting CV looks more professional than anything I could have designed myself.",
-    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face",
-    name: "David Park",
+    text: "Imported my LinkedIn, got a polished CV in seconds. The shareable letter link impressed every recruiter I sent it to.",
+    name: "David P.",
     role: "UX Designer",
+    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=128&h=128&fit=crop&crop=face",
+    companyLogo: "https://upload.wikimedia.org/wikipedia/commons/2/26/Spotify_logo_with_text.svg",
   },
   {
-    text: "After 3 months of rejection emails, I used CV Optimizer AI to rewrite my bullets using the CAR method. I got 4 interviews in the next two weeks.",
-    image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop&crop=face",
-    name: "Sarah Jenkins",
-    role: "Marketing Specialist",
+    text: "After 3 months of rejections, I used the CAR method rewrite and got 4 interviews in two weeks.",
+    name: "Sarah J.",
+    role: "Marketing",
+    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=128&h=128&fit=crop&crop=face",
+    companyLogo: "https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg",
   },
   {
-    text: "The ATS Scanner is brilliant. It showed me exactly why my beautifully designed PDF was failing in the corporate portal. Fixed the issues and got a callback the next day.",
-    image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop&crop=face",
-    name: "Michael Chen",
+    text: "The ATS Scanner showed me exactly why my PDF kept failing corporate portals. Fixed it and got a callback next day.",
+    name: "Michael C.",
     role: "Data Scientist",
+    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=128&h=128&fit=crop&crop=face",
+    companyLogo: "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg",
   },
   {
-    text: "I love the Copy Link feature! I send the shareable letter link directly in my LinkedIn outreach notes and it immediately separates me from other applicants.",
-    image: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=150&h=150&fit=crop&crop=face",
-    name: "Aisha Patel",
-    role: "Business Developer",
+    text: "I send the shareable letter link in my LinkedIn outreach. It immediately separates me from other candidates.",
+    name: "Aisha P.",
+    role: "Business Dev",
+    image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=128&h=128&fit=crop&crop=face",
+    companyLogo: "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg",
   },
   {
-    text: "Writing cover letters used to take me hours. Now I generate a personalized Presentation Letter targeted to the company in literally seconds.",
-    image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=150&h=150&fit=crop&crop=face",
-    name: "Thomas Wright",
-    role: "Operations Manager",
+    text: "Cover letters used to take me hours. Now I generate a targeted one in literally seconds.",
+    name: "Thomas W.",
+    role: "Operations",
+    image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=128&h=128&fit=crop&crop=face",
+    companyLogo: "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg",
   },
   {
-    text: "I've tried multiple resume builders, but the formatting here is pristine. No weird spacing issues, it exports perfectly, and the AI suggestions are actually helpful.",
-    image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150&h=150&fit=crop&crop=face",
-    name: "Elena Rostova",
+    text: "Tried multiple resume builders. This one exports perfectly, no weird spacing, and the AI suggestions are actually useful.",
+    name: "Elena R.",
     role: "Financial Analyst",
+    image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=128&h=128&fit=crop&crop=face",
+    companyLogo: "https://upload.wikimedia.org/wikipedia/commons/9/96/Microsoft_logo_%282012%29.svg",
   },
 ];
 
@@ -87,11 +96,11 @@ export const LandingTestimonials = () => {
           </div>
 
           <h2 className="text-4xl md:text-6xl font-extrabold tracking-tighter text-zinc-900 mb-6 leading-tight">
-            Loved by people who
-            <span className="bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent"> got the job.</span>
+            Trusted by professionals who
+            <span className="bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent"> landed interviews.</span>
           </h2>
           <p className="text-lg md:text-xl text-zinc-500 font-medium">
-            Join thousands of professionals who are already landing interviews at top companies with CV Optimizer AI.
+            See what users say after their first ATS scan.
           </p>
         </motion.div>
 

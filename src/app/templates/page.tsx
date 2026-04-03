@@ -578,7 +578,7 @@ export default function TemplatesPage() {
                 </Link>
                 <nav className="ml-auto hidden md:flex gap-8 items-center text-sm font-bold text-zinc-500">
                     <Link className="hover:text-blue-600 transition-colors" href="/templates">Templates</Link>
-                    <Link className="hover:text-blue-600 transition-colors" href="/#pricing">Pricing</Link>
+                    <Link className="hover:text-blue-600 transition-colors" href="/pricing">Pricing</Link>
                     <Link className="hover:text-blue-600 transition-colors" href="/login">Login</Link>
                     <Link href="/signup">
                         <Button className="bg-blue-600 text-white hover:bg-blue-700 font-bold rounded-xl px-6">

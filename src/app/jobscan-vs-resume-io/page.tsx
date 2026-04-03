@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Zap, CheckCircle2, XCircle, ChevronRight } from 'lucide-react';
 import { BlogFeatures } from '@/components/blog/BlogFeatures';
+import { ComparisonFAQ } from '@/components/ui/comparison-faq';
+import { RelatedComparisons } from '@/components/ui/related-comparisons';
 
 export const metadata: Metadata = {
   title: 'Jobscan vs Resume.io — Which Resume Tool Is Better in 2026?',
@@ -30,6 +32,12 @@ const comparisonData = [
   { feature: 'Resume Building', jobscan: 'Basic text editor', resumeio: 'Excellent (Drag-and-drop)', cvo: 'Exceptional (Role-Targeted AI)' },
   { feature: 'Pricing (Monthly)', jobscan: '$49.95 / mo', resumeio: '$24.95 / mo', cvo: 'Free Tools + Pro Options' },
   { feature: 'Ease of Use', jobscan: 'Moderate (complex UI)', resumeio: 'High (very intuitive)', cvo: 'High (Upload & Fix in 1 click)' },
+];
+
+const faqs = [
+  { q: "Is Jobscan better than Resume.io?", a: "Jobscan is better if your primary goal is matching keywords from a job description to beat ATS systems. Resume.io is better if you need a quickly generated, beautiful visual template." },
+  { q: "Do Resume.io templates pass ATS parsers?", a: "Some do, but many of their highly visual, multi-column templates can struggle with older Applicant Tracking Systems that prefer standard top-to-bottom text matching." },
+  { q: "Is there a free alternative to both?", a: "CV Optimizer AI provides a free ATS checker and combines beautiful modern templates with deep ATS parsing logic, solving the issues of both tools." }
 ];
 
 export default function JobscanVsResumeIoPage() {
@@ -217,6 +225,9 @@ export default function JobscanVsResumeIoPage() {
                     Check Your ATS Score Free <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
                 </Link>
+                <p className="text-[13px] text-blue-200/70 font-medium mt-4">
+                  No credit card required · Cancel anytime
+                </p>
               </div>
             </div>
           </div>
@@ -226,6 +237,9 @@ export default function JobscanVsResumeIoPage() {
 
       {/* ── Feature Showcase ─────────────────────────────── */}
       <BlogFeatures />
+
+      <ComparisonFAQ faqs={faqs} />
+      <RelatedComparisons currentPath="/jobscan-vs-resume-io" />
 
       {/* ── Footer ── */}
       <footer className="py-20 px-6 border-t border-zinc-100 bg-[#fafafa]">
@@ -245,7 +259,7 @@ export default function JobscanVsResumeIoPage() {
               <p className="text-xs font-black uppercase tracking-widest text-[#2563eb]">Product</p>
               <nav className="flex flex-col gap-4 text-sm font-bold text-zinc-600">
                 <Link className="hover:text-zinc-900 transition-colors" href="/templates">Templates</Link>
-                <Link className="hover:text-zinc-900 transition-colors" href="/#pricing">Pricing</Link>
+                <Link className="hover:text-zinc-900 transition-colors" href="/pricing">Pricing</Link>
                 <Link className="hover:text-zinc-900 transition-colors" href="/free-ats-checker">Free ATS Checker</Link>
                 <Link className="hover:text-zinc-900 transition-colors" href="/resume-score-checker">Resume Score Checker</Link>
                 <Link className="hover:text-zinc-900 transition-colors" href="/about">About</Link>
@@ -256,8 +270,8 @@ export default function JobscanVsResumeIoPage() {
             <div className="space-y-6">
               <p className="text-xs font-black uppercase tracking-widest text-[#2563eb]">Legal</p>
               <nav className="flex flex-col gap-4 text-sm font-bold text-zinc-600">
-                <Link className="hover:text-zinc-900 transition-colors" href="#">Privacy</Link>
-                <Link className="hover:text-zinc-900 transition-colors" href="#">Terms</Link>
+                <Link className="hover:text-zinc-900 transition-colors" href="/privacy">Privacy Policy</Link>
+                <Link className="hover:text-zinc-900 transition-colors" href="/terms">Terms of Service</Link>
               </nav>
             </div>
           </div>

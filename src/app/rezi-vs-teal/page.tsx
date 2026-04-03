@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Zap, CheckCircle2, XCircle, ChevronRight } from 'lucide-react';
 import { BlogFeatures } from '@/components/blog/BlogFeatures';
+import { ComparisonFAQ } from '@/components/ui/comparison-faq';
+import { RelatedComparisons } from '@/components/ui/related-comparisons';
 
 export const metadata: Metadata = {
   title: 'Rezi vs Teal — Which Resume Tool Is Better in 2026?',
@@ -30,6 +32,12 @@ const comparisonData = [
   { feature: 'AI Content Generation', rezi: 'Excellent', teal: 'Good', cvo: 'Exceptional (Role-Targeted)' },
   { feature: 'Pricing (Monthly)', rezi: '$29.00 / mo', teal: '$29.00 / mo', cvo: 'Free Tools + Pro Options' },
   { feature: 'Ease of Use', rezi: 'Moderate (Form-heavy)', teal: 'Moderate (Too many features)', cvo: 'High (Upload & Fix in 1 click)' },
+];
+
+const faqs = [
+  { q: "Is Rezi better than Teal?", a: "Rezi is better for AI resume generation and creating bullet points from scratch. Teal is better for tracking your job application pipeline across various stages." },
+  { q: "Do these tools check for ATS compatibility?", a: "Yes, but they approach it differently. Rezi focuses on keyword matching against a job description. CV Optimizer AI does a deep visual formatting and parsing check alongside keyword analysis." },
+  { q: "Is there a free alternative to Rezi and Teal?", a: "CV Optimizer AI offers a free ATS checker and resume scoring tool that analyzes your resume against industry parser standards." }
 ];
 
 export default function ReziVsTealPage() {
@@ -217,6 +225,9 @@ export default function ReziVsTealPage() {
                     Check Your ATS Score Free <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
                 </Link>
+                <p className="text-[13px] text-blue-200/70 font-medium mt-4">
+                  No credit card required · Cancel anytime
+                </p>
               </div>
             </div>
           </div>
@@ -226,6 +237,9 @@ export default function ReziVsTealPage() {
 
       {/* ── Feature Showcase ─────────────────────────────── */}
       <BlogFeatures />
+
+      <ComparisonFAQ faqs={faqs} />
+      <RelatedComparisons currentPath="/rezi-vs-teal" />
 
       {/* ── Footer ── */}
       <footer className="py-20 px-6 border-t border-zinc-100 bg-[#fafafa]">
@@ -245,7 +259,7 @@ export default function ReziVsTealPage() {
               <p className="text-xs font-black uppercase tracking-widest text-[#2563eb]">Product</p>
               <nav className="flex flex-col gap-4 text-sm font-bold text-zinc-600">
                 <Link className="hover:text-zinc-900 transition-colors" href="/templates">Templates</Link>
-                <Link className="hover:text-zinc-900 transition-colors" href="/#pricing">Pricing</Link>
+                <Link className="hover:text-zinc-900 transition-colors" href="/pricing">Pricing</Link>
                 <Link className="hover:text-zinc-900 transition-colors" href="/free-ats-checker">Free ATS Checker</Link>
                 <Link className="hover:text-zinc-900 transition-colors" href="/resume-score-checker">Resume Score Checker</Link>
                 <Link className="hover:text-zinc-900 transition-colors" href="/about">About</Link>
@@ -256,8 +270,8 @@ export default function ReziVsTealPage() {
             <div className="space-y-6">
               <p className="text-xs font-black uppercase tracking-widest text-[#2563eb]">Legal</p>
               <nav className="flex flex-col gap-4 text-sm font-bold text-zinc-600">
-                <Link className="hover:text-zinc-900 transition-colors" href="#">Privacy</Link>
-                <Link className="hover:text-zinc-900 transition-colors" href="#">Terms</Link>
+                <Link className="hover:text-zinc-900 transition-colors" href="/privacy">Privacy Policy</Link>
+                <Link className="hover:text-zinc-900 transition-colors" href="/terms">Terms of Service</Link>
               </nav>
             </div>
           </div>

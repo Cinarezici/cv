@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Eye, EyeOff, Mail, Lock, ArrowRight, Chrome, Loader2, Zap, CheckCircle2, MailCheck } from "lucide-react";
+import { Eye, EyeOff, Mail, Lock, ArrowRight, Chrome, Loader2, Zap, CheckCircle2, MailCheck, Shield } from "lucide-react";
 import Link from "next/link";
 
 /* ─── Animated background canvas (blue particle rain, matching landing palette) ─── */
@@ -169,6 +169,49 @@ export default function SignupPage() {
 
             {/* Main content */}
             <div className="h-full w-full flex items-center justify-center px-4 relative z-10">
+                <div className="flex items-stretch gap-0 lg:gap-10 max-w-[860px] w-full">
+
+                {/* Left: Value reinforcement — desktop only */}
+                <div className="hidden lg:flex flex-col justify-center w-[380px] pr-10 border-r border-white/10 animate-in fade-in slide-in-from-left-6 duration-700">
+                  <h2 className="text-2xl font-extrabold text-white tracking-tight mb-6">
+                    What you get — free for 14 days
+                  </h2>
+                  <div className="space-y-4 mb-8">
+                    {[
+                      "ATS score out of 100 with detailed breakdown",
+                      "AI-powered CV rewrite for any target role",
+                      "12 professional, ATS-safe templates",
+                      "Keyword gap analysis vs job descriptions",
+                      "Shareable presentation letters with unique link",
+                    ].map(item => (
+                      <div key={item} className="flex items-start gap-3">
+                        <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
+                        <p className="text-[14px] text-zinc-300 font-medium">{item}</p>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="bg-white/5 border border-white/10 rounded-2xl p-5 mb-6">
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="w-8 h-8 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
+                        <Zap className="w-4 h-4 text-blue-400" />
+                      </div>
+                      <div>
+                        <p className="text-[13px] font-bold text-white">20,000+ CVs optimized</p>
+                        <p className="text-[11px] text-zinc-500 font-medium">Trusted by professionals worldwide</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <Shield className="w-4 h-4 text-zinc-500" />
+                    <p className="text-[12px] text-zinc-500 font-medium">
+                      Your data is encrypted and never shared. GDPR compliant.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Right: Form */}
                 <div className="w-full max-w-[420px] animate-in fade-in slide-in-from-bottom-6 duration-700">
 
                     {success ? (
@@ -272,9 +315,9 @@ export default function SignupPage() {
                                 {/* Terms note */}
                                 <p className="text-[11px] text-zinc-600 text-center font-medium leading-relaxed">
                                     By creating an account, you agree to our{" "}
-                                    <a href="#" className="text-zinc-500 hover:text-zinc-300 transition-colors underline underline-offset-2">Terms of Service</a>
+                                    <a href="/terms" className="text-zinc-500 hover:text-zinc-300 transition-colors underline underline-offset-2">Terms of Service</a>
                                     {" "}and{" "}
-                                    <a href="#" className="text-zinc-500 hover:text-zinc-300 transition-colors underline underline-offset-2">Privacy Policy</a>.
+                                    <a href="/privacy" className="text-zinc-500 hover:text-zinc-300 transition-colors underline underline-offset-2">Privacy Policy</a>.
                                 </p>
                             </form>
 
@@ -287,6 +330,7 @@ export default function SignupPage() {
                             </p>
                         </>
                     )}
+                </div>
                 </div>
             </div>
         </section>

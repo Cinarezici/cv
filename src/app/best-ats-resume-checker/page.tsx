@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Zap, CheckCircle2, XCircle, ChevronRight, Star } from 'lucide-react';
 import { BlogFeatures } from '@/components/blog/BlogFeatures';
+import { ComparisonFAQ } from '@/components/ui/comparison-faq';
+import { RelatedComparisons } from '@/components/ui/related-comparisons';
 
 export const metadata: Metadata = {
   title: 'Best ATS Resume Checker in 2026 — Which Tool Should You Use?',
@@ -29,6 +31,12 @@ const comparisonData = [
   { item: 'ATS Parser Check', jobscan: 'No', rezi: 'No', teal: 'No', resumeio: 'No', cvo: 'Yes (Deep Structure)' },
   { item: 'AI Content Generation', jobscan: 'Basic', rezi: 'Excellent', teal: 'Good', resumeio: 'Basic', cvo: 'Exceptional' },
   { item: 'Pricing (Monthly)', jobscan: '$49.95', rezi: '$29.00', teal: '$29.00', resumeio: '$24.95', cvo: 'Free Tools + Pro Options' },
+];
+
+const faqs = [
+  { q: "What is the best ATS resume checker in 2026?", a: "While tools like Jobscan and Rezi are popular, CV Optimizer AI is considered the best overall in 2026 because it combines deep ATS formatting parsing with GPT-4 AI rewriting features." },
+  { q: "Do these checkers guarantee I will pass?", a: "No tool can guarantee a job offer, but using a modern ATS checker dramatically increases your chances of getting past initial automated screeners by ensuring your resume is readable." },
+  { q: "Are ATS resume checkers free?", a: "Most offer a free trial or basic scan. CV Optimizer AI provides a comprehensive free ATS score and formatting check before requiring an upgrade for AI writing features." }
 ];
 
 export default function BestAtsCheckerPage() {
@@ -289,6 +297,9 @@ export default function BestAtsCheckerPage() {
                     Check Your ATS Score Free <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
                 </Link>
+                <p className="text-[13px] text-blue-200/70 font-medium mt-4">
+                  No credit card required · Cancel anytime
+                </p>
               </div>
             </div>
           </div>
@@ -298,6 +309,9 @@ export default function BestAtsCheckerPage() {
 
       {/* ── Feature Showcase ─────────────────────────────── */}
       <BlogFeatures />
+
+      <ComparisonFAQ faqs={faqs} />
+      <RelatedComparisons currentPath="/best-ats-resume-checker" />
 
       {/* ── Footer ── */}
       <footer className="py-20 px-6 border-t border-zinc-100 bg-[#fafafa]">
@@ -317,7 +331,7 @@ export default function BestAtsCheckerPage() {
               <p className="text-xs font-black uppercase tracking-widest text-[#2563eb]">Product</p>
               <nav className="flex flex-col gap-4 text-sm font-bold text-zinc-600">
                 <Link className="hover:text-zinc-900 transition-colors" href="/templates">Templates</Link>
-                <Link className="hover:text-zinc-900 transition-colors" href="/#pricing">Pricing</Link>
+                <Link className="hover:text-zinc-900 transition-colors" href="/pricing">Pricing</Link>
                 <Link className="hover:text-zinc-900 transition-colors" href="/free-ats-checker">Free ATS Checker</Link>
                 <Link className="hover:text-zinc-900 transition-colors" href="/resume-score-checker">Resume Score Checker</Link>
                 <Link className="hover:text-zinc-900 transition-colors" href="/about">About</Link>
@@ -328,8 +342,8 @@ export default function BestAtsCheckerPage() {
             <div className="space-y-6">
               <p className="text-xs font-black uppercase tracking-widest text-[#2563eb]">Legal</p>
               <nav className="flex flex-col gap-4 text-sm font-bold text-zinc-600">
-                <Link className="hover:text-zinc-900 transition-colors" href="#">Privacy</Link>
-                <Link className="hover:text-zinc-900 transition-colors" href="#">Terms</Link>
+                <Link className="hover:text-zinc-900 transition-colors" href="/privacy">Privacy Policy</Link>
+                <Link className="hover:text-zinc-900 transition-colors" href="/terms">Terms of Service</Link>
               </nav>
             </div>
           </div>
