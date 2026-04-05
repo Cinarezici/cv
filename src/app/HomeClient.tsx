@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import { Button } from "@/components/ui/button";
-import { ArrowRight, CheckCircle2, FileText, Download, Share2, Zap, MessageSquare, ShieldCheck, X, Star, Search, Bookmark, Shield } from "lucide-react";
+import { ArrowRight, CheckCircle2, FileText, Download, Share2, Zap, MessageSquare, ShieldCheck, X, Star, Search, Bookmark, Shield, Users } from "lucide-react";
 import { motion, AnimatePresence, useInView, animate } from 'framer-motion';
 import { useLang, type Lang } from "@/lib/i18n";
 import type { CompanyLogoName } from "@/components/ui/company-logos";
@@ -317,13 +317,58 @@ export default function HomeClient() {
         <JobSearchPreview />
         <WaveDivider />
 
-        <section className="w-full py-16 bg-white border-t border-zinc-100">
-          <div className="container px-6 mx-auto max-w-5xl">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center font-extrabold text-zinc-900">
-              <div><p className="text-3xl md:text-4xl"><AnimatedCounter base={20313} />+</p><p className="text-sm text-zinc-500 mt-1">CVs optimized</p></div>
-              <div><p className="text-3xl md:text-4xl">6</p><p className="text-sm text-zinc-500 mt-1">ATS categories</p></div>
-              <div><p className="text-3xl md:text-4xl">12</p><p className="text-sm text-zinc-500 mt-1">Templates</p></div>
-              <div><p className="text-3xl md:text-4xl">&lt; 30s</p><p className="text-sm text-zinc-500 mt-1">Scan time</p></div>
+        <section className="w-full py-24 bg-white">
+          <div className="container px-6 mx-auto max-w-6xl">
+            <div className="relative group p-1 w-full rounded-[2.5rem] bg-gradient-to-b from-zinc-100/50 to-white border border-zinc-200/60 shadow-2xl shadow-indigo-500/5 overflow-hidden">
+              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-indigo-500/20 to-transparent" />
+              
+              <div className="grid grid-cols-2 lg:grid-cols-4 divide-y lg:divide-y-0 lg:divide-x divide-zinc-100 bg-white/50 backdrop-blur-xl rounded-[2.4rem] overflow-hidden">
+                {/* Stat 1 */}
+                <div className="p-10 md:p-12 flex flex-col items-center justify-center space-y-4 group/item hover:bg-zinc-50/50 transition-colors duration-500">
+                  <div className="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600 group-hover/item:scale-110 transition-transform">
+                    <Users className="w-5 h-5" />
+                  </div>
+                  <div className="text-center">
+                    <p className="text-3xl md:text-5xl font-black tracking-tight text-zinc-900">
+                      <AnimatedCounter base={20412} />+
+                    </p>
+                    <p className="text-xs font-bold uppercase tracking-widest text-zinc-400 mt-2">Trusted Professionals</p>
+                  </div>
+                </div>
+
+                {/* Stat 2 */}
+                <div className="p-10 md:p-12 flex flex-col items-center justify-center space-y-4 group/item hover:bg-zinc-50/50 transition-colors duration-500">
+                  <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center text-amber-600 group-hover/item:scale-110 transition-transform">
+                    <Search className="w-5 h-5" />
+                  </div>
+                  <div className="text-center">
+                    <p className="text-3xl md:text-5xl font-black tracking-tight text-zinc-900">6</p>
+                    <p className="text-xs font-bold uppercase tracking-widest text-zinc-400 mt-2">ATS Analysis Engines</p>
+                  </div>
+                </div>
+
+                {/* Stat 3 */}
+                <div className="p-10 md:p-12 flex flex-col items-center justify-center space-y-4 group/item hover:bg-zinc-50/50 transition-colors duration-500">
+                  <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600 group-hover/item:scale-110 transition-transform">
+                    <Star className="w-5 h-5" />
+                  </div>
+                  <div className="text-center">
+                    <p className="text-3xl md:text-5xl font-black tracking-tight text-zinc-900">12</p>
+                    <p className="text-xs font-bold uppercase tracking-widest text-zinc-400 mt-2">Premium Templates</p>
+                  </div>
+                </div>
+
+                {/* Stat 4 */}
+                <div className="p-10 md:p-12 flex flex-col items-center justify-center space-y-4 group/item hover:bg-zinc-50/50 transition-colors duration-500">
+                  <div className="w-10 h-10 rounded-xl bg-rose-50 flex items-center justify-center text-rose-600 group-hover/item:scale-110 transition-transform">
+                    <Zap className="w-5 h-5" />
+                  </div>
+                  <div className="text-center">
+                    <p className="text-3xl md:text-5xl font-black tracking-tight text-zinc-900">&lt;30s</p>
+                    <p className="text-xs font-bold uppercase tracking-widest text-zinc-400 mt-2">Real-time Analysis</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>
