@@ -185,10 +185,38 @@ export default async function BlogPostPage({
 
   const tagStyle = tagColors[post.tag] || 'bg-zinc-50 text-zinc-600 border-zinc-200';
 
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": post.title,
+    "description": post.description,
+    "author": {
+      "@type": "Organization",
+      "name": "CVOptimizerAI"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "CVOptimizerAI",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://cvoptimizerai.com/logo.png"
+      }
+    },
+    // Approximating date since we only have a string like "April 5, 2026"
+    "datePublished": "2026-04-05T08:00:00+00:00",
+    "dateModified": "2026-04-05T08:00:00+00:00",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": `https://cvoptimizerai.com/blog/${slug}`
+    }
+  };
+
   return (
     <div className="flex flex-col min-h-screen bg-[#fafafa] text-zinc-900">
-
-      {/* ── Floating Navbar ─────────────────────────────── */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
       <div className="fixed top-4 left-4 right-4 md:left-1/2 md:-translate-x-1/2 md:w-full md:max-w-5xl z-50 flex justify-center pointer-events-none">
         <header className="flex items-center justify-between w-full h-16 px-4 md:px-6 border border-zinc-200/80 bg-white/70 backdrop-blur-xl rounded-full shadow-[0_8px_32px_-8px_rgba(0,0,0,0.08)] pointer-events-auto transition-all">
           <Link className="flex items-center gap-2 group" href="/">

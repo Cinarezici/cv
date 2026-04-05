@@ -7,21 +7,21 @@ import {
 } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Resume Score Checker — Check Your CV Score Instantly',
+  title: 'Free Resume Score Checker — Instant ATS Score Out of 100 | CVOptimizerAI',
   description:
-    'Check your resume score instantly. Find issues, missing keywords, and improve your CV with AI.',
+    "Get your resume's ATS score in seconds. Our free resume score checker shows every issue ranked by impact and rewrites your CV for any job. No account needed.",
   openGraph: {
-    title: 'Resume Score Checker — Check Your CV Score Instantly',
+    title: 'Free Resume Score Checker — Instant ATS Score Out of 100 | CVOptimizerAI',
     description:
-      'Check your resume score instantly. Find issues, missing keywords, and improve your CV with AI.',
+      "Get your resume's ATS score in seconds. Our free resume score checker shows every issue ranked by impact and rewrites your CV for any job. No account needed.",
     type: 'website',
     url: 'https://cvoptimizerai.com/resume-score-checker',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Resume Score Checker — Check Your CV Score Instantly',
+    title: 'Free Resume Score Checker — Instant ATS Score Out of 100 | CVOptimizerAI',
     description:
-      'Check your resume score instantly. Find issues, missing keywords, and improve your CV with AI.',
+      "Get your resume's ATS score in seconds. Our free resume score checker shows every issue ranked by impact and rewrites your CV for any job. No account needed.",
   },
   alternates: { canonical: 'https://cvoptimizerai.com/resume-score-checker' },
 };

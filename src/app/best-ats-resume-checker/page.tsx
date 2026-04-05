@@ -7,23 +7,78 @@ import { ComparisonFAQ } from '@/components/ui/comparison-faq';
 import { RelatedComparisons } from '@/components/ui/related-comparisons';
 
 export const metadata: Metadata = {
-  title: 'Best ATS Resume Checker in 2026 — Which Tool Should You Use?',
+  title: 'Best ATS Resume Checkers in 2026 — Free Tools Tested & Ranked | CVOptimizerAI',
   description:
-    'Compare the best ATS resume checker tools in 2026. See features, pricing, and which resume checker is best for job seekers.',
+    "We tested the top ATS resume checkers so you don't have to. See which free tools actually improve your interview rate — and why CVOptimizerAI ranks #1 with no sign-up required.",
   openGraph: {
-    title: 'Best ATS Resume Checker in 2026 — Which Tool Should You Use?',
+    title: 'Best ATS Resume Checkers in 2026 — Free Tools Tested & Ranked | CVOptimizerAI',
     description:
-      'Compare the best ATS resume checker tools in 2026. See features, pricing, and which resume checker is best for job seekers.',
+      "We tested the top ATS resume checkers so you don't have to. See which free tools actually improve your interview rate — and why CVOptimizerAI ranks #1 with no sign-up required.",
     type: 'website',
     url: 'https://cvoptimizerai.com/best-ats-resume-checker',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Best ATS Resume Checker in 2026 — Which Tool Should You Use?',
+    title: 'Best ATS Resume Checkers in 2026 — Free Tools Tested & Ranked | CVOptimizerAI',
     description:
-      'Compare the best ATS resume checker tools in 2026. See features, pricing, and which resume checker is best for job seekers.',
+      "We tested the top ATS resume checkers so you don't have to. See which free tools actually improve your interview rate — and why CVOptimizerAI ranks #1 with no sign-up required.",
   },
   alternates: { canonical: 'https://cvoptimizerai.com/best-ats-resume-checker' },
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is an ATS resume checker?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "An ATS resume checker is a tool that scans your CV and scores how compatible it is with Applicant Tracking Systems (ATS). It identifies missing keywords, formatting issues, and structural problems that cause resumes to be rejected before a human reads them."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is a good ATS score?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A score of 80 or above is considered strong ATS compatibility. Scores above 80 position you in the top-ranked applicants in most ATS systems. Scores below 65 carry a high risk of being filtered out before a recruiter sees your resume."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is CVOptimizerAI free to use?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. CVOptimizerAI's ATS scanner is completely free with no sign-up required. You upload your CV, get an instant score out of 100, and see all issues ranked by impact. The AI rewrite feature is available on the free account tier."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I need to sign up to get my ATS score?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No sign-up is required to see your ATS score on CVOptimizerAI. Upload your CV or paste the text, and your score appears in under 10 seconds."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why is my resume getting rejected by ATS?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The most common ATS rejection causes are: missing keywords from the job description, multi-column formatting that breaks parsing, non-standard section headers, lack of measurable achievements in bullet points, and submitting an image-based PDF that ATS cannot read."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the best free ATS resume checker in 2026?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "CVOptimizerAI is the top-rated free ATS resume checker in 2026. It provides an instant ATS score out of 100, ranks every issue by impact, and includes a one-click AI rewrite that fixes everything automatically — all free, with no sign-up required for the scan."
+      }
+    }
+  ]
 };
 
 const comparisonData = [
@@ -42,6 +97,10 @@ const faqs = [
 export default function BestAtsCheckerPage() {
   return (
     <div className="flex flex-col min-h-screen bg-[#fafafa] text-zinc-900 overflow-x-hidden selection:bg-blue-500/30">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
 
       {/* ── Minimal conversion navbar ── */}
       <div className="fixed top-4 left-4 right-4 md:left-1/2 md:-translate-x-1/2 md:w-full md:max-w-5xl z-50 flex justify-center pointer-events-none">

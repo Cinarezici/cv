@@ -7,23 +7,54 @@ import { ComparisonFAQ } from '@/components/ui/comparison-faq';
 import { RelatedComparisons } from '@/components/ui/related-comparisons';
 
 export const metadata: Metadata = {
-  title: 'Rezi vs Teal — Which Resume Tool Is Better in 2026?',
+  title: 'Rezi vs Teal (2026): Which AI Resume Builder Is Worth Using?',
   description:
-    'Compare Rezi and Teal resume tools. See features, pricing, and which ATS checker is best for job seekers.',
+    "Both Rezi and Teal are popular AI resume tools — but they serve very different needs. Here's a full feature-by-feature breakdown, plus the free option that beats both on ATS scoring.",
   openGraph: {
-    title: 'Rezi vs Teal — Which Resume Tool Is Better in 2026?',
+    title: 'Rezi vs Teal (2026): Which AI Resume Builder Is Worth Using?',
     description:
-      'Compare Rezi and Teal resume tools. See features, pricing, and which ATS checker is best for job seekers.',
+      "Both Rezi and Teal are popular AI resume tools — but they serve very different needs. Here's a full feature-by-feature breakdown, plus the free option that beats both on ATS scoring.",
     type: 'website',
     url: 'https://cvoptimizerai.com/rezi-vs-teal',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Rezi vs Teal — Which Resume Tool Is Better in 2026?',
+    title: 'Rezi vs Teal (2026): Which AI Resume Builder Is Worth Using?',
     description:
-      'Compare Rezi and Teal resume tools. See features, pricing, and which ATS checker is best for job seekers.',
+      "Both Rezi and Teal are popular AI resume tools — but they serve very different needs. Here's a full feature-by-feature breakdown, plus the free option that beats both on ATS scoring.",
   },
   alternates: { canonical: 'https://cvoptimizerai.com/rezi-vs-teal' },
+};
+
+const itemListSchema = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Rezi vs Teal (2026): Which AI Resume Builder Is Worth Using?",
+  "description": "Both Rezi and Teal are popular AI resume tools — but they serve very different needs. Here's a full feature-by-feature breakdown, plus the free option that beats both on ATS scoring.",
+  "numberOfItems": 3,
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "CVOptimizerAI",
+      "url": "https://cvoptimizerai.com",
+      "description": "Free ATS resume checker with one-click AI rewrite. No sign-up required."
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Rezi",
+      "url": "https://rezi.ai",
+      "description": "AI resume builder tailored specifically for writing your bullet points using GPT models."
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Teal",
+      "url": "https://tealhq.com",
+      "description": "Job application tracking system with a built-in Chrome extension and resume keyword highlighting."
+    }
+  ]
 };
 
 const comparisonData = [
@@ -43,6 +74,10 @@ const faqs = [
 export default function ReziVsTealPage() {
   return (
     <div className="flex flex-col min-h-screen bg-[#fafafa] text-zinc-900 overflow-x-hidden selection:bg-blue-500/30">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
+      />
 
       {/* ── Minimal conversion navbar ── */}
       <div className="fixed top-4 left-4 right-4 md:left-1/2 md:-translate-x-1/2 md:w-full md:max-w-5xl z-50 flex justify-center pointer-events-none">

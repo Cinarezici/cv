@@ -4,13 +4,13 @@ import { Button } from '@/components/ui/button';
 import { Zap, ArrowRight, Shield, Target, Sparkles, Users, Award, LineChart } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'About CVOptimizerAI | The Ultimate Resume Optimization Tool',
+  title: 'About CVOptimizerAI — The Free AI Resume Tool Trusted by 20,000+ Professionals',
   description:
-    'Learn about CVOptimizerAI, our mission to democratize the job search, and how our ATS scoring and AI tools help candidates land more interviews.',
+    'CVOptimizerAI builds AI-powered CV tools for job seekers who want more interviews. Learn how our ATS scanner and AI rewrite engine work — and why 20,000+ people use us.',
   openGraph: {
-    title: 'About CVOptimizerAI | The Ultimate Resume Optimization Tool',
+    title: 'About CVOptimizerAI — The Free AI Resume Tool Trusted by 20,000+ Professionals',
     description:
-      'Our mission is to help professionals bypass applicant tracking systems and get their resumes into the hands of real humans.',
+      'CVOptimizerAI builds AI-powered CV tools for job seekers who want more interviews. Learn how our ATS scanner and AI rewrite engine work — and why 20,000+ people use us.',
     type: 'website',
     url: 'https://cvoptimizerai.com/about',
   },
