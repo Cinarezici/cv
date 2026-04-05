@@ -7,21 +7,21 @@ import {
 } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Free AI Resume Checker (2026) — Scan Your CV for ATS Errors',
+  title: 'Free AI Resume Checker — Instant ATS Score & Smart Rewrite | CVOptimizerAI',
   description:
-    'Our AI resume checker acts like a robotic recruiter. It scans your CV for formatting errors, keyword gaps, and ATS readability issues in under 10 seconds. Try it free.',
+    'Upload your resume and get an AI-powered compatibility score in seconds. Our AI resume checker identifies keyword gaps, formatting issues, and rewrites your CV for any role.',
   openGraph: {
-    title: 'Free AI Resume Checker (2026) — Scan Your CV for ATS Errors',
+    title: 'Free AI Resume Checker — Instant ATS Score & Smart Rewrite | CVOptimizerAI',
     description:
-      'Our AI resume checker acts like a robotic recruiter. It scans your CV for formatting errors, keyword gaps, and ATS readability issues in under 10 seconds. Try it free.',
+      'Upload your resume and get an AI-powered compatibility score in seconds. Our AI resume checker identifies keyword gaps, formatting issues, and rewrites your CV for any role.',
     type: 'website',
     url: 'https://cvoptimizerai.com/ai-resume-checker',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Free AI Resume Checker (2026) — Scan Your CV for ATS Errors',
+    title: 'Free AI Resume Checker — Instant ATS Score & Smart Rewrite | CVOptimizerAI',
     description:
-      'Our AI resume checker acts like a robotic recruiter. It scans your CV for formatting errors, keyword gaps, and ATS readability issues in under 10 seconds. Try it free.',
+      'Upload your resume and get an AI-powered compatibility score in seconds. Our AI resume checker identifies keyword gaps, formatting issues, and rewrites your CV for any role.',
   },
   alternates: { canonical: 'https://cvoptimizerai.com/ai-resume-checker' },
 };

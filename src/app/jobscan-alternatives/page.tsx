@@ -7,11 +7,11 @@ import { ComparisonFAQ } from '@/components/ui/comparison-faq';
 import { RelatedComparisons } from '@/components/ui/related-comparisons';
 
 export const metadata: Metadata = {
-  title: 'Top 7 Jobscan Alternatives in 2026 (Free & Paid Tested)',
-  description: 'Looking for a Jobscan alternative that doesn\'t cost $50/month? Compare the top ATS resume checkers with unlimited free scans and better AI tools.',
+  title: '7 Best Jobscan Alternatives in 2026 (Free ATS Tools That Score Better)',
+  description: 'Jobscan charges $49.95/month and caps free scans at 5. These 7 Jobscan alternatives give you ATS scoring, AI rewrites, and keyword matching — most of them free.',
   openGraph: {
-    title: 'Top 7 Jobscan Alternatives in 2026 (Free & Paid Tested)',
-    description: 'Looking for a Jobscan alternative that doesn\'t cost $50/month? Compare the top ATS resume checkers with unlimited free scans and better AI tools.',
+    title: '7 Best Jobscan Alternatives in 2026 (Free ATS Tools That Score Better)',
+    description: 'Jobscan charges $49.95/month and caps free scans at 5. These 7 Jobscan alternatives give you ATS scoring, AI rewrites, and keyword matching — most of them free.',
     type: 'website',
     url: 'https://cvoptimizerai.com/jobscan-alternatives',
   },

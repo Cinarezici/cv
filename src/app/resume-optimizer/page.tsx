@@ -7,21 +7,21 @@ import {
 } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'AI Resume Optimizer — Rewrite Your CV for Any Job Instantly',
+  title: 'Free AI Resume Optimizer — Score, Rewrite & Export in Minutes | CVOptimizerAI',
   description:
-    'Optimize your resume for any job description in seconds. Our AI resume optimizer fixes formatting, injects keywords, and writes high-impact bullet points.',
+    "CVOptimizerAI's AI resume optimizer scans your CV, scores ATS compatibility out of 100, and rewrites every section for your target job. Free, no sign-up needed.",
   openGraph: {
-    title: 'AI Resume Optimizer — Rewrite Your CV for Any Job Instantly',
+    title: 'Free AI Resume Optimizer — Score, Rewrite & Export in Minutes | CVOptimizerAI',
     description:
-      'Optimize your resume for any job description in seconds. Our AI resume optimizer fixes formatting, injects keywords, and writes high-impact bullet points.',
+      "CVOptimizerAI's AI resume optimizer scans your CV, scores ATS compatibility out of 100, and rewrites every section for your target job. Free, no sign-up needed.",
     type: 'website',
     url: 'https://cvoptimizerai.com/resume-optimizer',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'AI Resume Optimizer — Rewrite Your CV for Any Job Instantly',
+    title: 'Free AI Resume Optimizer — Score, Rewrite & Export in Minutes | CVOptimizerAI',
     description:
-      'Optimize your resume for any job description in seconds. Our AI resume optimizer fixes formatting, injects keywords, and writes high-impact bullet points.',
+      "CVOptimizerAI's AI resume optimizer scans your CV, scores ATS compatibility out of 100, and rewrites every section for your target job. Free, no sign-up needed.",
   },
   alternates: { canonical: 'https://cvoptimizerai.com/resume-optimizer' },
 };
