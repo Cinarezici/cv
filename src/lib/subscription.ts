@@ -14,6 +14,44 @@
 import { createClient } from '@/lib/supabase/server';
 import { createServiceRoleClient } from '@/lib/supabase/service';
 
+/**
+ * Ensures the user has a profile and a unique referral_code.
+ * Also handles initial referrer linking if metadata exists.
+ */
+export async function ensureProfileExists(userId: string): Promise<void> {
+    const supabase = createServiceRoleClient();
+    const { data: user } = await supabase.auth.admin.getUserById(userId);
+    const referralCode = userId.split('-')[0]; // Simple, unique-ish code from UUID
+
+    // 1. Create or Update Profile with referral_code
+    const { data: profile, error: pError } = await supabase
+        .from('profiles')
+        .upsert({
+            id: userId,
+            referral_code: referralCode,
+            updated_at: new Date().toISOString(),
+        }, { onConflict: 'id', ignoreDuplicates: true });
+
+    // 2. Handle Referrer Linking if metadata exists and not already linked
+    const referrerCode = user.user?.user_metadata?.referrer_code;
+    if (referrerCode) {
+        // Find the referrer by their code
+        const { data: referrer } = await supabase
+            .from('profiles')
+            .select('id')
+            .eq('referral_code', referrerCode)
+            .single();
+
+        if (referrer && referrer.id !== userId) {
+            await supabase
+                .from('profiles')
+                .update({ referrer_id: referrer.id })
+                .eq('id', userId)
+                .is('referrer_id', null); // Only link if not already linked
+        }
+    }
+}
+
 export type SubscriptionStatus = 'trialing' | 'active' | 'canceled';
 
 export const TRIAL_DAYS = 14;
@@ -115,4 +153,79 @@ export async function ensureTrialExists(userId: string): Promise<void> {
  */
 export function isCanceled(status: SubscriptionStatus): boolean {
     return status === 'canceled';
+}
+
+/**
+ * Logic for awarding a referral reward (e.g., +30 days to referrer).
+ * Threshold: 2 successful upgrades.
+ */
+export async function processReferralReward(referredUserId: string): Promise<void> {
+    const supabase = createServiceRoleClient();
+
+    // 1. Find if this user was referred
+    const { data: profile } = await supabase
+        .from('profiles')
+        .select('referrer_id')
+        .eq('id', referredUserId)
+        .single();
+
+    if (!profile?.referrer_id) return;
+
+    const referrerId = profile.referrer_id;
+
+    // 2. Upsert referral status for this pair
+    await supabase
+        .from('referrals')
+        .upsert({
+            referrer_id: referrerId,
+            referred_id: referredUserId,
+            status: 'upgraded',
+            updated_at: new Date().toISOString()
+        }, { onConflict: 'referred_id' });
+
+    // 3. Count total 'upgraded' referrals for this referrer
+    const { count } = await supabase
+        .from('referrals')
+        .select('*', { count: 'exact', head: true })
+        .eq('referrer_id', referrerId)
+        .eq('status', 'upgraded');
+
+    // 4. Threshold Logic: Every 2 referrals = 1 month free
+    if (count && count > 0 && count % 2 === 0) {
+        await awardFreeMonth(referrerId);
+    }
+}
+
+/**
+ * Extends a user's subscription by 30 days.
+ */
+async function awardFreeMonth(userId: string): Promise<void> {
+    const supabase = createServiceRoleClient();
+
+    // Fetch current subscription
+    const { data: sub } = await supabase
+        .from('subscriptions')
+        .select('*')
+        .eq('user_id', userId)
+        .single();
+
+    if (!sub) return;
+
+    // Extend current_period_end by 30 days
+    const currentEnd = sub.current_period_end ? new Date(sub.current_period_end) : new Date();
+    // If expired, start from now
+    const baseDate = currentEnd > new Date() ? currentEnd : new Date();
+    const newEnd = new Date(baseDate.getTime() + 30 * 24 * 60 * 60 * 1000);
+
+    await supabase
+        .from('subscriptions')
+        .update({
+            current_period_end: newEnd.toISOString(),
+            status: 'active', // Ensure it's active
+            is_pro: true,
+            updated_at: new Date().toISOString()
+        })
+        .eq('user_id', userId);
+
+    console.log(`[ReferralReward] Awarded 30 days to user ${userId}. New expiry: ${newEnd.toISOString()}`);
 }

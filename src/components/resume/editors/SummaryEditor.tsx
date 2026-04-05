@@ -58,7 +58,7 @@ export function SummaryEditor() {
                     rows={7}
                     className={`border rounded-xl px-3 py-2.5 text-sm bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-y min-h-[120px] ${isOverLimit ? 'border-red-400 focus:ring-red-500 dark:border-red-600' : 'border-zinc-200 dark:border-white/10'
                         }`}
-                    placeholder="Briefly describe your background, key strengths, and what you are looking for..."
+                    placeholder="Describe your professional background, key strengths, and what you are looking for in your next role..."
                 />
 
                 <p className="text-[11px] text-zinc-400 dark:text-zinc-500 mt-0.5">

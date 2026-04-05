@@ -7,15 +7,15 @@ export const dynamic = 'force-dynamic';
 
 const DEFAULT_CV_JSON = {
     header: {
-        full_name: 'Your Name',
-        email: '',
-        phone: '',
-        location: '',
+        full_name: 'Your Full Name',
+        email: '(your.email@example.com)',
+        phone: '(+1 123 456 7890)',
+        location: '(City, Country)',
         linkedin: '',
         github: '',
         website: '',
     },
-    summary: '',
+    summary: 'Briefly describe your professional background, top achievements, and what you are looking for in your next role (e.g., "5+ years experience in Software Engineering with a focus on React...").',
     experience: [],
     education: [],
     skills: {
@@ -44,40 +44,42 @@ export async function POST(request: NextRequest) {
             }, { status: 403 });
         }
 
-        // Fetch specified profile or newest one
-        let profileQuery = supabase
-            .from('profiles')
-            .select('id, raw_json')
-            .eq('user_id', user.id);
+        // Fetch specified profile or skip if none provided (to ensure "Blank" is truly blank)
+        let initialJson = { ...DEFAULT_CV_JSON };
+        let profileIdToLink = null;
 
         if (profileId) {
-            profileQuery = profileQuery.eq('id', profileId);
-        } else {
-            profileQuery = profileQuery.order('created_at', { ascending: false });
+            const { data: profile } = await supabase
+                .from('profiles')
+                .select('id, raw_json')
+                .eq('id', profileId)
+                .eq('user_id', user.id)
+                .single();
+
+            if (profile) {
+                profileIdToLink = profile.id;
+                const raw = profile.raw_json as any;
+                initialJson = {
+                    ...DEFAULT_CV_JSON,
+                    header: {
+                        full_name: raw?.full_name || raw?.name || DEFAULT_CV_JSON.header.full_name,
+                        email: raw?.email || '',
+                        phone: raw?.phone || '',
+                        location: raw?.location || raw?.country || '',
+                        linkedin: raw?.linkedin_url || raw?.linkedin || '',
+                        github: raw?.github || '',
+                        website: raw?.website || '',
+                    },
+                    summary: raw?.summary || '',
+                    experience: raw?.experience || raw?.experiences || [],
+                    education: raw?.education || [],
+                    skills: {
+                        core: raw?.skills || raw?.skills_list || [],
+                        tools: [],
+                    },
+                };
+            }
         }
-
-        const { data: profile } = await profileQuery.limit(1).maybeSingle();
-
-        const raw = profile?.raw_json as any;
-        const initialJson = {
-            ...DEFAULT_CV_JSON,
-            header: {
-                full_name: raw?.full_name || raw?.name || 'Your Name',
-                email: raw?.email || '',
-                phone: raw?.phone || '',
-                location: raw?.location || raw?.country || '',
-                linkedin: raw?.linkedin_url || raw?.linkedin || '',
-                github: raw?.github || '',
-                website: raw?.website || '',
-            },
-            summary: raw?.summary || '',
-            experience: raw?.experience || raw?.experiences || [],
-            education: raw?.education || [],
-            skills: {
-                core: raw?.skills || raw?.skills_list || [],
-                tools: [],
-            },
-        };
 
         // Create a fresh resume record
         // NOTE: profile_id is intentionally omitted when null so we don't
@@ -98,8 +100,8 @@ export async function POST(request: NextRequest) {
             updated_at: new Date().toISOString(),
         };
 
-        if (profile?.id) {
-            insertPayload.profile_id = profile.id;
+        if (profileIdToLink) {
+            insertPayload.profile_id = profileIdToLink;
         }
 
         const { data: resume, error } = await supabase

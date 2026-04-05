@@ -5,15 +5,15 @@ import crypto from 'crypto';
 
 const DEFAULT_CV_JSON = {
     header: {
-        full_name: 'Your Name',
-        email: '',
-        phone: '',
-        location: '',
+        full_name: 'Your Full Name',
+        email: '(your.email@example.com)',
+        phone: '(+1 123 456 7890)',
+        location: '(City, Country)',
         linkedin: '',
         github: '',
         website: '',
     },
-    summary: '',
+    summary: 'Briefly describe your professional background, top achievements, and what you are looking for in your next role (e.g., "5+ years experience in Software Engineering with a focus on React...").',
     experience: [],
     education: [],
     skills: {

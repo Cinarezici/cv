@@ -29,11 +29,14 @@ interface ResumeState {
 
 const defaultResumeJson: ResumeJSON = {
     header: {
-        full_name: '',
-        headline: '',
-        email: '',
+        full_name: 'Your Full Name',
+        headline: 'e.g., Senior Software Engineer',
+        email: '(your.email@example.com)',
+        phone: '(+1 123 456 7890)',
+        location: '(City, Country)',
         show_photo: true,
     },
+    summary: 'Briefly describe your professional background, top achievements, and what you are looking for in your next role (e.g., "5+ years experience in Software Engineering with a focus on React...").',
     skills: { core: [], tools: [] },
     experience: [],
     education: [],

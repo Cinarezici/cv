@@ -2,10 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { validateEvent } from "@polar-sh/sdk/webhooks";
 import { createClient } from "@supabase/supabase-js";
 import { Resend } from "resend";
+import { processReferralReward } from "@/lib/subscription";
 
 export const dynamic = "force-dynamic";
-
-
 
 export async function POST(request: NextRequest) {
     const body = await request.text();
@@ -60,6 +59,11 @@ export async function POST(request: NextRequest) {
                             current_period_start: sub.currentPeriodStart?.toISOString() || null,
                             current_period_end: sub.currentPeriodEnd?.toISOString() || null,
                         }, { onConflict: 'user_id' });
+
+                    // ── Referral Processing ──
+                    if (sub.status === 'active') {
+                        await processReferralReward(userId);
+                    }
                 }
                 break;
             }
@@ -119,6 +123,9 @@ export async function POST(request: NextRequest) {
                             // CRITICAL: Initialize period start so usage tracking works!
                             current_period_start: order.createdAt.toISOString(),
                         }, { onConflict: 'user_id' });
+                    
+                    // ── Referral Processing ──
+                    await processReferralReward(userId);
                 }
                 break;
             }

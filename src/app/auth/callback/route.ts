@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
-import { ensureTrialExists } from '@/lib/subscription';
+import { ensureTrialExists, ensureProfileExists } from '@/lib/subscription';
 
 export async function GET(request: Request) {
     const { searchParams, origin } = new URL(request.url);
@@ -11,7 +11,8 @@ export async function GET(request: Request) {
         const supabase = await createClient();
         const { data, error } = await supabase.auth.exchangeCodeForSession(code);
         if (!error && data.user) {
-            // ── Phase 2: Ensure trial subscription exists on first login ──
+            // ── Phase 2: Ensure profile and initial trial/referral state ──
+            await ensureProfileExists(data.user.id);
             await ensureTrialExists(data.user.id);
             return NextResponse.redirect(`${origin}${next}`);
         }

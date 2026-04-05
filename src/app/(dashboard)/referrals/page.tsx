@@ -22,17 +22,16 @@ export default function ReferralsPage() {
       setUser(user);
 
       if (user) {
-        // In a real implementation, we'd query the 'referrals' table
-        // For now, we fetch the count of their referrals
+        // Query referrals with status 'upgraded' to count successful conversions
         const { count, error } = await supabase
           .from('referrals')
           .select('*', { count: 'exact', head: true })
           .eq('referrer_id', user.id)
-          .eq('status', 'paid');
+          .eq('status', 'upgraded');
         
         setStats({ 
           referred_count: count || 0, 
-          reward_status: (count || 0) > 0 ? 'earned' : 'pending' 
+          reward_status: (count || 0) >= 2 ? 'earned' : 'pending' 
         });
       }
       setLoading(false);
@@ -55,78 +54,115 @@ export default function ReferralsPage() {
     </div>
   );
 
+  const progress = Math.min((stats.referred_count / 2) * 100, 100);
+  const remaining = Math.max(2 - stats.referred_count, 0);
+
   return (
-    <div className="max-w-4xl mx-auto space-y-8 animate-in fade-in duration-500">
-      <div className="relative overflow-hidden bg-gradient-to-br from-indigo-700 to-violet-800 rounded-3xl p-8 md:p-12 text-white shadow-2xl">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 blur-3xl rounded-full -mr-20 -mt-20" />
-        <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-10">
-          <div className="space-y-4 text-center md:text-left">
-            <h1 className="text-4xl font-black tracking-tight">Invite friends, get Pro.</h1>
-            <p className="text-indigo-100 text-lg max-w-md font-medium">
-              Share CV Optimizer AI with your network. When they upgrade, you both get rewarded with $10 in account credit.
+    <div className="max-w-4xl mx-auto space-y-8 animate-in fade-in duration-500 pb-12">
+      <div className="relative overflow-hidden bg-gradient-to-br from-indigo-700 to-violet-800 rounded-[2.5rem] p-8 md:p-14 text-white shadow-2xl">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 blur-[100px] rounded-full -mr-48 -mt-48" />
+        <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-12">
+          <div className="space-y-6 text-center lg:text-left max-w-xl">
+            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 text-sm font-bold">
+              <Gift className="w-4 h-4 text-amber-400" />
+              Limited Time: Refer & Earn
+            </div>
+            <h1 className="text-4xl md:text-6xl font-black tracking-tight leading-tight">
+              Get 1 Month <span className="text-amber-400">Pro</span> for Free.
+            </h1>
+            <p className="text-indigo-100 text-lg md:text-xl font-medium leading-relaxed">
+              Invite 2 friends to CV Optimizer AI. When they upgrade to any paid plan, we'll give you <span className="font-bold text-white">30 days of Pro access</span> instantly.
             </p>
           </div>
-          <div className="flex flex-col items-center gap-4 bg-white/10 backdrop-blur-md p-8 rounded-2xl border border-white/20 shadow-xl">
+
+          <div className="w-full lg:w-80 flex flex-col items-center gap-6 bg-white/10 backdrop-blur-xl p-8 rounded-3xl border border-white/20 shadow-2xl">
             <div className="text-center">
-              <span className="text-5xl font-black">{stats.referred_count}</span>
-              <p className="text-xs font-bold uppercase tracking-widest text-indigo-200 mt-1">Friends Referred</p>
+              <div className="text-6xl font-black mb-1">{stats.referred_count}<span className="text-2xl text-white/40">/2</span></div>
+              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-200">Friends Upgraded</p>
             </div>
-            <div className="h-px w-full bg-white/20" />
-            <div className="flex items-center gap-2 text-sm font-bold bg-emerald-500/20 text-emerald-300 px-4 py-2 rounded-full border border-emerald-500/30">
-              <ShieldCheck className="w-4 h-4" />
-              {stats.reward_status === 'earned' ? 'Reward Earned' : 'Next Reward: $10 Credits'}
+            
+            {/* Progress Bar */}
+            <div className="w-full space-y-3">
+              <div className="h-3 w-full bg-white/10 rounded-full overflow-hidden border border-white/5">
+                <div 
+                  className="h-full bg-gradient-to-r from-amber-300 to-amber-500 transition-all duration-1000 ease-out"
+                  style={{ width: `${progress}%` }}
+                />
+              </div>
+              <p className="text-[11px] font-bold text-center text-indigo-100">
+                {remaining > 0 ? `${remaining} more friend${remaining === 1 ? '' : 's'} to go!` : "Reward achieved!"}
+              </p>
+            </div>
+
+            <div className="flex items-center gap-2 text-xs font-black bg-emerald-500/20 text-emerald-300 px-4 py-2 rounded-full border border-emerald-500/30 w-full justify-center">
+              <ShieldCheck className="w-3.5 h-3.5" />
+              {stats.reward_status === 'earned' ? 'MONTHLY REWARD EARNED' : 'GOAL: 1 MONTH FREE'}
             </div>
           </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 rounded-2xl p-8 space-y-6 shadow-sm">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-500/10 flex items-center justify-center">
-              <Share2 className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-white/10 rounded-3xl p-10 space-y-8 shadow-sm">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-2xl bg-indigo-50 dark:bg-indigo-500/10 flex items-center justify-center">
+              <Share2 className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
             </div>
-            <h2 className="text-lg font-bold">Your Referral Link</h2>
-          </div>
-          <div className="flex gap-3">
-            <div className="flex-1 bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-white/10 rounded-xl px-4 flex items-center overflow-hidden">
-              <span className="text-sm font-medium text-zinc-500 truncate">{referralLink}</span>
+            <div>
+              <h2 className="text-xl font-bold">Share Your Link</h2>
+              <p className="text-sm text-zinc-500">Copy your unique invite link below.</p>
             </div>
-            <Button 
-              onClick={copyLink} 
-              className={`rounded-xl px-6 font-bold flex items-center gap-2 transition-all ${copied ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-indigo-600 hover:bg-indigo-700'}`}
-            >
-              {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-              {copied ? 'Copied' : 'Copy'}
-            </Button>
           </div>
-          <p className="text-sm text-zinc-400">Share this link via Slack, LinkedIn, or Email to start earning rewards.</p>
+          
+          <div className="space-y-4">
+            <div className="relative group">
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-indigo-500 to-violet-600 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-1000"></div>
+              <div className="relative flex items-center bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 rounded-2xl overflow-hidden">
+                <div className="flex-1 px-5 py-4 min-w-0">
+                  <span className="text-sm font-bold text-zinc-500 dark:text-zinc-400 truncate block">{referralLink}</span>
+                </div>
+                <button 
+                  onClick={copyLink} 
+                  className={`h-full px-8 font-black text-xs uppercase tracking-widest transition-all ${copied ? 'bg-emerald-600 text-white' : 'bg-zinc-900 text-white hover:bg-zinc-800'}`}
+                >
+                  {copied ? 'Copied' : 'Copy'}
+                </button>
+              </div>
+            </div>
+            <p className="text-xs text-zinc-400 leading-relaxed">
+              Share this link via LinkedIn, Slack, or Email. When someone joins using your link, they'll count as your referral.
+            </p>
+          </div>
         </div>
 
-        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 rounded-2xl p-8 space-y-6 shadow-sm">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-amber-50 dark:bg-amber-500/10 flex items-center justify-center">
-              <Gift className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+        <div className="bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-white/10 rounded-3xl p-10 space-y-8 shadow-sm">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-2xl bg-amber-50 dark:bg-amber-500/10 flex items-center justify-center">
+              <Gift className="w-6 h-6 text-amber-600 dark:text-amber-400" />
             </div>
-            <h2 className="text-lg font-bold">How it works</h2>
+            <div>
+              <h2 className="text-xl font-bold">How it Works</h2>
+              <p className="text-sm text-zinc-500">Simple three-step reward process.</p>
+            </div>
           </div>
-          <ul className="space-y-4">
+          
+          <div className="space-y-6">
             {[
-              { icon: Share2, title: 'Share your link', desc: 'Send your unique link to friends looking to optimize their resumes.' },
-              { icon: Users, title: 'They sign up', desc: 'When they join CV Optimizer AI, they start their career growth journey.' },
-              { icon: Trophy, title: 'You get rewarded', desc: 'When they upgrade to a paid plan, $10 is added to your account instantly.' }
+              { icon: Share2, title: 'Share Link', desc: 'Send your invite link to friends who need a better CV.' },
+              { icon: Users, title: 'They Sign Up', desc: 'Your friends create an account and start their 14-day trial.' },
+              { icon: Trophy, title: 'Get Reward', desc: 'Once 2 friends upgrade to Pro, you get 1 month added to your account.' }
             ].map((step, i) => (
-              <li key={i} className="flex gap-4">
-                <div className="w-8 h-8 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shrink-0 mt-1">
+              <div key={i} className="flex gap-5">
+                <div className="w-10 h-10 rounded-xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shrink-0 mt-0.5 border border-zinc-200 dark:border-white/5">
                   <step.icon className="w-4 h-4 text-zinc-600 dark:text-zinc-400" />
                 </div>
-                <div>
-                  <h3 className="text-sm font-bold">{step.title}</h3>
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400">{step.desc}</p>
+                <div className="space-y-1">
+                  <h3 className="text-[15px] font-bold">{step.title}</h3>
+                  <p className="text-[13px] text-zinc-500 dark:text-zinc-400 leading-relaxed font-medium">{step.desc}</p>
                 </div>
-              </li>
+              </div>
             ))}
-          </ul>
+          </div>
         </div>
       </div>
     </div>

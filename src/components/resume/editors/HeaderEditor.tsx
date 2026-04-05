@@ -76,38 +76,38 @@ export function HeaderEditor() {
             <div className="grid grid-cols-1 gap-4">
                 <div className="flex flex-col gap-1.5">
                     <label className="text-xs font-bold text-zinc-500 uppercase">Full Name</label>
-                    <input name="full_name" value={header.full_name || ''} onChange={handleChange} className="border bg-white dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white p-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                    <input name="full_name" value={header.full_name || ''} onChange={handleChange} placeholder="e.g. John Doe" className="border bg-white dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white p-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
                 </div>
                 <div className="flex flex-col gap-1.5">
                     <label className="text-xs font-bold text-zinc-500 uppercase">Headline</label>
-                    <input name="headline" value={header.headline || ''} onChange={handleChange} className="border bg-white dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white p-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                    <input name="headline" value={header.headline || ''} onChange={handleChange} placeholder="e.g. Senior Software Engineer" className="border bg-white dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white p-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
                 </div>
                 <div className="flex flex-col gap-1.5">
                     <label className="text-xs font-bold text-zinc-500 uppercase">Email</label>
-                    <input name="email" value={header.email || ''} onChange={handleChange} className="border bg-white dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white p-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                    <input name="email" value={header.email || ''} onChange={handleChange} placeholder="e.g. john@example.com" className="border bg-white dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white p-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                     <div className="flex flex-col gap-1.5">
                         <label className="text-xs font-bold text-zinc-500 uppercase">Phone</label>
-                        <input name="phone" value={header.phone || ''} onChange={handleChange} className="border bg-white dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white p-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                        <input name="phone" value={header.phone || ''} onChange={handleChange} placeholder="e.g. +1 123 456 7890" className="border bg-white dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white p-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
                     </div>
                     <div className="flex flex-col gap-1.5">
                         <label className="text-xs font-bold text-zinc-500 uppercase">Location</label>
-                        <input name="location" value={header.location || ''} onChange={handleChange} className="border bg-white dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white p-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                        <input name="location" value={header.location || ''} onChange={handleChange} placeholder="e.g. New York, USA" className="border bg-white dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white p-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
                     </div>
                 </div>
                 <div className="flex flex-col gap-1.5">
                     <label className="text-xs font-bold text-zinc-500 uppercase">LinkedIn</label>
-                    <input name="linkedin_url" value={header.linkedin_url || ''} onChange={handleChange} className="border bg-white dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white p-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                    <input name="linkedin_url" value={header.linkedin_url || ''} onChange={handleChange} placeholder="e.g. linkedin.com/in/johndoe" className="border bg-white dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white p-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                     <div className="flex flex-col gap-1.5">
                         <label className="text-xs font-bold text-zinc-500 uppercase">GitHub</label>
-                        <input name="github_url" value={header.github_url || ''} onChange={handleChange} className="border bg-white dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white p-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                        <input name="github_url" value={header.github_url || ''} onChange={handleChange} placeholder="e.g. github.com/johndoe" className="border bg-white dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white p-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
                     </div>
                     <div className="flex flex-col gap-1.5">
                         <label className="text-xs font-bold text-zinc-500 uppercase">Portfolio</label>
-                        <input name="portfolio_url" value={header.portfolio_url || ''} onChange={handleChange} className="border bg-white dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white p-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                        <input name="portfolio_url" value={header.portfolio_url || ''} onChange={handleChange} placeholder="e.g. johndoe.com" className="border bg-white dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white p-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
                     </div>
                 </div>
             </div>
