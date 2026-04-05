@@ -24,7 +24,7 @@ const HeroInteractiveDemo = dynamic(
   { ssr: false, loading: () => <div className="w-full h-full rounded-2xl bg-zinc-100 animate-pulse" /> }
 );
 
-function AnimatedCounter({ base = 20000 }: { base?: number }) {
+function AnimatedCounter({ base = 20313 }: { base?: number }) {
   const [val, setVal] = useState(base);
   const ref = useRef(null);
   const inView = useInView(ref, { once: true });

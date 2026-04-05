@@ -148,6 +148,8 @@ function IssueItem({ issue }: { issue: Issue }) {
     );
 }
 
+import { usePro } from "@/hooks/usePro";
+
 /* Full score report rendered from atsResult */
 function ScoreReport({
     atsResult, fileName, jobDescription, cvText, scanId,
@@ -159,6 +161,7 @@ function ScoreReport({
     onImprove: () => void; improving: boolean; error?: string;
     onReset: () => void; onOpenBuilder: () => void;
 }) {
+    const { isPro } = usePro();
     const highIssues = atsResult.all_issues?.filter(i => i.priority === "high") || [];
     const mediumIssues = atsResult.all_issues?.filter(i => i.priority === "medium") || [];
     const lowIssues = atsResult.all_issues?.filter(i => i.priority === "low") || [];
@@ -295,26 +298,64 @@ function ScoreReport({
                 </div>
             )}
 
-            {/* Feature 3: Post-Analysis Upgrade Nudge */}
-            <div className="bg-gradient-to-br from-zinc-900 to-zinc-800 dark:from-zinc-900 dark:to-zinc-950 rounded-3xl p-8 text-white relative overflow-hidden shadow-2xl">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-600/20 blur-3xl -mr-32 -mt-32 rounded-full" />
-                <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
-                    <div className="space-y-2 text-center md:text-left">
-                        <h2 className="text-2xl font-extrabold tracking-tight">Want deeper feedback?</h2>
-                        <p className="text-zinc-400 font-medium max-w-sm">Pro users get line-by-line suggestions, keyword gap analysis, and unlimited checks.</p>
-                    </div>
-                    <div className="flex flex-col items-center gap-3 w-full md:w-auto">
-                        <button onClick={() => window.location.href = '/pricing'}
-                            className="w-full md:w-auto px-10 py-4 bg-white text-zinc-900 font-black rounded-full hover:bg-zinc-100 transition-all shadow-xl shadow-white/10 active:scale-95">
-                            Try Pro - $24/mo
-                        </button>
-                        <button onClick={() => window.location.href = '/pricing'}
-                            className="text-white/60 hover:text-white text-xs font-bold underline underline-offset-4 transition-colors">
-                            Or get lifetime access for $139
-                        </button>
+            {/* Feature 3: Post-Analysis Upgrade Nudge (Enhanced with Blurring) */}
+            {!isPro && (
+                <div className="relative overflow-hidden rounded-3xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-zinc-900 shadow-xl">
+                    <div className="p-8 pb-4">
+                        <div className="flex items-center gap-2 mb-6 text-indigo-600 dark:text-indigo-400">
+                            <Sparkles className="w-5 h-5" />
+                            <h2 className="text-xl font-bold">Unlock Pro Feedback</h2>
+                        </div>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative">
+                            {/* Blurred Content Overlay */}
+                            <div className="absolute inset-0 z-10 backdrop-blur-[6px] bg-white/30 dark:bg-zinc-900/40 flex flex-col items-center justify-center p-8 text-center">
+                                <div className="max-w-sm space-y-4">
+                                    <h3 className="text-2xl font-black text-zinc-900 dark:text-white leading-tight">
+                                        See exactly how you rank against other candidates.
+                                    </h3>
+                                    <p className="text-sm font-bold text-zinc-600 dark:text-zinc-400">
+                                        Upgrade to Pro to unlock line-by-line AI suggestions, recruiter-view insights, and unlimited scans.
+                                    </p>
+                                    <button 
+                                        onClick={() => window.location.href = '/pricing'}
+                                        className="inline-flex items-center gap-2 px-8 py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-black rounded-full shadow-lg shadow-indigo-600/20 transition-all active:scale-95"
+                                    >
+                                        Unlock Pro Insights <ArrowRight className="w-4 h-4" />
+                                    </button>
+                                </div>
+                            </div>
+
+                            {/* Dummy Pro Content (will be blurred) */}
+                            <div className="space-y-4 opacity-50 select-none pointer-events-none">
+                                <div className="p-4 rounded-xl bg-zinc-50 dark:bg-white/5 border border-zinc-100 dark:border-white/5">
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <BarChart3 className="w-4 h-4 text-indigo-400" />
+                                        <span className="text-xs font-bold uppercase tracking-wider text-zinc-400">Competitor Ranking</span>
+                                    </div>
+                                    <p className="text-sm font-bold text-zinc-900 dark:text-white">You are in the top 12% of applicants for this role based on your current keywords.</p>
+                                </div>
+                                <div className="p-4 rounded-xl bg-zinc-50 dark:bg-white/5 border border-zinc-100 dark:border-white/5">
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <Target className="w-4 h-4 text-indigo-400" />
+                                        <span className="text-xs font-bold uppercase tracking-wider text-zinc-400">Recruiter Sentiment</span>
+                                    </div>
+                                    <p className="text-sm font-bold text-zinc-900 dark:text-white">Your experience section is highly relevant but lacks enough action verbs for this specific JD.</p>
+                                </div>
+                            </div>
+                            <div className="space-y-4 opacity-50 select-none pointer-events-none hidden md:block">
+                                <div className="p-4 rounded-xl bg-zinc-50 dark:bg-white/5 border border-zinc-100 dark:border-white/5">
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <ShieldCheck className="w-4 h-4 text-indigo-400" />
+                                        <span className="text-xs font-bold uppercase tracking-wider text-zinc-400">JD Matching Score</span>
+                                    </div>
+                                    <p className="text-sm font-bold text-zinc-900 dark:text-white">92% match with job requirements. Add 'Distributed Systems' to increase to 98%.</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+            )}
             <div className="text-center">
                 <button onClick={onReset} className="text-sm font-bold text-zinc-500 dark:text-zinc-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">← Scan Another CV</button>
             </div>
