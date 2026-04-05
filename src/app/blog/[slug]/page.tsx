@@ -37,6 +37,32 @@ export async function generateMetadata({
 }
 
 // ── Content Renderer ─────────────────────────────────────────────────
+// ── Helper: Basic Markdown-style link parser ────────────────────────
+function parseTextWithLinks(text: string | undefined, accentColor: string) {
+  if (!text) return null;
+  const parts = text.split(/(\[.*?\]\(.*?\))/g);
+  return parts.map((part, i) => {
+    const match = part.match(/\[(.*?)\]\((.*?)\)/);
+    if (match) {
+      const [_, linkText, url] = match;
+      const isInternal = url.startsWith('/');
+      return (
+        <Link 
+          key={i} 
+          href={url} 
+          className="underline decoration-2 underline-offset-4 font-bold transition-all hover:opacity-70"
+          style={{ textDecorationColor: `${accentColor}44` }}
+          target={isInternal ? undefined : "_blank"}
+          rel={isInternal ? undefined : "noopener noreferrer"}
+        >
+          {linkText}
+        </Link>
+      );
+    }
+    return part;
+  });
+}
+
 function renderContent(blocks: BlogContentBlock[], accentColor: string) {
   return blocks.map((block, i) => {
     switch (block.type) {
@@ -55,13 +81,13 @@ function renderContent(blocks: BlogContentBlock[], accentColor: string) {
       case 'p':
         return (
           <p key={i} className="text-zinc-700 leading-[1.8] text-[17px] font-medium mb-6">
-            {block.text}
+            {parseTextWithLinks(block.text, accentColor)}
           </p>
         );
       case 'bold_p':
         return (
           <p key={i} className="text-zinc-900 leading-[1.8] text-[17px] font-bold mb-8 border-l-4 pl-6 italic" style={{ borderColor: accentColor }}>
-            {block.text}
+            {parseTextWithLinks(block.text, accentColor)}
           </p>
         );
       case 'ul':
@@ -70,7 +96,7 @@ function renderContent(blocks: BlogContentBlock[], accentColor: string) {
             {block.items?.map((item, j) => (
               <li key={j} className="flex items-start gap-3 text-zinc-700 text-[16px] font-medium leading-relaxed">
                 <span className="mt-2.5 w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: accentColor }} />
-                {item}
+                {parseTextWithLinks(item, accentColor)}
               </li>
             ))}
           </ul>
@@ -119,7 +145,7 @@ function renderContent(blocks: BlogContentBlock[], accentColor: string) {
               {block.items?.map((item, j) => (
                 <li key={j} className="flex items-start gap-4 text-[16px] font-semibold text-zinc-800 leading-relaxed">
                   <span className="font-bold text-lg leading-none mt-0.5" style={{ color: accentColor }}>→</span>
-                  {item}
+                  {parseTextWithLinks(item, accentColor)}
                 </li>
               ))}
             </ul>
@@ -156,7 +182,7 @@ function renderContent(blocks: BlogContentBlock[], accentColor: string) {
             <span className="block text-[10px] font-bold uppercase tracking-[0.3em] mb-6" style={{ color: accentColor }}>{block.scenarioLabel}</span>
             {block.scenarioTexts?.map((text, j) => (
               <p key={j} className="text-[15px] text-zinc-300 font-medium leading-relaxed mb-4 last:mb-0">
-                {text}
+                {parseTextWithLinks(text, accentColor)}
               </p>
             ))}
           </div>

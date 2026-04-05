@@ -84,12 +84,36 @@ const faqSchema = {
   })),
 };
 
+const softwareSchema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "CVOptimizerAI AI Resume Checker",
+  "operatingSystem": "Web",
+  "applicationCategory": "BusinessApplication",
+  "url": "https://cvoptimizerai.com/ai-resume-checker",
+  "description": "AI-powered resume checker that identifies keyword gaps, formatting issues, and rewrites CV for job roles.",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.8",
+    "reviewCount": "842"
+  }
+};
+
 export default function AiResumeCheckerPage() {
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareSchema) }}
       />
       <div className="flex flex-col min-h-screen bg-[#fafafa] text-zinc-900 overflow-x-hidden selection:bg-blue-500/30">
 

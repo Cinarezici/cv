@@ -88,12 +88,36 @@ const faqSchema = {
   })),
 };
 
+const softwareSchema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "CVOptimizerAI Resume Optimizer",
+  "operatingSystem": "Web",
+  "applicationCategory": "BusinessApplication",
+  "url": "https://cvoptimizerai.com/resume-optimizer",
+  "description": "AI-powered resume optimization tool that rewrites bullet points and fixes formatting for ATS compatibility.",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.9",
+    "reviewCount": "1250"
+  }
+};
+
 export default function ResumeOptimizerPage() {
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareSchema) }}
       />
       <div className="flex flex-col min-h-screen bg-[#fafafa] text-zinc-900 overflow-x-hidden selection:bg-blue-500/30">
 

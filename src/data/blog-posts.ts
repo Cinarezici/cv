@@ -505,7 +505,7 @@ export const blogPosts: BlogPost[] = [
     readingTime: '6 min read',
     accentColor: '#f43f5e',
     content: [
-      { type: 'bold_p', text: 'Jobscan is the most recognized name in ATS resume scanning, but at $49.95/month with only 5 free scans, it prices out most job seekers. These 7 alternatives deliver the same core functionality — keyword matching, ATS scoring, AI rewrites — at a fraction of the cost or entirely free. The best overall pick is CVOptimizerAI: free, no sign-up required, and it rewrites your entire resume in one click.' },
+      { type: 'bold_p', text: 'Jobscan is the most recognized name in ATS resume scanning, but at $49.95/month with only 5 free scans, it prices out most job seekers. These [7 Jobscan alternatives](/jobscan-alternatives) give you unlimited ATS resume scoring, AI rewrites, and keyword matching — most of them free. The best overall pick is CVOptimizerAI: free, no sign-up required, and it rewrites your entire resume in one click.' },
       { type: 'h2', text: 'Why Look for a Jobscan Alternative?' },
       { type: 'p', text: 'Jobscan is a pioneer in resume optimization. It introduced keyword-match scoring at scale and helped thousands of job seekers understand ATS systems. Credit where it\'s due.' },
       { type: 'p', text: 'But in 2026, the landscape shifted. Three specific problems push job seekers to look elsewhere:' },
@@ -528,7 +528,7 @@ export const blogPosts: BlogPost[] = [
       
       { type: 'h3', text: '1. CVOptimizerAI' },
       { type: 'p', text: 'Best for: Free, unlimited ATS scoring + AI rewrite in one tool' },
-      { type: 'p', text: 'CVOptimizerAI is the strongest free Jobscan alternative available in 2026. It does what Jobscan does — keyword matching, ATS scoring, issue identification — and adds something Jobscan lacks entirely: a one-click AI rewrite that fixes every flagged issue automatically.' },
+      { type: 'p', text: 'CVOptimizerAI is the strongest [free Jobscan alternative](/jobscan-alternatives) available in 2026. It does what Jobscan does — keyword matching, ATS scoring, issue identification — and adds something Jobscan lacks entirely: a one-click AI rewrite that fixes every flagged issue automatically.' },
       { type: 'checklist', listTitle: 'Key Features & Info', items: [
         'ATS score out of 100, with every issue ranked HIGH / MEDIUM / LOW by impact',
         'One-click AI rewrite applies all fixes: keyword injection, CAR-method bullet rewrites, formatting corrections',
@@ -632,7 +632,7 @@ export const blogPosts: BlogPost[] = [
     readingTime: '6 min read',
     accentColor: '#3b82f6',
     content: [
-      { type: 'bold_p', text: 'The best free ATS resume checker in 2026 is CVOptimizerAI — it scans your resume with no sign-up, ranks every issue by impact, and rewrites your entire CV in one click. If you want a full ranked comparison, we tested 8 tools using the same resume and three real job descriptions. Read on for the full breakdown.' },
+      { type: 'bold_p', text: 'The best [free ATS resume checker](/best-ats-resume-checker) in 2026 is CVOptimizerAI — it scans your resume with no sign-up, ranks every issue by impact, and rewrites your entire CV in one click. If you want a full ranked comparison, we tested 8 tools using the same resume and three real job descriptions. Read on for the full breakdown.' },
       { type: 'h2', text: 'What Is an ATS Resume Checker?' },
       { type: 'p', text: 'An ATS resume checker scans your CV against a job description and scores how well it matches what the Applicant Tracking System expects. It identifies:' },
       { type: 'ul', items: [
@@ -660,7 +660,7 @@ export const blogPosts: BlogPost[] = [
       { type: 'h2', text: 'The 8 Best Free ATS Resume Checkers in 2026' },
       
       { type: 'h3', text: '1. CVOptimizerAI — Best Overall' },
-      { type: 'p', text: 'CVOptimizerAI is the top-ranked free ATS resume checker in 2026 for one key reason: it completes the full optimization loop — scan, score, fix, export — without charging you or requiring a sign-up for the core scanning feature.' },
+      { type: 'p', text: 'CVOptimizerAI is the top-ranked [AI resume checker](/ai-resume-checker) in 2026 for one key reason: it completes the full optimization loop — scan, score, fix, export — without charging you or requiring a sign-up for the core scanning feature.' },
       { type: 'checklist', listTitle: 'Tool Performance', items: [
         'ATS Score Accuracy: Excellent. The score tracks closely with real keyword gaps and formatting issues specific to each job description, not a generic benchmark.',
         'Issue Ranking: Issues appear ranked HIGH / MEDIUM / LOW by impact.',

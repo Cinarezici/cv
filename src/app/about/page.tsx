@@ -16,9 +16,50 @@ export const metadata: Metadata = {
   },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "CVOptimizerAI",
+  "url": "https://cvoptimizerai.com",
+  "logo": "https://cvoptimizerai.com/logo.png",
+  "description": "Free ATS resume checker and AI CV optimizer trusted by 20,000+ professionals.",
+  "sameAs": [
+    "https://twitter.com/cvoptimizerai",
+    "https://linkedin.com/company/cvoptimizerai"
+  ]
+};
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://cvoptimizerai.com"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "About",
+      "item": "https://cvoptimizerai.com/about"
+    }
+  ]
+};
+
 export default function AboutPage() {
   return (
-    <div className="flex flex-col min-h-screen bg-[#fafafa] text-zinc-900 overflow-x-hidden selection:bg-blue-500/30">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <div className="flex flex-col min-h-screen bg-[#fafafa] text-zinc-900 overflow-x-hidden selection:bg-blue-500/30">
 
       {/* ── Navbar ───────────────────────────────────────────── */}
       <div className="fixed top-4 left-4 right-4 md:left-1/2 md:-translate-x-1/2 md:w-full md:max-w-5xl z-50 flex justify-center pointer-events-none">
@@ -184,6 +225,7 @@ export default function AboutPage() {
         </div>
       </footer>
 
-    </div>
+      </div>
+    </>
   );
 }
