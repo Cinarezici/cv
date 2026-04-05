@@ -116,21 +116,30 @@ export default function ReferralsPage() {
           
           <div className="space-y-4">
             <div className="relative group">
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-indigo-500 to-violet-600 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-1000"></div>
-              <div className="relative flex items-center bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 rounded-2xl overflow-hidden">
-                <div className="flex-1 px-5 py-4 min-w-0">
-                  <span className="text-sm font-bold text-zinc-500 dark:text-zinc-400 truncate block">{referralLink}</span>
+              <div className="absolute -inset-1 bg-gradient-to-r from-indigo-500/20 to-violet-500/20 rounded-[1.25rem] blur opacity-0 group-hover:opacity-100 transition duration-500" />
+              <div className="relative flex items-center bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-white/10 rounded-2xl p-1.5 pl-5 transition-all group-hover:border-indigo-500/30">
+                <div className="flex-1 min-w-0 mr-4">
+                  <span className="text-[13px] font-bold text-zinc-500 dark:text-zinc-400 truncate block font-mono">
+                    {referralLink}
+                  </span>
                 </div>
                 <button 
                   onClick={copyLink} 
-                  className={`h-full px-8 font-black text-xs uppercase tracking-widest transition-all ${copied ? 'bg-emerald-600 text-white' : 'bg-zinc-900 text-white hover:bg-zinc-800'}`}
+                  className={`px-6 py-2.5 rounded-xl font-black text-[11px] uppercase tracking-widest transition-all duration-300 shadow-xl active:scale-95 ${
+                    copied 
+                    ? 'bg-emerald-500 text-white shadow-emerald-500/20' 
+                    : 'bg-indigo-600 text-white hover:bg-indigo-500 shadow-indigo-600/20'
+                  }`}
                 >
-                  {copied ? 'Copied' : 'Copy'}
+                  <div className="flex items-center gap-2">
+                    {copied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+                    {copied ? 'Copied!' : 'Copy Link'}
+                  </div>
                 </button>
               </div>
             </div>
-            <p className="text-xs text-zinc-400 leading-relaxed">
-              Share this link via LinkedIn, Slack, or Email. When someone joins using your link, they'll count as your referral.
+            <p className="text-[11px] text-zinc-400 leading-relaxed font-medium pl-1">
+              Share this link via <span className="text-zinc-300">LinkedIn, Slack, or Email</span>. When someone joins using your link, they&apos;ll be tracked as your referral.
             </p>
           </div>
         </div>
