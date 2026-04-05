@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useState, useRef, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -103,7 +103,7 @@ function CheckEmailScreen({ email }: { email: string }) {
     );
 }
 
-export default function SignupPage() {
+function SignupForm() {
     const [showPassword, setShowPassword] = useState(false);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -111,6 +111,8 @@ export default function SignupPage() {
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState(false);
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const ref = searchParams.get('ref');
 
     const handleSignup = async (e?: React.FormEvent) => {
         if (e) e.preventDefault();
@@ -122,6 +124,9 @@ export default function SignupPage() {
             password,
             options: {
                 emailRedirectTo: `${window.location.origin}/auth/callback`,
+                data: {
+                    referrer_code: ref || null
+                }
             },
         });
         if (error) {
@@ -137,22 +142,19 @@ export default function SignupPage() {
         const supabase = createClient();
         await supabase.auth.signInWithOAuth({
             provider,
-            options: { redirectTo: `${window.location.origin}/auth/callback` },
+            options: { 
+                redirectTo: `${window.location.origin}/auth/callback`,
+                queryParams: ref ? { ref } : {}
+            },
         });
     };
 
     return (
         <section className="fixed inset-0 bg-[#080d1a] text-zinc-50 overflow-hidden">
-            {/* Grid background */}
             <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:4rem_4rem] pointer-events-none" />
-
-            {/* Blue radial glow */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-blue-600/8 rounded-full blur-[120px] pointer-events-none" />
-
-            {/* Particles */}
             <ParticleCanvas />
 
-            {/* Navbar */}
             <header className="absolute top-0 left-0 right-0 flex items-center justify-between px-6 py-5 z-20">
                 <Link href="/" className="flex items-center gap-2 group">
                     <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center shadow-lg shadow-blue-600/30 group-hover:scale-110 transition-transform">
@@ -167,172 +169,78 @@ export default function SignupPage() {
                 </Link>
             </header>
 
-            {/* Main content */}
             <div className="h-full w-full flex items-center justify-center px-4 relative z-10">
                 <div className="flex items-stretch gap-0 lg:gap-10 max-w-[860px] w-full">
-
-                {/* Left: Value reinforcement — desktop only */}
-                <div className="hidden lg:flex flex-col justify-center w-[380px] pr-10 border-r border-white/10 animate-in fade-in slide-in-from-left-6 duration-700">
-                  <h2 className="text-2xl font-extrabold text-white tracking-tight mb-6">
-                    What you get — free for 14 days
-                  </h2>
-                  <div className="space-y-4 mb-8">
-                    {[
-                      "ATS score out of 100 with detailed breakdown",
-                      "AI-powered CV rewrite for any target role",
-                      "12 professional, ATS-safe templates",
-                      "Keyword gap analysis vs job descriptions",
-                      "Shareable presentation letters with unique link",
-                    ].map(item => (
-                      <div key={item} className="flex items-start gap-3">
-                        <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
-                        <p className="text-[14px] text-zinc-300 font-medium">{item}</p>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="bg-white/5 border border-white/10 rounded-2xl p-5 mb-6">
-                    <div className="flex items-center gap-3 mb-3">
-                      <div className="w-8 h-8 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
-                        <Zap className="w-4 h-4 text-blue-400" />
-                      </div>
-                      <div>
-                        <p className="text-[13px] font-bold text-white">20,000+ CVs optimized</p>
-                        <p className="text-[11px] text-zinc-500 font-medium">Trusted by professionals worldwide</p>
-                      </div>
+                    <div className="hidden lg:flex flex-col justify-center w-[380px] pr-10 border-r border-white/10 animate-in fade-in slide-in-from-left-6 duration-700">
+                        <h2 className="text-2xl font-extrabold text-white tracking-tight mb-6">What you get — free for 14 days</h2>
+                        <div className="space-y-4 mb-8">
+                            {["ATS score out of 100 with detailed breakdown", "AI-powered CV rewrite for any target role", "12 professional, ATS-safe templates", "Keyword gap analysis vs job descriptions", "Shareable presentation letters with unique link"].map(item => (
+                                <div key={item} className="flex items-start gap-3">
+                                    <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
+                                    <p className="text-[14px] text-zinc-300 font-medium">{item}</p>
+                                </div>
+                            ))}
+                        </div>
+                        <div className="bg-white/5 border border-white/10 rounded-2xl p-5 mb-6">
+                            <div className="flex items-center gap-3 mb-3">
+                                <div className="w-8 h-8 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center"><Zap className="w-4 h-4 text-blue-400" /></div>
+                                <div><p className="text-[13px] font-bold text-white">20,000+ CVs optimized</p><p className="text-[11px] text-zinc-500 font-medium">Trusted by professionals worldwide</p></div>
+                            </div>
+                        </div>
                     </div>
-                  </div>
 
-                  <div className="flex items-center gap-2">
-                    <Shield className="w-4 h-4 text-zinc-500" />
-                    <p className="text-[12px] text-zinc-500 font-medium">
-                      Your data is encrypted and never shared. GDPR compliant.
-                    </p>
-                  </div>
-                </div>
-
-                {/* Right: Form */}
-                <div className="w-full max-w-[420px] animate-in fade-in slide-in-from-bottom-6 duration-700">
-
-                    {success ? (
-                        <CheckEmailScreen email={email} />
-                    ) : (
-                        <>
-                            {/* Header */}
-                            <div className="text-center mb-8">
-                                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[12px] font-bold mb-6">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
-                                    Start your 14-day free trial
-                                </div>
-                                <h1 className="text-3xl font-extrabold tracking-tight text-white mb-2">
-                                    Create your account.
-                                </h1>
-                                <p className="text-zinc-400 text-[15px] font-medium">
-                                    No credit card required. Cancel anytime.
-                                </p>
-                            </div>
-
-                            {/* Google OAuth */}
-                            <button
-                                type="button"
-                                onClick={() => handleOAuth("google")}
-                                className="w-full h-12 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 text-white font-bold text-[14px] flex items-center justify-center gap-3 transition-all mb-5"
-                            >
-                                <Chrome className="w-4 h-4" />
-                                Continue with Google
-                            </button>
-
-                            {/* Divider */}
-                            <div className="flex items-center gap-3 mb-5">
-                                <div className="flex-1 h-px bg-white/10" />
-                                <span className="text-[11px] font-bold uppercase tracking-widest text-zinc-600">or</span>
-                                <div className="flex-1 h-px bg-white/10" />
-                            </div>
-
-                            {/* Form */}
-                            <form onSubmit={handleSignup} className="space-y-4">
-                                {/* Email */}
-                                <div className="space-y-2">
-                                    <label className="text-[13px] font-bold text-zinc-300">Email address</label>
-                                    <div className="relative">
-                                        <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
-                                        <Input
-                                            id="email"
-                                            type="email"
-                                            placeholder="you@example.com"
-                                            value={email}
-                                            onChange={(e) => setEmail(e.target.value)}
-                                            required
-                                            className="pl-10 h-12 bg-white/5 border-white/10 text-white placeholder:text-zinc-600 rounded-xl focus:border-blue-500/60 focus:ring-blue-500/20 transition-all"
-                                        />
+                    <div className="w-full max-w-[420px] animate-in fade-in slide-in-from-bottom-6 duration-700">
+                        {success ? <CheckEmailScreen email={email} /> : (
+                            <>
+                                <div className="text-center mb-8">
+                                    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[12px] font-bold mb-6">
+                                        <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" /> Start your 14-day free trial
                                     </div>
+                                    <h1 className="text-3xl font-extrabold tracking-tight text-white mb-2">Create your account.</h1>
+                                    <p className="text-zinc-400 text-[15px] font-medium">No credit card required. Cancel anytime.</p>
                                 </div>
-
-                                {/* Password */}
-                                <div className="space-y-2">
-                                    <label className="text-[13px] font-bold text-zinc-300">Password</label>
-                                    <div className="relative">
-                                        <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
-                                        <Input
-                                            id="password"
-                                            type={showPassword ? "text" : "password"}
-                                            placeholder="8+ characters"
-                                            value={password}
-                                            onChange={(e) => setPassword(e.target.value)}
-                                            required
-                                            className="pl-10 pr-11 h-12 bg-white/5 border-white/10 text-white placeholder:text-zinc-600 rounded-xl focus:border-blue-500/60 focus:ring-blue-500/20 transition-all"
-                                        />
-                                        <button
-                                            type="button"
-                                            aria-label={showPassword ? "Hide password" : "Show password"}
-                                            className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 text-zinc-500 hover:text-zinc-300 transition-colors"
-                                            onClick={() => setShowPassword(v => !v)}
-                                        >
-                                            {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                                        </button>
-                                    </div>
+                                <button type="button" onClick={() => handleOAuth("google")} className="w-full h-12 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 text-white font-bold text-[14px] flex items-center justify-center gap-3 transition-all mb-5">
+                                    <Chrome className="w-4 h-4" /> Continue with Google
+                                </button>
+                                <div className="flex items-center gap-3 mb-5">
+                                    <div className="flex-1 h-px bg-white/10" /><span className="text-[11px] font-bold uppercase tracking-widest text-zinc-600">or</span><div className="flex-1 h-px bg-white/10" />
                                 </div>
-
-                                {/* Error */}
-                                {error && (
-                                    <div className="flex items-center gap-2 px-4 py-3 bg-red-500/10 border border-red-500/20 rounded-xl">
-                                        <span className="w-1.5 h-1.5 rounded-full bg-red-400 flex-shrink-0" />
-                                        <p className="text-[13px] text-red-400 font-medium">{error}</p>
+                                <form onSubmit={handleSignup} className="space-y-4">
+                                    <div className="space-y-2">
+                                        <label className="text-[13px] font-bold text-zinc-300">Email address</label>
+                                        <div className="relative">
+                                            <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
+                                            <Input id="email" type="email" placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} required className="pl-10 h-12 bg-white/5 border-white/10 text-white placeholder:text-zinc-600 rounded-xl focus:border-blue-500/60 focus:ring-blue-500/20 transition-all" />
+                                        </div>
                                     </div>
-                                )}
-
-                                {/* Submit */}
-                                <Button
-                                    type="submit"
-                                    disabled={loading}
-                                    className="w-full h-12 rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-600 text-white font-bold text-[15px] shadow-lg shadow-blue-900/40 transition-all hover:scale-[1.01] active:scale-[0.99] mt-2"
-                                >
-                                    {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-                                    {loading ? "Creating account…" : "Create Account — It's Free"}
-                                    {!loading && <ArrowRight className="ml-2 w-4 h-4" />}
-                                </Button>
-
-                                {/* Terms note */}
-                                <p className="text-[11px] text-zinc-600 text-center font-medium leading-relaxed">
-                                    By creating an account, you agree to our{" "}
-                                    <a href="/terms" className="text-zinc-500 hover:text-zinc-300 transition-colors underline underline-offset-2">Terms of Service</a>
-                                    {" "}and{" "}
-                                    <a href="/privacy" className="text-zinc-500 hover:text-zinc-300 transition-colors underline underline-offset-2">Privacy Policy</a>.
-                                </p>
-                            </form>
-
-                            {/* Footer */}
-                            <p className="text-center text-[14px] text-zinc-500 font-medium mt-8">
-                                Already have an account?{" "}
-                                <Link href="/login" className="text-blue-400 hover:text-blue-300 font-bold transition-colors">
-                                    Sign in
-                                </Link>
-                            </p>
-                        </>
-                    )}
-                </div>
+                                    <div className="space-y-2">
+                                        <label className="text-[13px] font-bold text-zinc-300">Password</label>
+                                        <div className="relative">
+                                            <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
+                                            <Input id="password" type={showPassword ? "text" : "password"} placeholder="8+ characters" value={password} onChange={(e) => setPassword(e.target.value)} required className="pl-10 pr-11 h-12 bg-white/5 border-white/10 text-white placeholder:text-zinc-600 rounded-xl focus:border-blue-500/60 focus:ring-blue-500/20 transition-all" />
+                                            <button type="button" onClick={() => setShowPassword(v => !v)} className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 text-zinc-500 hover:text-zinc-300 transition-colors">{showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}</button>
+                                        </div>
+                                    </div>
+                                    {error && <div className="flex items-center gap-2 px-4 py-3 bg-red-500/10 border border-red-500/20 rounded-xl"><span className="w-1.5 h-1.5 rounded-full bg-red-400 flex-shrink-0" /><p className="text-[13px] text-red-400 font-medium">{error}</p></div>}
+                                    <Button type="submit" disabled={loading} className="w-full h-12 rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-600 text-white font-bold text-[15px] shadow-lg shadow-blue-900/40 transition-all hover:scale-[1.01] active:scale-[0.99] mt-2">
+                                        {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}{loading ? "Creating account…" : "Create Account — It's Free"}{!loading && <ArrowRight className="ml-2 w-4 h-4" />}
+                                    </Button>
+                                    <p className="text-[11px] text-zinc-600 text-center font-medium leading-relaxed">By creating an account, you agree to our <Link href="/terms" className="text-zinc-500 hover:text-zinc-300 transition-colors underline underline-offset-2">Terms of Service</Link> and <Link href="/privacy" className="text-zinc-500 hover:text-zinc-300 transition-colors underline underline-offset-2">Privacy Policy</Link>.</p>
+                                </form>
+                                <p className="text-center text-[14px] text-zinc-500 font-medium mt-8">Already have an account? <Link href="/login" className="text-blue-400 hover:text-blue-300 font-bold transition-colors">Sign in</Link></p>
+                            </>
+                        )}
+                    </div>
                 </div>
             </div>
         </section>
+    );
+}
+
+export default function SignupPage() {
+    return (
+        <React.Suspense fallback={<div className="min-h-screen bg-[#080d1a] flex items-center justify-center"><Loader2 className="animate-spin text-blue-500" /></div>}>
+            <SignupForm />
+        </React.Suspense>
     );
 }

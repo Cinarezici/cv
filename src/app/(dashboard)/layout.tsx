@@ -20,11 +20,14 @@ import {
     Sun,
     Moon,
     X,
+    Gift,
 } from "lucide-react";
 import { usePro } from "@/hooks/usePro";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { useLang } from "@/lib/i18n";
 import { TrialExpiredModal } from "@/components/TrialExpiredModal";
+import { UpsellBanner } from "@/components/dashboard/UpsellBanner";
+import { OnboardingChecklist } from "@/components/dashboard/OnboardingChecklist";
 
 export default function DashboardLayout({
     children,
@@ -32,23 +35,31 @@ export default function DashboardLayout({
     children: React.ReactNode;
 }) {
     return (
-        <div className="flex min-h-screen w-full bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50">
-            {/* Desktop sidebar — hidden on mobile */}
-            <div className="hidden md:flex">
-                <Sidebar />
-            </div>
+        <div className="flex flex-col min-h-screen w-full bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50">
+            {/* Feature 2: Annual Plan Upsell Banner */}
+            <UpsellBanner />
+            
+            <div className="flex flex-1 w-full bg-white dark:bg-zinc-950">
+                {/* Desktop sidebar — hidden on mobile */}
+                <div className="hidden md:flex">
+                    <Sidebar />
+                </div>
 
-            {/* Mobile top bar + sliding drawer */}
-            <MobileNav />
+                {/* Mobile top bar + sliding drawer */}
+                <MobileNav />
 
-            <div className="flex-1 overflow-auto">
-                <main className="p-4 md:p-6 max-w-7xl mx-auto pt-[72px] md:pt-6">
-                    {children}
-                </main>
+                <div className="flex-1 overflow-auto">
+                    <main className="p-4 md:p-6 max-w-7xl mx-auto pt-[72px] md:pt-6">
+                        {children}
+                    </main>
+                </div>
             </div>
 
             {/* Global trial-expired modal — listens for 'trial-expired' event */}
             <TrialExpiredModal />
+
+            {/* Feature 6: Onboarding Checklist Widget */}
+            <OnboardingChecklist />
         </div>
     );
 }
@@ -211,6 +222,7 @@ function NavItems({
             <Option Icon={LayoutDashboard} title={t.dashboard} href="/dashboard" selected={pathname === "/dashboard"} open={open} />
             <Option Icon={Import} title={t.importCV} href="/import" selected={pathname === "/import"} open={open} />
             <Option Icon={ScanLine} title={t.atsScanner} href="/ats-scanner" selected={pathname === "/ats-scanner"} open={open} />
+            <Option Icon={Gift} title="Refer Friends" href="/referrals" selected={pathname === "/referrals"} open={open} variant="blue" />
             <Option Icon={LayoutGrid} title={t.myCVs} href="/my-cvs" selected={pathname === "/my-cvs"} open={open} />
             <Option Icon={FileText} title={t.cvOptimizer} href="/resumes/new" selected={pathname === "/resumes/new"} open={open} />
             <Option Icon={Search} title={t.searchJobs} href="/scout" selected={pathname === "/scout"} open={open} variant="blue" />

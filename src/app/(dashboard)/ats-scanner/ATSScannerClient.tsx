@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { UpgradeModal } from "@/components/modals/UpgradeModal";
 
 /* ════════════════════════════════════════════════════════════════════════
    Types
@@ -293,6 +294,27 @@ function ScoreReport({
                     <p className="text-center text-xs text-zinc-400 dark:text-zinc-600">Pro feature — rewrites your CV fixing all issues above</p>
                 </div>
             )}
+
+            {/* Feature 3: Post-Analysis Upgrade Nudge */}
+            <div className="bg-gradient-to-br from-zinc-900 to-zinc-800 dark:from-zinc-900 dark:to-zinc-950 rounded-3xl p-8 text-white relative overflow-hidden shadow-2xl">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-600/20 blur-3xl -mr-32 -mt-32 rounded-full" />
+                <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
+                    <div className="space-y-2 text-center md:text-left">
+                        <h2 className="text-2xl font-extrabold tracking-tight">Want deeper feedback?</h2>
+                        <p className="text-zinc-400 font-medium max-w-sm">Pro users get line-by-line suggestions, keyword gap analysis, and unlimited checks.</p>
+                    </div>
+                    <div className="flex flex-col items-center gap-3 w-full md:w-auto">
+                        <button onClick={() => window.location.href = '/pricing'}
+                            className="w-full md:w-auto px-10 py-4 bg-white text-zinc-900 font-black rounded-full hover:bg-zinc-100 transition-all shadow-xl shadow-white/10 active:scale-95">
+                            Try Pro - $24/mo
+                        </button>
+                        <button onClick={() => window.location.href = '/pricing'}
+                            className="text-white/60 hover:text-white text-xs font-bold underline underline-offset-4 transition-colors">
+                            Or get lifetime access for $139
+                        </button>
+                    </div>
+                </div>
+            </div>
             <div className="text-center">
                 <button onClick={onReset} className="text-sm font-bold text-zinc-500 dark:text-zinc-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">← Scan Another CV</button>
             </div>
@@ -319,6 +341,7 @@ export default function ATSScannerClient() {
     const [dragActive, setDragActive] = useState(false);
     const [recentScans, setRecentScans] = useState<RecentScan[]>([]);
     const [loadingRecent, setLoadingRecent] = useState(true);
+    const [showUpgradeModal, setShowUpgradeModal] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     // Fetch recent scans on mount
@@ -353,10 +376,10 @@ export default function ATSScannerClient() {
             const res = await fetch("/api/ai/ats-scan", { method: "POST", body: formData });
             const data = await res.json();
             if (!res.ok) {
-                if (data.code === 'ATS_BLOCKED') {
-                    setError("ATS Scanner is not available on your plan. Please upgrade to Pro.");
-                } else if (data.code === 'ATS_TRIAL_LIMIT') {
-                    setError("You've used all trial ATS scans. Upgrade to Pro for 10 scans/week.");
+                if (data.code === 'ATS_BLOCKED' || data.code === 'ATS_TRIAL_LIMIT' || data.code === 'LIMIT_EXCEEDED') {
+                    setShowUpgradeModal(true);
+                    setStep("upload");
+                    return;
                 } else if (data.code === 'ATS_WEEKLY_LIMIT') {
                     setError("You've used all 10 weekly scans. Resets every Sunday.");
                 } else {
@@ -623,9 +646,14 @@ export default function ATSScannerClient() {
                     onReset={resetAll}
                     onOpenBuilder={handleOpenBuilder}
                 />
+                <UpgradeModal isOpen={showUpgradeModal} onClose={() => setShowUpgradeModal(false)} />
             </div>
         );
     }
 
-    return null;
+    return (
+        <>
+            <UpgradeModal isOpen={showUpgradeModal} onClose={() => setShowUpgradeModal(false)} />
+        </>
+    );
 }

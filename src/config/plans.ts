@@ -16,7 +16,7 @@ export const PLAN_LIMITS: Record<string, PlanLimits> = {
     ai_limit: 0,
     letter_limit: 0,
     job_search_limit: 0,
-    ats_scan_limit: 0,
+    ats_scan_limit: 3,
     advanced_ai: false,
     watermark_free: false,
   },

@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/client';
 export function usePro() {
     const [isPro, setIsPro] = useState<boolean | null>(null);
     const [status, setStatus] = useState<string | null>(null);
+    const [plan, setPlan] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
@@ -22,6 +23,8 @@ export function usePro() {
                     .select('*')
                     .eq('user_id', user.id)
                     .maybeSingle();
+
+                setPlan(sub?.plan || 'free');
 
                 // Compute effective status client-side (mirrors server logic)
                 let effectiveStatus = (sub?.status as string) || 'trialing';
@@ -70,5 +73,5 @@ export function usePro() {
         }
     };
 
-    return { isPro, isLoading, requirePro, status };
+    return { isPro, isLoading, requirePro, status, plan };
 }
