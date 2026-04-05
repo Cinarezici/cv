@@ -211,6 +211,9 @@ export default async function BlogPostPage({
 
   const tagStyle = tagColors[post.tag] || 'bg-zinc-50 text-zinc-600 border-zinc-200';
 
+  const postDate = new Date(post.date).toISOString();
+  const modifiedDate = post.updatedDate ? new Date(post.updatedDate).toISOString() : postDate;
+
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -228,9 +231,8 @@ export default async function BlogPostPage({
         "url": "https://cvoptimizerai.com/logo.png"
       }
     },
-    // Approximating date since we only have a string like "April 5, 2026"
-    "datePublished": "2026-04-05T08:00:00+00:00",
-    "dateModified": "2026-04-05T08:00:00+00:00",
+    "datePublished": postDate,
+    "dateModified": modifiedDate,
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": `https://cvoptimizerai.com/blog/${slug}`
@@ -283,16 +285,23 @@ export default async function BlogPostPage({
 
           {/* ── Article Header ─────────────────────────────── */}
           <header className="mb-14 border-b border-zinc-100 pb-12">
-            <div className="flex items-center gap-4 mb-8">
+            <div className="flex flex-wrap items-center gap-y-2 gap-x-4 mb-8">
               <span 
                 className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] px-3 py-1 rounded-sm border inline-flex items-center gap-1.5"
                 style={{ color: post.accentColor, borderColor: `${post.accentColor}33`, backgroundColor: `${post.accentColor}08` }}
               >
                 {post.tag}
               </span>
-              <span className="font-mono text-[10px] text-zinc-400 font-bold uppercase tracking-[0.2em]">
-                {post.date}
-              </span>
+              <div className="flex items-center gap-1.5 font-mono text-[10px] text-zinc-400 font-bold uppercase tracking-[0.2em]">
+                <Calendar className="w-3 h-3" />
+                <span>Published {post.date}</span>
+                {post.updatedDate && (
+                  <>
+                    <span className="mx-1 text-zinc-300">|</span>
+                    <span className="text-zinc-500">Updated {post.updatedDate}</span>
+                  </>
+                )}
+              </div>
               <span className="w-1 h-1 rounded-full bg-zinc-200" />
               <span className="font-mono text-[10px] text-zinc-400 font-bold uppercase tracking-[0.2em]">
                 {post.readingTime}

@@ -350,6 +350,7 @@ export default function HomeClient() {
             <nav className="flex flex-col gap-4 text-sm font-bold text-zinc-600">
               <Link href="/pricing">Pricing</Link>
               <Link href="/blog">Blog</Link>
+              <Link href="/press">Press</Link>
             </nav>
             <nav className="flex flex-col gap-4 text-sm font-bold text-zinc-600">
               <Link href="/privacy">Privacy</Link>
