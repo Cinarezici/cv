@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, CheckCircle2, FileText, Download, Share2, Zap, MessageSquare, ShieldCheck, X, Star, Search, Bookmark, Shield } from "lucide-react";
 import { motion, AnimatePresence, useInView, animate } from 'framer-motion';
 import { useLang, type Lang } from "@/lib/i18n";
-import { HeroInteractiveDemo } from "@/components/ui/hero-interactive-demo";
+import type { CompanyLogoName } from "@/components/ui/company-logos";
 
 // Dynamic imports — below-fold sections code-split but SSR-rendered for stable layout
 const TestimonialsSection = dynamic(() => import("@/components/ui/testimonials-with-marquee").then(m => ({ default: m.TestimonialsSection })));
@@ -18,6 +18,11 @@ const LandingPricing = dynamic(() => import("@/components/landing/LandingPricing
 const LandingCopyLinkSpotlight = dynamic(() => import("@/components/ui/landing-copy-link-spotlight").then(m => ({ default: m.LandingCopyLinkSpotlight })));
 const LandingATSScanner = dynamic(() => import("@/components/ui/landing-ats-scanner").then(m => ({ default: m.LandingATSScanner })));
 const SparklesCore = dynamic(() => import("@/components/ui/sparkles").then(m => ({ default: m.SparklesCore })), { ssr: false });
+// HeroInteractiveDemo is heavy — client-only, loaded after hydration
+const HeroInteractiveDemo = dynamic(
+  () => import("@/components/ui/hero-interactive-demo").then(m => ({ default: m.HeroInteractiveDemo })),
+  { ssr: false, loading: () => <div className="w-full h-full rounded-2xl bg-zinc-100 animate-pulse" /> }
+);
 
 function AnimatedCounter({ base = 20000 }: { base?: number }) {
   const [val, setVal] = useState(base);
@@ -60,13 +65,13 @@ function LangFlagPicker() {
 
 
 
-const testimonials = [
+const testimonials: { author: { name: string; handle: string; avatar: string; companyLogoName: CompanyLogoName }; text: string }[] = [
   {
     author: {
       name: "Emma T.",
       handle: "Product Manager",
-      avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=128&h=128&fit=crop&crop=face",
-      companyLogo: "https://upload.wikimedia.org/wikipedia/commons/b/ba/Stripe_Logo%2C_revised_2016.svg",
+      avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&crop=face&fm=webp&q=70",
+      companyLogoName: "stripe",
     },
     text: "Went from a 42 to a 91 ATS score. Got my first callback in 3 days after months of silence.",
   },
@@ -74,8 +79,8 @@ const testimonials = [
     author: {
       name: "David P.",
       handle: "UX Designer",
-      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=128&h=128&fit=crop&crop=face",
-      companyLogo: "https://upload.wikimedia.org/wikipedia/commons/2/26/Spotify_logo_with_text.svg",
+      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face&fm=webp&q=70",
+      companyLogoName: "spotify",
     },
     text: "Imported my LinkedIn, got a polished CV in seconds. The shareable letter link impressed every recruiter I sent it to.",
   },
@@ -83,8 +88,8 @@ const testimonials = [
     author: {
       name: "Sofia R.",
       handle: "Sales Director",
-      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=128&h=128&fit=crop&crop=face",
-      companyLogo: "https://upload.wikimedia.org/wikipedia/commons/f/f9/Salesforce.com_logo.svg",
+      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&h=80&fit=crop&crop=face&fm=webp&q=70",
+      companyLogoName: "salesforce",
     },
     text: "I had no idea my formatting was breaking the ATS. Fixed the issues in one scan and got two interview calls that week.",
   },
@@ -92,8 +97,8 @@ const testimonials = [
     author: {
       name: "James W.",
       handle: "Senior Engineer",
-      avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=128&h=128&fit=crop&crop=face",
-      companyLogo: "https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.png",
+      avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&h=80&fit=crop&crop=face&fm=webp&q=70",
+      companyLogoName: "uber",
     },
     text: "The AI rewrote my bullet points better than I could in an hour. Exported a clean PDF and applied the same day.",
   }

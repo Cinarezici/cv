@@ -2,70 +2,78 @@
 
 import { TestimonialsColumn } from "@/components/ui/testimonials-columns-1";
 import { motion } from "motion/react";
+import { CompanyLogoName } from "@/components/ui/company-logos";
 
-const testimonials = [
+const testimonials: {
+  text: string;
+  name: string;
+  role: string;
+  image: string;
+  companyLogoName: CompanyLogoName;
+}[] = [
   {
     text: "Went from a 42 to a 91 ATS score. Got my first callback in 3 days after months of silence.",
     name: "Emma T.",
     role: "Product Manager",
-    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=128&h=128&fit=crop&crop=face",
-    companyLogo: "https://upload.wikimedia.org/wikipedia/commons/b/ba/Stripe_Logo%2C_revised_2016.svg",
+    // w=80&h=80 at 2x DPR = 40px display → perfectly sized, WebP format
+    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&crop=face&fm=webp&q=70",
+    companyLogoName: "stripe",
   },
   {
     text: "The AI rewrote my bullet points better than I could in an hour. Exported a clean PDF and applied the same day.",
     name: "James W.",
     role: "Senior Engineer",
-    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=128&h=128&fit=crop&crop=face",
-    companyLogo: "https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.png",
+    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&h=80&fit=crop&crop=face&fm=webp&q=70",
+    companyLogoName: "uber",
   },
   {
     text: "I had no idea my formatting was breaking the ATS. Fixed the issues in one scan and got two interview calls that week.",
     name: "Sofia R.",
     role: "Sales Director",
-    image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=128&h=128&fit=crop&crop=face",
-    companyLogo: "https://upload.wikimedia.org/wikipedia/commons/f/f9/Salesforce.com_logo.svg",
+    image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&h=80&fit=crop&crop=face&fm=webp&q=70",
+    companyLogoName: "salesforce",
   },
   {
     text: "Imported my LinkedIn, got a polished CV in seconds. The shareable letter link impressed every recruiter I sent it to.",
     name: "David P.",
     role: "UX Designer",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=128&h=128&fit=crop&crop=face",
-    companyLogo: "https://upload.wikimedia.org/wikipedia/commons/2/26/Spotify_logo_with_text.svg",
+    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face&fm=webp&q=70",
+    companyLogoName: "spotify",
   },
   {
     text: "After 3 months of rejections, I used the CAR method rewrite and got 4 interviews in two weeks.",
     name: "Sarah J.",
     role: "Marketing",
-    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=128&h=128&fit=crop&crop=face",
-    companyLogo: "https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg",
+    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&crop=face&fm=webp&q=70",
+    companyLogoName: "youtube",
   },
   {
     text: "The ATS Scanner showed me exactly why my PDF kept failing corporate portals. Fixed it and got a callback next day.",
     name: "Michael C.",
     role: "Data Scientist",
-    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=128&h=128&fit=crop&crop=face",
-    companyLogo: "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg",
+    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=face&fm=webp&q=70",
+    companyLogoName: "amazon",
   },
   {
     text: "I send the shareable letter link in my LinkedIn outreach. It immediately separates me from other candidates.",
     name: "Aisha P.",
     role: "Business Dev",
-    image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=128&h=128&fit=crop&crop=face",
-    companyLogo: "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg",
+    image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=80&h=80&fit=crop&crop=face&fm=webp&q=70",
+    companyLogoName: "netflix",
   },
   {
     text: "Cover letters used to take me hours. Now I generate a targeted one in literally seconds.",
     name: "Thomas W.",
     role: "Operations",
-    image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=128&h=128&fit=crop&crop=face",
-    companyLogo: "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg",
+    image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=80&h=80&fit=crop&crop=face&fm=webp&q=70",
+    companyLogoName: "google",
   },
   {
     text: "Tried multiple resume builders. This one exports perfectly, no weird spacing, and the AI suggestions are actually useful.",
     name: "Elena R.",
     role: "Financial Analyst",
-    image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=128&h=128&fit=crop&crop=face",
-    companyLogo: "https://upload.wikimedia.org/wikipedia/commons/9/96/Microsoft_logo_%282012%29.svg",
+    image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=80&h=80&fit=crop&crop=face&fm=webp&q=70",
+    companyLogoName: "microsoft",
   },
 ];
 

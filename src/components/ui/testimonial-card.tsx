@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils"
+import { CompanyLogo, CompanyLogoName } from "@/components/ui/company-logos"
 
 export interface TestimonialAuthor {
     name: string
@@ -6,7 +7,7 @@ export interface TestimonialAuthor {
     avatar?: string
     initials?: string
     color?: string
-    companyLogo?: string
+    companyLogoName?: CompanyLogoName
 }
 
 export interface TestimonialCardProps {
@@ -49,7 +50,11 @@ export function TestimonialCard({
                     <img
                         src={author.avatar}
                         alt={author.name}
-                        className="h-10 w-10 rounded-full object-cover border border-zinc-100 shadow-sm"
+                        width={40}
+                        height={40}
+                        loading="lazy"
+                        decoding="async"
+                        className="h-10 w-10 rounded-full object-cover border border-zinc-100 shadow-sm bg-zinc-100"
                     />
                 ) : (
                     <div className="h-10 w-10 rounded-full bg-zinc-200 flex items-center justify-center text-zinc-600 text-sm font-bold shrink-0">
@@ -64,10 +69,10 @@ export function TestimonialCard({
                         <p className="text-sm text-zinc-500 font-medium">
                             {author.handle}
                         </p>
-                        {author.companyLogo && (
+                        {author.companyLogoName && (
                             <>
                                 <span className="text-zinc-300 text-xs">•</span>
-                                <img src={author.companyLogo} alt="Company logo" className="h-3.5 object-contain opacity-75" />
+                                <CompanyLogo name={author.companyLogoName} className="h-3 opacity-60 max-w-[52px]" />
                             </>
                         )}
                     </div>
