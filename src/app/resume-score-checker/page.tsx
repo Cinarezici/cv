@@ -101,21 +101,6 @@ export default function ResumeScoreCheckerPage() {
       />
       <div className="flex flex-col min-h-screen bg-[#fafafa] text-zinc-900 overflow-x-hidden selection:bg-blue-500/30">
 
-      {/* ── Minimal conversion navbar ── */}
-            <span className="text-lg font-extrabold tracking-tight text-zinc-900 hidden sm:block">CV Optimizer AI</span>
-          </Link>
-          <div className="flex items-center gap-4">
-            <Link href="/login" className="text-[14px] font-bold text-zinc-500 hover:text-zinc-900 transition-colors hidden md:block">
-              Login
-            </Link>
-            <Link href="/signup">
-              <Button className="bg-zinc-900 text-white hover:bg-zinc-800 font-bold rounded-full px-6 h-10 shadow-sm transition-all hover:scale-105 active:scale-95">
-                Check Score Free <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
-              </Button>
-            </Link>
-          </div>
-        </header>
-      </div>
 
       <main className="flex-1">
 

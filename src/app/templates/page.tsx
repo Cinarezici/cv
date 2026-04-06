@@ -569,24 +569,6 @@ export default function TemplatesPage() {
 
     return (
         <div className="min-h-screen bg-white text-zinc-900 pt-32 pb-24 px-6 flex flex-col selection:bg-blue-500/30">
-            <header className="fixed top-0 left-0 right-0 z-50 flex items-center h-20 px-6 border-b border-zinc-100 bg-white/80 backdrop-blur-md">
-                <Link className="flex items-center gap-2 group" href="/">
-                    <div className="flex items-center justify-center w-9 h-9 rounded-xl bg-blue-600 transition-transform group-hover:scale-110 shadow-lg shadow-blue-600/20">
-                        <Zap className="h-5 w-5 text-white fill-white" />
-                    </div>
-                    <span className="text-xl font-bold tracking-tight text-zinc-900">CV Optimizer AI</span>
-                </Link>
-                <nav className="ml-auto hidden md:flex gap-8 items-center text-sm font-bold text-zinc-500">
-                    <Link className="hover:text-blue-600 transition-colors" href="/templates">Templates</Link>
-                    <Link className="hover:text-blue-600 transition-colors" href="/pricing">Pricing</Link>
-                    <Link className="hover:text-blue-600 transition-colors" href="/login">Login</Link>
-                    <Link href="/signup">
-                        <Button className="bg-blue-600 text-white hover:bg-blue-700 font-bold rounded-xl px-6">
-                            Get Started
-                        </Button>
-                    </Link>
-                </nav>
-            </header>
 
             <div className="max-w-7xl mx-auto flex-1 w-full relative">
                 <div className="text-center mb-16 relative z-10">

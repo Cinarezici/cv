@@ -11,25 +11,6 @@ export default function PressPage() {
   return (
     <div className="flex flex-col min-h-screen bg-[#fafafa] text-zinc-900">
       {/* ── Navigation ─────────────────────────────────────────── */}
-            <span className="text-lg font-extrabold tracking-tight text-zinc-900 truncate">CV Optimizer AI</span>
-          </Link>
-          <nav className="hidden md:flex gap-8 items-center text-[15px] font-bold text-zinc-500">
-            <Link className="hover:text-zinc-900 transition-colors" href="/templates">Templates</Link>
-            <Link className="hover:text-zinc-900 transition-colors" href="/pricing">Pricing</Link>
-            <Link className="hover:text-zinc-900 transition-colors" href="/blog">Blog</Link>
-            <Link className="hover:text-zinc-900 transition-colors" href="/login">Login</Link>
-            <Link href="/signup" className="bg-zinc-900 text-white hover:bg-zinc-800 font-bold rounded-full px-6 h-10 flex items-center text-[14px] shadow-sm transition-all hover:scale-105 active:scale-95">
-              Get Started Free
-            </Link>
-          </nav>
-          <div className="flex md:hidden items-center gap-2">
-            <Link href="/login" className="text-[13px] font-bold text-zinc-600 hover:text-zinc-900">Login</Link>
-            <Link href="/signup" className="bg-zinc-900 text-white hover:bg-zinc-800 font-bold rounded-full px-4 h-8 flex items-center text-[13px]">
-              Get Started
-            </Link>
-          </div>
-        </header>
-      </div>
 
       <main className="flex-1 pt-36 pb-24">
         <div className="container px-6 mx-auto max-w-4xl">
