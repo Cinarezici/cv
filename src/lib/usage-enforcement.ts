@@ -26,8 +26,16 @@ export async function checkUsage(userId: string, feature: PlanFeature) {
 
   // 2. Fetch Current Usage for the relevant period
   // For monthly/yearly plans, we check usage within current_period_start/end
-  // For lifetime/trial, we use the start date to define the unique bucket
-  const periodStart = sub.current_period_start || new Date(0).toISOString();
+  // For daily features (like ATS scan), we use the current date at 00:00:00
+  const isDailyFeature = feature === 'ats_scan' && ['starter_monthly', 'professional_yearly', 'lifetime_onetime'].includes(planId);
+  
+  let periodStart;
+  if (isDailyFeature) {
+    const now = new Date();
+    periodStart = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate())).toISOString();
+  } else {
+    periodStart = sub.current_period_start || new Date(0).toISOString();
+  }
 
   const { data: usage, error: usageError } = await supabase
     .from('usage_tracking')
@@ -40,12 +48,14 @@ export async function checkUsage(userId: string, feature: PlanFeature) {
   const currentCount = usage?.usage_count || 0;
 
   if (currentCount >= limit && limit !== 999) {
+    const frequency = isDailyFeature ? 'daily ' : '';
     return { 
       allowed: false, 
       reason: 'limit_exceeded', 
       usage: currentCount, 
       limit,
-      plan: planId 
+      plan: planId,
+      message: `Your ${frequency}ATS scan limit (${limit}) has been reached. Please upgrade or wait for the next period.`
     };
   }
 

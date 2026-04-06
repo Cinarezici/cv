@@ -103,9 +103,9 @@ export async function POST(request: NextRequest) {
         const usageCheck = await checkUsage(user.id, 'ats_scan');
         if (!usageCheck.allowed) {
             return NextResponse.json({ 
-                error: usageCheck.reason === 'limit_exceeded'
+                error: (usageCheck as any).message || (usageCheck.reason === 'limit_exceeded'
                     ? 'ATS Scan limit reached for your current plan. Please upgrade to continue.'
-                    : 'A subscription is required for ATS Scanning.',
+                    : 'A subscription is required for ATS Scanning.'),
                 code: 'LIMIT_REACHED' 
             }, { status: 403 });
         }
