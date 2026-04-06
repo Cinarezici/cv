@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { LangProvider } from "@/lib/i18n";
 import { GoogleAnalytics } from "@/components/GoogleAnalytics";
+import { Navbar } from "@/components/layout/Navbar";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -77,6 +78,7 @@ export default function RootLayout({
 
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <LangProvider>
+            <Navbar />
             {children}
           </LangProvider>
         </ThemeProvider>

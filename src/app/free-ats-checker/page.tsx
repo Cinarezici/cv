@@ -102,12 +102,6 @@ export default function FreeATSCheckerPage() {
       <div className="flex flex-col min-h-screen bg-[#fafafa] text-zinc-900 overflow-x-hidden selection:bg-blue-500/30">
 
       {/* ── Minimal conversion navbar (matches homepage floating pill, minus heavy nav links) */}
-      <div className="fixed top-4 left-4 right-4 md:left-1/2 md:-translate-x-1/2 md:w-full md:max-w-5xl z-50 flex justify-center pointer-events-none">
-        <header className="flex items-center justify-between w-full h-16 px-4 md:px-6 border border-zinc-200/80 bg-white/70 backdrop-blur-xl rounded-full shadow-[0_8px_32px_-8px_rgba(0,0,0,0.08)] pointer-events-auto transition-all">
-          <Link className="flex items-center gap-2 group" href="/">
-            <div className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-600 transition-transform group-hover:scale-110 shadow-md shadow-blue-600/20 flex-shrink-0">
-              <Zap className="h-4 w-4 text-white fill-white" />
-            </div>
             <span className="text-lg font-extrabold tracking-tight text-zinc-900 hidden sm:block">CV Optimizer AI</span>
           </Link>
           <div className="flex items-center gap-4">
