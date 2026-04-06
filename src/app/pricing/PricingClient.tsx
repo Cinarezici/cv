@@ -44,9 +44,19 @@ export default function PricingPageClient() {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
 
   const renderCell = (val: boolean | string) => {
-    if (val === true) return <CheckCircle2 className="w-5 h-5 text-blue-600 mx-auto" />;
-    if (val === false) return <X className="w-5 h-5 text-zinc-300 mx-auto" />;
-    return <span className="text-zinc-700 font-semibold text-sm">{val}</span>;
+    if (val === true) return (
+      <div className="flex justify-center">
+        <div className="w-5 h-5 rounded-full border border-blue-600 flex items-center justify-center">
+          <CheckCircle2 className="w-3.5 h-3.5 text-blue-600" />
+        </div>
+      </div>
+    );
+    if (val === false) return (
+      <div className="flex justify-center text-zinc-300">
+        <X className="w-4 h-4" />
+      </div>
+    );
+    return <span className="text-zinc-600 font-medium text-[14px]">{val}</span>;
   };
 
   return (
@@ -178,29 +188,29 @@ export default function PricingPageClient() {
           </div>
 
           {/* ── Free vs Pro Comparison Table ── */}
-          <div className="max-w-5xl mx-auto mb-24">
+          <div className="max-w-5xl mx-auto mb-24 font-sans">
             <h2 className="text-3xl font-extrabold tracking-tight text-zinc-900 mb-8 text-center">
               Compare all features
             </h2>
             <div className="overflow-x-auto rounded-[24px] border border-neutral-200 shadow-sm bg-white">
               <table className="w-full text-left border-collapse min-w-[700px]">
                 <thead>
-                  <tr className="bg-[#fafafa] border-b border-neutral-200 text-[14px]">
-                    <th className="p-4 font-bold text-zinc-600 w-[30%]">Feature</th>
-                    <th className="p-4 font-extrabold text-zinc-900 text-center w-[17.5%]">Free</th>
-                    <th className="p-4 font-extrabold text-zinc-900 text-center w-[17.5%]">Starter</th>
-                    <th className="p-4 font-extrabold text-zinc-900 text-center w-[17.5%]">Professional</th>
-                    <th className="p-4 font-extrabold text-zinc-900 text-center w-[17.5%]">Lifetime</th>
+                  <tr className="bg-white border-b border-neutral-100 text-[13px]">
+                    <th className="p-6 font-bold text-zinc-400 w-[24%]">Feature</th>
+                    <th className="p-6 font-bold text-zinc-900 text-center w-[19%]">Free</th>
+                    <th className="p-6 font-bold text-zinc-900 text-center w-[19%]">Starter</th>
+                    <th className="p-6 font-bold text-blue-600 text-center w-[19%]">Professional</th>
+                    <th className="p-6 font-bold text-purple-600 text-center w-[19%]">Lifetime</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-neutral-200 text-[14px]">
+                <tbody className="divide-y divide-neutral-100">
                   {comparisonFeatures.map((row) => (
-                    <tr key={row.feature} className="hover:bg-zinc-50/50 transition-colors">
-                      <td className="p-4 font-bold text-zinc-700">{row.feature}</td>
-                      <td className="p-4 text-center">{renderCell(row.free)}</td>
-                      <td className="p-4 text-center">{renderCell(row.starter)}</td>
-                      <td className="p-4 text-center">{renderCell(row.pro)}</td>
-                      <td className="p-4 text-center">{renderCell(row.lifetime)}</td>
+                    <tr key={row.feature} className="transition-colors group">
+                      <td className="p-6 font-bold text-zinc-800 text-[14px]">{row.feature}</td>
+                      <td className="p-6 text-center">{renderCell(row.free)}</td>
+                      <td className="p-6 text-center">{renderCell(row.starter)}</td>
+                      <td className="p-6 text-center">{renderCell(row.pro)}</td>
+                      <td className="p-6 text-center">{renderCell(row.lifetime)}</td>
                     </tr>
                   ))}
                 </tbody>
