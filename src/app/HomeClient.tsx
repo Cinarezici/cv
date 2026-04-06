@@ -231,21 +231,23 @@ export default function HomeClient() {
                   Get more interviews.<br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2563eb] to-[#3b82f6]">Start with your CV score.</span>
                 </h1>
 
-                <div className="flex items-start gap-3 mt-6 mb-10 max-w-xl">
-                  <div className="mt-1 w-5 h-5 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
-                    <CheckCircle2 className="w-3 h-3 text-blue-600" />
+                <Link href="#ats-scanner">
+                  <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-emerald-50 border border-emerald-200/60 shadow-sm hover:shadow-md transition-all cursor-pointer group mb-10 overflow-hidden relative">
+                    <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/5 to-blue-400/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse shrink-0"></span>
+                    <p className="text-[13px] font-bold text-emerald-800 tracking-tight relative z-10">
+                      ✦ New — ATS Scanner is live. <span className="text-emerald-600/80 font-medium ml-0.5">Find out why your CV gets rejected.</span>
+                    </p>
+                    <ArrowRight className="h-3.5 w-3.5 text-emerald-400 group-hover:text-emerald-600 transition-all group-hover:translate-x-0.5 relative z-10" />
                   </div>
-                  <p className="text-[14px] text-zinc-500 font-medium leading-relaxed">
-                    <span className="text-zinc-900 font-bold">Trusted by 132,000+ job seekers.</span> Our high-accuracy AI engine identifies ATS formatting errors and keyword gaps in seconds, ensuring your CV passes automated filters with ease.
-                  </p>
-                </div>
+                </Link>
 
                 <p className="text-lg md:text-xl text-zinc-500 leading-relaxed font-medium tracking-tight mb-8 w-full max-w-xl">
                   AI analyzes your CV, gives you an ATS score, and rewrites it for the job you want — in seconds.
                 </p>
                 <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2 mb-4">
-                  {proofChips.map((chip, i) => (
-                    <div key={chip} className={`inline-flex items-center px-3 py-1.5 rounded-full text-[12px] font-bold border ${i === 0 ? 'bg-blue-50 border-blue-200 text-blue-700' : 'bg-white border-zinc-200 text-zinc-600'}`}>{chip}</div>
+                  {proofChips.map((chip) => (
+                    <div key={chip} className="inline-flex items-center px-3 py-1.5 rounded-full text-[12px] font-bold border bg-white border-zinc-200 text-zinc-600">{chip}</div>
                   ))}
                 </div>
                 <div className="flex flex-col lg:flex-row items-center justify-center lg:justify-start gap-4 lg:gap-8 w-full z-30 relative mt-2">

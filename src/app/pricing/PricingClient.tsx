@@ -33,7 +33,7 @@ const comparisonFeatures = [
   { feature: "ATS Score", free: true, starter: true, pro: true, lifetime: true },
   { feature: "AI CV Rewrite", free: false, starter: "Basic", pro: "Advanced (GPT-4)", lifetime: "Advanced (GPT-4)" },
   { feature: "Templates", free: false, starter: "5 Basic", pro: "12 Premium", lifetime: "12 Premium" },
-  { feature: "Keyword Scans", free: "1/day", starter: "10/day", pro: "Unlimited", lifetime: "Unlimited" },
+  { feature: "Keyword Scans", free: "1 / day", starter: "10 / day", pro: "Unlimited", lifetime: "Unlimited" },
   { feature: "PDF Export", free: false, starter: "Watermarked", pro: "Clean", lifetime: "Clean" },
   { feature: "Shareable Links", free: false, starter: false, pro: true, lifetime: true },
   { feature: "Priority AI Queue", free: false, starter: false, pro: false, lifetime: "3x Faster" },

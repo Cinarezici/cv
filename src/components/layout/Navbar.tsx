@@ -13,7 +13,7 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
 
   // Hide Navbar on dashboard routes
-  const isDashboard = pathname?.startsWith('/dashboard') || pathname?.startsWith('/builder') || pathname?.startsWith('/ats-scanner');
+  const isDashboard = pathname?.startsWith('/dashboard') || pathname?.startsWith('/builder') || pathname?.startsWith('/ats-scanner') || pathname?.startsWith('/referrals');
   
   useEffect(() => {
     const handleScroll = () => {
