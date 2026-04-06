@@ -120,9 +120,12 @@ export default function ReziVsJobscanPage() {
               </span>
             </h1>
 
-            <div className="bg-blue-50/50 border border-blue-100 rounded-2xl p-6 mb-10 text-left max-w-3xl mx-auto">
-              <p className="text-zinc-900 font-bold leading-relaxed">
-                Rezi is the leader in AI-driven bullet point generation. Jobscan is the leader in exact keyword frequency matching. Rezi costs $29/mo while Jobscan costs $49.95/mo. CVOptimizerAI provides a superior free experience by combining both deep parsing and AI rewriting.
+            <div className="flex items-start gap-3 mt-6 mb-12 max-w-xl mx-auto text-left">
+              <div className="mt-1 w-5 h-5 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
+                <CheckCircle2 className="w-3 h-3 text-blue-600" />
+              </div>
+              <p className="text-[14px] text-zinc-500 font-medium leading-relaxed">
+                <span className="text-zinc-900 font-bold">AI vs Keywords.</span> Rezi specializes in bullet point generation while Jobscan leads in keyword frequency matching. CVOptimizerAI bridges this gap by offering both deep structural validation and AI rewriting in a single free tool.
               </p>
             </div>
 

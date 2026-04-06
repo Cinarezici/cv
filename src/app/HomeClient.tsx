@@ -231,9 +231,12 @@ export default function HomeClient() {
                   Get more interviews.<br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2563eb] to-[#3b82f6]">Start with your CV score.</span>
                 </h1>
 
-                <div className="bg-blue-50/50 border border-blue-100 rounded-2xl p-6 mb-10 text-left max-w-xl">
-                  <p className="text-zinc-900 font-bold leading-relaxed">
-                    CVOptimizerAI is a high-accuracy, free ATS resume checker that identifies formatting errors and missing keywords in seconds. Our AI-driven engine has optimized over 132,000 CVs, helping job seekers pass automated filters with confidence and land more interviews.
+                <div className="flex items-start gap-3 mt-6 mb-10 max-w-xl">
+                  <div className="mt-1 w-5 h-5 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
+                    <CheckCircle2 className="w-3 h-3 text-blue-600" />
+                  </div>
+                  <p className="text-[14px] text-zinc-500 font-medium leading-relaxed">
+                    <span className="text-zinc-900 font-bold">Trusted by 132,000+ job seekers.</span> Our high-accuracy AI engine identifies ATS formatting errors and keyword gaps in seconds, ensuring your CV passes automated filters with ease.
                   </p>
                 </div>
 

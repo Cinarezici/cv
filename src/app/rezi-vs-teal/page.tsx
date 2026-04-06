@@ -140,9 +140,12 @@ export default function ReziVsTealPage() {
               </span>
             </h1>
 
-            <div className="bg-blue-50/50 border border-blue-100 rounded-2xl p-6 mb-10 text-left max-w-3xl mx-auto">
-              <p className="text-zinc-900 font-bold leading-relaxed">
-                Rezi is superior for AI rewrite quality and GPT-powered content generation. Teal is the specialized leader for job application tracking and pipeline management. Neither provides deep ATS structural parsing. For a unified tool that offers ATS scoring and AI rewriting for free, CVOptimizerAI is the modern alternative that bridges the gap.
+            <div className="flex items-start gap-3 mt-6 mb-12 max-w-xl mx-auto text-left">
+              <div className="mt-1 w-5 h-5 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
+                <CheckCircle2 className="w-3 h-3 text-blue-600" />
+              </div>
+              <p className="text-[14px] text-zinc-500 font-medium leading-relaxed">
+                <span className="text-zinc-900 font-bold">2026 Comparison Guide.</span> While Rezi excels at AI writing and Teal leads in job tracking, CVOptimizerAI provides a unified, free ATS structural validator and keyword optimizer to bridge the gap between building and applying.
               </p>
             </div>
 

@@ -171,9 +171,12 @@ export default function ResumeScoreCheckerPage() {
               </span>
             </h1>
 
-            <div className="bg-blue-50/50 border border-blue-100 rounded-2xl p-6 mb-10 text-left max-w-2xl mx-auto">
-              <p className="text-zinc-900 font-bold leading-relaxed">
-                A resume score checker analyzes your CV across 40+ data points — keyword match rate, formatting, bullet impact, and section completeness — and returns a score out of 100. CVOptimizerAI's free checker requires no sign-up and delivers results in under 60 seconds, simulating the exact logic used by Fortune 500 ATS platforms.
+            <div className="flex items-start gap-3 mt-6 mb-12 max-w-xl mx-auto text-left">
+              <div className="mt-1 w-5 h-5 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
+                <CheckCircle2 className="w-3 h-3 text-blue-600" />
+              </div>
+              <p className="text-[14px] text-zinc-500 font-medium leading-relaxed">
+                <span className="text-zinc-900 font-bold">Instant ATS validation.</span> Our scanner matches your CV against 40+ real-world recruiter metrics including keyword density and formatting, delivering an accurate performance score in under 60 seconds.
               </p>
             </div>
 
