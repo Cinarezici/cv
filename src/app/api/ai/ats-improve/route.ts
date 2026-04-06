@@ -101,10 +101,12 @@ export async function POST(request: NextRequest) {
             .eq('user_id', user.id)
             .maybeSingle();
 
-        const isPro = ['active'].includes(sub?.status as string);
-        if (!isPro) {
+        const { checkUsage, incrementUsage } = await import('@/lib/usage-enforcement');
+        const usageCheck: any = await checkUsage(user.id, 'ai_optimization');
+
+        if (!usageCheck.allowed) {
             return NextResponse.json({
-                error: 'ATS CV Improvement is a Pro feature. Please upgrade.',
+                error: usageCheck.message || 'AI Optimization limit reached for your current plan. Please upgrade to continue.',
                 code: 'PRO_REQUIRED'
             }, { status: 403 });
         }
@@ -203,6 +205,11 @@ export async function POST(request: NextRequest) {
                 })
                 .eq('id', scanId)
                 .eq('user_id', user.id);
+        }
+
+        // Increment usage
+        if (usageCheck.periodStart) {
+            await incrementUsage(user.id, 'ai_optimization', usageCheck.periodStart);
         }
 
         return NextResponse.json({ improvedCV, structuredCV, optimizedScore });

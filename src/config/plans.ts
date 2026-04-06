@@ -22,7 +22,7 @@ export const PLAN_LIMITS: Record<string, PlanLimits> = {
   },
   trial: {
     cv_limit: 2,
-    ai_limit: 5,
+    ai_limit: 1,
     letter_limit: 3,
     job_search_limit: 2,
     ats_scan_limit: 3,
