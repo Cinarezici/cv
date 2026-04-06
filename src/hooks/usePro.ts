@@ -58,7 +58,8 @@ export function usePro() {
     }, []);
 
     const requirePro = (callback?: () => void) => {
-        if (isPro) {
+        const isLifetime = plan === 'lifetime_onetime';
+        if (isPro || isLifetime) {
             if (callback) callback();
             return true;
         } else if (status === 'canceled') {

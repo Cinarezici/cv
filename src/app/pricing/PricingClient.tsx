@@ -35,48 +35,18 @@ const comparisonFeatures = [
   { feature: "Templates", free: "5 Basic", starter: "12 Templates", pro: "12 Premium", lifetime: "12 Premium" },
   { feature: "Keyword Scans", free: "3 / day", starter: "10 / day", pro: "Unlimited", lifetime: "Unlimited" },
   { feature: "PDF Export", free: "Watermarked", starter: "Clean", pro: "Clean", lifetime: "Clean" },
-  { feature: "Shareable Links", free: "Redirects on Exp.", starter: true, pro: true, lifetime: true },
-  { feature: "Priority AI Queue", free: false, starter: false, pro: false, lifetime: "3x Faster" },
+  { feature: "Shareable Links", free: false, starter: true, pro: true, lifetime: true },
+  { feature: "Priority AI Queue", free: false, starter: false, pro: true, lifetime: true },
   { feature: "VIP Support", free: false, starter: false, pro: false, lifetime: true },
 ];
 
 export default function PricingPageClient() {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
 
-  const renderCell = (val: boolean | string, isPro: boolean = false) => {
-    if (val === true) return (
-      <div className="flex justify-center">
-        <div className={clsx(
-          "w-6 h-6 rounded-full flex items-center justify-center transition-all",
-          isPro ? "bg-blue-600 shadow-sm shadow-blue-500/20" : "bg-blue-100"
-        )}>
-          <CheckCircle2 className={clsx("w-3.5 h-3.5", isPro ? "text-white" : "text-blue-600")} strokeWidth={3} />
-        </div>
-      </div>
-    );
-    if (val === false) return (
-      <div className="flex justify-center">
-        <X className="w-5 h-5 text-zinc-200" strokeWidth={1.5} />
-      </div>
-    );
-    
-    // Gradient text for special values
-    const isSpecial = val.toString().includes("Unlimited") || val.toString().includes("Advanced") || val.toString().includes("Clean");
-    
-    return (
-      <div className="flex justify-center">
-        <span className={clsx(
-          "px-2.5 py-1 rounded-full text-[12px] font-bold tracking-tight whitespace-nowrap border",
-          isSpecial 
-            ? "bg-blue-50 border-blue-100 text-blue-700 shadow-sm shadow-blue-500/5" 
-            : isPro 
-              ? "bg-blue-50/50 border-blue-100 text-blue-700"
-              : "bg-zinc-50 border-zinc-200/60 text-zinc-600"
-        )}>
-          {val}
-        </span>
-      </div>
-    );
+  const renderCell = (val: boolean | string) => {
+    if (val === true) return <CheckCircle2 className="w-5 h-5 text-blue-600 mx-auto" />;
+    if (val === false) return <X className="w-5 h-5 text-zinc-300 mx-auto" />;
+    return <span className="text-zinc-700 font-semibold text-sm">{val}</span>;
   };
 
   return (
@@ -212,50 +182,27 @@ export default function PricingPageClient() {
             <h2 className="text-3xl font-extrabold tracking-tight text-zinc-900 mb-8 text-center">
               Compare all features
             </h2>
-            <div className="overflow-x-auto rounded-[32px] border border-neutral-200/80 shadow-[0_8px_30px_rgb(0,0,0,0.04)] bg-white p-2">
-              <table className="w-full text-left border-collapse min-w-[750px]">
+            <div className="overflow-x-auto rounded-[24px] border border-neutral-200 shadow-sm bg-white">
+              <table className="w-full text-left border-collapse min-w-[700px]">
                 <thead>
-                  <tr className="text-[13px] uppercase tracking-wider text-zinc-500">
-                    <th className="p-6 font-bold w-[28%]">Plan Feature</th>
-                    <th className="p-6 font-black text-center w-[18%]">Free</th>
-                    <th className="p-6 font-black text-center w-[18%]">Starter</th>
-                    <th className="p-6 text-center w-[18%] relative">
-                      <div className="absolute inset-0 bg-blue-600/5 rounded-t-2xl mt-2 mx-1" />
-                      <span className="relative z-10 text-blue-600 font-black">Professional</span>
-                    </th>
-                    <th className="p-6 font-black text-center w-[18%] text-purple-700">Lifetime</th>
+                  <tr className="bg-[#fafafa] border-b border-neutral-200 text-[14px]">
+                    <th className="p-4 font-bold text-zinc-600 w-[30%]">Feature</th>
+                    <th className="p-4 font-extrabold text-zinc-900 text-center w-[17.5%]">Free</th>
+                    <th className="p-4 font-extrabold text-zinc-900 text-center w-[17.5%]">Starter</th>
+                    <th className="p-4 font-extrabold text-zinc-900 text-center w-[17.5%]">Professional</th>
+                    <th className="p-4 font-extrabold text-zinc-900 text-center w-[17.5%]">Lifetime</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-neutral-100 text-[14px]">
+                <tbody className="divide-y divide-neutral-200 text-[14px]">
                   {comparisonFeatures.map((row) => (
-                    <tr key={row.feature} className="group transition-all">
-                      <td className="p-6">
-                        <div className="flex items-center gap-3">
-                          <div className="w-2 h-2 rounded-full bg-zinc-200 group-hover:bg-blue-400 transition-colors" />
-                          <span className="font-bold text-zinc-700 group-hover:text-zinc-900 transition-colors">{row.feature}</span>
-                        </div>
-                      </td>
-                      <td className="p-6 transition-colors group-hover:bg-zinc-50/50">{renderCell(row.free)}</td>
-                      <td className="p-6 transition-colors group-hover:bg-zinc-50/50">{renderCell(row.starter)}</td>
-                      <td className="p-6 relative">
-                        <div className="absolute inset-0 bg-blue-600/5 mx-1 group-hover:bg-blue-600/[0.08] transition-colors" />
-                        <div className="relative z-10">
-                          {renderCell(row.pro, true)}
-                        </div>
-                      </td>
-                      <td className="p-6 transition-colors group-hover:bg-purple-50/30">{renderCell(row.lifetime)}</td>
+                    <tr key={row.feature} className="hover:bg-zinc-50/50 transition-colors">
+                      <td className="p-4 font-bold text-zinc-700">{row.feature}</td>
+                      <td className="p-4 text-center">{renderCell(row.free)}</td>
+                      <td className="p-4 text-center">{renderCell(row.starter)}</td>
+                      <td className="p-4 text-center">{renderCell(row.pro)}</td>
+                      <td className="p-4 text-center">{renderCell(row.lifetime)}</td>
                     </tr>
                   ))}
-                  {/* Footer padding for row */}
-                  <tr>
-                    <td className="p-4" />
-                    <td className="p-4" />
-                    <td className="p-4" />
-                    <td className="p-4 relative">
-                      <div className="absolute inset-0 bg-blue-600/5 rounded-b-2xl mb-2 mx-1" />
-                    </td>
-                    <td className="p-4" />
-                  </tr>
                 </tbody>
               </table>
             </div>

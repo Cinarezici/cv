@@ -3,7 +3,9 @@
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { CheckCircle2, Lock, Loader2, Sparkles, AlertCircle } from "lucide-react";
+import { CheckCircle2, Lock, Loader2, Sparkles, AlertCircle, X } from "lucide-react";
+import { usePro } from "@/hooks/usePro";
+import clsx from "clsx";
 import { toast } from "sonner";
 
 export type UpgradeReason = 
@@ -66,10 +68,16 @@ const reasonContent: Record<UpgradeReason, { title: string, desc: string, icon: 
 };
 
 export function UpgradeModal({ isOpen, onClose, reason = 'generic' }: UpgradeModalProps) {
+    const { plan: currentPlan } = usePro();
     const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
     const content = reasonContent[reason];
 
+    const isLifetime = currentPlan === 'lifetime_onetime';
+    const isProfessional = currentPlan === 'professional_yearly' || isLifetime;
+    const isStarter = currentPlan === 'starter_monthly' || isProfessional;
+
     const handleCheckout = async (planId: string) => {
+        if (isLifetime) return;
         setLoadingPlan(planId);
         try {
             const res = await fetch('/api/checkout', {
@@ -112,24 +120,38 @@ export function UpgradeModal({ isOpen, onClose, reason = 'generic' }: UpgradeMod
                     <div className="p-8 w-full md:w-3/5 flex flex-col justify-center bg-white space-y-4">
                         
                         {/* Recommend Professional */}
-                        <div className="border-[2px] border-blue-600 rounded-2xl p-5 relative cursor-default">
-                            <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-[10px] font-bold tracking-wider px-3 py-1 rounded-full uppercase shadow">
-                                Recommended
-                            </div>
+                        <div className={`border-[2px] rounded-2xl p-5 relative transition-all ${isProfessional ? 'border-zinc-100 bg-zinc-50/50 grayscale opacity-60' : 'border-blue-600'}`}>
+                            {!isProfessional && (
+                                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-[10px] font-bold tracking-wider px-3 py-1 rounded-full uppercase shadow">
+                                    Recommended
+                                </div>
+                            )}
                             <div className="flex justify-between items-center mb-3">
-                                <div>
+                                <div className="flex flex-col">
                                     <h4 className="font-extrabold text-lg flex items-center gap-1">Professional ⭐</h4>
                                     <p className="text-sm font-medium text-zinc-500">$89 / year</p>
                                 </div>
                                 <Button 
                                     onClick={() => handleCheckout('professional_yearly')}
-                                    disabled={loadingPlan !== null}
-                                    className="bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-full shadow-lg shadow-blue-500/20"
+                                    disabled={loadingPlan !== null || isProfessional}
+                                    className={clsx(
+                                        "font-bold rounded-full shadow-lg transition-all",
+                                        isProfessional 
+                                            ? "bg-zinc-200 text-zinc-500 shadow-none cursor-not-allowed" 
+                                            : "bg-blue-600 hover:bg-blue-700 text-white shadow-blue-500/20"
+                                    )}
                                 >
-                                    {loadingPlan === 'professional_yearly' ? <Loader2 className="w-4 h-4 animate-spin" /> : "Upgrade"}
+                                    {isProfessional ? (
+                                        <div className="flex items-center gap-1.5">
+                                            <Lock className="w-3.5 h-3.5" />
+                                            <span>{currentPlan === 'professional_yearly' ? 'Current Plan' : 'Owned'}</span>
+                                        </div>
+                                    ) : (
+                                        loadingPlan === 'professional_yearly' ? <Loader2 className="w-4 h-4 animate-spin" /> : "Upgrade"
+                                    )}
                                 </Button>
                             </div>
-                            <ul className="text-sm text-zinc-600 space-y-2 mt-4">
+                            <ul className="text-[13px] text-zinc-600 space-y-2 mt-4 font-medium">
                                 <li className="flex items-start gap-2"><CheckCircle2 className="w-4 h-4 text-blue-600 mt-0.5" /> Unlimited CVs & Letters</li>
                                 <li className="flex items-start gap-2"><CheckCircle2 className="w-4 h-4 text-blue-600 mt-0.5" /> No Watermarks</li>
                                 <li className="flex items-start gap-2"><CheckCircle2 className="w-4 h-4 text-blue-600 mt-0.5" /> Advanced GPT-4 AI</li>
@@ -137,7 +159,7 @@ export function UpgradeModal({ isOpen, onClose, reason = 'generic' }: UpgradeMod
                         </div>
 
                         {/* Starter Alternative */}
-                        <div className="border border-zinc-200 rounded-2xl p-5 hover:border-blue-200 transition-colors">
+                        <div className={`border rounded-2xl p-5 transition-all ${isStarter ? 'border-zinc-100 bg-zinc-50/50 opacity-60' : 'border-zinc-200 hover:border-blue-200'}`}>
                             <div className="flex justify-between items-center">
                                 <div>
                                     <h4 className="font-bold text-zinc-900">Starter 🚀</h4>
@@ -146,16 +168,26 @@ export function UpgradeModal({ isOpen, onClose, reason = 'generic' }: UpgradeMod
                                 <Button 
                                     variant="outline"
                                     onClick={() => handleCheckout('starter_monthly')}
-                                    disabled={loadingPlan !== null}
-                                    className="rounded-full border-zinc-200 hover:bg-zinc-50 font-bold"
+                                    disabled={loadingPlan !== null || isStarter}
+                                    className={clsx(
+                                        "rounded-full font-bold",
+                                        isStarter ? "bg-zinc-100 border-zinc-200 text-zinc-400 cursor-not-allowed" : "border-zinc-200 hover:bg-zinc-50"
+                                    )}
                                 >
-                                    {loadingPlan === 'starter_monthly' ? <Loader2 className="w-4 h-4 animate-spin" /> : "Choose Starter"}
+                                    {isStarter ? (
+                                        <div className="flex items-center gap-1.5">
+                                            <Lock className="w-3 h-3" />
+                                            <span>{currentPlan === 'starter_monthly' ? 'Current Plan' : 'Owned'}</span>
+                                        </div>
+                                    ) : (
+                                        loadingPlan === 'starter_monthly' ? <Loader2 className="w-4 h-4 animate-spin" /> : "Choose Starter"
+                                    )}
                                 </Button>
                             </div>
                         </div>
 
                         {/* Lifetime Alternative */}
-                         <div className="border border-zinc-200 rounded-2xl p-5 hover:border-purple-200 transition-colors">
+                         <div className={`border rounded-2xl p-5 transition-all ${isLifetime ? 'border-zinc-100 bg-zinc-50/50 opacity-60' : 'border-zinc-200 hover:border-purple-200'}`}>
                             <div className="flex justify-between items-center">
                                 <div>
                                     <h4 className="font-bold text-zinc-900">Lifetime 🏆</h4>
@@ -164,10 +196,22 @@ export function UpgradeModal({ isOpen, onClose, reason = 'generic' }: UpgradeMod
                                 <Button 
                                     variant="ghost"
                                     onClick={() => handleCheckout('lifetime_onetime')}
-                                    disabled={loadingPlan !== null}
-                                    className="rounded-full hover:bg-purple-50 text-purple-700 hover:text-purple-800 font-bold"
+                                    disabled={loadingPlan !== null || isLifetime}
+                                    className={clsx(
+                                        "rounded-full font-bold transition-all",
+                                        isLifetime 
+                                            ? "bg-zinc-100 text-zinc-400 cursor-not-allowed" 
+                                            : "hover:bg-purple-50 text-purple-700 hover:text-purple-800"
+                                    )}
                                 >
-                                    {loadingPlan === 'lifetime_onetime' ? <Loader2 className="w-4 h-4 animate-spin" /> : "Get Lifetime"}
+                                    {isLifetime ? (
+                                        <div className="flex items-center gap-1.5">
+                                            <Lock className="w-3.5 h-3.5" />
+                                            <span>Current Plan</span>
+                                        </div>
+                                    ) : (
+                                        loadingPlan === 'lifetime_onetime' ? <Loader2 className="w-4 h-4 animate-spin" /> : "Get Lifetime"
+                                    )}
                                 </Button>
                             </div>
                         </div>

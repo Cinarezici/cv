@@ -119,13 +119,21 @@ export default function ReferralsPage() {
               <div className="absolute -inset-1 bg-gradient-to-r from-indigo-500/20 to-violet-500/20 rounded-[1.25rem] blur opacity-0 group-hover:opacity-100 transition duration-500" />
               <div className="relative flex items-center bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-white/10 rounded-2xl p-1.5 pl-5 transition-all group-hover:border-indigo-500/30">
                 <div className="flex-1 min-w-0 mr-4">
-                  <span className="text-[13px] font-bold text-zinc-500 dark:text-zinc-400 truncate block font-mono">
+                  {user ? (
+                   <span className="text-[13px] font-bold text-indigo-600 dark:text-indigo-400 truncate block font-mono">
                     {referralLink}
-                  </span>
+                   </span>
+                  ) : (
+                    <div className="flex items-center gap-2 text-zinc-400">
+                      <Loader2 className="w-3 h-3 animate-spin" />
+                      <span className="text-[11px] font-bold uppercase tracking-wider">Generating Link...</span>
+                    </div>
+                  )}
                 </div>
                 <button 
                   onClick={copyLink} 
-                  className={`px-6 py-2.5 rounded-xl font-black text-[11px] uppercase tracking-widest transition-all duration-300 shadow-xl active:scale-95 ${
+                  disabled={!user}
+                  className={`px-6 py-2.5 rounded-xl font-black text-[11px] uppercase tracking-widest transition-all duration-300 shadow-xl active:scale-95 disabled:opacity-50 ${
                     copied 
                     ? 'bg-emerald-500 text-white shadow-emerald-500/20' 
                     : 'bg-indigo-600 text-white hover:bg-indigo-500 shadow-indigo-600/20'
