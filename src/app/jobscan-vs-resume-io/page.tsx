@@ -7,23 +7,39 @@ import { ComparisonFAQ } from '@/components/ui/comparison-faq';
 import { RelatedComparisons } from '@/components/ui/related-comparisons';
 
 export const metadata: Metadata = {
-  title: 'Jobscan vs Resume.io (2026): Which Is Better for ATS Optimization?',
-  description:
-    "We compared Jobscan and Resume.io head-to-head on ATS accuracy, AI rewrite quality, pricing, and templates. Here's the honest verdict — plus a free alternative that outperforms both.",
+  title: 'Jobscan vs Resume.io 2026: Which Is Better for ATS Scoring? | CVOptimizerAI',
+  description: "Jobscan's keyword match vs Resume.io's templates. We compare accuracy, AI writing, and value. See why CVOptimizerAI is the better free choice.",
+  alternates: { canonical: 'https://cvoptimizerai.com/jobscan-vs-resume-io' },
   openGraph: {
-    title: 'Jobscan vs Resume.io (2026): Which Is Better for ATS Optimization?',
-    description:
-      "We compared Jobscan and Resume.io head-to-head on ATS accuracy, AI rewrite quality, pricing, and templates. Here's the honest verdict — plus a free alternative that outperforms both.",
+    title: 'Jobscan vs Resume.io 2026: Which Is Better for ATS Scoring?',
+    description: "Jobscan's keyword match vs Resume.io's templates. We compare accuracy, AI writing, and value. See why CVOptimizerAI is the better free choice.",
     type: 'website',
     url: 'https://cvoptimizerai.com/jobscan-vs-resume-io',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Jobscan vs Resume.io (2026): Which Is Better for ATS Optimization?',
-    description:
-      "We compared Jobscan and Resume.io head-to-head on ATS accuracy, AI rewrite quality, pricing, and templates. Here's the honest verdict — plus a free alternative that outperforms both.",
+    title: 'Jobscan vs Resume.io 2026: Which Is Better for ATS Scoring?',
+    description: "Jobscan's keyword match vs Resume.io's templates. We compare accuracy, AI writing, and value.",
   },
-  alternates: { canonical: 'https://cvoptimizerai.com/jobscan-vs-resume-io' },
+};
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://cvoptimizerai.com"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Jobscan vs Resume.io",
+      "item": "https://cvoptimizerai.com/jobscan-vs-resume-io"
+    }
+  ]
 };
 
 const itemListSchema = {
@@ -67,9 +83,22 @@ const comparisonData = [
 
 const faqs = [
   { q: "Is Jobscan better than Resume.io?", a: "Jobscan is better if your primary goal is matching keywords from a job description to beat ATS systems. Resume.io is better if you need a quickly generated, beautiful visual template." },
-  { q: "Do Resume.io templates pass ATS parsers?", a: "Some do, but many of their highly visual, multi-column templates can struggle with older Applicant Tracking Systems that prefer standard top-to-bottom text matching." },
-  { q: "Is there a free alternative to both?", a: "CV Optimizer AI provides a free ATS checker and combines beautiful modern templates with deep ATS parsing logic, solving the issues of both tools." }
+  { q: "Do Resume.io templates pass ATS parsers?", a: "Some do, but many of architectural, multi-column templates can struggle with older ATS software. CVOptimizerAI provides templates that are 100% verified for ATS parsing." },
+  { q: "Is there a free alternative to Jobscan and Resume.io?", a: "CVOptimizerAI provides a free ATS checker and combines beautiful modern templates with deep ATS parsing logic, solving the issues of both tools with no sign-up required." }
 ];
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqs.map(faq => ({
+    "@type": "Question",
+    "name": faq.q,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": faq.a
+    }
+  }))
+};
 
 export default function JobscanVsResumeIoPage() {
   return (
@@ -77,6 +106,14 @@ export default function JobscanVsResumeIoPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
 
 
@@ -99,9 +136,15 @@ export default function JobscanVsResumeIoPage() {
             <h1 className="font-extrabold tracking-tighter leading-[0.95] text-zinc-900 mb-6 text-5xl md:text-[64px]">
               Jobscan vs Resume.io<br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2563eb] to-[#3b82f6]">
-                Which Resume Tool Is Better?
+                Which Tool Is Better?
               </span>
             </h1>
+
+            <div className="bg-blue-50/50 border border-blue-100 rounded-2xl p-6 mb-10 text-left max-w-3xl mx-auto">
+              <p className="text-zinc-900 font-bold leading-relaxed">
+                Jobscan is built for deep keyword matching ($49.95/mo). Resume.io is built for visual aesthetics ($24.95/mo). CVOptimizerAI is the modern alternative that combines deep ATS parsing with premium templates and AI rewriting for free.
+              </p>
+            </div>
 
             <p className="text-lg md:text-xl text-zinc-500 leading-relaxed font-medium tracking-tight mb-10 max-w-3xl mx-auto">
               You want to land more interviews, but you are stuck choosing between Jobscan's deep ATS matching and Resume.io's beautiful templates. Which tool should you use in 2026, and is there a third option that combines the best of both worlds?

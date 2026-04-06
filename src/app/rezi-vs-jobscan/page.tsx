@@ -7,23 +7,50 @@ import { ComparisonFAQ } from '@/components/ui/comparison-faq';
 import { RelatedComparisons } from '@/components/ui/related-comparisons';
 
 export const metadata: Metadata = {
-  title: 'Rezi vs Jobscan — Which Resume Tool Is Better in 2026?',
-  description:
-    'Compare Rezi and Jobscan side by side. See features, pricing, and which ATS resume tool is best in 2026.',
+  title: 'Rezi vs Jobscan 2026: AI Writing vs Keyword Matching? | CVOptimizerAI',
+  description: "AI bullet point generation vs exact keyword matching. We compare features, pricing, and results. See the free tool that does both.",
+  alternates: { canonical: 'https://cvoptimizerai.com/rezi-vs-jobscan' },
   openGraph: {
-    title: 'Rezi vs Jobscan — Which Resume Tool Is Better in 2026?',
-    description:
-      'Compare Rezi and Jobscan side by side. See features, pricing, and which ATS resume tool is best in 2026.',
+    title: 'Rezi vs Jobscan 2026: AI Writing vs Keyword Matching?',
+    description: "AI bullet point generation vs exact keyword matching. We compare features, pricing, and results. See the free tool that does both.",
     type: 'website',
     url: 'https://cvoptimizerai.com/rezi-vs-jobscan',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Rezi vs Jobscan — Which Resume Tool Is Better in 2026?',
-    description:
-      'Compare Rezi and Jobscan side by side. See features, pricing, and which ATS resume tool is best in 2026.',
+    title: 'Rezi vs Jobscan 2026: AI Writing vs Keyword Matching?',
+    description: "AI bullet point generation vs exact keyword matching. We compare features, pricing, and results.",
   },
-  alternates: { canonical: 'https://cvoptimizerai.com/rezi-vs-jobscan' },
+};
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://cvoptimizerai.com"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Rezi vs Jobscan",
+      "item": "https://cvoptimizerai.com/rezi-vs-jobscan"
+    }
+  ]
+};
+
+const itemListSchema = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Rezi vs Jobscan vs CVOptimizerAI Comparison",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "CVOptimizerAI (Free All-in-One)" },
+    { "@type": "ListItem", "position": 2, "name": "Rezi (AI Writing)" },
+    { "@type": "ListItem", "position": 3, "name": "Jobscan (Keyword Search)" }
+  ]
 };
 
 const comparisonData = [
@@ -36,13 +63,38 @@ const comparisonData = [
 
 const faqs = [
   { q: "Is Rezi better than Jobscan?", a: "Rezi is better if you want AI to write your resume for you from scratch. Jobscan is better if you already have a resume and just want to perfectly match keywords to a job description." },
-  { q: "Is there a free alternative to Jobscan?", a: "CV Optimizer AI provides a free ATS checker that gives you a baseline score so you know if your resume will be rejected." },
+  { q: "Is there a free alternative to Jobscan?", a: "CVOptimizerAI provides a free ATS checker that gives you a baseline score and impact analysis with no sign-up required." },
   { q: "Does Jobscan use AI?", a: "Jobscan has introduced basic AI writing tools recently, but its core engine relies on comparing word frequency between your resume and a job description." }
 ];
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqs.map(faq => ({
+    "@type": "Question",
+    "name": faq.q,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": faq.a
+    }
+  }))
+};
 
 export default function ReziVsJobscanPage() {
   return (
     <div className="flex flex-col min-h-screen bg-[#fafafa] text-zinc-900 overflow-x-hidden selection:bg-blue-500/30">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
+      />
 
 
       <main className="flex-1">
@@ -64,9 +116,15 @@ export default function ReziVsJobscanPage() {
             <h1 className="font-extrabold tracking-tighter leading-[0.95] text-zinc-900 mb-6 text-5xl md:text-[64px]">
               Rezi vs Jobscan<br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2563eb] to-[#3b82f6]">
-                Which Tool Is Better in 2026?
+                Which Tool Is Better?
               </span>
             </h1>
+
+            <div className="bg-blue-50/50 border border-blue-100 rounded-2xl p-6 mb-10 text-left max-w-3xl mx-auto">
+              <p className="text-zinc-900 font-bold leading-relaxed">
+                Rezi is the leader in AI-driven bullet point generation. Jobscan is the leader in exact keyword frequency matching. Rezi costs $29/mo while Jobscan costs $49.95/mo. CVOptimizerAI provides a superior free experience by combining both deep parsing and AI rewriting.
+              </p>
+            </div>
 
             <p className="text-lg md:text-xl text-zinc-500 leading-relaxed font-medium tracking-tight mb-10 max-w-3xl mx-auto">
               Rezi and Jobscan are two heavyweights in the resume optimization market. Rezi relies heavily on generative AI, while Jobscan focuses strictly on matching exact ATS keywords. Which approach yields more interviews this year? Let's compare them.

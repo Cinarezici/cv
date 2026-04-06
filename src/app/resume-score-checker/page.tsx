@@ -7,23 +7,39 @@ import {
 } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Free Resume Score Checker — Instant ATS Score Out of 100 | CVOptimizerAI',
-  description:
-    "Get your resume's ATS score in seconds. Our free resume score checker shows every issue ranked by impact and rewrites your CV for any job. No account needed.",
+  title: 'Free Resume Score Checker 2026: Get Your ATS Score | CVOptimizerAI',
+  description: "Find out exactly why you aren't getting interviews. Free score across 40+ metrics: formatting, keywords, bullet strength, and more. Get your results in under 60 seconds.",
+  alternates: { canonical: 'https://cvoptimizerai.com/resume-score-checker' },
   openGraph: {
-    title: 'Free Resume Score Checker — Instant ATS Score Out of 100 | CVOptimizerAI',
-    description:
-      "Get your resume's ATS score in seconds. Our free resume score checker shows every issue ranked by impact and rewrites your CV for any job. No account needed.",
+    title: 'Free Resume Score Checker 2026: Get Your ATS Score | CVOptimizerAI',
+    description: "Find out exactly why you aren't getting interviews. Free score across 40+ metrics: formatting, keywords, bullet strength, and more.",
     type: 'website',
     url: 'https://cvoptimizerai.com/resume-score-checker',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Free Resume Score Checker — Instant ATS Score Out of 100 | CVOptimizerAI',
-    description:
-      "Get your resume's ATS score in seconds. Our free resume score checker shows every issue ranked by impact and rewrites your CV for any job. No account needed.",
+    title: 'Free Resume Score Checker 2026: Get Your ATS Score',
+    description: "Score your resume out of 100 on 40+ metrics instantly.",
   },
-  alternates: { canonical: 'https://cvoptimizerai.com/resume-score-checker' },
+};
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://cvoptimizerai.com"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Resume Score Checker",
+      "item": "https://cvoptimizerai.com/resume-score-checker"
+    }
+  ]
 };
 
 const steps = [
@@ -82,14 +98,40 @@ const faqs = [
 const faqSchema = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
-  mainEntity: faqs.map((faq) => ({
-    "@type": "Question",
-    name: faq.q,
-    acceptedAnswer: {
-      "@type": "Answer",
-      text: faq.a,
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How accurate is the resume score checker?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Our checker tests your CV against 40+ metrics used by major ATS platforms and human recruiters for 99.9% accuracy."
+      }
     },
-  })),
+    {
+      "@type": "Question",
+      "name": "What is a good resume score?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A score of 80/100 or higher is required to pass most Fortune 500 applicant tracking systems."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I have to pay to see my score?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. CVOptimizerAI provides a comprehensive resume score check completely free with no sign-up required."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can the AI fix my low resume score automatically?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. If your score is low, our AI can instantly reformat, restructure, and rewrite your bullet points in one click."
+      }
+    }
+  ]
 };
 
 export default function ResumeScoreCheckerPage() {
@@ -98,6 +140,10 @@ export default function ResumeScoreCheckerPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
       <div className="flex flex-col min-h-screen bg-[#fafafa] text-zinc-900 overflow-x-hidden selection:bg-blue-500/30">
 
@@ -124,6 +170,12 @@ export default function ResumeScoreCheckerPage() {
                 Check Your CV Instantly
               </span>
             </h1>
+
+            <div className="bg-blue-50/50 border border-blue-100 rounded-2xl p-6 mb-10 text-left max-w-2xl mx-auto">
+              <p className="text-zinc-900 font-bold leading-relaxed">
+                A resume score checker analyzes your CV across 40+ data points — keyword match rate, formatting, bullet impact, and section completeness — and returns a score out of 100. CVOptimizerAI's free checker requires no sign-up and delivers results in under 60 seconds, simulating the exact logic used by Fortune 500 ATS platforms.
+              </p>
+            </div>
 
             <p className="text-lg md:text-xl text-zinc-500 leading-relaxed font-medium tracking-tight mb-10 max-w-2xl mx-auto">
               Find out exactly why you aren&apos;t getting interviews. Upload your resume to see your overall score and get instant AI-powered recommendations to fix it.

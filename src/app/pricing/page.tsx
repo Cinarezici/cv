@@ -2,25 +2,49 @@ import type { Metadata } from 'next';
 import PricingClient from './PricingClient';
 
 export const metadata: Metadata = {
-  title: "Pricing — Free ATS Score & Pro Plans",
-  description:
-    "Get your ATS score free. Upgrade to Pro for AI rewriting, premium templates, and unlimited scans. Plans from $7.42/mo. No credit card required to start.",
+  title: 'Pricing 2026: Free ATS Score & AI Resume Plans | CVOptimizerAI',
+  description: "Get your ATS score free. Upgrade to Pro for AI rewriting, premium templates, and unlimited scans. High-value lifetime access available. No credit card required.",
+  alternates: { canonical: 'https://cvoptimizerai.com/pricing' },
   openGraph: {
-    title: "CV Optimizer AI Pricing — Plans & Features",
-    description:
-      "Compare Free and Pro plans. Start with a free ATS score, upgrade for AI rewriting and premium features.",
-    type: "website",
-    url: "https://cvoptimizerai.com/pricing",
+    title: 'CVOptimizerAI Pricing 2026: Plans & Features',
+    description: "Get your ATS score free. Upgrade to Pro for AI rewriting, premium templates, and unlimited scans. High-value lifetime access available.",
+    type: 'website',
+    url: 'https://cvoptimizerai.com/pricing',
   },
   twitter: {
-    card: "summary_large_image",
-    title: "CV Optimizer AI Pricing — Plans & Features",
-    description:
-      "Compare Free and Pro plans. Start with a free ATS score, upgrade for AI rewriting and premium features.",
+    card: 'summary_large_image',
+    title: 'CVOptimizerAI Pricing 2026: Plans & Features',
+    description: "Compare Free, Starter, Pro, and Lifetime plans for ATS resume optimization.",
   },
-  alternates: { canonical: "https://cvoptimizerai.com/pricing" },
+};
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://cvoptimizerai.com"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Pricing",
+      "item": "https://cvoptimizerai.com/pricing"
+    }
+  ]
 };
 
 export default function PricingPage() {
-  return <PricingClient />;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <PricingClient />
+    </>
+  );
 }

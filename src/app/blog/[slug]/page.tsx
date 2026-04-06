@@ -23,10 +23,20 @@ export async function generateMetadata({
   return {
     title: post.title,
     description: post.description,
+    alternates: { canonical: `https://cvoptimizerai.com/blog/${slug}` },
     openGraph: {
       title: `${post.title} | CV Optimizer AI Blog`,
       description: post.description,
       type: 'article',
+      url: `https://cvoptimizerai.com/blog/${slug}`,
+      images: [
+        {
+          url: `https://cvoptimizerai.com/api/og/${slug}`,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
     },
     twitter: {
       card: 'summary_large_image',
@@ -239,11 +249,40 @@ export default async function BlogPostPage({
     }
   };
 
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://cvoptimizerai.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Blog",
+        "item": "https://cvoptimizerai.com/blog"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": post.title,
+        "item": `https://cvoptimizerai.com/blog/${slug}`
+      }
+    ]
+  };
+
   return (
     <div className="flex flex-col min-h-screen bg-[#fafafa] text-zinc-900">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
 
       <main className="flex-1 pt-36 pb-24">

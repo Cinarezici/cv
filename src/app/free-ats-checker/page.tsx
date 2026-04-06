@@ -7,23 +7,39 @@ import {
 } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Free ATS Resume Checker — Score & Fix Your CV in Seconds',
-  description:
-    'Free ATS resume checker. Score your CV out of 100, find missing keywords, and get an AI-optimized version instantly.',
+  title: 'Free ATS Resume Checker 2026: Score & Fix Your CV | CVOptimizerAI',
+  description: "Get your ATS score in seconds. Our free checker analyzes formatting, keywords, and readability to help you pass automated filters and land more interviews.",
+  alternates: { canonical: 'https://cvoptimizerai.com/free-ats-checker' },
   openGraph: {
-    title: 'Free ATS Resume Checker — Score & Fix Your CV in Seconds',
-    description:
-      'Free ATS resume checker. Score your CV out of 100, find missing keywords, and get an AI-optimized version instantly.',
+    title: 'Free ATS Resume Checker 2026: Score & Fix Your CV',
+    description: "Get your ATS score in seconds. Our free checker analyzes formatting, keywords, and readability to help you pass automated filters and land more interviews.",
     type: 'website',
     url: 'https://cvoptimizerai.com/free-ats-checker',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Free ATS Resume Checker — Score & Fix Your CV in Seconds',
-    description:
-      'Free ATS resume checker. Score your CV out of 100, find missing keywords, and get an AI-optimized version instantly.',
+    title: 'Free ATS Resume Checker 2026: Score & Fix Your CV',
+    description: "Score your CV out of 100 and find missing keywords instantly.",
   },
-  alternates: { canonical: 'https://cvoptimizerai.com/free-ats-checker' },
+};
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://cvoptimizerai.com"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Free ATS Checker",
+      "item": "https://cvoptimizerai.com/free-ats-checker"
+    }
+  ]
 };
 
 const steps = [
@@ -99,6 +115,10 @@ export default function FreeATSCheckerPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
       <div className="flex flex-col min-h-screen bg-[#fafafa] text-zinc-900 overflow-x-hidden selection:bg-blue-500/30">
 
 
@@ -125,6 +145,12 @@ export default function FreeATSCheckerPage() {
                 Score Your CV Instantly
               </span>
             </h1>
+
+            <div className="bg-blue-50/50 border border-blue-100 rounded-2xl p-6 mb-10 text-left max-w-3xl mx-auto">
+              <p className="text-zinc-900 font-bold leading-relaxed">
+                Our free ATS checker simulates the exact parsing logic used by Workday, Greenhouse, and Taleo. Upload your resume to get a score out of 100, identify hidden formatting errors, and surface missing high-impact keywords in under 10 seconds.
+              </p>
+            </div>
 
             <p className="text-lg md:text-xl text-zinc-500 leading-relaxed font-medium tracking-tight mb-10 max-w-2xl mx-auto">
               Paste your CV and get an ATS score out of 100 in seconds. See exactly which keywords are missing, what&apos;s blocking parsers, and get an AI-rewritten version for any job.

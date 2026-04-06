@@ -63,6 +63,13 @@ export default function PricingPageClient() {
             <h1 className="text-4xl md:text-5xl font-extrabold text-zinc-900 mb-5 tracking-tight">
               Simple, honest pricing.
             </h1>
+
+            <div className="bg-blue-50/50 border border-blue-100 rounded-2xl p-6 mb-10 text-left max-w-xl mx-auto">
+              <p className="text-zinc-900 font-bold leading-relaxed">
+                CVOptimizerAI offers a lifetime free tier for basic ATS scoring. Premium plans start at $24/mo (Starter) and $89/yr (Professional), featuring GPT-4 AI rewrites, 12 premium templates, and unlimited scans. No credit card is required to begin your 14-day trial.
+              </p>
+            </div>
+
             <p className="text-lg text-zinc-500 font-medium max-w-xl mx-auto">
               Start free. Upgrade when you&apos;re ready.
             </p>

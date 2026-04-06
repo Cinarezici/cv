@@ -4,13 +4,12 @@ import { Button } from '@/components/ui/button';
 import { Zap, ArrowRight, Shield, Target, Sparkles, Users, Award, LineChart } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'About CVOptimizerAI — The Free AI Resume Tool Trusted by 20,000+ Professionals',
-  description:
-    'CVOptimizerAI builds AI-powered CV tools for job seekers who want more interviews. Learn how our ATS scanner and AI rewrite engine work — and why 20,000+ people use us.',
+  title: 'About CVOptimizerAI: The Intelligent Way to Beat ATS Filters',
+  description: 'CVOptimizerAI builds AI-powered CV tools for job seekers. Our mission is to make hiring fair by giving every candidate the tools to pass automated screenings.',
+  alternates: { canonical: 'https://cvoptimizerai.com/about' },
   openGraph: {
-    title: 'About CVOptimizerAI — The Free AI Resume Tool Trusted by 20,000+ Professionals',
-    description:
-      'CVOptimizerAI builds AI-powered CV tools for job seekers who want more interviews. Learn how our ATS scanner and AI rewrite engine work — and why 20,000+ people use us.',
+    title: 'About CVOptimizerAI: The Intelligent Way to Beat ATS Filters',
+    description: 'CVOptimizerAI builds AI-powered CV tools for job seekers. Our mission is to make hiring fair by giving every candidate the tools to pass automated screenings.',
     type: 'website',
     url: 'https://cvoptimizerai.com/about',
   },
@@ -81,6 +80,12 @@ export default function AboutPage() {
                 You get the interview.
               </span>
             </h1>
+
+            <div className="bg-blue-50/50 border border-blue-100 rounded-2xl p-6 mb-10 text-left max-w-3xl mx-auto">
+              <p className="text-zinc-900 font-bold leading-relaxed">
+                Founded in 2024, CVOptimizerAI was built to bridge the gap between talented candidates and flawed Applicant Tracking Systems. We provide a state-of-the-art free ATS scanner and AI rewrite engine that has helped over 20,000 professionals successfully navigate automated hiring filters.
+              </p>
+            </div>
 
             <p className="text-lg md:text-xl text-zinc-500 leading-relaxed font-medium tracking-tight max-w-2xl mx-auto">
               CVOptimizerAI is the intelligent bridge between talented candidates and frustrating automated recruiting software. We give you the tools to beat the algorithms.

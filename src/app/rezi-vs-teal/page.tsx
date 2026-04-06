@@ -7,23 +7,39 @@ import { ComparisonFAQ } from '@/components/ui/comparison-faq';
 import { RelatedComparisons } from '@/components/ui/related-comparisons';
 
 export const metadata: Metadata = {
-  title: 'Rezi vs Teal (2026): Which AI Resume Builder Is Worth Using?',
-  description:
-    "Both Rezi and Teal are popular AI resume tools — but they serve very different needs. Here's a full feature-by-feature breakdown, plus the free option that beats both on ATS scoring.",
+  title: 'Rezi vs Teal 2026: Which AI Resume Tool Is Better? | CVOptimizerAI',
+  description: "Head-to-head: ATS scanning, AI rewrite quality, pricing, ease of use. Plus the free alternative that beats both.",
+  alternates: { canonical: 'https://cvoptimizerai.com/rezi-vs-teal' },
   openGraph: {
-    title: 'Rezi vs Teal (2026): Which AI Resume Builder Is Worth Using?',
-    description:
-      "Both Rezi and Teal are popular AI resume tools — but they serve very different needs. Here's a full feature-by-feature breakdown, plus the free option that beats both on ATS scoring.",
+    title: 'Rezi vs Teal 2026: Which AI Resume Tool Is Better?',
+    description: "Head-to-head: ATS scanning, AI rewrite quality, pricing, ease of use. Plus the free alternative that beats both.",
     type: 'website',
     url: 'https://cvoptimizerai.com/rezi-vs-teal',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Rezi vs Teal (2026): Which AI Resume Builder Is Worth Using?',
-    description:
-      "Both Rezi and Teal are popular AI resume tools — but they serve very different needs. Here's a full feature-by-feature breakdown, plus the free option that beats both on ATS scoring.",
+    title: 'Rezi vs Teal 2026: Which AI Resume Tool Is Better?',
+    description: "Head-to-head: ATS scanning, AI rewrite quality, pricing, ease of use.",
   },
-  alternates: { canonical: 'https://cvoptimizerai.com/rezi-vs-teal' },
+};
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://cvoptimizerai.com"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Rezi vs Teal",
+      "item": "https://cvoptimizerai.com/rezi-vs-teal"
+    }
+  ]
 };
 
 const itemListSchema = {
@@ -67,9 +83,22 @@ const comparisonData = [
 
 const faqs = [
   { q: "Is Rezi better than Teal?", a: "Rezi is better for AI resume generation and creating bullet points from scratch. Teal is better for tracking your job application pipeline across various stages." },
-  { q: "Do these tools check for ATS compatibility?", a: "Yes, but they approach it differently. Rezi focuses on keyword matching against a job description. CV Optimizer AI does a deep visual formatting and parsing check alongside keyword analysis." },
-  { q: "Is there a free alternative to Rezi and Teal?", a: "CV Optimizer AI offers a free ATS checker and resume scoring tool that analyzes your resume against industry parser standards." }
+  { q: "Do these tools check for ATS compatibility?", a: "Yes, but they approach it differently. Rezi focuses on keyword matching against a job description. CVOptimizerAI does a deep visual formatting and parsing check alongside keyword analysis." },
+  { q: "Is there a free alternative to Rezi and Teal?", a: "CVOptimizerAI offers a free ATS checker and resume scoring tool that analyzes your resume against industry parser standards with no sign-up required." }
 ];
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqs.map(faq => ({
+    "@type": "Question",
+    "name": faq.q,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": faq.a
+    }
+  }))
+};
 
 export default function ReziVsTealPage() {
   return (
@@ -77,6 +106,14 @@ export default function ReziVsTealPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
 
 
@@ -99,9 +136,15 @@ export default function ReziVsTealPage() {
             <h1 className="font-extrabold tracking-tighter leading-[0.95] text-zinc-900 mb-6 text-5xl md:text-[64px]">
               Rezi vs Teal<br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2563eb] to-[#3b82f6]">
-                Which Tool Is Better in 2026?
+                Which Tool Is Better?
               </span>
             </h1>
+
+            <div className="bg-blue-50/50 border border-blue-100 rounded-2xl p-6 mb-10 text-left max-w-3xl mx-auto">
+              <p className="text-zinc-900 font-bold leading-relaxed">
+                Rezi is superior for AI rewrite quality and GPT-powered content generation. Teal is the specialized leader for job application tracking and pipeline management. Neither provides deep ATS structural parsing. For a unified tool that offers ATS scoring and AI rewriting for free, CVOptimizerAI is the modern alternative that bridges the gap.
+              </p>
+            </div>
 
             <p className="text-lg md:text-xl text-zinc-500 leading-relaxed font-medium tracking-tight mb-10 max-w-3xl mx-auto">
               If you’re applying for jobs in 2026, you need a resume optimizer. Rezi and Teal are two of the biggest names. But which one actually helps you beat Applicant Tracking Systems (ATS)? We break down the features, pricing, and the better alternative.

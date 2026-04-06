@@ -17,12 +17,16 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://cvoptimizerai.com'),
+  alternates: {
+    canonical: '/',
+  },
   title: {
-    default: "CV Optimizer AI — Free ATS Resume Checker & AI CV Optimizer",
-    template: "%s | CV Optimizer AI",
+    default: "Free ATS Resume Checker & AI CV Optimizer | CVOptimizerAI",
+    template: "%s | CVOptimizerAI",
   },
   description:
-    "Build, optimize, and share your resume with AI. Get a tailored CV that passes ATS systems and lands you interviews — in minutes.",
+    "Check your resume vs any job in seconds. ATS score out of 100, every weakness ranked, fix it with one AI rewrite. Free, no sign-up.",
   keywords: [
     "resume builder",
     "CV optimizer",
@@ -32,8 +36,8 @@ export const metadata: Metadata = {
     "cover letter",
     "job search",
   ],
-  authors: [{ name: "CV Optimizer AI" }],
-  creator: "CV Optimizer AI",
+  authors: [{ name: "CVOptimizerAI" }],
+  creator: "CVOptimizerAI",
   icons: {
     icon: [
       { url: "/favicon.ico" },
@@ -47,16 +51,17 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    title: "CV Optimizer AI — Free ATS Resume Checker & AI CV Optimizer",
+    url: 'https://cvoptimizerai.com',
+    title: "Free ATS Resume Checker & AI CV Optimizer | CVOptimizerAI",
     description:
-      "Build, optimize, and share your resume with AI. Get a tailored CV that passes ATS systems and lands you interviews — in minutes.",
-    siteName: "CV Optimizer AI",
+      "Check your resume vs any job in seconds. ATS score out of 100, every weakness ranked, fix it with one AI rewrite. Free, no sign-up.",
+    siteName: "CVOptimizerAI",
   },
   twitter: {
     card: "summary_large_image",
-    title: "CV Optimizer AI — Free ATS Resume Checker & AI CV Optimizer",
+    title: "Free ATS Resume Checker & AI CV Optimizer | CVOptimizerAI",
     description:
-      "Build, optimize, and share your resume with AI. Get a tailored CV that passes ATS systems and lands you interviews — in minutes.",
+      "Check your resume vs any job in seconds. ATS score out of 100, every weakness ranked, fix it with one AI rewrite. Free, no sign-up.",
   },
 };
 
@@ -68,6 +73,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <link rel="preconnect" href="https://cvoptimizerai.ghost.io" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
       </head>
       <body

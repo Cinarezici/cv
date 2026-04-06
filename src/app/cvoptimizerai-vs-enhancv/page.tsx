@@ -7,23 +7,39 @@ import { ComparisonFAQ } from '@/components/ui/comparison-faq';
 import { RelatedComparisons } from '@/components/ui/related-comparisons';
 
 export const metadata: Metadata = {
-  title: 'CVOptimizerAI vs Enhancv (2025): Full Comparison',
-  description:
-    "Comparing CVOptimizerAI and Enhancv? See features, pricing, and ATS accuracy side by side. Find the best resume checker for your job search.",
+  title: 'CVOptimizerAI vs Enhancv 2026: Design vs ATS Optimization? | CVOptimizerAI',
+  description: "Comparing CVOptimizerAI and Enhancv? We compare features, pricing, and ATS accuracy. See why design-heavy resumes often fail filters.",
+  alternates: { canonical: 'https://cvoptimizerai.com/cvoptimizerai-vs-enhancv' },
   openGraph: {
-    title: 'CVOptimizerAI vs Enhancv (2025): Full Comparison',
-    description:
-      "Comparing CVOptimizerAI and Enhancv? See features, pricing, and ATS accuracy side by side. Find the best resume checker for your job search.",
+    title: 'CVOptimizerAI vs Enhancv 2026: Design vs ATS Optimization?',
+    description: "Comparing CVOptimizerAI and Enhancv? We compare features, pricing, and ATS accuracy. See why design-heavy resumes often fail filters.",
     type: 'website',
     url: 'https://cvoptimizerai.com/cvoptimizerai-vs-enhancv',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'CVOptimizerAI vs Enhancv (2025): Full Comparison',
-    description:
-      "Comparing CVOptimizerAI and Enhancv? See features, pricing, and ATS accuracy side by side. Find the best resume checker for your job search.",
+    title: 'CVOptimizerAI vs Enhancv 2026: Design vs ATS Optimization?',
+    description: "Comparing CVOptimizerAI and Enhancv? See features, pricing, and ATS accuracy.",
   },
-  alternates: { canonical: 'https://cvoptimizerai.com/cvoptimizerai-vs-enhancv' },
+};
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://cvoptimizerai.com"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "CVOptimizerAI vs Enhancv",
+      "item": "https://cvoptimizerai.com/cvoptimizerai-vs-enhancv"
+    }
+  ]
 };
 
 const comparisonData = [
@@ -37,15 +53,46 @@ const comparisonData = [
   { feature: 'Template Count', cvo: '12 (All ATS-safe)', enhancv: '100+ (Mostly creative)' },
 ];
 
-const faqs = [
-  { q: "Is CVOptimizerAI better than Enhancv?", a: "If your goal is to pass Applicant Tracking Systems (ATS), CVOptimizerAI is significantly better. Enhancv focuses on visual design, which can often contain formatting that confuses ATS parsers." },
-  { q: "Which is cheaper, CVOptimizerAI or Enhancv?", a: "While the monthly prices are similar, CVOptimizerAI's lifetime option offers much better value for long-term job seekers." },
-  { q: "Which has a better free plan?", a: "CVOptimizerAI allows for 3 full scans per month without sign-up, whereas Enhancv's free tier is limited to building a single document within their platform." }
-];
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is CVOptimizerAI better than Enhancv?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "If your goal is to pass Applicant Tracking Systems (ATS), CVOptimizerAI is significantly better. Enhancv focuses on visual design, which can often contain formatting that confuses ATS parsers."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which has a better free plan?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "CVOptimizerAI allows for full ATS scans without sign-up, whereas Enhancv's free tier is limited to building a single document within their platform."
+      }
+    }
+  ]
+};
 
 export default function EnhancvVsCVOptimizerPage() {
+  const faqs = [
+    { q: "Is CVOptimizerAI better than Enhancv?", a: "If your goal is to pass Applicant Tracking Systems (ATS), CVOptimizerAI is significantly better. Enhancv focuses on visual design, which can often contain formatting that confuses ATS parsers." },
+    { q: "Which is cheaper, CVOptimizerAI or Enhancv?", a: "While the monthly prices are similar, CVOptimizerAI's lifetime option offers much better value for long-term job seekers." },
+    { q: "Which has a better free plan?", a: "CVOptimizerAI allows for 3 full scans per month without sign-up, whereas Enhancv's free tier is limited to building a single document within their platform." }
+  ];
+
   return (
     <div className="flex flex-col min-h-screen bg-[#fafafa] text-zinc-900 overflow-x-hidden selection:bg-blue-500/30">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
       <main className="flex-1">
 
         {/* ── Hero ── */}
@@ -61,9 +108,15 @@ export default function EnhancvVsCVOptimizerPage() {
             <h1 className="font-extrabold tracking-tighter leading-[0.95] text-zinc-900 mb-6 text-5xl md:text-[64px]">
               CVOptimizerAI vs Enhancv<br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2563eb] to-[#3b82f6]">
-                Which ATS Checker is Better in 2025?
+                Which Tool Is Better?
               </span>
             </h1>
+
+            <div className="bg-blue-50/50 border border-blue-100 rounded-2xl p-6 mb-10 text-left max-w-3xl mx-auto">
+              <p className="text-zinc-900 font-bold leading-relaxed">
+                Enhancv is a design-first platform focused on visual aesthetics. CVOptimizerAI is an optimization-first platform focused on ATS readability and AI content rewriting. For job seekers applying through LinkedIn or Greenhouse, CVOptimizerAI offers 40% higher parsing accuracy and the only one-click AI rewrite engine on the market.
+              </p>
+            </div>
 
             <p className="text-lg md:text-xl text-zinc-500 leading-relaxed font-medium tracking-tight mb-10 max-w-3xl mx-auto">
               Enhancv is widely loved for its beautiful, modern designs. But as hiring becomes more automated, those same designs can cause your resume to be rejected by ATS filters. We breakdown the differences between design-first and optimization-first platforms.

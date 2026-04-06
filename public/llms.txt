@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# GEO Visibility for AI Agents
+llms.txt: https://cvoptimizerai.com/llms.txt
+
+# CV Optimizer AI Sitemap
+Sitemap: https://cvoptimizerai.com/sitemap.xml

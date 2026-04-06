@@ -3,8 +3,9 @@ import { Zap } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy — CV Optimizer AI",
-  description: "Privacy Policy and data handling practices for CV Optimizer AI.",
+  title: "Privacy Policy 2026 — CV Optimizer AI",
+  description: "Privacy Policy and data handling practices for CV Optimizer AI. We prioritize your professional data security and never sell your information.",
+  alternates: { canonical: 'https://cvoptimizerai.com/privacy' },
 };
 
 export default function PrivacyPage() {

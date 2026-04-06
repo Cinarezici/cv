@@ -2,21 +2,19 @@ import type { Metadata } from 'next';
 import HomeClient from './HomeClient';
 
 export const metadata: Metadata = {
-  title: 'Free ATS Resume Checker: Get Your CV Score in 10 Seconds | CVOptimizerAI',
-  description:
-    'See exactly why your resume gets rejected. Upload your CV, get an instant ATS score out of 100, and fix every issue with one AI rewrite. Trusted by 20,000+ professionals. No sign-up needed.',
+  title: 'Free ATS Resume Checker 2026: Get Your CV Score | CVOptimizerAI',
+  description: "See exactly why your resume gets rejected. Upload your CV, get an instant ATS score out of 100, and fix every issue with one AI rewrite. Trusted by 20,000+ professionals.",
+  alternates: { canonical: 'https://cvoptimizerai.com' },
   openGraph: {
-    title: 'Free ATS Resume Checker: Get Your CV Score in 10 Seconds | CVOptimizerAI',
-    description:
-      'See exactly why your resume gets rejected. Upload your CV, get an instant ATS score out of 100, and fix every issue with one AI rewrite. Trusted by 20,000+ professionals. No sign-up needed.',
+    title: 'Free ATS Resume Checker 2026: Get Your CV Score | CVOptimizerAI',
+    description: "See exactly why your resume gets rejected. Upload your CV, get an instant ATS score out of 100, and fix every issue with one AI rewrite.",
     type: 'website',
     url: 'https://cvoptimizerai.com',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Free ATS Resume Checker: Get Your CV Score in 10 Seconds | CVOptimizerAI',
-    description:
-      'See exactly why your resume gets rejected. Upload your CV, get an instant ATS score out of 100, and fix every issue with one AI rewrite. Trusted by 20,000+ professionals. No sign-up needed.',
+    title: 'Free ATS Resume Checker 2026: Get Your CV Score | CVOptimizerAI',
+    description: "Get an instant ATS score out of 100 and fix issues with one AI rewrite.",
   },
 };
 

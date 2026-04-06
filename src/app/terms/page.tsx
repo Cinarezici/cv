@@ -3,8 +3,9 @@ import { Zap } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Terms of Service — CV Optimizer AI",
-  description: "Terms of Service and usage agreement for CV Optimizer AI.",
+  title: "Terms of Service 2026 — CV Optimizer AI",
+  description: "Terms of Service and usage agreement for CV Optimizer AI. By using our service, you agree to our data handling and AI processing terms.",
+  alternates: { canonical: 'https://cvoptimizerai.com/terms' },
 };
 
 export default function TermsPage() {

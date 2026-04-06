@@ -7,23 +7,39 @@ import { ComparisonFAQ } from '@/components/ui/comparison-faq';
 import { RelatedComparisons } from '@/components/ui/related-comparisons';
 
 export const metadata: Metadata = {
-  title: 'CVOptimizerAI vs Resume Worded (2025): Full Comparison',
-  description:
-    "Comparing CVOptimizerAI and Resume Worded? See features, pricing, and ATS accuracy side by side. Find the best resume checker for your job search.",
+  title: 'CVOptimizerAI vs Resume Worded 2026: Which Is Better? | CVOptimizerAI',
+  description: "Comparing CVOptimizerAI and Resume Worded? We compare features, pricing, and ATS accuracy. See why job seekers are switching to CVOptimizerAI.",
+  alternates: { canonical: 'https://cvoptimizerai.com/cvoptimizerai-vs-resume-worded' },
   openGraph: {
-    title: 'CVOptimizerAI vs Resume Worded (2025): Full Comparison',
-    description:
-      "Comparing CVOptimizerAI and Resume Worded? See features, pricing, and ATS accuracy side by side. Find the best resume checker for your job search.",
+    title: 'CVOptimizerAI vs Resume Worded 2026: Which Is Better?',
+    description: "Comparing CVOptimizerAI and Resume Worded? We compare features, pricing, and ATS accuracy. See why job seekers are switching to CVOptimizerAI.",
     type: 'website',
     url: 'https://cvoptimizerai.com/cvoptimizerai-vs-resume-worded',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'CVOptimizerAI vs Resume Worded (2025): Full Comparison',
-    description:
-      "Comparing CVOptimizerAI and Resume Worded? See features, pricing, and ATS accuracy side by side. Find the best resume checker for your job search.",
+    title: 'CVOptimizerAI vs Resume Worded 2026: Which Is Better?',
+    description: "Comparing CVOptimizerAI and Resume Worded? See features, pricing, and ATS accuracy.",
   },
-  alternates: { canonical: 'https://cvoptimizerai.com/cvoptimizerai-vs-resume-worded' },
+};
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://cvoptimizerai.com"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "CVOptimizerAI vs Resume Worded",
+      "item": "https://cvoptimizerai.com/cvoptimizerai-vs-resume-worded"
+    }
+  ]
 };
 
 const comparisonData = [
@@ -38,15 +54,46 @@ const comparisonData = [
   { feature: 'AI-Powered Suggestions', cvo: 'Full Rewrite & Formatting', rw: 'Limited Line Edits' },
 ];
 
-const faqs = [
-  { q: "Is CVOptimizerAI better than Resume Worded?", a: "CVOptimizerAI is superior for actual ATS optimization and one-click AI rewriting. While Resume Worded provides good feedback on writing style, CVOptimizerAI focuses on the technical requirements needed to pass automated filters." },
-  { q: "Which is cheaper, CVOptimizerAI or Resume Worded?", a: "CVOptimizerAI offers a more affordable annual plan and a lifetime access option, which Resume Worded currently lacks. Resume Worded's pricing has increased significantly in recent months." },
-  { q: "Which has a better free plan?", a: "Resume Worded recently removed its true free tier, making it very restrictive. CVOptimizerAI allows for 3 full ATS analyses per month on the free plan with no sign-up required." }
-];
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is CVOptimizerAI better than Resume Worded?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "CVOptimizerAI is superior for actual ATS optimization and one-click AI rewriting. While Resume Worded provides feedback on writing style, CVOptimizerAI focuses on the technical requirements needed to pass automated filters like Workday and Greenhouse."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which has a better free plan?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Resume Worded has significantly restricted its free tier. CVOptimizerAI allows for full ATS analyses for free with no sign-up required."
+      }
+    }
+  ]
+};
 
 export default function ResumeWordedVsCVOptimizerPage() {
+  const faqs = [
+    { q: "Is CVOptimizerAI better than Resume Worded?", a: "CVOptimizerAI is superior for actual ATS optimization and one-click AI rewriting. While Resume Worded provides good feedback on writing style, CVOptimizerAI focuses on the technical requirements needed to pass automated filters." },
+    { q: "Which is cheaper, CVOptimizerAI or Resume Worded?", a: "CVOptimizerAI offers a more affordable annual plan and a lifetime access option, which Resume Worded currently lacks. Resume Worded's pricing has increased significantly in recent months." },
+    { q: "Which has a better free plan?", a: "Resume Worded recently removed its true free tier, making it very restrictive. CVOptimizerAI allows for 3 full ATS analyses per month on the free plan with no sign-up required." }
+  ];
+
   return (
     <div className="flex flex-col min-h-screen bg-[#fafafa] text-zinc-900 overflow-x-hidden selection:bg-blue-500/30">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
       <main className="flex-1">
 
         {/* ── Hero ── */}
@@ -62,9 +109,15 @@ export default function ResumeWordedVsCVOptimizerPage() {
             <h1 className="font-extrabold tracking-tighter leading-[0.95] text-zinc-900 mb-6 text-5xl md:text-[64px]">
               CVOptimizerAI vs Resume Worded<br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2563eb] to-[#3b82f6]">
-                Which ATS Checker is Better in 2025?
+                Which Tool Is Better?
               </span>
             </h1>
+
+            <div className="bg-blue-50/50 border border-blue-100 rounded-2xl p-6 mb-10 text-left max-w-3xl mx-auto">
+              <p className="text-zinc-900 font-bold leading-relaxed">
+                Resume Worded focuses on writing style and line-by-line feedback. CVOptimizerAI focuses on technical ATS parsing and one-click AI content transformation. While Resume Worded starts at $19/mo with no lifetime option, CVOptimizerAI provides a superior free experience and a high-value lifetime plan.
+              </p>
+            </div>
 
             <p className="text-lg md:text-xl text-zinc-500 leading-relaxed font-medium tracking-tight mb-10 max-w-3xl mx-auto">
               Resume Worded has been a staple in the industry, but with recent pricing hikes and the removal of their free plan, job seekers are looking for better alternatives. We compare features, accuracy, and value.
