@@ -102,7 +102,7 @@ export async function POST(request: NextRequest) {
         console.log("-> isPro?", isPro);
 
         const { checkUsage, incrementUsage } = await import('@/lib/usage-enforcement');
-        const usageCheck = await checkUsage(user.id, 'letter_generation');
+        const usageCheck: any = await checkUsage(user.id, 'letter_generation');
         
         if (!usageCheck.allowed) {
             return NextResponse.json({ 
@@ -114,7 +114,7 @@ export async function POST(request: NextRequest) {
         }
 
         // Check if batch size exceeds remaining quota
-        const remaining = (usageCheck.limit || 0) - (usageCheck.usage || 0);
+        const remaining = (Number(usageCheck.limit) || 0) - (Number(usageCheck.usage) || 0);
         if (companies.length > remaining && usageCheck.limit !== 999) {
             return NextResponse.json({ 
                 error: 'limit_reached', 
