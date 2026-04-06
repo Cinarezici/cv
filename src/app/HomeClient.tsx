@@ -322,15 +322,15 @@ export default function HomeClient() {
           <div className="container px-6 mx-auto max-w-5xl">
             <div className="flex flex-wrap md:flex-nowrap items-center justify-between gap-6 md:gap-0 bg-[#0f172a] rounded-2xl md:rounded-full py-4 px-8 border border-white/5 shadow-2xl shadow-indigo-950/20">
               
-              {/* Stat 1 */}
+              {/* Stat 1: Optimized CVs */}
               <div className="flex flex-col items-center md:items-start flex-1 px-4 min-w-[140px]">
                 <div className="flex items-center gap-2 mb-0.5">
-                  <div className="w-1.5 h-1.5 rounded-full bg-blue-400" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-blue-400 shadow-[0_0_8px_rgba(96,165,250,0.5)]" />
                   <span className="text-[15px] md:text-[18px] font-black text-white tracking-tight">
-                    <AnimatedCounter base={20418} />+
+                    <AnimatedCounter base={132412} />+
                   </span>
                 </div>
-                <span className="text-[10px] md:text-[11px] font-bold text-zinc-400 uppercase tracking-widest whitespace-nowrap">Trusted Professionals</span>
+                <span className="text-[10px] md:text-[11px] font-bold text-zinc-400 uppercase tracking-widest whitespace-nowrap">Optimized CVs</span>
               </div>
 
               {/* Divider */}
