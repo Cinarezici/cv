@@ -317,58 +317,58 @@ export default function HomeClient() {
         <JobSearchPreview />
         <WaveDivider />
 
-        <section className="w-full py-24 bg-white">
-          <div className="container px-6 mx-auto max-w-6xl">
-            <div className="relative group p-1 w-full rounded-[2.5rem] bg-gradient-to-b from-zinc-100/50 to-white border border-zinc-200/60 shadow-2xl shadow-indigo-500/5 overflow-hidden">
-              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-indigo-500/20 to-transparent" />
+        {/* Stats Section: Minimalist Professional Trust Bar */}
+        <section id="stats" className="w-full py-8 md:py-10 bg-[#0f172a]/[0.02] border-y border-zinc-100/10">
+          <div className="container px-6 mx-auto max-w-5xl">
+            <div className="flex flex-wrap md:flex-nowrap items-center justify-between gap-6 md:gap-0 bg-[#0f172a] rounded-2xl md:rounded-full py-4 px-8 border border-white/5 shadow-2xl shadow-indigo-950/20">
               
-              <div className="grid grid-cols-2 lg:grid-cols-4 divide-y lg:divide-y-0 lg:divide-x divide-zinc-100 bg-white/50 backdrop-blur-xl rounded-[2.4rem] overflow-hidden">
-                {/* Stat 1 */}
-                <div className="p-10 md:p-12 flex flex-col items-center justify-center space-y-4 group/item hover:bg-zinc-50/50 transition-colors duration-500">
-                  <div className="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600 group-hover/item:scale-110 transition-transform">
-                    <Users className="w-5 h-5" />
-                  </div>
-                  <div className="text-center">
-                    <p className="text-3xl md:text-5xl font-black tracking-tight text-zinc-900">
-                      <AnimatedCounter base={20412} />+
-                    </p>
-                    <p className="text-xs font-bold uppercase tracking-widest text-zinc-400 mt-2">Trusted Professionals</p>
-                  </div>
+              {/* Stat 1 */}
+              <div className="flex flex-col items-center md:items-start flex-1 px-4 min-w-[140px]">
+                <div className="flex items-center gap-2 mb-0.5">
+                  <div className="w-1.5 h-1.5 rounded-full bg-blue-400" />
+                  <span className="text-[15px] md:text-[18px] font-black text-white tracking-tight">
+                    <AnimatedCounter base={20418} />+
+                  </span>
                 </div>
-
-                {/* Stat 2 */}
-                <div className="p-10 md:p-12 flex flex-col items-center justify-center space-y-4 group/item hover:bg-zinc-50/50 transition-colors duration-500">
-                  <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center text-amber-600 group-hover/item:scale-110 transition-transform">
-                    <Search className="w-5 h-5" />
-                  </div>
-                  <div className="text-center">
-                    <p className="text-3xl md:text-5xl font-black tracking-tight text-zinc-900">6</p>
-                    <p className="text-xs font-bold uppercase tracking-widest text-zinc-400 mt-2">ATS Analysis Engines</p>
-                  </div>
-                </div>
-
-                {/* Stat 3 */}
-                <div className="p-10 md:p-12 flex flex-col items-center justify-center space-y-4 group/item hover:bg-zinc-50/50 transition-colors duration-500">
-                  <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600 group-hover/item:scale-110 transition-transform">
-                    <Star className="w-5 h-5" />
-                  </div>
-                  <div className="text-center">
-                    <p className="text-3xl md:text-5xl font-black tracking-tight text-zinc-900">12</p>
-                    <p className="text-xs font-bold uppercase tracking-widest text-zinc-400 mt-2">Premium Templates</p>
-                  </div>
-                </div>
-
-                {/* Stat 4 */}
-                <div className="p-10 md:p-12 flex flex-col items-center justify-center space-y-4 group/item hover:bg-zinc-50/50 transition-colors duration-500">
-                  <div className="w-10 h-10 rounded-xl bg-rose-50 flex items-center justify-center text-rose-600 group-hover/item:scale-110 transition-transform">
-                    <Zap className="w-5 h-5" />
-                  </div>
-                  <div className="text-center">
-                    <p className="text-3xl md:text-5xl font-black tracking-tight text-zinc-900">&lt;30s</p>
-                    <p className="text-xs font-bold uppercase tracking-widest text-zinc-400 mt-2">Real-time Analysis</p>
-                  </div>
-                </div>
+                <span className="text-[10px] md:text-[11px] font-bold text-zinc-400 uppercase tracking-widest whitespace-nowrap">Trusted Professionals</span>
               </div>
+
+              {/* Divider */}
+              <div className="hidden md:block w-px h-8 bg-gradient-to-b from-transparent via-white/10 to-transparent" />
+
+              {/* Stat 2 */}
+              <div className="flex flex-col items-center md:items-start flex-1 px-4 min-w-[140px]">
+                <div className="flex items-center gap-2 mb-0.5">
+                  <div className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                  <span className="text-[15px] md:text-[18px] font-black text-white tracking-tight">6</span>
+                </div>
+                <span className="text-[10px] md:text-[11px] font-bold text-zinc-400 uppercase tracking-widest whitespace-nowrap">ATS Analysis Engines</span>
+              </div>
+
+              {/* Divider */}
+              <div className="hidden md:block w-px h-8 bg-gradient-to-b from-transparent via-white/10 to-transparent" />
+
+              {/* Stat 3 */}
+              <div className="flex flex-col items-center md:items-start flex-1 px-4 min-w-[140px]">
+                <div className="flex items-center gap-2 mb-0.5">
+                  <div className="w-1.5 h-1.5 rounded-full bg-amber-400" />
+                  <span className="text-[15px] md:text-[18px] font-black text-white tracking-tight">12</span>
+                </div>
+                <span className="text-[10px] md:text-[11px] font-bold text-zinc-400 uppercase tracking-widest whitespace-nowrap">Premium Templates</span>
+              </div>
+
+              {/* Divider */}
+              <div className="hidden md:block w-px h-8 bg-gradient-to-b from-transparent via-white/10 to-transparent" />
+
+              {/* Stat 4 */}
+              <div className="flex flex-col items-center md:items-start flex-1 px-4 min-w-[140px]">
+                <div className="flex items-center gap-2 mb-0.5">
+                  <div className="w-1.5 h-1.5 rounded-full bg-rose-400 animate-pulse" />
+                  <span className="text-[15px] md:text-[18px] font-black text-white tracking-tight">&lt;30s</span>
+                </div>
+                <span className="text-[10px] md:text-[11px] font-bold text-zinc-400 uppercase tracking-widest whitespace-nowrap">Real-time Analysis</span>
+              </div>
+
             </div>
           </div>
         </section>
