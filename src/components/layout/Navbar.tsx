@@ -13,7 +13,9 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
 
   // Hide Navbar on dashboard routes
-  const isDashboard = pathname?.startsWith('/dashboard') || pathname?.startsWith('/builder') || pathname?.startsWith('/ats-scanner') || pathname?.startsWith('/referrals');
+  // Hide Navbar on dashboard & tool routes
+  const landingPages = ['/', '/templates', '/pricing', '/about', '/blog', '/login', '/signup'];
+  const isDashboard = !landingPages.includes(pathname || '') || pathname?.startsWith('/builder') || pathname?.startsWith('/ats-scanner');
   
   useEffect(() => {
     const handleScroll = () => {

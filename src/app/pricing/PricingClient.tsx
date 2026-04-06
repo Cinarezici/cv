@@ -30,12 +30,12 @@ const faqs = [
 ];
 
 const comparisonFeatures = [
-  { feature: "ATS Score", free: true, starter: true, pro: true, lifetime: true },
-  { feature: "AI CV Rewrite", free: false, starter: "Basic", pro: "Advanced (GPT-4)", lifetime: "Advanced (GPT-4)" },
-  { feature: "Templates", free: false, starter: "5 Basic", pro: "12 Premium", lifetime: "12 Premium" },
-  { feature: "Keyword Scans", free: "1 / day", starter: "10 / day", pro: "Unlimited", lifetime: "Unlimited" },
-  { feature: "PDF Export", free: false, starter: "Watermarked", pro: "Clean", lifetime: "Clean" },
-  { feature: "Shareable Links", free: false, starter: false, pro: true, lifetime: true },
+  { feature: "ATS Score", free: "3 Scans", starter: "10 Scans", pro: "Unlimited", lifetime: "Unlimited" },
+  { feature: "AI CV Rewrite", free: "1 / once", starter: "Basic", pro: "Advanced (GPT-4)", lifetime: "Advanced (GPT-4)" },
+  { feature: "Templates", free: "5 Basic", starter: "12 Templates", pro: "12 Premium", lifetime: "12 Premium" },
+  { feature: "Keyword Scans", free: "3 / day", starter: "10 / day", pro: "Unlimited", lifetime: "Unlimited" },
+  { feature: "PDF Export", free: "Watermarked", starter: "Clean", pro: "Clean", lifetime: "Clean" },
+  { feature: "Shareable Links", free: "Redirects on Exp.", starter: true, pro: true, lifetime: true },
   { feature: "Priority AI Queue", free: false, starter: false, pro: false, lifetime: "3x Faster" },
   { feature: "VIP Support", free: false, starter: false, pro: false, lifetime: true },
 ];
@@ -112,10 +112,10 @@ export default function PricingPageClient() {
               </Link>
               <ul className="space-y-4 text-sm flex-1">
                 <li className="flex items-start gap-3"><CheckCircle2 className="w-5 h-5 text-blue-600 shrink-0" /><span className="text-zinc-700 font-semibold">Unlimited CVs & Letters</span></li>
-                <li className="flex items-start gap-3"><CheckCircle2 className="w-5 h-5 text-blue-600 shrink-0" /><span className="text-zinc-700 font-semibold">5 Basic Templates</span></li>
+                <li className="flex items-start gap-3"><CheckCircle2 className="w-5 h-5 text-blue-600 shrink-0" /><span className="text-zinc-700 font-semibold">12 Premium Templates</span></li>
                 <li className="flex items-start gap-3"><CheckCircle2 className="w-5 h-5 text-blue-600 shrink-0" /><span className="text-zinc-700 font-semibold">10 Keyword scans / day</span></li>
-                <li className="flex items-start gap-3"><X className="w-5 h-5 text-zinc-400 shrink-0" /><span className="text-zinc-500">Basic AI (Standard)</span></li>
-                <li className="flex items-start gap-3"><X className="w-5 h-5 text-zinc-400 shrink-0" /><span className="text-zinc-500">Watermark on PDF</span></li>
+                <li className="flex items-start gap-3"><CheckCircle2 className="w-5 h-5 text-blue-600 shrink-0" /><span className="text-zinc-700 font-semibold">No Watermark on PDF</span></li>
+                <li className="flex items-start gap-3"><CheckCircle2 className="w-5 h-5 text-blue-600 shrink-0" /><span className="text-zinc-700 font-semibold">Branded Shareable Links</span></li>
               </ul>
             </div>
 

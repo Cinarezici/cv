@@ -13,8 +13,8 @@ export interface PlanLimits {
 export const PLAN_LIMITS: Record<string, PlanLimits> = {
   free: {
     cv_limit: 1,
-    ai_limit: 0,
-    letter_limit: 0,
+    ai_limit: 1,
+    letter_limit: 1,
     job_search_limit: 0,
     ats_scan_limit: 3,
     advanced_ai: false,
@@ -35,8 +35,8 @@ export const PLAN_LIMITS: Record<string, PlanLimits> = {
     letter_limit: 999,
     job_search_limit: 999,
     ats_scan_limit: 10,
-    advanced_ai: false,
-    watermark_free: false,
+    advanced_ai: true,
+    watermark_free: true,
   },
   professional_yearly: {
     cv_limit: 999,
