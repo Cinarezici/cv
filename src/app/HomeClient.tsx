@@ -231,6 +231,10 @@ export default function HomeClient() {
                   Get more interviews.<br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2563eb] to-[#3b82f6]">Start with your CV score.</span>
                 </h1>
 
+                <p className="text-lg md:text-xl text-zinc-500 leading-relaxed font-medium tracking-tight mb-8 w-full max-w-xl">
+                  AI analyzes your CV, gives you an ATS score, and rewrites it for the job you want — in seconds.
+                </p>
+
                 <Link href="#ats-scanner">
                   <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-emerald-50 border border-emerald-200/60 shadow-sm hover:shadow-md transition-all cursor-pointer group mb-10 overflow-hidden relative">
                     <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/5 to-blue-400/5 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -241,10 +245,6 @@ export default function HomeClient() {
                     <ArrowRight className="h-3.5 w-3.5 text-emerald-400 group-hover:text-emerald-600 transition-all group-hover:translate-x-0.5 relative z-10" />
                   </div>
                 </Link>
-
-                <p className="text-lg md:text-xl text-zinc-500 leading-relaxed font-medium tracking-tight mb-8 w-full max-w-xl">
-                  AI analyzes your CV, gives you an ATS score, and rewrites it for the job you want — in seconds.
-                </p>
                 <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2 mb-4">
                   {proofChips.map((chip) => (
                     <div key={chip} className="inline-flex items-center px-3 py-1.5 rounded-full text-[12px] font-bold border bg-white border-zinc-200 text-zinc-600">{chip}</div>
