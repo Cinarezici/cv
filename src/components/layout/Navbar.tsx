@@ -17,7 +17,7 @@ export function Navbar() {
     '/dashboard', '/builder', '/ats-scanner', '/import', 
     '/referrals', '/my-cvs', '/resumes', '/scout', 
     '/saved-jobs', '/motivation-letters', '/settings', 
-    '/upgrade', '/billing', '/cv/', '/r/'
+    '/upgrade', '/billing', '/cv/', '/r/', '/ml/'
   ];
   
   const isDashboard = dashboardRoutes.some(route => pathname?.startsWith(route)) || 

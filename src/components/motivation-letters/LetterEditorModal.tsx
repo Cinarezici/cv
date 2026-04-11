@@ -33,6 +33,7 @@ interface PresentationMeta {
     thankYouSubtitle: string;
     connectButtonText: string;
     contactEmail: string;
+    candidateImage?: string;
 }
 
 type TabId = 'cover' | 'intro' | 'strengths' | 'whyCompany' | 'thankYou';
@@ -77,6 +78,9 @@ function extractMetaFromHtml(html: string): Partial<PresentationMeta> {
     // Target role from gold text
     const roleMatch = html.match(/text-transform:uppercase;[^"]*">([^<]+)<\/div>/);
     if (roleMatch) meta.targetRole = roleMatch[1];
+    // Candidate image from img src
+    const imgMatch = html.match(/<img src="([^"]+)"/);
+    if (imgMatch) meta.candidateImage = imgMatch[1];
     return meta;
 }
 
@@ -129,7 +133,10 @@ function buildPreviewHtml(sections: LetterSections, meta: PresentationMeta): str
     <div style="display:flex;border-radius:12px;overflow:hidden;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,0,0,0.12);">
       <div style="width:200px;min-width:200px;background:${NAVY};padding:24px 16px;display:flex;flex-direction:column;align-items:center;">
         <div style="width:56px;height:56px;border-radius:50%;background:${GOLD};display:flex;align-items:center;justify-content:center;margin-bottom:12px;overflow:hidden;">
-          <span style="font-size:18px;font-weight:900;color:${NAVY};">${initials}</span>
+          ${meta.candidateImage 
+            ? `<img src="${meta.candidateImage}" style="width:100%;height:100%;object-fit:cover;" />`
+            : `<span style="font-size:18px;font-weight:900;color:${NAVY};">${initials}</span>`
+          }
         </div>
         <div style="font-size:10px;font-weight:700;color:#fff;text-align:center;margin-bottom:4px;">${meta.candidateName}</div>
         <div style="font-size:8px;color:${GOLD};text-align:center;margin-bottom:auto;">${meta.targetRole}</div>
@@ -144,12 +151,21 @@ function buildPreviewHtml(sections: LetterSections, meta: PresentationMeta): str
 
     return `
 <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:760px;margin:0 auto;">
-  <div style="background:${NAVY};border-radius:14px;padding:36px 48px;margin-bottom:16px;position:relative;overflow:hidden;">
+  <div style="background:${NAVY};border-radius:14px;padding:36px 48px;margin-bottom:16px;position:relative;overflow:hidden;min-height:120px;display:flex;align-items:center;gap:24px;">
     <div style="position:absolute;top:-80px;right:-30px;width:60px;height:600px;background:${GOLD};border-radius:4px;transform:rotate(20deg);opacity:0.9;"></div>
     <div style="position:absolute;top:-80px;right:50px;width:8px;height:600px;background:${GOLD}60;border-radius:4px;transform:rotate(20deg);"></div>
-    <div style="font-size:26px;font-weight:900;color:white;letter-spacing:-0.5px;position:relative;">${(meta.candidateName || 'Candidate').toUpperCase()}</div>
-    <div style="font-size:11px;font-weight:700;color:${GOLD};margin-top:8px;letter-spacing:2px;text-transform:uppercase;position:relative;">${meta.targetRole}</div>
-    <div style="font-size:10px;color:#ffffff80;margin-top:10px;position:relative;">Prepared for ${meta.companyName}</div>
+    
+    ${meta.candidateImage ? `
+    <div style="width:80px;height:80px;border-radius:20px;overflow:hidden;border:3px solid ${GOLD};position:relative;z-index:2;background:white;shrink:0;">
+        <img src="${meta.candidateImage}" style="width:100%;height:100%;object-fit:cover;" />
+    </div>
+    ` : ''}
+
+    <div style="position:relative;z-index:2;">
+        <div style="font-size:26px;font-weight:900;color:white;letter-spacing:-0.5px;">${(meta.candidateName || 'Candidate').toUpperCase()}</div>
+        <div style="font-size:11px;font-weight:700;color:${GOLD};margin-top:8px;letter-spacing:2px;text-transform:uppercase;">${meta.targetRole}</div>
+        <div style="font-size:10px;color:#ffffff80;margin-top:10px;">Prepared for ${meta.companyName}</div>
+    </div>
   </div>
   ${slide('01', meta.sectionTitleIntro, sections.intro)}
   ${slide('02', meta.sectionTitleStrengths, sections.strengths)}
@@ -186,6 +202,7 @@ export default function LetterEditorModal({ letter, onClose, onSaved }: LetterEd
         thankYouSubtitle: 'I look forward to discussing my application with you.',
         connectButtonText: "Let's Connect",
         contactEmail: '',
+        candidateImage: htmlMeta.candidateImage || '',
     }));
 
     const [activeTab, setActiveTab] = useState<TabId>('cover');
@@ -344,6 +361,51 @@ export default function LetterEditorModal({ letter, onClose, onSaved }: LetterEd
                             onChange={v => updateMeta('companyName', v)}
                             placeholder="Google"
                         />
+
+                        <div className="pt-2 border-t border-zinc-100 dark:border-white/5">
+                            <label className="block text-xs font-bold text-zinc-500 dark:text-zinc-400 mb-2 uppercase tracking-wider">Candidate Photo</label>
+                            <div className="flex items-center gap-4">
+                                <div className="w-16 h-16 rounded-2xl bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-white/10 flex items-center justify-center overflow-hidden shrink-0">
+                                    {meta.candidateImage ? (
+                                        <img src={meta.candidateImage} alt="Preview" className="w-full h-full object-cover" />
+                                    ) : (
+                                        <User className="w-6 h-6 text-zinc-300" />
+                                    )}
+                                </div>
+                                <div className="flex flex-col gap-2">
+                                    <input
+                                        type="file"
+                                        id="candidate-photo"
+                                        accept="image/*"
+                                        className="hidden"
+                                        onChange={(e) => {
+                                            const file = e.target.files?.[0];
+                                            if (file) {
+                                                const reader = new FileReader();
+                                                reader.onloadend = () => {
+                                                    updateMeta('candidateImage', reader.result as string);
+                                                };
+                                                reader.readAsDataURL(file);
+                                            }
+                                        }}
+                                    />
+                                    <button
+                                        onClick={() => document.getElementById('candidate-photo')?.click()}
+                                        className="text-xs font-bold px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors cursor-pointer"
+                                    >
+                                        {meta.candidateImage ? 'Change Photo' : 'Upload Photo'}
+                                    </button>
+                                    {meta.candidateImage && (
+                                        <button
+                                            onClick={() => updateMeta('candidateImage', '')}
+                                            className="text-xs font-bold text-red-500 hover:text-red-600 transition-colors text-left cursor-pointer"
+                                        >
+                                            Remove Photo
+                                        </button>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 );
             case 'intro':
@@ -463,7 +525,7 @@ export default function LetterEditorModal({ letter, onClose, onSaved }: LetterEd
             <header className="h-auto min-h-[48px] py-2 shrink-0 bg-white dark:bg-zinc-900 border-b border-gray-200 dark:border-white/10 flex flex-wrap items-center px-3 gap-2 z-10">
                 <button
                     onClick={handleClose}
-                    className="flex items-center gap-1.5 text-sm font-semibold text-foreground/60 dark:text-zinc-400 hover:text-foreground dark:hover:text-white transition-colors shrink-0"
+                    className="flex items-center gap-1.5 text-sm font-semibold text-foreground/60 dark:text-zinc-400 hover:text-foreground dark:hover:text-white cursor-pointer active:scale-95
                 >
                     <ArrowLeft className="w-4 h-4 shrink-0" />
                     <span className="hidden sm:inline">Back to Letters</span>
@@ -501,7 +563,7 @@ export default function LetterEditorModal({ letter, onClose, onSaved }: LetterEd
                     className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-bold text-sm transition-all shrink-0
                     ${hasUnsaved && !saving
                             ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-sm active:scale-95'
-                            : 'bg-gray-100 dark:bg-white/5 text-gray-400 dark:text-zinc-500 cursor-default'
+                            : 'bg-gray-100 dark:bg-white/5 text-gray-400 dark:text-zinc-500 cursor-pointer'
                         }`}
                 >
                     {saving
@@ -532,7 +594,7 @@ export default function LetterEditorModal({ letter, onClose, onSaved }: LetterEd
                                 key={id}
                                 onClick={() => setActiveTab(id)}
                                 title={label}
-                                className={`w-[72px] h-[72px] flex flex-col items-center justify-center rounded-2xl gap-1 transition-all text-[11px] font-bold leading-tight
+                                className={`w-[72px] h-[72px] flex flex-col items-center justify-center rounded-2xl gap-1 transition-all text-[11px] font-bold leading-tight cursor-pointer
                                 ${active
                                         ? 'bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 shadow-sm'
                                         : 'text-gray-400 dark:text-zinc-500 hover:text-gray-700 dark:hover:text-zinc-300 hover:bg-gray-50 dark:hover:bg-white/5'
@@ -569,7 +631,7 @@ export default function LetterEditorModal({ letter, onClose, onSaved }: LetterEd
                             className={`w-full flex items-center justify-center gap-2 py-2.5 rounded-xl font-bold text-sm transition-all
                             ${hasUnsaved && !saving
                                     ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-sm active:scale-95'
-                                    : 'bg-gray-100 dark:bg-white/5 text-gray-400 dark:text-zinc-500 cursor-default'
+                                    : 'bg-gray-100 dark:bg-white/5 text-gray-400 dark:text-zinc-500 cursor-pointer'
                                 }`}
                         >
                             {saving
@@ -624,7 +686,7 @@ export default function LetterEditorModal({ letter, onClose, onSaved }: LetterEd
                         <button
                             key={id}
                             onClick={() => { setActiveTab(id); setMobileView('edit'); }}
-                            className={`flex flex-col items-center justify-center gap-0.5 py-1.5 px-2 rounded-xl transition-all min-w-0 flex-1 ${active
+                            className={`flex flex-col items-center justify-center gap-0.5 py-1.5 px-2 rounded-xl transition-all min-w-0 flex-1 cursor-pointer ${active
                                 ? 'bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400'
                                 : 'text-gray-400 dark:text-zinc-500'
                                 }`}

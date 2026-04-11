@@ -263,7 +263,7 @@ const Option = ({
     return (
         <Link
             href={href}
-            className={`relative flex h-11 w-full items-center rounded-md transition-all duration-200 ${selected
+            className={`relative flex h-11 w-full items-center rounded-md transition-all duration-200 cursor-pointer ${selected
                 ? "bg-indigo-50 text-indigo-600 dark:bg-blue-500/10 dark:text-blue-400 shadow-sm border-l-2 border-indigo-600 dark:border-blue-500 font-semibold"
                 : isBlue
                     ? "text-indigo-600 dark:text-blue-400 hover:bg-indigo-50 dark:hover:bg-white/5 hover:text-indigo-700 dark:hover:text-blue-300 font-semibold"
@@ -288,7 +288,7 @@ const UpgradeOption = ({ open, selected }: { open: boolean; selected: boolean })
     return (
         <Link
             href="/upgrade"
-            className={`relative flex h-11 w-full items-center rounded-md transition-all duration-200 ${selected
+            className={`relative flex h-11 w-full items-center rounded-md transition-all duration-200 cursor-pointer ${selected
                 ? "bg-amber-50 text-amber-700 dark:bg-amber-500/10 dark:text-amber-400 shadow-sm border-l-2 border-amber-500 font-semibold"
                 : "text-amber-600 hover:bg-amber-50 dark:hover:bg-white/5 hover:text-amber-700 dark:hover:text-amber-300"
                 }`}

@@ -42,7 +42,7 @@ export const UpsellBanner = () => {
 
   const handleUpgrade = () => {
     trackEvent('upsell_banner_clicked', 'Annual Plan Upgrade');
-    window.location.href = '/pricing';
+    window.location.href = '/upgrade';
   };
 
   if (!isVisible) return null;
@@ -62,14 +62,14 @@ export const UpsellBanner = () => {
         <Button 
           variant="secondary" 
           size="sm" 
-          className="rounded-full bg-white px-4 py-1 text-xs font-black text-zinc-900 shadow-sm hover:bg-zinc-100 transition-all active:scale-95"
+          className="rounded-full bg-white px-4 py-1 text-xs font-black text-zinc-900 shadow-sm hover:bg-zinc-100 transition-all active:scale-95 cursor-pointer"
           onClick={handleUpgrade}
         >
           Switch to Annual <ArrowRight className="ml-2 w-3 h-3" />
         </Button>
       </div>
       <div className="flex flex-1 justify-end">
-        <button type="button" className="-m-3 p-3 focus-visible:outline-offset-[-4px]" onClick={handleDismiss}>
+        <button type="button" className="-m-3 p-3 focus-visible:outline-offset-[-4px] cursor-pointer" onClick={handleDismiss}>
           <span className="sr-only">Dismiss</span>
           <X className="h-5 w-5 text-white/60 hover:text-white transition-colors" aria-hidden="true" />
         </button>
