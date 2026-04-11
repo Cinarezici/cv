@@ -38,18 +38,12 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
-        // Feature gating: check if Pro
-        const { data: sub } = await supabase.from('subscriptions').select('*').eq('user_id', user.id).single();
-        if (sub?.status !== 'active') {
-            return NextResponse.json({ error: 'upgrade_required', message: 'Letter editing is a Pro feature' }, { status: 403 });
-        }
-
         const body = await request.json();
 
         const { data: updated, error } = await supabase
             .from('motivation_letters')
             .update({
-                letter_text: body.letter_text,
+                content: body.content,
                 letter_html: body.letter_html,
                 updated_at: new Date().toISOString()
             })

@@ -9,9 +9,10 @@ import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { MotivationLetter } from '@/types/motivation-letter';
 import { useLetterProgress } from '@/hooks/useLetterProgress';
-import { Search, Plus, Eye, Download, Trash2, Share2, Sparkles, Loader2, RefreshCw, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Search, Plus, Eye, Download, Trash2, Share2, Sparkles, Loader2, RefreshCw, ChevronLeft, ChevronRight, Pencil } from 'lucide-react';
 import { format } from 'date-fns';
 import LetterCreationWizard from './LetterCreationWizard';
+import LetterEditorModal from './LetterEditorModal';
 import { createClient } from '@/lib/supabase/client';
 import { toast } from 'sonner';
 
@@ -86,6 +87,7 @@ export default function LetterDashboardClient({ initialLetters, isPro, userId }:
     const [search, setSearch] = useState('');
     const [isWizardOpen, setIsWizardOpen] = useState(false);
     const [previewLetter, setPreviewLetter] = useState<MotivationLetter | null>(null);
+    const [editingLetter, setEditingLetter] = useState<MotivationLetter | null>(null);
     const searchParams = useSearchParams();
     const [autoTriggered, setAutoTriggered] = useState(false);
 
@@ -257,6 +259,7 @@ export default function LetterDashboardClient({ initialLetters, isPro, userId }:
                             letters={group}
                             handleRetry={handleRetry}
                             setPreviewLetter={setPreviewLetter}
+                            handleEdit={setEditingLetter}
                             handleShare={handleShare}
                             handleDelete={handleDelete}
                         />
@@ -291,6 +294,18 @@ export default function LetterDashboardClient({ initialLetters, isPro, userId }:
                     onClose={() => setPreviewLetter(null)}
                 />
             )}
+
+            {/* Letter Editor Modal */}
+            {editingLetter && (
+                <LetterEditorModal
+                    letter={editingLetter}
+                    onClose={() => setEditingLetter(null)}
+                    onSaved={(updated) => {
+                        setLetters(prev => prev.map(l => l.id === updated.id ? updated : l));
+                        setEditingLetter(updated);
+                    }}
+                />
+            )}
         </div>
     );
 }
@@ -300,12 +315,14 @@ function BatchLetterCard({
     letters,
     handleRetry,
     setPreviewLetter,
+    handleEdit,
     handleShare,
     handleDelete
 }: {
     letters: MotivationLetter[];
     handleRetry: (id: string) => void;
     setPreviewLetter: (v: MotivationLetter) => void;
+    handleEdit: (v: MotivationLetter) => void;
     handleShare: (v: MotivationLetter) => void;
     handleDelete: (id: string) => void;
 }) {
@@ -381,6 +398,17 @@ function BatchLetterCard({
                     )}
                     {letter.generation_status === 'completed' && (
                         <>
+                            {letter.content && (
+                                <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => handleEdit(letter)}
+                                    title="Edit letter content"
+                                    className="gap-1.5 text-xs font-semibold text-indigo-600 dark:text-indigo-400 border-indigo-200 dark:border-indigo-500/20 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 bg-white dark:bg-transparent"
+                                >
+                                    <Pencil className="w-3.5 h-3.5" /> Edit
+                                </Button>
+                            )}
                             {letter.letter_html && (
                                 <Button
                                     variant="outline"
