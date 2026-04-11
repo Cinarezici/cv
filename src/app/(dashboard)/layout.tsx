@@ -210,6 +210,7 @@ function NavItems({
     pathname,
     open,
     status,
+    plan,
 }: {
     pathname: string;
     open: boolean;
