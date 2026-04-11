@@ -45,6 +45,8 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
             .update({
                 content: body.content,
                 letter_html: body.letter_html,
+                ...(body.company_name !== undefined && { company_name: body.company_name }),
+                ...(body.job_title !== undefined && { job_title: body.job_title }),
                 updated_at: new Date().toISOString()
             })
             .eq('id', id)
