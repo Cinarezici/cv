@@ -68,7 +68,7 @@ export default function DashboardLayout({
 const Sidebar = () => {
     const [open, setOpen] = useState(true);
     const pathname = usePathname();
-    const { status } = usePro();
+    const { status, plan } = usePro();
 
     return (
         <nav
@@ -78,7 +78,7 @@ const Sidebar = () => {
             <div className="flex-1 overflow-y-auto p-2">
                 <TitleSection open={open} />
                 <div className="space-y-1 mb-8">
-                    <NavItems pathname={pathname} open={open} status={status} />
+                    <NavItems pathname={pathname} open={open} status={status} plan={plan} />
                 </div>
             </div>
             <div className="border-t border-zinc-200 dark:border-white/10 bg-zinc-50/80 dark:bg-white/5 backdrop-blur-sm">
@@ -93,7 +93,7 @@ const Sidebar = () => {
 const MobileNav = () => {
     const [drawerOpen, setDrawerOpen] = useState(false);
     const pathname = usePathname();
-    const { status } = usePro();
+    const { status, plan } = usePro();
 
     // Close drawer on route change
     useEffect(() => {
@@ -170,7 +170,7 @@ const MobileNav = () => {
 
                 {/* Nav items */}
                 <div className="flex-1 overflow-y-auto p-3 space-y-1">
-                    <NavItems pathname={pathname} open={true} status={status} />
+                    <NavItems pathname={pathname} open={true} status={status} plan={plan} />
                 </div>
 
                 {/* Bottom: theme toggle */}
@@ -214,8 +214,13 @@ function NavItems({
     pathname: string;
     open: boolean;
     status: string | null;
+    plan: string | null;
 }) {
     const { t } = useLang();
+
+    const isLifetime = plan === 'lifetime_onetime';
+    const isTrialing = status === 'trialing';
+    const isActive = status === 'active';
 
     return (
         <>
@@ -228,8 +233,8 @@ function NavItems({
             <Option Icon={Search} title={t.searchJobs} href="/scout" selected={pathname === "/scout"} open={open} variant="blue" />
             <Option Icon={Star} title={t.savedJobs} href="/saved-jobs" selected={pathname === "/saved-jobs"} open={open} />
             <Option Icon={Sparkles} title={t.myLetters} href="/motivation-letters" selected={pathname === "/motivation-letters"} open={open} />
-            {/* Hide Upgrade Plan only for active subscribers */}
-            {status !== "active" && (
+            {/* Show Upgrade Plan only for "trialing" users; hide for "active" or "lifetime" */}
+            {isTrialing && !isLifetime && !isActive && (
                 <UpgradeOption open={open} selected={pathname === "/upgrade"} />
             )}
             <Option Icon={Settings} title={t.settings} href="/settings" selected={pathname === "/settings"} open={open} />

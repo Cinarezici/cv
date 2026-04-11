@@ -13,9 +13,14 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
 
   // Hide Navbar on dashboard & tool routes, and auth pages
-  const isDashboard = pathname?.startsWith('/dashboard') || 
-                      pathname?.startsWith('/builder') || 
-                      pathname?.startsWith('/ats-scanner') ||
+  const dashboardRoutes = [
+    '/dashboard', '/builder', '/ats-scanner', '/import', 
+    '/referrals', '/my-cvs', '/resumes', '/scout', 
+    '/saved-jobs', '/motivation-letters', '/settings', 
+    '/upgrade', '/billing'
+  ];
+  
+  const isDashboard = dashboardRoutes.some(route => pathname?.startsWith(route)) || 
                       pathname === '/login' ||
                       pathname === '/signup';
   
