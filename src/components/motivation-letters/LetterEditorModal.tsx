@@ -525,7 +525,7 @@ export default function LetterEditorModal({ letter, onClose, onSaved }: LetterEd
             <header className="h-auto min-h-[48px] py-2 shrink-0 bg-white dark:bg-zinc-900 border-b border-gray-200 dark:border-white/10 flex flex-wrap items-center px-3 gap-2 z-10">
                 <button
                     onClick={handleClose}
-                    className="flex items-center gap-1.5 text-sm font-semibold text-foreground/60 dark:text-zinc-400 hover:text-foreground dark:hover:text-white cursor-pointer active:scale-95
+                    className="flex items-center gap-1.5 text-sm font-semibold text-foreground/60 dark:text-zinc-400 hover:text-foreground dark:hover:text-white cursor-pointer active:scale-95"
                 >
                     <ArrowLeft className="w-4 h-4 shrink-0" />
                     <span className="hidden sm:inline">Back to Letters</span>
