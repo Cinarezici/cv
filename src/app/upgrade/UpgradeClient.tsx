@@ -1,13 +1,20 @@
 "use client";
 
-import { useState } from "react";
-import { ArrowRight, CheckCircle2, X, Loader2, ArrowLeft } from "lucide-react";
+import { useState, useEffect } from "react";
+import { ArrowRight, CheckCircle2, X, Loader2, ArrowLeft, Sparkles, Crown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { toast } from "sonner";
+import { usePro } from "@/hooks/usePro";
 
 export default function UpgradeClient() {
     const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
+    const { plan, status, isLoading } = usePro();
+
+    const currentPlan = plan || 'free';
+    const isLifetime = currentPlan === 'lifetime_onetime';
+    const isYearly = currentPlan === 'professional_yearly';
+    const isMonthly = currentPlan === 'starter_monthly';
 
     const handleCheckout = async (planId: string) => {
         setLoadingPlan(planId);
@@ -33,6 +40,52 @@ export default function UpgradeClient() {
         }
     };
 
+    // Determine which plans to show
+    const showStarter = !isMonthly && !isYearly && !isLifetime;
+    const showProfessional = !isYearly && !isLifetime;
+    const showLifetime = !isLifetime;
+
+    // If lifetime, show "already on best plan" message
+    if (!isLoading && isLifetime) {
+        return (
+            <div className="min-h-screen bg-[#fafafa] dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50 flex items-center justify-center pb-20">
+                <div className="text-center max-w-md mx-auto px-6">
+                    <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-purple-500 to-violet-600 flex items-center justify-center mx-auto mb-6 shadow-xl shadow-purple-200 dark:shadow-purple-500/10">
+                        <Crown className="w-10 h-10 text-white" />
+                    </div>
+                    <h1 className="text-3xl font-extrabold text-zinc-900 dark:text-white tracking-tight mb-3">
+                        You're on the Lifetime Plan
+                    </h1>
+                    <p className="text-zinc-500 dark:text-zinc-400 text-base leading-relaxed mb-8">
+                        You already have unlimited access to all features — forever. No action needed.
+                    </p>
+                    <Link
+                        href="/dashboard"
+                        className="inline-flex items-center gap-2 bg-zinc-900 dark:bg-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-100 text-white font-bold px-6 py-3 rounded-xl shadow-sm transition-colors text-sm"
+                    >
+                        <ArrowLeft className="h-4 w-4" />
+                        Back to Dashboard
+                    </Link>
+                </div>
+            </div>
+        );
+    }
+
+    // Compute grid layout based on visible cards
+    const visibleCount = [showStarter, showProfessional, showLifetime].filter(Boolean).length;
+    const gridClass = visibleCount === 1
+        ? "max-w-md mx-auto"
+        : visibleCount === 2
+            ? "grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-3xl mx-auto items-stretch"
+            : "grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-stretch";
+
+    // Active plan badge
+    const CurrentPlanBadge = () => (
+        <div className="inline-flex items-center gap-1.5 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 text-[10px] font-black tracking-widest px-3 py-1 rounded-full uppercase border border-emerald-200 dark:border-emerald-500/20 mb-4">
+            <Sparkles className="w-3 h-3" /> Current Plan
+        </div>
+    );
+
     return (
         <div className="min-h-screen bg-[#fafafa] dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50 relative overflow-hidden pb-20">
             <div className="absolute inset-x-0 bottom-0 h-96 bg-gradient-to-t from-blue-50/50 dark:from-blue-950/20 to-transparent pointer-events-none" />
@@ -51,14 +104,20 @@ export default function UpgradeClient() {
                 <div className="mb-12 text-center">
                     <p className="text-[12px] font-black uppercase tracking-[0.15em] text-blue-600 mb-2">Upgrade Account</p>
                     <h1 className="text-3xl md:text-4xl font-extrabold text-zinc-900 dark:text-white tracking-tight">
-                        Choose your career power-up.
+                        {isMonthly ? 'Upgrade to a better plan.' : isYearly ? 'Go Lifetime — own it forever.' : 'Choose your career power-up.'}
                     </h1>
+                    {(isMonthly || isYearly) && (
+                        <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-3 max-w-md mx-auto">
+                            You're currently on the {isMonthly ? 'Starter Monthly' : 'Professional Yearly'} plan. Choose an upgrade below.
+                        </p>
+                    )}
                 </div>
 
-                {/* 3 Pricing Cards */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-stretch text-left">
+                {/* Pricing Cards */}
+                <div className={`${gridClass} text-left`}>
                   
                   {/* Starter */}
+                  {showStarter && (
                   <div className="bg-white dark:bg-zinc-900 rounded-3xl shadow-lg border border-zinc-200 dark:border-white/10 p-8 flex flex-col hover:shadow-xl transition-shadow">
                     <h3 className="text-xl font-extrabold">Starter 🚀</h3>
                     <p className="text-sm text-zinc-500 mt-1 mb-6">Perfect for getting started</p>
@@ -80,12 +139,17 @@ export default function UpgradeClient() {
                       <li className="flex items-start gap-3"><CheckCircle2 className="w-5 h-5 text-blue-600 shrink-0" /><span className="font-semibold">10 Keyword scans / day</span></li>
                     </ul>
                   </div>
+                  )}
 
                   {/* Professional */}
-                  <div className="bg-white dark:bg-zinc-900 rounded-3xl shadow-[0_20px_40px_-15px_rgba(37,99,235,0.2)] border-2 border-blue-600 p-8 flex flex-col relative transform md:-translate-y-4">
+                  {showProfessional && (
+                  <div className={`bg-white dark:bg-zinc-900 rounded-3xl shadow-[0_20px_40px_-15px_rgba(37,99,235,0.2)] border-2 border-blue-600 p-8 flex flex-col relative ${visibleCount === 3 ? 'transform md:-translate-y-4' : ''}`}>
+                    {!isMonthly && (
                     <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-blue-600 to-blue-500 text-white text-[11px] font-extrabold tracking-widest px-4 py-1.5 rounded-full uppercase shadow-lg select-none whitespace-nowrap">
                       RECOMMENDED
                     </div>
+                    )}
+                    {isMonthly && <CurrentPlanBadge />}
                     <h3 className="text-xl font-extrabold">Professional ⭐</h3>
                     <p className="text-sm text-zinc-500 mt-1 mb-4">Best for active job seekers</p>
                     <div className="mb-2">
@@ -99,7 +163,7 @@ export default function UpgradeClient() {
                         disabled={loadingPlan !== null}
                         className="w-full h-12 rounded-full bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-500/25 font-bold mb-8"
                     >
-                      {loadingPlan === 'professional_yearly' ? <Loader2 className="w-5 h-5 animate-spin" /> : "Get Professional"}
+                      {loadingPlan === 'professional_yearly' ? <Loader2 className="w-5 h-5 animate-spin" /> : isMonthly ? "Upgrade to Professional" : "Get Professional"}
                     </Button>
                     <ul className="space-y-4 text-sm flex-1">
                       <li className="flex items-start gap-3"><CheckCircle2 className="w-5 h-5 text-blue-600 shrink-0" /><span className="font-bold">Everything in Starter, plus:</span></li>
@@ -109,12 +173,15 @@ export default function UpgradeClient() {
                       <li className="flex items-start gap-3"><CheckCircle2 className="w-5 h-5 text-blue-600 shrink-0" /><span className="font-semibold">Advanced GPT-4 AI</span></li>
                     </ul>
                   </div>
+                  )}
 
                   {/* Lifetime */}
+                  {showLifetime && (
                   <div className="bg-white dark:bg-zinc-900 rounded-3xl shadow-lg border border-purple-200 dark:border-purple-900 p-8 flex flex-col hover:shadow-xl transition-shadow relative overflow-hidden">
                     <div className="absolute top-0 right-0 bg-purple-100 dark:bg-purple-900/50 text-purple-800 dark:text-purple-300 text-[10px] font-black tracking-widest px-3 py-1 rounded-bl-xl uppercase">
                       BEST VALUE
                     </div>
+                    {isYearly && <CurrentPlanBadge />}
                     <h3 className="text-xl font-extrabold">Lifetime 🏆</h3>
                     <p className="text-sm text-zinc-500 mt-1 mb-6">Own it forever. Best ROI.</p>
                     <div className="mb-6 flex flex-col">
@@ -137,6 +204,7 @@ export default function UpgradeClient() {
                       <li className="flex items-start gap-3"><CheckCircle2 className="w-5 h-5 text-purple-600 shrink-0" /><span className="font-semibold">AI Priority Queue</span></li>
                     </ul>
                   </div>
+                  )}
                   
                 </div>
 

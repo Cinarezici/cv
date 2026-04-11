@@ -12,12 +12,12 @@ export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
-  // Hide Navbar on dashboard & tool routes, and auth pages
+  // Hide Navbar on dashboard & tool routes, auth pages, and shared link pages
   const dashboardRoutes = [
     '/dashboard', '/builder', '/ats-scanner', '/import', 
     '/referrals', '/my-cvs', '/resumes', '/scout', 
     '/saved-jobs', '/motivation-letters', '/settings', 
-    '/upgrade', '/billing'
+    '/upgrade', '/billing', '/cv/', '/r/'
   ];
   
   const isDashboard = dashboardRoutes.some(route => pathname?.startsWith(route)) || 

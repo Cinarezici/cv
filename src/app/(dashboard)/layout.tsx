@@ -234,8 +234,8 @@ function NavItems({
             <Option Icon={Search} title={t.searchJobs} href="/scout" selected={pathname === "/scout"} open={open} variant="blue" />
             <Option Icon={Star} title={t.savedJobs} href="/saved-jobs" selected={pathname === "/saved-jobs"} open={open} />
             <Option Icon={Sparkles} title={t.myLetters} href="/motivation-letters" selected={pathname === "/motivation-letters"} open={open} />
-            {/* Show Upgrade Plan only for "trialing" users; hide for "active" or "lifetime" */}
-            {isTrialing && !isLifetime && !isActive && (
+            {/* Show Upgrade Plan for all users except lifetime */}
+            {!isLifetime && (
                 <UpgradeOption open={open} selected={pathname === "/upgrade"} />
             )}
             <Option Icon={Settings} title={t.settings} href="/settings" selected={pathname === "/settings"} open={open} />
