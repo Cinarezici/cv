@@ -19,7 +19,8 @@ export async function checkUsage(userId: string, feature: PlanFeature) {
     return { allowed: false, reason: 'no_subscription', plan: 'free' };
   }
 
-  const isTrial = sub.is_trial || false;
+  const subStatus = sub.status || 'free';
+  const isTrial = sub.is_trial || subStatus === 'trialing';
   const planId = isTrial ? 'trial' : (sub.plan || 'free');
   const limits = getLimitsForPlan(planId);
   

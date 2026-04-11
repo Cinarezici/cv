@@ -12,10 +12,12 @@ export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
-  // Hide Navbar on dashboard routes
-  // Hide Navbar on dashboard & tool routes
-  const landingPages = ['/', '/templates', '/pricing', '/about', '/blog', '/login', '/signup'];
-  const isDashboard = !landingPages.includes(pathname || '') || pathname?.startsWith('/builder') || pathname?.startsWith('/ats-scanner');
+  // Hide Navbar on dashboard & tool routes, and auth pages
+  const isDashboard = pathname?.startsWith('/dashboard') || 
+                      pathname?.startsWith('/builder') || 
+                      pathname?.startsWith('/ats-scanner') ||
+                      pathname === '/login' ||
+                      pathname === '/signup';
   
   useEffect(() => {
     const handleScroll = () => {
